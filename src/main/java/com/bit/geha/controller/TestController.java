@@ -9,13 +9,13 @@ import com.bit.geha.dao.TestDao;
 
 
 
-
 @Controller
 public class TestController {
 
 	
 	@Autowired
 	TestDao testMapper;
+
 	
 	@RequestMapping("/")
 	public String home(Model model) {
@@ -27,14 +27,13 @@ public class TestController {
 	public void roominfo() {}
 	
 	@RequestMapping("/test")
-	public void test() {}
+	public void test() {
+		
+	}
 	
 	@RequestMapping("/signup")
 	public void signup() {
 
 	}
-	
 
-
-	}
-
+}
