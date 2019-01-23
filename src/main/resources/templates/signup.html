@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
+
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
+
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(function() {
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+	});
+	
+	//아이디 체크여부 확인 (아이디 중복일 경우 = 0 , 중복이 아닐경우 = 1 )
+	var idck = 0;
+	$(function() {
+	    //idck 버튼을 클릭했을 때 
+	    $("#idck").click(function() {
+	        
+	        //userid 를 param.
+	        var id =  $("#id").val(); 
+	        
+	        
+	        $.ajax({
+	            async: true,
+	            type : "POST",
+	            data : id,
+	            url : "idcheck.do",
+	            dataType : "json",
+	            contentType: "application/json; charset=UTF-8",
+	            success : function(data) {
+	                if (data.cnt > 0) {
+	                    
+	                	alert('이미 존재하는 아이디입니다.');
+	                    /* $("#idError").innerHTML='이미 존재하는 아이디입니다.' */
+	                    //아이디가 존제할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
+	          /*           $("#divInputId").addClass("has-error")
+	                    $("#divInputId").removeClass("has-success") */
+	                    $("#id").focus();
+	                    
+	                
+	                } else {
+	                	
+	                	alert('사용 가능한 아이디입니다.');
+	                	/* $("#idError").innerHTML='사용 가능한 아이디입니다.' */
+	                    //아이디가 존제할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
+	              /*       $("#divInputId").addClass("has-success")
+	                    $("#divInputId").removeClass("has-error") */
+	                    $("#password").focus();
+	                    //아이디가 중복하지 않으면  idck = 1 
+	                    idck = 1;
+	                    
+	                }
+	            },
+	            error : function(error) {
+	                
+	                alert("error : " + error);
+	            }
+	        });
+	    });
+	});
+	
+	function confirm(){
+		 if(idck==0){
+	            alert('아이디 중복체크를 해주세요');
+	            return false;
+	        }else{
+	        	 alert("회원가입을 축하합니다");
+	             $("#frm").submit();
+	             
+	        }
+	}
+	</script>
+</head>
+<body>
+	<form action="/create" id="frm" method="POST">
+	 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+	이름 <input type="text" id="memberName" name="memberName"><br/>
+	아이디 <input type="email" id="id" name="id">
+	<input type="button" id="idck" value="중복확인"><br/>
+	<p id="idError"></p>
+	비밀번호 <input type="password" id="password" name="password"><br/>
+	비밀번호확인 <input type="password" id="passwordCheck"><br/>
+	남 <input type="radio" name="gender" value="M">
+	여 <input type="radio" name="gender" value="F"><br/>
+	<input type="button" value="가입하기" onclick="confirm()">
+	
+	</form>
+</body>
+</html>
