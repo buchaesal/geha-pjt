@@ -1,14 +1,10 @@
 package com.bit.geha.controller;
 
-import java.sql.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bit.geha.dao.BookingDao;
-import com.bit.geha.dto.RoomDto;
 
 import lombok.extern.java.Log;
 
@@ -27,7 +23,7 @@ public class BookingController {
 		RoomDto roomDto = bookingDao.getRoom(roomCode);
 		model.addAttribute("roomDto", roomDto);
 	}*/
-	
+	/*
 	@RequestMapping("/bookingPage")
 	public void loadBookingPage(Model model) {
 		log.info("loadBookingPage()");
@@ -37,7 +33,7 @@ public class BookingController {
 		model.addAttribute("roomDto", roomDto);
 		model.addAttribute("guestHouseName", guestHouseName);
 	}
-	
+	*/
 	@RequestMapping("/booking")
 	public void booking() {
 		log.info("booking()");
