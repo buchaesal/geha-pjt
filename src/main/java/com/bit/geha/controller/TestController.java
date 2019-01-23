@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bit.geha.dao.TestMapper;
+import com.bit.geha.dao.TestDao;
 
 
 @Controller
@@ -13,7 +13,7 @@ public class TestController {
 
 	
 	@Autowired
-	TestMapper testMapper;
+	TestDao testMapper;
 
 	
 	@RequestMapping("/")
