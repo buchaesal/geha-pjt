@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" >
       
 
 <head>
 <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 <title>Insert title here</title>
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<link rel="stylesheet" href="css/swiper.min.css">
+<link href="css/datepicker.min.css?3" rel="stylesheet"	type="text/css">
 
 <style >
       html, body {
       position: relative;
-      height: 100%;
+      height: 60%;
+      top:50px;
+
+
     }
-    body {
+    .swiper-container .gallery-top {
       background: #000;
       font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
       font-size: 14px;
@@ -22,23 +28,27 @@
       padding: 0;
     }
     .swiper-container {
-      width: 100%;
-      height: 300px;
+      width: 30%;
+      height: 450px;
       margin-left: auto;
       margin-right: auto;
     }
+
+    
     .swiper-slide {
       background-size: cover;
       background-position: center;
     }
     .gallery-top {
-      height: 80%;
-      width: 100%;
+      height: 100%;
+      width: 30%;
     }
     .gallery-thumbs {
       height: 20%;
+      width: 600px;
       box-sizing: border-box;
       padding: 10px 0;
+      
     }
     .gallery-thumbs .swiper-slide {
       height: 100%;
@@ -47,54 +57,107 @@
     .gallery-thumbs .swiper-slide-thumb-active {
       opacity: 1;
     }
+	header{
+		background-image: url(../img/header.jpg);
+	}
+	.top-container{
+		 width: 100%;
+ 		 height: 200%;
+ 		 background: black;
+
+	}
+	.left{
+	float: left;
+	 background-color:red;
+	width: 50%;
+	height: 450px;
+	}
+	.right{
+	width:50%;
+	float:right;
+	height: 450px;
+	  background-color:aqua;
+
+	}
+	.right h2{
+	font-size: 28px;}
+	
+	
+	.picker {
+	background-color: aqua;
+	}
 
 </style>
+
 </head>
 
 <body>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/css/swiper.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/css/swiper.min.css">
 
+<!-- <div layout:fragment="content"> -->
 
-<div layout:fragment="content">
-  Swiper
-  <div class="swiper-container gallery-top">
+<div class="top-container">
+<div class="left">
+  <div class="swiper-container gallery-top" style="width: 600px">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/1/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/2/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/3/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/4/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/5/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/6/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/7/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/8/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/9/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/10/)"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/2/ )"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/1/ )"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/3/ )"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/4/ )"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/5/ )"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/6/ )"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/7/ )"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/8/ )"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/9/ )"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/10/ )"></div>
     </div>
     Add Arrows
     <div class="swiper-button-next swiper-button-white"></div>
     <div class="swiper-button-prev swiper-button-white"></div>
   </div>
   <div class="swiper-container gallery-thumbs">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/1/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/2/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/3/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/4/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/5/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/6/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/7/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/8/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/9/)"></div>
-      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/10/)"></div>
+    <div class="swiper-wrapper ">
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/2/);width: 33%"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/1/);width: 33%"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/3/);width: 33%"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/4/);width: 33%"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/5/);width: 33%"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/6/);width: 33%"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/7/);width: 33%"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/8/);width: 33%"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/9/);width: 33%"></div>
+      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/10/);width: 33%"></div>
     </div>
   </div>
-</div>
-  Swiper JS
+	</div>
+<!-- left -->	
+  
+	<div class="right">
+		<h2>게스트 하우스 이름</h2>
+		<div class="adderess">
+		<p>게스트 하우스 주소 </p>
+		</div>
+	</div>
+	
+</div> 
+<!-- 11 -->
+	<div class="picker">
+	<input type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en"	class="datepicker-here"    />
+	</div>
 
-
-  Initialize Swiper
-  <script>
+   <script>
+   
+  window.onload =function() {
+	var dateToday = new Date();
+	$( ".datepicker-here" ).datepicker({
+		minDate: dateToday ,
+		dateFormat: 'yyyy-mm-dd',
+		clearButton: true,
+		todayButton: new Date(),
+		toggleSelected: false,
+		disableNavWhenOutOfRange:true
+	        
+	}); 
+	  
     var galleryThumbs = new Swiper('.gallery-thumbs', {
       spaceBetween: 10,
       slidesPerView: 4,
@@ -104,6 +167,7 @@
       watchSlidesVisibility: true,
       watchSlidesProgress: true,
     });
+
     var galleryTop = new Swiper('.gallery-top', {
       spaceBetween: 10,
       loop:true,
@@ -115,9 +179,15 @@
       thumbs: {
         swiper: galleryThumbs,
       },
-    });
+    })
+  };
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/js/swiper.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/js/swiper.min.js"></script>
+ <script src="js/swiper.min.js"></script>
+ <script src="http://code.jquery.com/jquery-3.3.1.min.js"integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="	crossorigin="anonymous"></script>
+<script src="js/datepicker.min.js"></script>
+<script src="js/i18n/datepicker.en.js"></script>
+<!--   </div> -->
+  
+  
 </body>
 </html>
