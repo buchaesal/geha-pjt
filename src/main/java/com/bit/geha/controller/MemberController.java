@@ -20,10 +20,7 @@ public class MemberController {
 	@Autowired
 	MemberDao memberDao;
 
-	@RequestMapping("/signup")
-	public void signup() {
-
-	}
+	
 
 	@PostMapping(value = "/idcheck.do")
 	@ResponseBody
