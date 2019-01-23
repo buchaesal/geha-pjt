@@ -20,6 +20,8 @@ public class MemberController {
 	@Autowired
 	MemberDao memberDao;
 
+	
+	
 	@PostMapping(value = "/idcheck.do")
 	@ResponseBody
 	public Map<Object, Object> idcheck(@RequestBody String id) {
