@@ -1,14 +1,21 @@
 package com.bit.geha.controller;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bit.geha.dao.MemberDao;
 import com.bit.geha.dao.TestMapper;
-import com.bit.geha.dto.Test;
+import com.bit.geha.dto.MemberDto;
+
 
 @Controller
 public class TestController {
@@ -16,6 +23,9 @@ public class TestController {
 	
 	@Autowired
 	TestMapper testMapper;
+	
+	@Autowired
+	MemberDao memberDao;
 	
 	@RequestMapping("/")
 	public String home(Model model) {
@@ -28,4 +38,33 @@ public class TestController {
 	
 	@RequestMapping("/test")
 	public void test() {}
+	
+	@RequestMapping("/signup")
+	public void signup() {
+
+	}
+	
+	@PostMapping(value="/idcheck.do")
+    @ResponseBody
+    public Map<Object, Object> idcheck(@RequestBody String id) {
+        
+        int count = 0;
+        Map<Object, Object> map = new HashMap<Object, Object>();
+ 
+        count = memberDao.idCheck(id);
+        map.put("cnt", count);
+ 
+        return map;
+    }
+	
+	@PostMapping("/create")
+	public String create(MemberDto member) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		member.setPassword(passwordEncoder.encode(member.getPassword()));
+		member.setAuthority("USER");
+		memberDao.insertUser(member);
+		
+		return "redirect:/";
+
+	}
 }
