@@ -21,7 +21,7 @@ public class MemberController {
 	MemberDao memberDao;
 
 	
-	
+
 	@PostMapping(value = "/idcheck.do")
 	@ResponseBody
 	public Map<Object, Object> idcheck(@RequestBody String id) {

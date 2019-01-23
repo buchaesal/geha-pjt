@@ -15,6 +15,7 @@ public class TestController {
 	
 	@Autowired
 	TestDao testMapper;
+
 	
 	@RequestMapping("/")
 	public String home(Model model) {
