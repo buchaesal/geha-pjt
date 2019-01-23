@@ -9,7 +9,7 @@ import com.bit.geha.dto.Test;
 
 
 @Mapper
-public interface TestMapper {
+public interface TestDao {
 	@Select("SELECT * FROM testtable ")
     List<Test> selectMembers();
 }
