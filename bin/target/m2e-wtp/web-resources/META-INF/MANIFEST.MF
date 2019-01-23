@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: pjt_geha
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: eks41
+Implementation-Vendor-Id: com.bit.geha
+Build-Jdk: 1.8.0_171
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/pjt_geha
+Created-By: Maven Integration for Eclipse
+
