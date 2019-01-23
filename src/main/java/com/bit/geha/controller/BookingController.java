@@ -34,8 +34,8 @@ public class BookingController {
 		model.addAttribute("guestHouseName", guestHouseName);
 	}
 	*/
-	@RequestMapping("/booking")
+/*	@RequestMapping("/booking")
 	public void booking() {
 		log.info("booking()");
-	}
+	}*/
 }
