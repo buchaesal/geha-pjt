@@ -22,6 +22,13 @@ public class TestController {
 	@RequestMapping("/roominfo")
 	public void roominfo() {}
 	
-	@RequestMapping("/test")
-	public void test() {}
+	public void test() {
+		
+	}
+	
+	@RequestMapping("/signup")
+	public void signup() {
+
+	}
+
 }
