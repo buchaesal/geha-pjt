@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>예약하기</title>
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<style>
+			.display_left {
+				width: 50%;
+				height: 100%;
+				background-color: gray;
+				float: left;
+			}
+			
+			.display_right {
+				width: 50%;
+				height: 100%;
+				background-color: white;
+				float: left;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="display_left">
+			<div>
+				<h3>예약자 정보</h3>
+				
+				<label>예약자 이름<br>
+				<input type="text" name="booker"></label><br><br>
+				
+				<label>예약자 이메일<br>
+				<input type="text" name="bookerEmail"></label><br><br>
+				
+				<label>예약자 연락처<br>
+				<input type="text" name="bookerContact"></label><br><br>
+			</div>
+			
+			<div>
+				<h3>결제수단 선택</h3>
+				
+				<select name="paymentMethod">
+					<option value="card">카드결제(신용, 체크)</option>
+					<option value="phone">휴대폰결제</option>
+				</select>
+			</div>
+			<br><br>
+			
+			<table>
+				<tr>
+					<td>
+						<label style="font-weight: bold" for="allCheck">전체 동의</label>
+						<input type="checkbox" id="allCheck">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="allCheck">숙소이용규칙 및 취소/환불규정 동의(필수)</label>
+						<input type="checkbox" id="useRules">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="allCheck">개인정보 수집 및 이용 동의(필수)</label>
+						<input type="checkbox" id="personalInfoCollection">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="allCheck">개인정보 제 3자 제공 동의(필수)</label>
+						<input type="checkbox" id="personalInfoProvision">
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="display_right">
+			<div>
+				<label>숙소이름</label><br>
+				<label>[[${guestHouseName}]]</label><br><br>
+				
+				<label>객실타입/기간</label><br>
+				<label>[[${roomDto.roomName}]]/1박</label><br><br>
+				
+				<label>입실 예정일</label><br>
+				<label></label><br><br>
+				
+				<label>숙소이름</label><br>
+				<label></label><br><br>
+				
+			</div>
+			
+			<button>결제하기</button>
+		</div>
+		
+		
+		<script type="text/javascript">
+			$(function() {
+				//전체선택 체크박스 클릭
+				$("#allCheck").click(function() {
+					//만약 전체 선택 체크박스가 체크된 상태일 경우
+					if($("#allCheck").prop("checked")) {
+						//해당화면 전체 checkbox들을 체크해준다.
+						$("input[type=checkbox]").prop("checked", true);
+					//전체선택 체크박스가 해제된 경우
+					} else {
+						//해당화면에 모든 checkbox들의 체크를 해제시킨다.
+						$("input[type=checkbox]").prop("checked", false);
+					}
+				})
+			})
+		</script>
+	</body>	
+</html>

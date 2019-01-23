@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class Test {
 
-	private int bno;
-	private String title;
-	
+   private int bno;
+   private String title;
+   
 }
