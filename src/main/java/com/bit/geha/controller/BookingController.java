@@ -1,8 +1,11 @@
 package com.bit.geha.controller;
 
+import java.sql.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bit.geha.dao.BookingDao;
@@ -27,7 +30,7 @@ public class BookingController {
 	}*/
 	
 	@RequestMapping("/bookingPage")
-	public void loadBookingPage(Model model) {
+	public void loadBookingPage(@ModelAttribute Date checkin, @ModelAttribute Date checkout, Model model) {
 		log.info("loadBookingPage()");
 		KskRoomDto roomDto = bookingDao.getRoom(1);
 		String guestHouseName = bookingDao.getGuestHouseName(roomDto.getGuestHouseCode());

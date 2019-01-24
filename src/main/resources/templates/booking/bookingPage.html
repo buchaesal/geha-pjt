@@ -80,16 +80,17 @@
 					<label>[[${guestHouseName}]]</label><br><br>
 					
 					<label>객실타입/기간</label><br>
-					<label>[[${roomDto.roomName}]]/1박</label><br><br>
+					<label th:name="roomName">[[${roomDto.roomName}]]</label>
+					<label>/1박</label><br><br>
 					
 					<label>입실 예정일</label><br>
-					<label></label><br><br>
+					<label th:name="checkin">[[${checkin}]]</label><br><br>
 					
 					<label>퇴실 예정일</label><br>
-					<label></label><br><br>
+					<label th:name="checkout">[[${checkout}]]</label><br><br>
 					
 					<label>총 결제 금액(VAT포함)</label><br>
-					<label></label><br><br>
+					<label th:name="charge">$[[roomDto.charge]]</label><br><br>
 				</div>
 			</div>
 			
