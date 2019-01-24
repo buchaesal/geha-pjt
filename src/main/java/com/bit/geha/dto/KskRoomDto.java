@@ -6,9 +6,10 @@ import lombok.Data;
 
 @Alias("room")
 @Data
-public class RoomDto {
+public class KskRoomDto {
 
 	private int roomCode ;
+	private int guestHouseCode;
 	private String roomName;
 	private int capacity;
 	private int charge;

@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bit.geha.dao.BookingDao;
-import com.bit.geha.dto.RoomDto;
+import com.bit.geha.dto.KskRoomDto;
 
 import lombok.extern.java.Log;
 
@@ -29,7 +29,7 @@ public class BookingController {
 	@RequestMapping("/bookingPage")
 	public void loadBookingPage(Model model) {
 		log.info("loadBookingPage()");
-		RoomDto roomDto = bookingDao.getRoom(1);
+		KskRoomDto roomDto = bookingDao.getRoom(1);
 		String guestHouseName = bookingDao.getGuestHouseName(roomDto.getGuestHouseCode());
 		
 		model.addAttribute("roomDto", roomDto);
