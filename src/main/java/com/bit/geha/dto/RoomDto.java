@@ -9,6 +9,7 @@ import lombok.Data;
 public class RoomDto {
 
 	private int roomCode ;
+	private int guestHouseCode;
 	private String roomName;
 	private int capacity;
 	private int charge;
