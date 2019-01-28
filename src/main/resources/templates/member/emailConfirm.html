@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>userConfirm</h1>
+	<script th:inline="javascript">
+		var name = [[${name}]];
+		var error = [[${error}]];
+
+		if(name){
+			alert(name + '님 회원가입을 축하합니다. 이제 로그인이 가능 합니다.');
+		}
+		else{
+			alert(error);
+		}
+		window.open('', '_self', ''); // 브라우저창 닫기
+		/* window.close(); // 브라우저 창 닫기 */
+		self.location = '/';
+		</script>
+</body>
+</html>

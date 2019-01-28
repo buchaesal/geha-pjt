@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
+
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
+
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(function() {
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+	});
+	
+	/* 값 넘기고 인증코드 입력하는 창 띄우는 메소드 */
+	
+	function showFrm() {
+
+		var pwEmail = document.getElementById('pwEmail'); /* 인증코드 입력란(hidden) */
+		var id = document.getElementById('id').value; 	  /* 입력한 아이디(email) */
+		pwEmail.style.display = 'block';				  
+
+		$.ajax({
+			type : "POST",
+			url : "findPw.do",
+			data : {
+				"id" : id
+			},
+			contentType : "application/json; charset=utf-8",
+			dataType : "text",
+			error : function(error) {
+				alert('죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.');
+			},
+			success : function(text) {
+				
+				/* controller에서 넘겨받은 인증코드를 hidden value에 넣어둔다. */
+				document.getElementById('text').value = text; 
+				
+			}
+		});
+	}
+
+	/* 인증코드 확인 메서드 */
+	function checkMail() {
+
+		var text = document.getElementById('text').value; 	/* 인증코드 */
+		var input = document.getElementById('input').value; /* 사용자가 입력한 코드 */
+		
+		if (text === input) { 								/* 만약 일치한다면 */
+			document.getElementById('checkMail').submit();	/* 폼을 제출함 */
+		} else {
+			document.getElementById('error').innerHTML = '인증번호가 일치하지 않습니다.'
+			return false; 							/* 그렇지 않다면 폼을 제출하지 않고 알림을 띄움 */
+		}
+	}
+</script>
+</head>
+<body>
+	<p>등록 된 아이디(이메일)를 입력해주세요.</p>
+	<input type="email" id="id">
+	<input type="button" value="입력" onclick="showFrm()">
+
+	<div id="pwEmail" style="display: none;">
+		<p>이메일에 인증코드가 전송되었습니다. 입력해주세요.</p>
+		<p id="error"></p>
+		
+		<form action="/member/changePw" id="checkMail">
+			<input type="hidden" id="text" th:value="${text}" name="text">
+			<input type="text" id="input" name="input"> 
+			<input type="button" value="확인" onclick="checkMail()">
+		</form>
+	</div>
+	
+	<a th:href="@{/}">메인으로</a>
+
+</body>
+</html>

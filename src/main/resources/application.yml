@@ -9,4 +9,17 @@ facebook:
       clientAuthenticationScheme: form
       scope: email
     resource:
-      userInfoUri: https://graph.facebook.com/me?fields=id,name,email,gender
+      userInfoUri: https://graph.facebook.com/me?fields=id,name,email
+---         
+google :
+  client :
+    clientId : 408874424218-d4h1f258d421g2hibkmp488i91t3h6i8.apps.googleusercontent.com
+    clientSecret: 0tZ9Tc41cgxbCDkKJgWaKiLr
+    accessTokenUri: https://www.googleapis.com/oauth2/v4/token
+    userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
+    clientAuthenticationScheme: form
+    scope:
+    - email
+    - profile
+  resource:
+    userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html >
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -72,24 +72,27 @@ header{
                     <li>
                         <a class="page-scroll" href="#portfolio">FAQ</a>
                     </li>
-                       <li>
-                        <a class="page-scroll" href="#portfolio">로그인</a>
+                       <li th:unless="${name}">
+                        <a th:href="@{/member/login}" class="page-scroll">로그인</a>
                     </li>
-               
+              
                     <!-- Single button -->
-				<div class="btn-group">
-  					<button type="button"  class="btn btn-default dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown">
+				<div class="btn-group" th:if="${name}">
+  					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown">
    						 로그인 <span class="caret"></span>
   					</button>
+  					
+  					
  					 	<ul class="dropdown-menu" role="menu">
- 					 	 <li><a href="#">홍길동</a></li>
+ 					 	 <li><span th:text="${name}"></span></li>
  					 	 <li class="divider"></li>
-               	  	   	 <li> <a class="page-scroll" href="#contact">로그인</a></li>
-   						 <li><a href="#">Another action</a></li>
+               	  	   	 <li><a class="page-scroll">테스트</a></li>
+   						 <li><a href="#" onclick="logout()">로그아웃</a></li>
    						 <li><a href="#">Something else here</a></li>
  						 </ul>
 				</div>
                 </ul>
+                 <form id="logout" th:action="@{/logout}" method="post"></form>
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -245,7 +248,12 @@ header{
 
     <!-- Theme JavaScript -->
     <script src="js/creative.min.js"></script>
-
+	<script>
+	function logout(){
+		$('#logout').submit();
+	}
+	</script>
+	
 </body>
 
 </html>
