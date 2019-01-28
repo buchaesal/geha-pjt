@@ -50,14 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/login").anonymous()
+			.antMatchers("/member/login").anonymous()
 			.antMatchers("/**").permitAll()
 			.and()
 			.exceptionHandling().accessDeniedPage("/")
 			.and()
 			.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
 		.formLogin()
-			.loginPage("/login")
+			.loginPage("/member/login")
 			.usernameParameter("id")
 			.defaultSuccessUrl("/")
 			.and()
