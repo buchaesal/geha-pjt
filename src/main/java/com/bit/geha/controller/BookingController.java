@@ -1,46 +1,66 @@
 package com.bit.geha.controller;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bit.geha.dao.BookingDao;
+import com.bit.geha.dto.BookingDto;
 import com.bit.geha.dto.KskRoomDto;
 
 import lombok.extern.java.Log;
 
 @Controller
-@RequestMapping("/booking")
+@RequestMapping(value="/booking")
 @Log
 public class BookingController {
 	
 	@Autowired
 	BookingDao bookingDao;
 	
-	/*@RequestMapping("/bookingPage")
-	public void loadBookingPage(int roomCode, Date checkin, Date checkout, Model model) {
-		log.info("loadBookingPage()");
-		
-		RoomDto roomDto = bookingDao.getRoom(roomCode);
-		model.addAttribute("roomDto", roomDto);
-	}*/
-	
 	@RequestMapping("/bookingPage")
-	public void loadBookingPage(@ModelAttribute Date checkin, @ModelAttribute Date checkout, Model model) {
+	public void loadBookingPage(Model model
+			, @RequestParam(value="checkin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkin
+			, @RequestParam(value="checkout") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkout) {
 		log.info("loadBookingPage()");
 		KskRoomDto roomDto = bookingDao.getRoom(1);
-		String guestHouseName = bookingDao.getGuestHouseName(roomDto.getGuestHouseCode());
+		String guestHouseName = bookingDao.getGuestHouseNameByGuestHouseCode(roomDto.getGuestHouseCode());
 		
+		
+		model.addAttribute("checkin", checkin);
+		model.addAttribute("checkout", checkout);
 		model.addAttribute("roomDto", roomDto);
 		model.addAttribute("guestHouseName", guestHouseName);
 	}
 	
-	@RequestMapping("/booking")
-	public void booking() {
-		log.info("booking()");
+	@RequestMapping(value="/bookingComplete", method=RequestMethod.POST)
+	public String bookingComplete(BookingDto bookingDto) {
+		log.info("bookingComplete()");
+		System.out.println(bookingDto);
+		
+		bookingDao.addBooking(bookingDto);
+		int bookingCode = bookingDto.getBookingCode();
+		
+		System.out.println("bookingCode: " + bookingCode);
+		return "redirect:/booking/bookingDetail?bookingCode="+bookingCode;
+	}
+	
+	@RequestMapping("/bookingDetail")
+	public void bookingDetail(int bookingCode, Model model) {
+		log.info("bookingDetail()");
+		
+		BookingDto bookingDto = bookingDao.getBooking(bookingCode);
+		bookingDto.setGuestHouseName(bookingDao.getGuestHouseNameByBookingCode(bookingCode));
+		bookingDto.setRoomName(bookingDao.getRoomNameByBookingCode(bookingCode));
+		
+		model.addAttribute("bookingDto", bookingDto);
 	}
 }

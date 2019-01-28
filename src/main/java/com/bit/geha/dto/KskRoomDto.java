@@ -1,10 +1,7 @@
 package com.bit.geha.dto;
 
-import org.apache.ibatis.type.Alias;
-
 import lombok.Data;
 
-@Alias("room")
 @Data
 public class KskRoomDto {
 
