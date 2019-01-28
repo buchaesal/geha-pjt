@@ -1,0 +1,137 @@
+<html class="no-js" lang=""
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<link th:href="@{//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css}" rel="stylesheet" id="bootstrap-css">
+	<script th:src="@{//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
+	<script th:src="@{//code.jquery.com/jquery-1.11.1.min.js}"></script>
+	
+	<style>
+		.container {
+			margin-left: 40px;
+		}
+		.navbar-header {
+			height: 150px;
+		}
+		.navbar-brand {
+			width: 500px;
+			font-size: 35px;
+			margin-top: 50px;
+		}
+		#sidebar-wrapper {
+		  top: 150px;
+		  left: -200px;
+		  width: 200px;
+		  background-color: gray;
+		  color: white;
+		  position: fixed;
+		  height: 100%;
+		  z-index: 1;
+		}
+		.sidebar-nav {
+		  position: absolute;
+		  top: 0;
+		  margin: 0;
+		  padding: 0;
+		  width: 250px;
+		  list-style: none;
+		}
+		.sidebar-nav li {
+		  text-indent: 20px;
+		  line-height: 75px;
+		}
+		.sidebar-nav li a {
+		  color: white;
+		  display: block;
+		  text-decoration: none;
+		}
+		.sidebar-nav li a:hover {
+		  background: rgba(255,255,255,0.25);
+		  color: white;
+		  text-decoration: none;
+		}
+		.sidebar-nav li a:active, .sidebar-nav li a:focus {
+		  text-decoration: none;
+		}
+		#sidebar-wrapper.sidebar-toggle {
+		  transition: all 0.3s ease-out;
+		  margin-left: -200px;
+		}
+		@media (min-width: 768px) {
+		  #sidebar-wrapper.sidebar-toggle {
+		    transition: 0s;
+		    left: 200px;
+		  }
+		}
+	</style>
+	
+	<!------ Include the above in your HEAD tag ---------->
+	
+	<body>
+		<div th:fragment="myPage">
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<a id="menu-toggle" href="#" class="navbar-toggle">
+								<span class="sr-only">Toggle navigation</span>
+						        <span class="icon-bar"></span>
+						        <span class="icon-bar"></span>
+						        <span class="icon-bar"></span>
+						</a>
+			  			<label class="navbar-brand">마이페이지</label>
+					</div>
+					<div id="sidebar-wrapper" class="sidebar-toggle">
+						<ul class="sidebar-nav">
+					    	<li>
+					      		<a th:href="@{/myPage/bookingList}">예약내역</a>
+					    	</li>
+					    	<li>
+					      		<a th:href="@{/myPage/reviewList}">리뷰관리</a>
+					    	</li>
+					    	<li>
+					      		<a th:href="@{/myPage/likeList}">찜하기</a>
+					    	</li>
+					    	<li>
+					      		<a th:href="@{/myPage/manageMyInfo}">내 정보관리</a>
+					    	</li>
+					  	</ul>
+					</div>
+			  	</div>
+			</nav>
+		</div>
+		
+		
+		<script type="text/javascript">
+			$(window).resize(function() {
+				var path = $(this);
+				var contW = path.width();
+				if(contW >= 751){
+					document.getElementsByClassName("sidebar-toggle")[0].style.left="200px";
+				}else{
+					document.getElementsByClassName("sidebar-toggle")[0].style.left="-200px";
+				}
+			});
+			$(document).ready(function() {
+				$('.dropdown').on('show.bs.dropdown', function(e){
+				    $(this).find('.dropdown-menu').first().stop(true, true).slideDown(300);
+				});
+				$('.dropdown').on('hide.bs.dropdown', function(e){
+					$(this).find('.dropdown-menu').first().stop(true, true).slideUp(300);
+				});
+				$("#menu-toggle").click(function(e) {
+					e.preventDefault();
+					var elem = document.getElementById("sidebar-wrapper");
+					left = window.getComputedStyle(elem,null).getPropertyValue("left");
+					if(left == "200px"){
+						document.getElementsByClassName("sidebar-toggle")[0].style.left="-200px";
+					}
+					else if(left == "-200px"){
+						document.getElementsByClassName("sidebar-toggle")[0].style.left="200px";
+					}
+				});
+			});
+		</script>
+	</body>
+	
+	
+
+</html>

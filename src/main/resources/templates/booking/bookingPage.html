@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/main_layout">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>예약하기</title>
@@ -64,6 +67,7 @@
 		</style>
 	</head>
 	<body>
+	<div layout:fragment="content">
 		<form th:action="@{/booking/bookingComplete}" id="bookingForm" method="post">
 			<div class="display_left">
 				<div>
@@ -204,11 +208,11 @@
 					<label>/1박</label><br><br>
 					
 					<label>입실 예정일</label><br>
-					<label>[[${#dates.format(checkin, 'MM.dd')}]]</label> 14:00 <br><br>
+					<label>[[${#dates.format(checkin, 'yy.MM.dd E')}]]</label> 14:00 <br><br>
 					<input type="hidden" name="bookingStart" th:value="${#dates.format(checkin, 'yyyy-MM-dd')}">
 					
 					<label>퇴실 예정일</label><br>
-					<label>[[${#dates.format(checkout, 'MM.dd')}]]</label> 11: 00 <br><br>
+					<label>[[${#dates.format(checkout, 'yy.MM.dd E')}]]</label> 11: 00 <br><br>
 					<input type="hidden" name="bookingEnd" th:value="${#dates.format(checkout, 'yyyy-MM-dd')}">
 					
 					<label>총 결제 금액(VAT포함)</label><br>
@@ -231,9 +235,9 @@
 					<p>[[${guestHouseName}]]</p>
 					<p>[[${roomDto.roomName}]]/1박</p>
 					<p><label id="checkin">체크인</label>
-					<label>[[${#dates.format(checkin, 'MM.dd')}]] 14:00 </label></p>
+					<label>[[${#dates.format(checkin, 'yy.MM.dd E')}]] 14:00 </label></p>
 					<p><label id="checkout">체크아웃</label>
-					<label>[[${#dates.format(checkout, 'MM.dd')}]] 11:00 </label></p>
+					<label>[[${#dates.format(checkout, 'yy.MM.dd E')}]] 11:00 </label></p>
 					<ul>
 						<li> 해당 숙소는 예약 대기상태이며, 숙소의 확인 후 예약 확정 여부가 문자로 발송됩니다. </li>
 						<li> 숙소의사정으로 예약 불가능할 경우 결제된 금액은 자동 취소됩니다. </li>
@@ -244,7 +248,7 @@
 			</div>
 			
 		</form>
-
+	</div>
 		
 			
 		

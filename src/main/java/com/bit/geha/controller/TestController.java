@@ -1,5 +1,7 @@
 package com.bit.geha.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +20,15 @@ public class TestController {
 
 	
 	@RequestMapping("/")
-	public String home(Model model) {
-
+	public String home() {
+		
 		return "home";
+	}
+	
+	@RequestMapping("/homeNot")
+	public String homeNot() {
+		
+		return "homeNot";
 	}
 	
 	@RequestMapping("/roominfo")
