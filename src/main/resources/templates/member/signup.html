@@ -79,7 +79,7 @@
 	            alert('아이디 중복체크를 해주세요');
 	            return false;
 	        }else{
-	        	 alert("회원가입을 축하합니다");
+	        	 alert("아이디(이메일)로 인증 링크를 전송했습니다. 인증 링크를 클릭하여 가입을 완료해주세요.");
 	             $("#frm").submit();
 	             
 	        }
@@ -87,7 +87,7 @@
 	</script>
 </head>
 <body>
-	<form action="/create" id="frm" method="POST">
+	<form action="/member/create" id="frm" method="POST">
 	 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 	이름 <input type="text" id="memberName" name="memberName"><br/>
 	아이디 <input type="email" id="id" name="id">

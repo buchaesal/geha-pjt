@@ -6,21 +6,56 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.geha.dao.MemberDao;
 import com.bit.geha.dto.MemberDto;
+import com.bit.geha.service.MemberService;
+
 
 @Controller
+@RequestMapping("/member")
 public class MemberController {
 
 	@Autowired
 	MemberDao memberDao;
-
 	
+	@Autowired
+	MemberService memberService;
+	
+
+	@RequestMapping("/login")
+	public void login() {
+	}
+	
+	@RequestMapping("/findPw")
+	public void findPw() {
+	}
+	
+	@RequestMapping("/signup")
+	public void signup() {
+	}
+	
+	@RequestMapping("/changePw")
+	public void changePw() {
+	}
+	
+	@RequestMapping("/sendEmailComplete")
+	public void sendEmailComplete() {
+	}
+	
+	@PostMapping(value="findPw.do")
+	@ResponseBody
+	public String findPw(@RequestBody String id) throws Exception {
+		
+		return memberService.findPw(id);
+		
+	}
 
 	@PostMapping(value = "/idcheck.do")
 	@ResponseBody
@@ -36,13 +71,33 @@ public class MemberController {
 	}
 
 	@PostMapping("/create")
-	public String create(MemberDto member) {
+	public String create(MemberDto memberDto) throws Exception {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		member.setPassword(passwordEncoder.encode(member.getPassword()));
-		member.setAuthority("USER");
-		memberDao.insertUser(member);
-
-		return "redirect:/";
-
+		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+		memberDto.setAuthority("USER");
+		memberService.save(memberDto);
+		
+		return "/member/sendEmailComplete";
+		
+	}
+	
+	@RequestMapping(value = "/emailConfirming", method = RequestMethod.GET)
+	public String emailConfirming(String id,String key,Model model) 
+			throws Exception { // 이메일인증
+		
+		MemberDto memberDto= memberDao.findById(id);
+		if(key.equals(memberDto.getAuthCode())) {
+			memberDao.userAuth(id);
+			model.addAttribute("name", memberDto.getMemberName());
+		}else {
+			model.addAttribute("error", "인증에 실패했습니다. 다시 시도해주세요.");
+		}
+		
+		return "/member/emailConfirm";
+	}
+	
+	@RequestMapping("/emailConfirm")
+	public void emailConfirm() {
+	
 	}
 }
