@@ -1,16 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="fragments/main_layout">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/layout_myPage">
 	<head>
 		<title>bookingList</title>
 		<meta http-equiv="Content-Type" content="charset=UTF-8"/>
 		<style type="text/css">
-			header {
-			   background-image:
-			      url(https://wattrealty.com.au/wp-content/uploads/2018/08/share-house-living.jpg);
-			}
 			/* The Modal (background) */
 			.modal {
 	            display: none; /* Hidden by default */
@@ -61,7 +56,7 @@
 	</head>
 	<body>
 		
-	<div layout:fragment="content">
+	<div layout:fragment="myPage_content">
 		<table border="2">
 			<tr>
 				<th>예약 코드</th>
@@ -143,7 +138,9 @@
 				</form>
 			</div>
 		</div>
-		
+
+			
+      <div layout:fragment="myPage_script">
 		<script th:inline="javascript" type="text/javascript">
 			//취소요청 확인창 모달
 			var cancelConfirmModal = document.getElementById('cancelConfirmModal');
@@ -189,7 +186,7 @@
 					type: "GET",
 					url: "requestBookingCancel",
 					data: {"bookingCode": bookingCode, "memberCode": memberCode},
-					success: function() {
+						success: function() {
 						location.replace('bookingList?memberCode='+memberCode);
 					}
 				})
@@ -246,7 +243,7 @@
 				starRating();
 		</script>
 	</div>
-
+			</div>
 
 
 	</body>

@@ -14,13 +14,5 @@ public class PjtGehaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PjtGehaApplication.class, args);
 	}
-	
-	@Bean
-	public SpringTemplateEngine templateEngine() {
-	    SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-	    templateEngine.addTemplateResolver(new UrlTemplateResolver());
-	    templateEngine.addDialect(new LayoutDialect());
-	    return templateEngine;
-	}
 }
 

@@ -1,10 +1,7 @@
 package com.bit.geha.controller;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bit.geha.dao.TestDao;
@@ -23,12 +20,6 @@ public class TestController {
 	public String home() {
 		
 		return "home";
-	}
-	
-	@RequestMapping("/homeNot")
-	public String homeNot() {
-		
-		return "homeNot";
 	}
 	
 	@RequestMapping("/roominfo")
