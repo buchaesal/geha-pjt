@@ -2,11 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="fragments/main_layout">
-      
-<!-- <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" > -->
-      
-
 <head>
 <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
@@ -14,16 +9,16 @@
 
 
 <link rel="stylesheet" href="css/swiper.min.css">
-<link href="css/datepicker.min.css?3" rel="stylesheet"	type="text/css">
+<link href="css/datepicker.min.css" rel="stylesheet"	type="text/css">
 
 <style >
-      html, body {
+/*       html, body {
       position: relative;
       height: 60%;
       top:50px;
 
 
-    }
+    } */
     .swiper-container .gallery-top {
       background: #000;
       font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -67,21 +62,22 @@
 	}
 	.top-container{
 		 width: 100%;
- 		 height: 200%;
- 		 background: black;
+ 		 height: 80%;
+ 		 position: absolute;
 
 	}
 	.left{
 	float: left;
-	 background-color:red;
 	width: 50%;
 	height: 450px;
+	position: absolute;
 	}
 	.right{
 	width:50%;
 	float:right;
 	height: 450px;
-	  background-color:aqua;
+	  position: absolute;
+	  left: 50%;
 
 	}
 	.right h2{
@@ -90,6 +86,12 @@
 	
 	.picker {
 	background-color: aqua;
+	position: absolute;
+	top: 160%;
+	}
+	.datepickers-container{
+	position: absolute;
+    top: 165%;
 	}
 
 </style>
@@ -115,7 +117,6 @@
       <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/9/ )"></div>
       <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/10/ )"></div>
     </div>
-    Add Arrows
     <div class="swiper-button-next swiper-button-white"></div>
     <div class="swiper-button-prev swiper-button-white"></div>
   </div>
@@ -147,55 +148,50 @@
 
 	<div class="picker">
 	<input type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en"	class="datepicker-here"    />
-	<img alt="12" src="file:///C:/test/7.jpg"  width="500px" height="500px">
 	</div>
 
- <script src="/js/swiper.min.js"></script>
- <script src="http://code.jquery.com/jquery-3.3.1.min.js"integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="	crossorigin="anonymous"></script>
-<script src="/js/datepicker.min.js"></script>
-<script src="/js/i18n/datepicker.en.js"></script>
-
-   <script>
-   
-/*   window.onload =function() {
- */	var dateToday = new Date();
-	$( ".datepicker-here" ).datepicker({
-		minDate: dateToday ,
-		dateFormat: 'yyyy-mm-dd',
-		clearButton: true,
-		todayButton: new Date(),
-		toggleSelected: false,
-		disableNavWhenOutOfRange:true
-	        
-	}); 
-	  
-    var galleryThumbs = new Swiper('.gallery-thumbs', {
-      spaceBetween: 10,
-      slidesPerView: 4,
-      loop: true,
-      freeMode: true,
-      loopedSlides: 5, //looped slides should be the same
-      watchSlidesVisibility: true,
-      watchSlidesProgress: true,
-    });
-
-    var galleryTop = new Swiper('.gallery-top', {
-      spaceBetween: 10,
-      loop:true,
-      loopedSlides: 5, //looped slides should be the same
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      thumbs: {
-        swiper: galleryThumbs,
-      },
-    });
-/*   }; */
-  </script>
 
   </div>
   
-  
+	<div layout:fragment="script">
+		<script src="/js/swiper.min.js"></script>
+		<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="	crossorigin="anonymous"></script>
+		<script src="/js/datepicker.min.js"></script>
+		<script src="/js/i18n/datepicker.en.js"></script>
+ 	<script>
+			var dateToday = new Date();
+			$( ".datepicker-here" ).datepicker({
+				minDate: dateToday ,
+				dateFormat: 'yyyy-mm-dd',
+				clearButton: true,
+				todayButton: new Date(),
+				toggleSelected: false,
+				disableNavWhenOutOfRange:true
+			}); 
+	  
+    		var galleryThumbs = new Swiper('.gallery-thumbs', {
+    		 spaceBetween: 10,
+    		 slidesPerView: 4,
+     		 loop: true,
+     		 freeMode: true,
+     		 loopedSlides: 5, //looped slides should be the same
+    		 watchSlidesVisibility: true,
+   		  	 watchSlidesProgress: true,
+  		 	 });
+
+  		  var galleryTop = new Swiper('.gallery-top', {
+    		  spaceBetween: 10,
+    		  loop:true,
+     		 loopedSlides: 5, //looped slides should be the same
+     		 navigation: {
+     		   nextEl: '.swiper-button-next',
+      		  prevEl: '.swiper-button-prev',
+     		 },
+     		 thumbs: {
+     		   swiper: galleryThumbs,
+     		 },
+   		 });
+ 	 </script>
+	</div>
 </body>
 </html>
