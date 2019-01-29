@@ -4,71 +4,215 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="fragments/main_layout">
 <head>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>게하-방찾기</title>
+
+<title>Mapapi Test</title>
 
 <!-- jquery ui-->
-<link rel="stylesheet" href="css/jquery-ui.min.css">
-<!-- datepicker -->
-<link rel="stylesheet" href="css/datepicker.min.css" />
+<link rel="stylesheet" href="css/jquery-ui.min.css" />
+
+<!-- bootstrap -->
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+
+<!-- datepicker (min쓰면 안됨) -->
+<link rel="stylesheet" href="css/datepicker.css" />
 
 <style>
+	#mainNav { 
+		background-image: url(../img/header.jpg); 
+	}
+	
+	header {
+		min-height: 13%;
+	}
 
- #mainNav { 
- 	background-image: url(../img/header.jpg); 
- }
-
-.searcharea { 
-	background-color: gray; 
-	height: 100vh; 
-}
-
-.maparea {
-	background-color: skyblue;
-	height: 100vh;
-}
-
-header {
-	min-height: 13%;
-}
-
+ 	.searcharea{ 
+  		border: 1px solid gray; 
+   		height: 100%;
+ 	}
+ 	
+	/* 임시 */ 
+ 	.maparea{ 
+ 		background-color: yellow;
+ 	}
+ 	
+ 	#map{
+ 		background-color: gray;
+ 		width:100%;
+ 		height:450px;
+ 		background-color:gray;
+ 	}
+	
+ 	input[type="text"]{ 
+  		width:90%;
+   		margin: 0 auto;
+ 	}
+ 	
+ 	.house {
+ 		margin: 1rem 0;
+ 	}
+ 	
+	#date {
+		cursor: pointer;
+	}
 </style>
 </head>
 <body>
-	<div layout:fragment="content">
-	<!-- All contents and javascripts should be here -->
-	
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-3 searcharea" id="search">
-					<h2>검색부분</h2>
-					<form role="form" method="post">
-						<input type="text" />
-					</form>
-				</div>
-				<div class="col-xs-9 maparea">
-					<h2>지도 부분</h2>
-				</div>
+
+<div layout:fragment="content">
+	<div class="container">
+		<h2>---방찾기---</h2>
+		
+		<div class="row">
+			<div class="col-md-3 col-sm-4 searcharea">
+				<form role="form" action="#">
+					
+					<div class="form-group" style="margin-top:20px">
+						<label for="date">날짜</label>
+						<input id="date" type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en" class="datepicker-here form-control" readonly/>
+						<input type="hidden" id="startdate" name="bookingStart" />
+						<input type="hidden" id="enddate" name="bookingEnd" />
+					</div>
+					
+					<hr />
+					
+					<div class="form-group">
+						<label for="keywordsearch">키워드 검색</label>
+						<input type="text" id="keywordsearch" name="keyword" class="form-control"/>				
+					</div>
+					
+					<hr />
+					
+					<div class="form-group">
+						<div class="col-xs-6" style="padding-left:0px;padding-right:0px"><strong>인원</strong></div>
+						<div class="col-xs-6" style="padding-left:0px;padding-right:0px">
+							<button type="button" id="down">-</button>
+							<span id="person">1</span>
+							<input type="hidden" name="bookingNumber" class="person" value="1" />
+							<button type="button" id="up">+</button>
+						</div>
+					</div>
+					
+					<hr /><br />
+					
+					<div class="form-group">
+						<strong>가격 </strong>
+						<span id="amount" style="border:0; color:#f6931f; font-weight:bold;"></span><br /><br />
+						<div id="slider-range" class="slider_align ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
+						<input type="hidden" id="minprice" name="minprice" />
+						<input type="hidden" id="maxprice" name="maxprice" />				
+					</div>
+					
+					<div class="checkbox">
+						<p><strong>성별</strong></p>
+						<label class="col-xs-6">
+							<input type="checkbox" name="gender" value="f" />여성전용
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="gender" value="f" />남성전용
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="gender" value="f" />남녀공용				
+						</label>
+					</div>
+					
+					<br />
+					<br />
+					
+					<div class="checkbox">
+						<p><strong>테마</strong></p>
+						<label class="col-xs-6">
+							<input type="checkbox" name="theme" value="tour" />#관광
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="theme" value="jmt" />#맛집
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="theme" value="shopping" />#쇼핑
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="theme" value="business" />#출장				
+						</label>
+					</div>
+					
+					<br />
+					<br />
+					
+					<div class="checkbox">
+						<p><strong>편의시설</strong></p>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="1"/>세탁기
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="2"/>주차장
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="3"/>주방/식당
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="4"/>엘리베이터
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="5"/>취사가능
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="6"/>전자레인지
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="7"/>와이파이
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="8"/>에어컨
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="9"/>냉장고
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="10"/>욕조
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="11"/>드라이기
+						</label>
+						<label class="col-xs-6">
+							<input type="checkbox" name="facilities" value="12"/>TV
+						</label>
+					</div>
+					
+					<br />
+					<br />
+					<br />
+					<br />
+					
+					<button id="btn-search" type="submit" class="btn btn-default btn-block btn-danger" style="margin-top:70px;margin-bottom:30px;">검색</button>
+				</form>
 			</div>
-		</div>
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			
+			<div class="col-md-9 col-sm-8 maparea">
+			
+				<div id="map"></div>
+				
+				<hr />
+	
+			</div> <!-- end maparea -->
+		</div> <!-- end row -->
+	</div> <!-- end container -->
+</div> <!-- end layout content -->
+
+
+<div layout:fragment="script">
 	<!-- script start -->
 	<!-- jquery/ui -->
 	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/jquery/jquery-ui.js"></script>
+	<script src="vendor/jquery/jquery-ui.min.js"></script>
 	
 	<!-- datepicker -->
-	<script src="js/datepicker.min.js"></script>
+	<script src="js/datepicker.js"></script>
 	<script src="js/i18n/datepicker.en.js"></script>
+	
+	<!-- bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
 	
 	<script>
 	$(function(){
@@ -85,11 +229,6 @@ header {
 		    	$("#startdate").val(fd.split(" ~ ")[0])
 		    	$("#enddate").val(fd.split(" ~ ")[1])
 		    }
-		});
-		
-		$("#keywordsearch").click(function(){
-			var myDatepicker = $("#date").datepicker().data("datepicker");
-			alert(myDatepicker.selectedDates()[0]);
 		});
 		
 	  	/* range-slider */
@@ -145,9 +284,7 @@ header {
 	}); 
 	</script>
 	<!-- script end -->
-	
-	<!-- /All contents and javascripts should be here -->
-	</div>
-</body>
+</div> <!-- end layout script -->
 
+</body>
 </html>
