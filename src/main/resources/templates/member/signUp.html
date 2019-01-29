@@ -3,6 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<style>
+.has-error{
+color:red;
+}
+.has-success{
+color:green;
+}
+</style>
 <!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
 
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
@@ -45,21 +54,19 @@
 	            success : function(data) {
 	                if (data.cnt > 0) {
 	                    
-	                	alert('이미 존재하는 아이디입니다.');
-	                    /* $("#idError").innerHTML='이미 존재하는 아이디입니다.' */
+	                    $("#idError").text('이미 존재하는 아이디입니다.');
 	                    //아이디가 존제할 경우 빨강으로 , 아니면 파랑으로 처리하는 디자인
-	          /*           $("#divInputId").addClass("has-error")
-	                    $("#divInputId").removeClass("has-success") */
+	                     $("#divInputId").addClass("has-error")
+	                    $("#divInputId").removeClass("has-success") 
 	                    $("#id").focus();
 	                    
 	                
 	                } else {
 	                	
-	                	alert('사용 가능한 아이디입니다.');
-	                	/* $("#idError").innerHTML='사용 가능한 아이디입니다.' */
+	                	$("#idError").text('사용 가능한 아이디입니다.');
 	                    //아이디가 존제할 경우 빨강으로 , 아니면 파랑으로 처리하는 디자인
-	              /*       $("#divInputId").addClass("has-success")
-	                    $("#divInputId").removeClass("has-error") */
+	                     $("#divInputId").addClass("has-success")
+	                    $("#divInputId").removeClass("has-error") 
 	                    $("#password").focus();
 	                    //아이디가 중복하지 않으면  idck = 1 
 	                    idck = 1;
@@ -67,8 +74,10 @@
 	                }
 	            },
 	            error : function(error) {
-	                
-	                alert("error : " + error);
+	            	$("#idError").text('아이디를 입력해주세요.');
+	            	$("#divInputId").addClass("has-error")
+                    $("#divInputId").removeClass("has-success") 
+                    $("#id").focus();
 	            }
 	        });
 	    });
@@ -79,7 +88,7 @@
 	            alert('아이디 중복체크를 해주세요');
 	            return false;
 	        }else{
-	        	 alert("아이디(이메일)로 인증 링크를 전송했습니다. 인증 링크를 클릭하여 가입을 완료해주세요.");
+	        	 
 	             $("#frm").submit();
 	             
 	        }
@@ -92,10 +101,11 @@
 	이름 <input type="text" id="memberName" name="memberName"><br/>
 	아이디 <input type="email" id="id" name="id">
 	<input type="button" id="idck" value="중복확인"><br/>
-	<p id="idError"></p>
+	<div id="divInputId"><p id="idError"/></div>
 	비밀번호 <input type="password" id="password" name="password"><br/>
 	비밀번호확인 <input type="password" id="passwordCheck"><br/>
-	남 <input type="radio" name="gender" value="M">
+	<span th:if="${host}">사업자번호<input type="text" name="businessLicense"><br/></span>
+	남 <input type="radio" name="gender" value="M" required>
 	여 <input type="radio" name="gender" value="F"><br/>
 	<input type="button" value="가입하기" onclick="confirm()">
 	

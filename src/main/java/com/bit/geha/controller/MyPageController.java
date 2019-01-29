@@ -33,5 +33,6 @@ public class MyPageController {
 		myPageDao.modifyBookingStatus(bookingCode, "취소요청");
 		
 		return "redirect:/myPage/bookingList?memberCode="+memberCode;//멤버코드는 임시
+
 	}
 }
