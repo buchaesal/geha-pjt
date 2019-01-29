@@ -11,4 +11,6 @@ public class MemberDto {
 	private String gender;
 	private String authority;
 	private String businessLicense;
+	private String authCode;
+	private String authStatus;
 }
