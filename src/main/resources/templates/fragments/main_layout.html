@@ -54,11 +54,11 @@ padding-top:15px;
         <div th:replace="fragments/header :: header"></div>
     
         <div layout:fragment="content"></div>
-        <div layout:fragment="script"></div>
+        
 
         <!-- <div th:replace="fragments/footer :: footer"></div> -->
         
-            <!-- jQuery -->
+    <!-- jQuery -->
     <script src="vendor/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
@@ -71,6 +71,7 @@ padding-top:15px;
 
     <!-- Theme JavaScript -->
     <script src="js/creative.min.js"></script>
-        
+    
+    <div layout:fragment="script"></div>
     </body>
 </html>
