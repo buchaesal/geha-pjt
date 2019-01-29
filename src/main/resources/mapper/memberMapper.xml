@@ -2,30 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bit.geha.dao.MemberDao">
-<insert id="insertUser">
-INSERT INTO member_tb (id, password, memberName, gender, authority) VALUES(
-#{member.id},#{member.password},#{member.memberName},
-#{member.gender},#{member.authority})
-</insert>
-<!-- <insert id="insertUserAutority">
-INSERT INTO AUTHORITY VALUES(#{authorityCode},#{authority})
-</insert> -->
+	<insert id="insertUser">
+		<choose>
+			<when test="member.businessLicense != null">
 
-<select id="findById" resultType="MemberDto">
-select * from member_tb where id = #{id}
-</select>
+				INSERT INTO member_tb (id, password, memberName, gender,
+				authority,businessLicense) VALUES(
+				#{member.id},#{member.password},#{member.memberName},
+				#{member.gender},'HOST',#{member.businessLicense})
 
-<select id="idCheck" resultType="Integer">
-      SELECT COUNT(*) FROM member_tb
-      WHERE id = #{id}
-</select>
+			</when>
 
-<update id="createAuthKey">
-update member_tb set authCode = #{authCode} where id = #{id}
-</update>
+			<otherwise>
+				INSERT INTO member_tb (id, password, memberName, gender, authority)
+				VALUES(
+				#{member.id},#{member.password},#{member.memberName},
+				#{member.gender},'USER')
+			</otherwise>
+		</choose>
+	</insert>
 
-<update id="userAuth">
-update member_tb set authStatus = 'OK' where id = #{id}
-</update>
+
+	<select id="findById" resultType="MemberDto">
+		select * from member_tb where id = #{id}
+	</select>
+
+	<select id="idCheck" resultType="Integer">
+		SELECT COUNT(*) FROM member_tb
+		WHERE id = #{id}
+	</select>
+
+	<update id="createAuthKey">
+		update member_tb set authCode = #{authCode} where id = #{id}
+	</update>
+
+	<update id="userAuth">
+		update member_tb set authStatus = 'OK' where id = #{id}
+	</update>
 
 </mapper>
