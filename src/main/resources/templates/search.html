@@ -3,26 +3,15 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="fragments/main_layout">
-
 <head>
-
 <meta charset="utf-8">
-<title>Creative - Start Bootstrap Theme</title>
-<!-- Bootstrap Core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<!-- Custom Fonts -->
-<link href="vendor/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" type="text/css">
-<link
-	href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
-	rel='stylesheet' type='text/css'>
-<link
-	href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'
-	rel='stylesheet' type='text/css'>
-<!-- Plugin CSS -->
-<link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-<!-- Theme CSS -->
-<link href="css/creative.min.css?6" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>게하-방찾기</title>
+
+<!-- jquery ui-->
+<link rel="stylesheet" href="css/jquery-ui.min.css">
+<!-- datepicker -->
+<link rel="stylesheet" href="css/datepicker.min.css" />
 
 <style>
 
@@ -46,11 +35,9 @@ header {
 
 </style>
 </head>
-
 <body>
-
 	<div layout:fragment="content">
-	<!-- All contents should be here -->
+	<!-- All contents and javascripts should be here -->
 	
 		<div class="container">
 			<div class="row">
@@ -74,27 +61,93 @@ header {
 		
 		
 		
-		
-		
-	</div>
-	
-
-	<!-- jQuery -->
+	<!-- script start -->
+	<!-- jquery/ui -->
 	<script src="vendor/jquery/jquery.min.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.js"></script>
-	<!-- Plugin JavaScript -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-	<script src="vendor/scrollreveal/scrollreveal.min.js"></script>
-	<script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-
-	<!-- Theme JavaScript -->
-	<script src="js/creative.min.js"></script>
-
+	<script src="vendor/jquery/jquery-ui.js"></script>
+	
+	<!-- datepicker -->
+	<script src="js/datepicker.min.js"></script>
+	<script src="js/i18n/datepicker.en.js"></script>
+	
+	<script>
+	$(function(){
+		 
+		var endDate = $("#enddate").val();
+		
+		/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 /세미콜론(;)넣지 않음 주의 */
+	  	$(".datepicker-here").datepicker({
+			language: 'en',
+			minDate: new Date(),
+			range: true,
+			autoClose: true,
+		    onSelect: function onSelect(fd, date){
+		    	$("#startdate").val(fd.split(" ~ ")[0])
+		    	$("#enddate").val(fd.split(" ~ ")[1])
+		    }
+		});
+		
+		$("#keywordsearch").click(function(){
+			var myDatepicker = $("#date").datepicker().data("datepicker");
+			alert(myDatepicker.selectedDates()[0]);
+		});
+		
+	  	/* range-slider */
+	  	$("#slider-range").slider({
+		      range: true,
+		      min: 10000,
+		      max: 300000,
+		      step: 10000,
+		      values: [ 10000, 300000 ],
+		      slide: function( event, ui ) {
+		        $("#amount").text( Math.floor(ui.values[0]/10000) + "만원 ~ " + Math.floor(ui.values[1]/10000) + "만원");
+		        $("#minprice").val(ui.values[0]);
+		        $("#maxprice").val(ui.values[1]);
+		      }
+		});
+	  	
+	   $("#amount").text( $( "#slider-range" ).slider( "values", 0 )/10000 + "만원" +
+		      " ~ " + $( "#slider-range" ).slider( "values", 1 )/10000 + "만원" );
+	   $("#minprice").val($( "#slider-range" ).slider( "values", 0 ));
+	   $("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
+	   
+	   /* 인원수 버튼 구현 */
+	   var personCnt = 1;
+	   
+	   $("button#up").click(function(){
+		   plusCnt();
+		   validCnt();
+		   $("span#person").html(personCnt);
+		   $("input.person").val(personCnt);
+	   });
+	   
+	   $("button#down").click(function(){
+		   minusCnt();
+		   validCnt();
+		   $("span.person").html(personCnt);
+		   $("input.person").val(personCnt);
+	   });
+	   
+	   function plusCnt(){
+		   personCnt++;
+	   }
+	   function minusCnt(){
+		   personCnt--;
+	   }
+	   function validCnt(){
+		   if (personCnt >= 10){
+			   personCnt = 10;
+		   }
+		   if (personCnt <= 1){
+			   personCnt = 1;
+		   }
+	   }
+	}); 
+	</script>
+	<!-- script end -->
+	
+	<!-- /All contents and javascripts should be here -->
+	</div>
 </body>
 
 </html>
