@@ -13,7 +13,6 @@ public interface MemberDao {
 	public void insertUser(@Param("member")MemberDto memberDto);
 	
 	public MemberDto findById(String id);
-	//public void insertUserAutority(String authorityCode, String authority);
 	
 	public int idCheck(String id);
 	
