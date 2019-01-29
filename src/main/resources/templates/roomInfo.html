@@ -9,7 +9,7 @@
 
 
 <link rel="stylesheet" href="css/swiper.min.css">
-<link href="css/datepicker.min.css" rel="stylesheet"	type="text/css">
+<link href="css/datepicker.css" rel="stylesheet"	type="text/css">
 
 <style >
 /*       html, body {
@@ -84,14 +84,11 @@
 	font-size: 28px;}
 	
 	
-	.picker {
+ 	.picker {
 	background-color: aqua;
 	position: absolute;
 	top: 160%;
-	}
-	.datepickers-container{
-	position: absolute;
-    top: 165%;
+	left: 5%;
 	}
 
 </style>
@@ -147,7 +144,9 @@
 </div> 
 
 	<div class="picker">
-	<input type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en"	class="datepicker-here"    />
+	<input type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en"	class="datepicker-here" readonly   />
+	<input type="hidden" id="startdate" name="bookingStart" />
+	<input type="hidden" id="enddate" name="bookingEnd" />
 	</div>
 
 
@@ -156,18 +155,29 @@
 	<div layout:fragment="script">
 		<script src="/js/swiper.min.js"></script>
 		<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="	crossorigin="anonymous"></script>
-		<script src="/js/datepicker.min.js"></script>
+		
+		<script src="js/datepicker.js"></script>
 		<script src="/js/i18n/datepicker.en.js"></script>
+		<!-- bootstrap -->
+		<script src="js/bootstrap.min.js"></script>		
+		
  	<script>
-			var dateToday = new Date();
-			$( ".datepicker-here" ).datepicker({
-				minDate: dateToday ,
-				dateFormat: 'yyyy-mm-dd',
-				clearButton: true,
-				todayButton: new Date(),
-				toggleSelected: false,
-				disableNavWhenOutOfRange:true
-			}); 
+ 	$(function() {
+ 		
+ 	
+	var endDate = $("#enddate").val();
+	
+	/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 /세미콜론(;)넣지 않음 주의 */
+  	$(".datepicker-here").datepicker({
+		language: 'en',
+		minDate: new Date(),
+		range: true,
+		autoClose: true,
+	    onSelect: function onSelect(fd, date){
+	    	$("#startdate").val(fd.split(" ~ ")[0])
+	    	$("#enddate").val(fd.split(" ~ ")[1])
+	    }
+	});
 	  
     		var galleryThumbs = new Swiper('.gallery-thumbs', {
     		 spaceBetween: 10,
@@ -191,6 +201,8 @@
      		   swiper: galleryThumbs,
      		 },
    		 });
+  		  
+ 	});
  	 </script>
 	</div>
 </body>
