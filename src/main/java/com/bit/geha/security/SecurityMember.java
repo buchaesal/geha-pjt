@@ -17,11 +17,13 @@ public class SecurityMember extends User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	private int memberCode;
 	private String authority;
+	private String memberName;
 	
 	public SecurityMember(MemberDto member){
 		super(member.getId(),member.getPassword(),makeGrantedAuthority(member));
 		this.memberCode=member.getMemberCode();
 		this.authority=member.getAuthority();
+		this.memberName=member.getMemberName();
 	}
 	
 	private static List<GrantedAuthority> makeGrantedAuthority(MemberDto member){
@@ -31,6 +33,14 @@ public class SecurityMember extends User implements UserDetails {
 	}
 
 	
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
 
 	public String getAuthority() {
 		return authority;

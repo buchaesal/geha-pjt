@@ -20,4 +20,12 @@ select * from member_tb where id = #{id}
       WHERE id = #{id}
 </select>
 
+<update id="createAuthKey">
+update member_tb set authCode = #{authCode} where id = #{id}
+</update>
+
+<update id="userAuth">
+update member_tb set authStatus = 'OK' where id = #{id}
+</update>
+
 </mapper>
