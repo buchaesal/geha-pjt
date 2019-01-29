@@ -5,36 +5,36 @@
 <head>
 	<meta charset="utf-8">
  	<style>
-		.myPage_section {
+		.adminPage_section {
 			padding: 50px 0;
 		}
 		
-		.myPage_container {
+		.adminPage_container {
 		   display: flex;
 		   flex-direction: column;
 		}
 		
-		.myPage_footer {
+		.adminPage_footer {
 		   padding: 20px;
 		   text-align: center;
 		}
 		
-		.myPage_content {
+		.adminPage_content {
 		   display: flex;
 		}
 		
-		.myPage_content .myPage_nav {
+		.adminPage_content .adminPage_nav {
 		   
 		   padding-right: 15px;
 		   padding: 30px;
 		   padding-left: 0;
-		}	
+		}
 		
-		.myPage_content aside {
+		.adminPage_content aside {
 		   border-left: 1px solid gray;
 		}
 		
-		.myPage_nav, aside {
+		.adminPage_nav, aside {
 		   flex-basis: 150px;
 		   flex-shrink: 0;
 		   width: 30%;
@@ -42,19 +42,19 @@
 		   float: left;
 		}
 		
-		.myPage_main {
+		.adminPage_main {
 		   padding: 50px;
 		   float: right;
 		   width: 70%
 		}
 		
-		.myPage_li {
+		.adminPage_li {
 		   margin: 30px;
 		   width: 100px;
 		   font-size: 20px;
 		}
 		
-		.myPage_ul {
+		.adminPage_ul {
 		   list-style: none;
 		}
 		
@@ -63,24 +63,22 @@
 
 <body>
 	<div layout:fragment="content">
-	   <div class="myPage_container">
+	   <div class="adminPage_container">
 
-	      <section class="myPage_section">	
-	         <nav class="myPage_nav">
-	            <ul class="myPage_ul">
-	               <li class="myPage_li"><a href="#" class="myPage_a">예약내역</a></li>
-	               <li class="myPage_li"><a href="#" class="myPage_a">리뷰관리</a></li>
-	               <li class="myPage_li"><a href="#" class="myPage_a">찜한숙소</a></li>
-	               <li class="myPage_li"><a href="#" class="myPage_a">내정보관리</a></li>
+	      <section class="adminPage_section">	
+	         <nav class="adminPage_nav">
+	            <ul class="adminPage_ul">
+	               <li class="adminPage_li"><a href="#" class="adminPage_a">회원관리</a></li>
+	               <li class="adminPage_li"><a href="#" class="adminPage_a">신규 하우스 승인</a></li>
 	            </ul>
 	         </nav>
 	         
-	         <main class="myPage_main">
-				<div layout:fragment="myPage_content"></div>
+	         <main class="adminPage_main">
+				<div layout:fragment="adminPage_content"></div>
 	         </main>
 	      </section>
 
-	      <footer class="myPage_footer">
+	      <footer class="adminPage_footer">
 	         <a href="https://opentutorials.org/course/1">홈페이지</a>
 	      </footer>
 
@@ -88,7 +86,7 @@
   </div>
    
   <div layout:fragment="script">
-		<div layout:fragment="myPage_script"></div>
+		<div layout:fragment="adminPage_script"></div>
   </div> 
    
 </body>

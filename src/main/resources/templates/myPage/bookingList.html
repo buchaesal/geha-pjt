@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="fragments/layout_myPage">
+      layout:decorator="fragments/myPage_layout">
 	<head>
 		<title>bookingList</title>
 		<meta http-equiv="Content-Type" content="charset=UTF-8"/>
@@ -138,9 +138,9 @@
 				</form>
 			</div>
 		</div>
-
+	</div>
 			
-      <div layout:fragment="myPage_script">
+	<div layout:fragment="myPage_script">
 		<script th:inline="javascript" type="text/javascript">
 			//취소요청 확인창 모달
 			var cancelConfirmModal = document.getElementById('cancelConfirmModal');
@@ -242,9 +242,10 @@
 	
 				starRating();
 		</script>
-	</div>
-			</div>
+		</div>
 
+	
 
+	
 	</body>
 </html>
