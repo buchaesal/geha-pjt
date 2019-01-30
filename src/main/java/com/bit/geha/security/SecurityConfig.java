@@ -69,7 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.loginPage("/member/login")
 			.usernameParameter("id")
 			.successHandler(successHandler())
-			.defaultSuccessUrl("/")
 			.and()
 		.logout()
 			.logoutSuccessUrl("/").permitAll();
@@ -88,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public AuthenticationSuccessHandler successHandler() {
-	    return new CustomLoginSuccessHandler("/");
+	    return new CustomLoginSuccessHandler("/defaultUrl");
 	}
 	
 	 private Filter ssoFilter() {
