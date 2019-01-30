@@ -18,6 +18,7 @@ public class MyPageController {
 	@Autowired
 	MyPageDao myPageDao;
 	
+	//예약내역
 	@RequestMapping(value="/bookingList")
 	public void bookingList(int memberCode, Model model) {
 		log.info("bookingList()");
@@ -27,6 +28,7 @@ public class MyPageController {
 		model.addAttribute("memberName", myPageDao.getMemberName(memberCode));
 	}
 	
+	//취소요청
 	@RequestMapping(value="/requestBookingCancel")
 	public String requestBookingCancel(int bookingCode, int memberCode) {
 		log.info("cancelRequest()");
@@ -38,6 +40,7 @@ public class MyPageController {
 
 	}
 	
+	//리뷰작성
 	@RequestMapping(value="/writeReview", method=RequestMethod.POST)
 	public String writeReivew(ReviewDto reviewDto, int memberCode) {
 		log.info("writeReview()");
