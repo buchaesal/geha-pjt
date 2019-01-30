@@ -30,7 +30,13 @@ public class SocialService {
 	        // 새 회원일 경우 회원가입 이후 인증 처리
 	    	memberDao.insertUser(memberDto);
 	    	memberDao.userAuth(memberDto.getId());
-	        final User user = new SecurityMember(memberDto);
+	    	MemberDto member = memberDao.findById(memberDto.getId());
+	    	
+	        final SecurityMember user = new SecurityMember(member);
+	        System.out.println(user.toString());
+	        
+	        
+	      
 	        return setAuthenticationToken(user);
 	    }
 	}
