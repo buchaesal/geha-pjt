@@ -20,6 +20,12 @@
 <link rel="stylesheet" href="css/datepicker.css" />
 
 <style>
+	/* a tag reset */
+	a:link, a:visited, a:active, a:hover {
+		color: #000;
+		text-decoration: none;
+	}
+	
 	#mainNav { 
 		background-image: url(../img/header.jpg); 
 	}
@@ -27,15 +33,46 @@
 	header {
 		min-height: 13%;
 	}
+	
+	.container{
+		margin-top: 3rem;
+	}
 
  	.searcharea{ 
-  		border: 1px solid gray; 
+  		border: 1px solid rgba(30,30,30,0.2);
+  		border-radius: 0.5rem;
    		height: 100%;
  	}
  	
+ 	#date {
+		cursor: pointer;
+	}	
+	
+ 	input[type="text"]{ 
+  		width:90%;
+   		margin: 0 auto;
+ 	}
+ 	button.resetStyle {
+ 		position: static;
+		border: 0;
+	    top: 25px;
+	    right: 0;
+	    width: 24px;
+	    height: 24px;
+	    text-indent: -9999px;
+ 	}
+	button#down{
+		background: url(img/button/ico_minus.png) 50% 50% no-repeat;
+	    background-size: 20px auto;
+	}
+	button#up{
+		background: url(img/button/ico_plus.png) 50% 50% no-repeat;
+	    background-size: 20px auto;
+	}
+ 	
 	/* 임시 */ 
  	.maparea{ 
- 		background-color: yellow;
+ 		/* background-color: yellow; */
  	}
  	
  	#map{
@@ -44,27 +81,55 @@
  		height:450px;
  		background-color:gray;
  	}
-	
- 	input[type="text"]{ 
-  		width:90%;
-   		margin: 0 auto;
- 	}
  	
  	.house {
  		margin: 1rem 0;
  	}
- 	
-	#date {
-		cursor: pointer;
+	
+	.housewrapper{
+		margin-top: 1rem;
 	}
+	
+	.houseborder{
+		border:2px solid #FFB0AE;
+	}
+	
+	.searchresult{
+		min-height:300px;
+	}
+	
+	.houseimage{
+		width:100%;
+		height:200px;
+		background-size:cover;
+	}
+	
+	.contentwrapper{
+		padding:0rem 2rem;
+	}
+	
+	.content.yellow{
+		color:rgba(255,167,38,1);
+	}
+	
+	span.rating{
+		background-color:rgba(255,167,38,1);
+		color:#FFF;
+		border-radius:0.3rem;
+	}
+	
+	span.tag{
+		background-color:gray;
+		color:#FFF;
+		border-radius:0.3rem;
+	}
+ 	
 </style>
 </head>
 <body>
 
 <div layout:fragment="content">
 	<div class="container">
-		<h2>---방찾기---</h2>
-		
 		<div class="row">
 			<div class="col-md-3 col-sm-4 searcharea">
 				<form role="form" action="#">
@@ -88,17 +153,17 @@
 					<div class="form-group">
 						<div class="col-xs-6" style="padding-left:0px;padding-right:0px"><strong>인원</strong></div>
 						<div class="col-xs-6" style="padding-left:0px;padding-right:0px">
-							<button type="button" id="down">-</button>
+							<button type="button" id="down" class="resetStyle">-</button>
 							<span id="person">1</span>
 							<input type="hidden" name="bookingNumber" class="person" value="1" />
-							<button type="button" id="up">+</button>
+							<button type="button" id="up" class="resetStyle">+</button>
 						</div>
 					</div>
 					
 					<hr /><br />
 					
 					<div class="form-group">
-						<strong>가격 </strong>
+						<strong>가격</strong>
 						<span id="amount" style="border:0; color:#f6931f; font-weight:bold;"></span><br /><br />
 						<div id="slider-range" class="slider_align ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
 						<input type="hidden" id="minprice" name="minprice" />
@@ -111,10 +176,10 @@
 							<input type="checkbox" name="gender" value="f" />여성전용
 						</label>
 						<label class="col-xs-6">
-							<input type="checkbox" name="gender" value="f" />남성전용
+							<input type="checkbox" name="gender" value="m" />남성전용
 						</label>
 						<label class="col-xs-6">
-							<input type="checkbox" name="gender" value="f" />남녀공용				
+							<input type="checkbox" name="gender" value="n" />남녀공용				
 						</label>
 					</div>
 					
@@ -124,16 +189,16 @@
 					<div class="checkbox">
 						<p><strong>테마</strong></p>
 						<label class="col-xs-6">
-							<input type="checkbox" name="theme" value="tour" />#관광
+							<input type="checkbox" name="trip" value="1" />#관광
 						</label>
 						<label class="col-xs-6">
-							<input type="checkbox" name="theme" value="jmt" />#맛집
+							<input type="checkbox" name="gourmet" value="1" />#맛집
 						</label>
 						<label class="col-xs-6">
-							<input type="checkbox" name="theme" value="shopping" />#쇼핑
+							<input type="checkbox" name="shopping" value="1" />#쇼핑
 						</label>
 						<label class="col-xs-6">
-							<input type="checkbox" name="theme" value="business" />#출장				
+							<input type="checkbox" name="businessTrip" value="1" />#출장				
 						</label>
 					</div>
 					
@@ -194,12 +259,158 @@
 				<div id="map"></div>
 				
 				<hr />
+				
+				<div class="searchresult">
+					<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
+						<a href="">
+							<div class="houseborder">
+								<div class="houseimage" style="background-image:url(https://image.goodchoice.kr/resize_1000X500x0/adimg_new/50411/0/d899d1afd606917e0e0ee374267aa3b6.jpg);">
+								</div>
+								<div class="contentwrapper">
+									<div class="content gehaname" style="text-align:center">
+										<h4><span class="name">홍대 준 게스트하우스</span></h4>
+									</div>
+									<div class="content yellow">
+										<span class="rating">9.4</span>
+										<span class="ratingname">추천해요</span>
+										<span class="comments">(76)</span>
+									</div>
+									<div class="content tag">
+										<span class="tag">#관광</span>
+									</div>
+									<div class="content minprice" style="text-align:right">
+										<span class="price">16500원</span>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
+						<a href="">
+							<div class="houseborder">
+								<div class="houseimage" style="background-image:url(https://image.goodchoice.kr/resize_1000X500x0/adimg_new/50411/0/d899d1afd606917e0e0ee374267aa3b6.jpg);">
+								</div>
+								<div class="contentwrapper">
+									<div class="content" style="text-align:center">
+										<h4><span class="name">홍대 준 게스트하우스</span></h4>
+									</div>
+									<div class="content yellow">
+										<span class="rating">9.4</span>
+										<span class="ratingname">추천해요</span>
+										<span class="comments">(76)</span>
+									</div>
+									<div class="content">
+										<span class="tag">#관광</span>
+									</div>
+									<div class="content" style="text-align:right">
+										<span class="price">16500원</span>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
+						<a href="">
+							<div class="houseborder">
+								<div class="houseimage" style="background-image:url(https://image.goodchoice.kr/resize_1000X500x0/adimg_new/50411/0/d899d1afd606917e0e0ee374267aa3b6.jpg);">
+								</div>
+								<div class="contentwrapper">
+									<div class="content" style="text-align:center">
+										<h4><span class="name">홍대 준 게스트하우스</span></h4>
+									</div>
+									<div class="content yellow">
+										<span class="rating">9.4</span>
+										<span class="ratingname">추천해요</span>
+										<span class="comments">(76)</span>
+									</div>
+									<div class="content">
+										<span class="tag">#관광</span>
+									</div>
+									<div class="content" style="text-align:right">
+										<span class="price">16500원</span>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
+						<a href="">
+							<div class="houseborder">
+								<div class="houseimage" style="background-image:url(https://image.goodchoice.kr/resize_1000X500x0/adimg_new/50411/0/d899d1afd606917e0e0ee374267aa3b6.jpg);">
+								</div>
+								<div class="contentwrapper">
+									<div class="content" style="text-align:center">
+										<h4><span class="name">홍대 준 게스트하우스</span></h4>
+									</div>
+									<div class="content yellow">
+										<span class="rating">9.4</span>
+										<span class="ratingname">추천해요</span>
+										<span class="comments">(76)</span>
+									</div>
+									<div class="content">
+										<span class="tag">#관광</span>
+									</div>
+									<div class="content" style="text-align:right">
+										<span class="price">16500원</span>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
+						<a href="">
+							<div class="houseborder">
+								<div class="houseimage" style="background-image:url(https://image.goodchoice.kr/resize_1000X500x0/adimg_new/50411/0/d899d1afd606917e0e0ee374267aa3b6.jpg);">
+								</div>
+								<div class="contentwrapper">
+									<div class="content" style="text-align:center">
+										<h4><span class="name">홍대 준 게스트하우스</span></h4>
+									</div>
+									<div class="content yellow">
+										<span class="rating">9.4</span>
+										<span class="ratingname">추천해요</span>
+										<span class="comments">(76)</span>
+									</div>
+									<div class="content">
+										<span class="tag">#관광</span>
+									</div>
+									<div class="content" style="text-align:right">
+										<span class="price">16500원</span>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
+						<a href="">
+							<div class="houseborder">
+								<div class="houseimage" style="background-image:url(https://image.goodchoice.kr/resize_1000X500x0/adimg_new/50411/0/d899d1afd606917e0e0ee374267aa3b6.jpg);">
+								</div>
+								<div class="contentwrapper">
+									<div class="content" style="text-align:center">
+										<h4><span class="name">홍대 준 게스트하우스</span></h4>
+									</div>
+									<div class="content yellow">
+										<span class="rating">9.4</span>
+										<span class="ratingname">추천해요</span>
+										<span class="comments">(76)</span>
+									</div>
+									<div class="content">
+										<span class="tag">#관광</span>
+									</div>
+									<div class="content" style="text-align:right">
+										<span class="price">16500원</span>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
 	
 			</div> <!-- end maparea -->
 		</div> <!-- end row -->
 	</div> <!-- end container -->
 </div> <!-- end layout content -->
-
 
 <div layout:fragment="script">
 	<!-- script start -->
@@ -216,8 +427,6 @@
 	
 	<script>
 	$(function(){
-		 
-		var endDate = $("#enddate").val();
 		
 		/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 /세미콜론(;)넣지 않음 주의 */
 	  	$(".datepicker-here").datepicker({
@@ -231,7 +440,7 @@
 		    }
 		});
 		
-	  	/* range-slider */
+	  	/* slider-range */
 	  	$("#slider-range").slider({
 		      range: true,
 		      min: 10000,
@@ -263,7 +472,7 @@
 	   $("button#down").click(function(){
 		   minusCnt();
 		   validCnt();
-		   $("span.person").html(personCnt);
+		   $("span#person").html(personCnt);
 		   $("input.person").val(personCnt);
 	   });
 	   

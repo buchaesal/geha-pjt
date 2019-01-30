@@ -1,0 +1,63 @@
+.wrap {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px 10px 10px 0;
+
+}
+h1 {
+    text-align:center;
+}
+
+
+.content-wrap {
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+}
+.close-btn, .more-btn {
+    display: block;
+    width: 100%;
+    padding: 80px 0 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    background: -moz-linear-gradient(  top,  rgba(255, 255, 255, 0) 0%,  rgba(255, 255, 255, 1) 60%  );
+    background: -webkit-linear-gradient(  top,  rgba(255, 255, 255, 0) 0%,  rgba(255, 255, 255, 1) 60%  );
+    background: linear-gradient(  to bottom,  rgba(255, 255, 255, 0) 0%,  rgba(255, 255, 255, 1) 60%  );
+ filter: progid:DXImageTransform.Microsoft.gradient(  startColorstr='#00ffffff',  endColorstr='#ffffff',  GradientType=0  );
+}
+.close-btn {
+    background: none;
+}
+.slide-up {
+    height: 150px;
+    padding-bottom: 0;
+    overflow: hidden;
+}
+.slide-down {
+    height: auto;
+    overflow: visible;
+    padding-bottom: 50px;
+}
+.more-btn p {
+    display: inline-block;
+    color: #fff;
+    cursor: pointer;
+    background: #c8a9ff;
+    padding: 5px 20px;
+    width: 20%;
+    border-radius: 20px;
+}
+.close-btn {
+    padding: 0;
+}
+.close-btn p {
+    background: #c8a9ff;
+        color: #fff;
+}
+.close{
+	opacity: 1;
+	float: none;
+}
