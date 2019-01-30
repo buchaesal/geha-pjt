@@ -2,48 +2,55 @@
 <meta charset="UTF-8">
 
 <header th:fragment="header" xmlns:th="http://www.thymeleaf.org">
-    <!-- Static navbar -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-   
-                <h1><a class="navbar-brand page-scroll" href="#page-top">#GEHA</a></h1>
-            </div>
+	<!-- Static navbar -->
+	<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a class="page-scroll" href="#about">방찾기</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#services">예약내역</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#portfolio">FAQ</a>
-                    </li>
-                       <li>
-                        <a class="page-scroll" href="#portfolio">로그인</a>
-                    </li>
-               
-                    <!-- Single button -->
-				<div class="btn-group">
-  					<button type="button"  class="btn btn-default dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown">
-   						 로그인 <span class="caret"></span>
-  					</button>
- 					 	<ul class="dropdown-menu" role="menu">
- 					 	 <li><a href="#">홍길동</a></li>
- 					 	 <li class="divider"></li>
-               	  	   	 <li> <a class="page-scroll" href="#contact">로그인</a></li>
-   						 <li><a href="#">Another action</a></li>
-   						 <li><a href="#">Something else here</a></li>
- 						 </ul>
-				</div>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
+				<h1>
+					<a class="navbar-brand page-scroll" href="#page-top">#GEHA</a>
+				</h1>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a class="page-scroll" href="search">방찾기</a></li>
+					<li><a class="page-scroll" th:if="${session.name}"
+						href="/myPage/bookingList">예약내역</a> <a class="page-scroll"
+						th:unless="${session.name}" href="/member/login">예약내역</a></li>
+					<li><a class="page-scroll" href="#portfolio">FAQ</a></li>
+					<li th:unless="${session.name}"><a class="page-scroll"
+						href="/member/login"> 로그인</a></li>
+
+					<!-- Single button -->
+					<div class="btn-group" th:if="${session.name}">
+						<button type="button" class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown" data-hover="dropdown">
+							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><span style="border: 1px;" th:text="${session.name}+'님'"></span></li>
+							<li class="divider"></li>
+							<li><a class="page-scroll" href="/myPage/bookingList">마이페이지</a></li>
+							<li th:if="${session.auth.equals('HOST')}"><a href="#">호스트페이지</a></li>
+							<li th:if="${session.auth.equals('ADMIN')}"><a href="#"
+								class="page-scroll">관리자페이지</a></li>
+							<li><a href="#" onclick="logout()">로그아웃</a></li>
+						</ul>
+					</div>
+				</ul>
+			</div>
+			<form id="logout" th:action="@{/logout}" method="post"></form>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+	<script>
+		function logout() {
+			$('#logout').submit();
+		}
+	</script>
 </header>
