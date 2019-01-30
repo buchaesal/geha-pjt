@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.bit.geha.dto.BookingDto;
-import com.bit.geha.dto.KskRoomDto;
+import com.bit.geha.dto.RoomDto;
 
 @Mapper
 public interface BookingDao {
@@ -12,7 +12,7 @@ public interface BookingDao {
 	public BookingDto getBooking(int bookingCode);
 	
 	@Select("SELECT * FROM room_tb WHERE roomCode=#{roomCode}")
-	public KskRoomDto getRoom(int roomCode);
+	public RoomDto getRoom(int roomCode);
 	
 	@Select("SELECT guestHouseName FROM guestHouse_tb WHERE guestHouseCode=#{guestHouseCode}")
 	public String getGuestHouseNameByGuestHouseCode(int guestHouseCode);
