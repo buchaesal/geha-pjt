@@ -95,7 +95,7 @@
     top: 935px;
     width: 100%;
     height: 500px;
-    background-color: bisque;
+
 	}
 	.container{
 	margin-left: 78px;
@@ -104,7 +104,6 @@
 	
 	.roomInfo {
   display:block;
-
   float:center;
   width: 80%;
   height:400px;
@@ -113,12 +112,17 @@
 padding: 0;
 
 }
-#menu1>ul{
+#menu1>ul {
 padding:0;
 }
 #menu1>ul>li{
 display: inline-block;
 }
+#menu2>ul {
+padding:0;
+list-style: none;
+}
+
 #menu1>ul>li>img{
 height: 35px;
 width: 35px;
@@ -138,7 +142,7 @@ margin: 0px 10px
 
 </head>
 
-<body>
+<body style="font-family: 'yg-jalnan';">
 
 <div class="jcontent" layout:fragment="content">
 
@@ -181,6 +185,7 @@ margin: 0px 10px
 		<h2 th:text="*{guestHouseName}" >게스트 하우스 이름</h2>
 		<div class="adderess">
 		<p th:text="*{address}">게스트 하우스 주소 </p>
+		<p>asdasdasdasdasdasdasdasdasd</p>
 		</div>
 		<div class="tag">
 		<ul>
@@ -196,7 +201,9 @@ margin: 0px 10px
  		 <h4>사장님 한마디</h4>
   			<div class="content-wrap animated">
     			<div class="content-txt">  
-					<p th:utext="*{guestHouseInfo}"></p>
+					<p th:utext="*{guestHouseInfo}">
+					
+					</p>
     			</div>
     			<div class="more-btn">
       			<p class="open">더보기</p>
@@ -212,7 +219,7 @@ margin: 0px 10px
 	<div class="container">
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#home" >객실안내/예약</a></li>
-    <li><a data-toggle="tab" href="#menu1">숙소정보</a></li>
+    <li><a data-toggle="tab" href="#menu1" id="geha">숙소정보</a></li>
     <li><a data-toggle="tab" href="#menu2">리뷰</a></li>
     <li><a data-toggle="tab" href="#menu3">#태그</a></li>
   </ul>
@@ -224,34 +231,41 @@ margin: 0px 10px
 			<input type="hidden" id="startdate" name="bookingStart" />
 			<input type="hidden" id="enddate" name="bookingEnd" />
 		</div>
-		
+		<br><br><br><br>
 		<article class="roomInfo" th:each="RoomDto,stat:${room}" th:object="${RoomDto}">
-		<div class="room" style="border: 1px solid black;">
-		<p th:text="*{roomName}"></p>
-		<p th:text="*{capacity}"></p>
-		<p th:text="*{charge}"></p>
-		<p th:text="*{gender}"></p>
-		<p th:text="*{roomInfo}"></p>
-		</div>
+			<div class="room" style="border: 1px solid black;">
+				<p th:text="*{roomName}"></p>
+				<p th:text="*{capacity}"></p>
+				<p th:text="*{charge}"></p>
+				<p th:text="*{gender}"></p>
+				<p th:utext="*{roomInfo}"></p>
+			</div>
 		</article>
     </div>  
-    <div id="menu1" class="tab-pane ">
-		<p th:text="${geha.directions}"></p>
-		<p th:text="${geha.rules}"></p>
-		<p th:text="${geha.parkingInfo}"></p>
-		<ul>취소 및 환불 규정
-			<li>체크인일 기준 7일 전 : 100% 환불</li>
-			<li>체크인일 기준 6 ~ 4일 전 : 50% 환불</li>
-			<li>체크인일 기준 3일 전 ~ 당일 및 No-Show : 환불불가</li>
-			<li>취소, 환불 시 수수료가 발생할 수 있습니다</li>
-		</ul>
-
-		<ul>확인 사항 및 기타
-			<li>위의 정보는 준 게스트하우스 사정에 따라 변경될 수 있습니다.</li>
-			<li>해당 이미지는 실제와 상이 할 수 있습니다.</li>
-			<li>예약 확정 이후의 취소는 취소 및 환불 규정에 의거하여 적용됩니다. 예약 시, 취소 및 환불 규정을 반드시 확인하시기 바랍니다.</li>
-		</ul>
-		
+   	 <div id="menu1" class="tab-pane ">
+   	 		<h3>오시는길</h3>
+			<p th:text="${geha.directions}"></p>
+			<br>
+			<h3>이용규칙</h3>
+			<p th:text="${geha.rules}"></p>
+			<br>
+			<h3>주차장 정보</h3>
+			<p th:text="${geha.parkingInfo}"></p>
+			<br>
+			<h3>취소 및 환불 규정</h3>
+			<ul >
+				<li>체크인일 기준 7일 전 : 100% 환불</li>
+				<li>체크인일 기준 6 ~ 4일 전 : 50% 환불</li>
+				<li>체크인일 기준 3일 전 ~ 당일 및 No-Show : 환불불가</li>
+				<li>취소, 환불 시 수수료가 발생할 수 있습니다</li>
+			</ul>
+			<br>
+			<h3>확인 사항 및 기타</h3>
+			<ul>
+				<li>위의 정보는 준 게스트하우스 사정에 따라 변경될 수 있습니다.</li>
+				<li>해당 이미지는 실제와 상이 할 수 있습니다.</li>
+				<li>예약 확정 이후의 취소는 취소 및 환불 규정에 의거하여 적용됩니다. 예약 시, 취소 및 환불 규정을 반드시 확인하시기 바랍니다.</li>
+			</ul>
 			<ul class ="facility"  >
 				<li th:each="FacilityDto,stat: ${facility}" th:object="${FacilityDto}"  th:switch="*{facilityName}" > 
 				<img th:case="세탁기" th:src="@{/img/facility/washing-machine.png}"></img> 
@@ -268,15 +282,37 @@ margin: 0px 10px
 				<img th:case="TV" th:src="@{/img/facility/television.png}"></img>	
 				</li>
 			</ul>
-
+			<div id="map" style="width:100%;height:300px;"></div>
 		</div>
-    <div id="menu2" class="tab-pane ">
-      <h3>Menu 2</h3>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-    </div>
+		
+    	<div id="menu2" class="tab-pane ">
+   			<ul>
+   				<li th:each="ReplyReviewDto,stat:${reply}" th:object="${ReplyReviewDto}" style="border: 1px solid gray;">
+   					<div class="guest" >
+   						<h2 th:text="*{title}"></h2>   
+   						<p th:text="*{rating}" ></p>
+   						<p th:text="*{content}" ></p>
+   						<p th:text="*{roomName}" ></p>
+   						<p th:text="*{booker}" ></p>
+   						<p th:text="*{writingDate}" ></p>
+
+   					</div>
+   					<div class="host" style="border: 1px solid red">
+   						<h2 >관리자 답변</h2>
+   	   					<p th:text="*{replyContent}" ></p>
+   						<p th:text="*{replyDate}" ></p>					 
+   					
+   					</div>
+   			</ul>
+   		
+  		</div>
+  		  
+  		  
+  		  
+  		  
     <div id="menu3" class="tab-pane ">
-      <h3>Menu 3</h3>
-      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+
+
     </div>
   </div>
 </div>
@@ -290,16 +326,16 @@ margin: 0px 10px
 		<script src="/js/swiper.min.js"></script>
 		<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="	crossorigin="anonymous"></script>
 		
-		<script src="js/datepicker.js"></script>
+		<script src="/js/datepicker.js"></script>
 		<script src="/js/i18n/datepicker.en.js"></script>
 		<!-- bootstrap -->
-		<script src="js/bootstrap.min.js"></script>		
-		<script src="js/readmore.js"></script>
+		<script src="/js/bootstrap.min.js"></script>		
+		<script src="/js/readmore.js"></script>
+		
 		
  	<script>
  	$(function() {
  		
- 	
 	var endDate = $("#enddate").val();
 	
 	/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 /세미콜론(;)넣지 않음 주의 */
@@ -336,17 +372,55 @@ margin: 0px 10px
      		   swiper: galleryThumbs,
      		 },
    		 });
-  		  
   		// Select all tabs
   		$('.nav-tabs a').click(function(){
   		  $(this).tab('show');
   		})
-
   		// Select tab by name
   		$('.nav-tabs a[href="#home"]').tab('show')
-
+  		
+  		
+  		
+  		
  	});
  	 </script>
+ 	 
+ 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=604b4318a4a32385a61aae53dc5e199b&libraries=services"></script>
+	
+	<script th:inline="javascript">
+	/*  window.onload = function(){ */
+		 $(document).click(function() { 
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		  mapOption = {
+			    center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+			   level: 3 // 지도의 확대 레벨
+		  };  
+		// 지도를 생성합니다    
+		var map = new daum.maps.Map(mapContainer, mapOption); 
+		// 주소-좌표 변환 객체를 생성합니다
+		var geocoder = new daum.maps.services.Geocoder();
+		// 주소로 좌표를 검색합니다
+		geocoder.addressSearch([[${geha.address}]], function(result, status) {
+			 // 정상적으로 검색이 완료됐으면 
+			  if (status === daum.maps.services.Status.OK) {
+				    var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+			  // 결과값으로 받은 위치를 마커로 표시합니다
+			   var marker = new daum.maps.Marker({
+	 		    map: map,
+	 		     position: coords
+			  });
+			  // 인포윈도우로 장소에 대한 설명을 표시합니다
+			    var infowindow = new daum.maps.InfoWindow({
+			       content: '<div style="width:200px;text-align:center;padding:6px 0;"> [[${geha.guestHouseName}]]</div>'
+			  });
+			   infowindow.open(map, marker);
+			    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+			    map.setCenter(coords);
+			 } 
+		}); 
+	});
+
+	</script>
 	</div>
 </body>
 </html>

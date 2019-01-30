@@ -24,10 +24,10 @@ body {
 	webkit-tap-highlight-color: #222
 }
 
-.btn, .navbar-default, .navbar-default .navbar-header .navbar-brand, h1,
+/* .btn, .navbar-default, .navbar-default .navbar-header .navbar-brand, h1,
 	h2, h3, h4, h5, h6 {
 	font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif
-}
+} */
 
 hr {
 	border-color: #c8a9ff;

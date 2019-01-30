@@ -32,5 +32,16 @@
 		and b.facilityCode = a.facilityCode
 		
 	</select>
+	
+	<select id="reviewInfo" resultType="ReplyReviewDto">
+		select
+		a.reviewNo,a.title,a.rating,a.content,c.roomName,b.booker,a.writingDate,a.replyContent,a.replyDate 
+		from review_tb a , booking_tb b ,room_tb c, guestHouse_tb d
+		where d.guestHouseCode =#{guestHouseCode}
+		and a.bookingCode = b.bookingCode
+		and b.roomCode = c.roomCode
+		and c.guestHouseCode = d.guestHouseCode
+		ORDER by a.reviewNo DESC ;
+	</select>
 
 </mapper>
