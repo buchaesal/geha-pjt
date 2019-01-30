@@ -57,6 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/member/login")
 			.anonymous()
+			.antMatchers("/myPage/bookingList")
+			.authenticated()
 			.antMatchers("/**").permitAll()
 			.and()
 			.exceptionHandling().accessDeniedPage("/")

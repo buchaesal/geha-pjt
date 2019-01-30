@@ -18,9 +18,8 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a class="page-scroll" href="search">방찾기</a></li>
-					<li><a class="page-scroll" th:if="${session.name}"
-						href="/myPage/bookingList">예약내역</a> <a class="page-scroll"
-						th:unless="${session.name}" href="/member/login">예약내역</a></li>
+					<li><a class="page-scroll" href="/myPage/bookingList">예약내역</a>
+					</li>
 					<li><a class="page-scroll" href="#portfolio">FAQ</a></li>
 					<li th:unless="${session.name}"><a class="page-scroll"
 						href="/member/login"> 로그인</a></li>
