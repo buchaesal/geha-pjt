@@ -3,7 +3,8 @@ package com.bit.geha.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bouncycastle.math.raw.Mod;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,8 +32,14 @@ public class MemberController {
 	
 
 	@RequestMapping("/login")
-	public void login() {
+	public void login(HttpServletRequest request) {
+		System.out.println("로그인");
+		String referrer = request.getHeader("Referer");
+	    request.getSession().setAttribute("prevPage", referrer);
+	    
 	}
+	
+
 	
 	@RequestMapping("/findPw")
 	public void findPw() {

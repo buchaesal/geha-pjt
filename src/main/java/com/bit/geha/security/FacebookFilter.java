@@ -40,6 +40,7 @@ public class FacebookFilter extends OAuth2ClientAuthenticationProcessingFilter {
         final Map<String, String> map = (HashMap<String, String>)auth
         		.getUserAuthentication().getDetails(); // 소셜에서 넘겨 받은 정보를 details에 저장
         MemberDto memberDto = new MemberDto();
+       
         memberDto.setAuthority("USER");
         memberDto.setAuthStatus("OK");
         memberDto.setId(map.get("email"));
