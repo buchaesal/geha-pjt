@@ -1,12 +1,16 @@
 package com.bit.geha.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bit.geha.dao.MemberDao;
 import com.bit.geha.dto.MemberDto;
+import com.bit.geha.security.SecurityMember;
 import com.bit.geha.util.MailHandler;
 import com.bit.geha.util.TempKey;
 
@@ -75,6 +79,16 @@ public class MemberServiceImpl implements MemberService {
 		return text;
 	}
 
+	public void getSession(Authentication auth,HttpSession session) {
+		if (auth != null)  { //일반 로그인 사용자
 
+			SecurityMember sc = (SecurityMember) auth.getPrincipal();
+			MemberDto member = memberDao.findById(sc.getUsername());
+			session.setAttribute("name", member.getMemberName());
+			session.setAttribute("auth", member.getAuthority());
+			session.setAttribute("memberCode", member.getMemberCode());
+		}
+		
+	}
 
 }
