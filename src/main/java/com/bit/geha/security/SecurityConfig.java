@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CompositeFilter;
 
@@ -57,6 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/member/login")
 			.anonymous()
+			.antMatchers("/myPage/bookingList")
+			.authenticated()
 			.antMatchers("/**").permitAll()
 			.and()
 			.exceptionHandling().accessDeniedPage("/")
@@ -65,12 +68,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.formLogin()
 			.loginPage("/member/login")
 			.usernameParameter("id")
+			.successHandler(successHandler())
 			.defaultSuccessUrl("/")
 			.and()
 		.logout()
 			.logoutSuccessUrl("/").permitAll();
 	}
 
+	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.eraseCredentials(false).userDetailsService(userDetailService).passwordEncoder(passwordEncoder);
@@ -81,6 +86,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 	
+	@Bean
+	public AuthenticationSuccessHandler successHandler() {
+	    return new CustomLoginSuccessHandler("/");
+	}
 	
 	 private Filter ssoFilter() {
 	        CompositeFilter filter = new CompositeFilter();
