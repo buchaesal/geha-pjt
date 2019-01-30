@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/main_layout">
+<head>
+	<meta charset="utf-8">
+ 	<style>
+		.hostPage_section {
+			padding: 50px 0;
+		}
+		
+		.hostPage_container {
+		   display: flex;
+		   flex-direction: column;
+		}
+		
+		.hostPage_footer {
+		   padding: 20px;
+		   text-align: center;
+		}
+		
+		.hostPage_content {
+		   display: flex;
+		}
+		
+		.hostPage_content .hostPage_nav {
+		   
+		   padding-right: 15px;
+		   padding: 30px;
+		   padding-left: 0;
+		}
+		
+		.hostPage_content aside {
+		   border-left: 1px solid gray;
+		}
+		
+		.hostPage_nav, aside {
+		   flex-basis: 150px;
+		   flex-shrink: 0;
+		   width: 30%;
+		   height: 300px;	
+		   float: left;
+		}
+		
+		.hostPage_main {
+		   padding: 50px;
+		   float: right;
+		   width: 70%
+		}
+		
+		.hostPage_li {
+		   margin: 30px;
+		   width: 150px;
+		   font-size: 20px;
+		}
+		
+		.hostPage_ul {
+		   list-style: none;
+		}
+		
+	</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+	   <div class="hostPage_container">
+
+	      <section class="hostPage_section">	
+	         <nav class="hostPage_nav">
+	            <ul class="hostPage_ul">
+	               <li class="hostPage_li"><a href="#" class="hostPage_a">내 게스트하우스</a></li>
+	               <li class="hostPage_li"><a href="#" class="hostPage_a">회원예약내역</a></li>
+	               <li class="hostPage_li"><a href="#" class="hostPage_a">리뷰관리</a></li>
+	            </ul>
+	         </nav>
+	         
+	         <main class="hostPage_main">
+				<div layout:fragment="hostPage_content"></div>
+	         </main>
+	      </section>
+
+	      <footer class="hostPage_footer">
+	         <a href="https://opentutorials.org/course/1">홈페이지</a>
+	      </footer>
+
+	   </div>
+  </div>
+   
+  <div layout:fragment="script">
+		<div layout:fragment="hostPage_script"></div>
+  </div> 
+   
+</body>
+</html>

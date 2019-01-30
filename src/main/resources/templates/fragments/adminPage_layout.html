@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/main_layout">
+<head>
+	<meta charset="utf-8">
+ 	<style>
+		.adminPage_section {
+			padding: 50px 0;
+		}
+		
+		.adminPage_container {
+		   display: flex;
+		   flex-direction: column;
+		}
+		
+		.adminPage_footer {
+		   padding: 20px;
+		   text-align: center;
+		}
+		
+		.adminPage_content {
+		   display: flex;
+		}
+		
+		.adminPage_content .adminPage_nav {
+		   
+		   padding-right: 15px;
+		   padding: 30px;
+		   padding-left: 0;
+		}
+		
+		.adminPage_content aside {
+		   border-left: 1px solid gray;
+		}
+		
+		.adminPage_nav, aside {
+		   flex-basis: 150px;
+		   flex-shrink: 0;
+		   width: 30%;
+		   height: 300px;	
+		   float: left;
+		}
+		
+		.adminPage_main {
+		   padding: 50px;
+		   float: right;
+		   width: 70%
+		}
+		
+		.adminPage_li {
+		   margin: 30px;
+		   width: 100px;
+		   font-size: 20px;
+		}
+		
+		.adminPage_ul {
+		   list-style: none;
+		}
+		
+	</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+	   <div class="adminPage_container">
+
+	      <section class="adminPage_section">	
+	         <nav class="adminPage_nav">
+	            <ul class="adminPage_ul">
+	               <li class="adminPage_li"><a href="#" class="adminPage_a">회원관리</a></li>
+	               <li class="adminPage_li"><a href="#" class="adminPage_a">신규 하우스 승인</a></li>
+	            </ul>
+	         </nav>
+	         
+	         <main class="adminPage_main">
+				<div layout:fragment="adminPage_content"></div>
+	         </main>
+	      </section>
+
+	      <footer class="adminPage_footer">
+	         <a href="https://opentutorials.org/course/1">홈페이지</a>
+	      </footer>
+
+	   </div>
+  </div>
+   
+  <div layout:fragment="script">
+		<div layout:fragment="adminPage_script"></div>
+  </div> 
+   
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.bit.geha.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -37,8 +38,14 @@ public class MemberController {
 	public void findPw() {
 	}
 	
-	@RequestMapping("/signup")
-	public void signup() {
+	@RequestMapping("/signUp")
+	public void signUp() {
+	}
+	
+	@RequestMapping("/hostSignUp")
+	public String hostSignUp(Model model) {
+		model.addAttribute("host","host");
+		return "/member/signUp";
 	}
 	
 	@RequestMapping("/changePw")
@@ -47,6 +54,10 @@ public class MemberController {
 	
 	@RequestMapping("/sendEmailComplete")
 	public void sendEmailComplete() {
+	}
+	
+	@RequestMapping("/chooseAuth")
+	public void chooseAuth() {
 	}
 	
 	@PostMapping(value="findPw.do")
@@ -74,7 +85,7 @@ public class MemberController {
 	public String create(MemberDto memberDto) throws Exception {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-		memberDto.setAuthority("USER");
+		//memberDto.setAuthority("USER");
 		memberService.save(memberDto);
 		
 		return "/member/sendEmailComplete";

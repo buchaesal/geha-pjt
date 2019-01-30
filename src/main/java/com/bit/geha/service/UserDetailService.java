@@ -22,12 +22,16 @@ public class UserDetailService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
-		MemberDto member = memberDao.findById(id);
-		if (member != null) {
-			return new SecurityMember(member);
+		MemberDto memberDto = memberDao.findById(id);
+		if (memberDto != null) {
+			return new SecurityMember(memberDto);
 		} else {
 			return null;
 		}
 	}
+	
+	
+	
+
 
 }

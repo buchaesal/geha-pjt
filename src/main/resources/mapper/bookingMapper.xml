@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.geha.dao.BookingDao">
+
+	<insert id="addBooking" useGeneratedKeys="true" keyProperty="bookingCode" parameterType="BookingDto">
+		INSERT INTO booking_tb(memberCode, booker, bookerEmail, bookerContact, bookingNumber, roomCode, bookingStart, bookingEnd, paymentMethod, approvalNumber,paymentDate, paymentAmount, bookingStatus)
+		 VALUES(#{memberCode}, #{booker}, #{bookerEmail}, #{bookerContact}, #{bookingNumber}, #{roomCode}, #{bookingStart}, #{bookingEnd}, #{paymentMethod}, #{approvalNumber}, #{paymentDate}, #{paymentAmount}, '예약완료')
+	</insert>
+
+</mapper>

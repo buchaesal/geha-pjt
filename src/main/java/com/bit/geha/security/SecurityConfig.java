@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,6 +26,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CompositeFilter;
 
+import com.bit.geha.service.SocialService;
 import com.bit.geha.service.UserDetailService;
 
 
@@ -41,6 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	OAuth2ClientContext oauth2ClientContext;
+	
+	@Autowired
+	SocialService socialService;
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -50,7 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/member/login").anonymous()
+			.antMatchers("/member/login")
+			.anonymous()
 			.antMatchers("/**").permitAll()
 			.and()
 			.exceptionHandling().accessDeniedPage("/")
@@ -79,15 +85,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 private Filter ssoFilter() {
 	        CompositeFilter filter = new CompositeFilter();
 	        List<Filter> filters = new ArrayList<>();
-	        filters.add(ssoFilter(google(), "/login/google")); //  이전에 등록했던 OAuth 리다이렉트 URL 
-	        filters.add(ssoFilter(facebook(), "/login/facebook"));
+	        filters.add(ssoFilter(google(), new GoogleFilter(socialService))); //  이전에 등록했던 OAuth 리다이렉트 URL 
+	        filters.add(ssoFilter(facebook(), new FacebookFilter(socialService)));
 	        filter.setFilters(filters);
 	        return filter;
 	    }
 	 
-	    private Filter ssoFilter(ClientResources client, String path) {
-	        OAuth2ClientAuthenticationProcessingFilter filter = 
-	        		new OAuth2ClientAuthenticationProcessingFilter(path);
+	    private Filter ssoFilter(ClientResources client, OAuth2ClientAuthenticationProcessingFilter filter) {
 	        
 	        OAuth2RestTemplate restTemplate = 
 	        		new OAuth2RestTemplate(client.getClient(), oauth2ClientContext);
@@ -100,6 +104,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        tokenServices.setRestTemplate(restTemplate);
 	        
 	        filter.setTokenServices(tokenServices);
+	        
+	        /*filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler() {
+	            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+	                this.setDefaultTargetUrl("/member/sendEmailComplete");
+	                super.onAuthenticationSuccess(request, response, authentication);
+	            }
+	        });*/
 	        
 	        return filter;
 	    }
