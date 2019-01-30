@@ -55,7 +55,12 @@ p {
 }
 
 .bg-primary {
-	background-color: #c8a9ff
+	background-image: url(https://wattrealty.com.au/wp-content/uploads/2018/08/share-house-living.jpg);
+    width: 100%;
+    height: 70%;
+    background-size: cover;
+    background-position: center;
+}
 }
 
 .bg-dark {
