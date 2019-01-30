@@ -7,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bit.geha.dao.BookingDao;
 import com.bit.geha.dto.BookingDto;
-import com.bit.geha.dto.KskRoomDto;
+import com.bit.geha.dto.RoomDto;
 
 import lombok.extern.java.Log;
 
@@ -27,12 +26,14 @@ public class BookingController {
 	BookingDao bookingDao;
 	
 	@RequestMapping("/bookingPage")
-	public void loadBookingPage(Model model
+	public void loadBookingPage(Model model, int roomCode
 			, @RequestParam(value="checkin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkin
 			, @RequestParam(value="checkout") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkout) {
 		log.info("loadBookingPage()");
-		KskRoomDto roomDto = bookingDao.getRoom(1);
+		RoomDto roomDto = bookingDao.getRoom(roomCode);
+		log.info("roomDto: " + roomDto);
 		String guestHouseName = bookingDao.getGuestHouseNameByGuestHouseCode(roomDto.getGuestHouseCode());
+		log.info("guestHouseName: " + guestHouseName);
 		
 		
 		model.addAttribute("checkin", checkin);

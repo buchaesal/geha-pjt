@@ -40,7 +40,7 @@
 			.star-input{display:inline-block; white-space:nowrap;width:225px;height:40px;line-height:30px;}
 			.star-input>.input{display:inline-block;width:150px;background-size:150px;height:28px;white-space:nowrap;overflow:hidden;position: relative;}
 			.star-input>.input>input{position:absolute;width:1px;height:1px;opacity:0;}
-			star-input>.input.focus{outline:1px dotted #ddd;}
+			.star-input>.input.focus{outline:1px dotted #ddd;}
 			.star-input>.input>label{width:30px;height:0;padding:28px 0 0 0;overflow: hidden;float:left;cursor: pointer;position: absolute;top: 0;left: 0;}
 			.star-input>.input>label:hover,
 			.star-input>.input>input:focus+label,
@@ -94,51 +94,58 @@
 							<button th:unless="${bookingDto.bookingCode}==${bookingCodeWithReview}" name="writeReviewBtn">후기 작성하기</button>
 						</div>
 						<button th:if="${#lists.size(reviewList)<=0}" name="writeReviewBtn">후기 작성하기</button>
-					</div>
+					
+						
+						<!-- writeReivew Modal -->
+						<div id="writeReviewModal" class="modal">
+						
+							<!-- Modal content -->
+							<div class="modal-content">
+								<p>후기 작성하기</p>
+								<form th:action="@{/myPage/writeReview}" id="reviewForm" method="post">
+									<input type="hidden" name="bookingCode" th:value="${bookingDto.bookingCode}">
+									
+									<label>작성자</label>
+									<input type="hidden" name="memberCode" th:value="${bookingDto.memberCode}">
+									<label>[[${memberName}]]</label><br>
+									
+									<label>평점</label>
+									<span class="star-input">
+									<span class="input">
+									    	<input type="radio" name="rating" value="1" id="p1">
+									    	<label for="p1">1</label>
+									    	<input type="radio" name="rating" value="2" id="p2">
+									    	<label for="p2">2</label>
+									    	<input type="radio" name="rating" value="3" id="p3">
+									    	<label for="p3">3</label>
+									    	<input type="radio" name="rating" value="4" id="p4">
+									    	<label for="p4">4</label>
+									    	<input type="radio" name="rating" value="5" id="p5">
+									    	<label for="p5">5</label>
+									  	</span>
+									  	<output for="star-input"><b>0</b>점</output>						
+									</span>
+									<br><br>
+									
+									<label>제목</label><br>
+									<input name="title" type="text" size="50" maxlength="45" required><br>
+									<label>내용</label><br>
+									<textarea id="content" name="content" rows="8" cols="50" maxlength="500" required></textarea>
+									<br>
+									
+									<input type="button" id="writeReviewModalClose" value="취소">
+									<input type="button" id="completedReview" value="작성완료">
+								</form>
+							</div>
+						</div> <!-- writeReivew Modal -->
+						
+					</div> <!-- bookingStatus -if:숙박완료 -->
 				</td>
 			</tr>
 		</table>
-		
-		<!-- writeReivew Modal -->
-		<div id="writeReviewModal" class="modal">
-		
-			<!-- Modal content -->
-			<div class="modal-content">
-				<p>후기 작성하기</p>
-				<form action="" id="reviewForm">
-					<label>작성자</label>
-					<label>[[${memberName}]]</label><br>
-					
-					<label>평점</label>
-					<span class="star-input">
-					<span class="input">
-					    	<input type="radio" name="star-input" value="1" id="p1">
-					    	<label for="p1">1</label>
-					    	<input type="radio" name="star-input" value="2" id="p2">
-					    	<label for="p2">2</label>
-					    	<input type="radio" name="star-input" value="3" id="p3">
-					    	<label for="p3">3</label>
-					    	<input type="radio" name="star-input" value="4" id="p4">
-					    	<label for="p4">4</label>
-					    	<input type="radio" name="star-input" value="5" id="p5">
-					    	<label for="p5">5</label>
-					  	</span>
-					  	<output for="star-input"><b>0</b>점</output>						
-					</span>
-					<br><br>
-					
-					<label>제목</label><br>
-					<input name="title" type="text" size="50" maxlength="45"><br>
-					<label>내용</label><br>
-					<textarea id="content" name="content" rows="8" cols="50" maxlength="500"></textarea>
-					<br>
-					
-					<input type="button" id="writeReviewModalClose" value="취소">
-					<input type="button" id="completedReview" value="작성완료">
-				</form>
-			</div>
-		</div>
 	</div>
+		
+		
 			
 	<div layout:fragment="myPage_script">
 		<script th:inline="javascript" type="text/javascript">
@@ -151,7 +158,6 @@
 
 			$(function() {
 				$("#cancelBtn").click(function() {
-					alert("click");
 					cancelConfirmModal.style.display = "block";
 				})
 			})
@@ -201,6 +207,7 @@
 					document.getElementById("content").value = str;
 					
 					$("#reviewForm").submit();
+					
 				})
 			})
 		</script>

@@ -2,11 +2,13 @@ package com.bit.geha.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.bit.geha.dto.BookingDto;
+import com.bit.geha.dto.ReviewDto;
 
 @Mapper
 public interface MyPageDao {
@@ -24,4 +26,7 @@ public interface MyPageDao {
 	
 	@Select("SELECT memberName FROM member_tb WHERE memberCode=#{memberCode}")
 	public String getMemberName(int memberCode);
+	
+	@Insert("insert into review_tb (bookingCode, rating, writingDate, title, content) values (#{bookingCode}, #{rating}, now(), #{title}, #{content})")
+	public void addReview(ReviewDto reviewDto);
 }

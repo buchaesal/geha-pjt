@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.geha.dao.MyPageDao;
+import com.bit.geha.dto.ReviewDto;
 
 import lombok.extern.java.Log;
 
@@ -33,5 +35,15 @@ public class MyPageController {
 		myPageDao.modifyBookingStatus(bookingCode, "취소요청");
 		
 		return "redirect:/myPage/bookingList?memberCode="+memberCode;//멤버코드는 임시
+	}
+	
+	@RequestMapping(value="/writeReview", method=RequestMethod.POST)
+	public String writeReivew(ReviewDto reviewDto, int memberCode) {
+		log.info("writeReview()");
+		
+		System.out.println("reviewDto: " + reviewDto);
+		myPageDao.addReview(reviewDto);
+		
+		return "redirect:/myPage/bookingList?memberCode="+memberCode;
 	}
 }
