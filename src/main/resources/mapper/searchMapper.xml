@@ -2,7 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.bit.geha.dao.MemberDao">
+<mapper namespace="com.bit.geha.dao.SearchDao">
 
+<select id="listGeha" resultType="SearchDto">
+	select * from searchview
+</select>
 
+<select id="searchGeha" resultType="SearchDto">
+	select * from 
+</select>
+
+ 
 </mapper>
