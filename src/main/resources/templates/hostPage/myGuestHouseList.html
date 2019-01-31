@@ -5,7 +5,6 @@
 	
 	<head>
 		<title>내 게스트하우스</title>
-		<meta http-equiv="Content-Type" content="charset=UTF-8"/>
 	</head>
 	
 	<body>
@@ -18,18 +17,27 @@
 					<th>신청일</th>
 					<th>상태</th>
 				</tr>
-				<tr>
-					
+				<tr th:each="guestHouseDto, iterState : ${guestHouseList}">
+					<td th:text="${iterState.count}"></td>
+					<td th:text="${guestHouseDto.guestHouseCode}"></td>
+					<td th:text="${guestHouseDto.guestHouseName}"></td>
+					<td th:text="${#dates.format(guestHouseDto.registerDate, 'yy.MM.dd')}"></td>
+					<td>
+						<a th:if="${guestHouseDto.approvalDate}">보기</a>
+						<div th:unless="${guestHouseDto.approvalDate}">
+							<label th:if="${#lists.size(rejectList)}==0">등록신청<br><a>보기/수정</a></label>
+							<div th:unless="${#lists.size(rejectList)}==0" th:each="rejectDto : ${rejectList}">
+								<a th:if="${guestHouseDto.guestHouseCode}==${rejectDto.guestHouseCode} and ${rejectDto.rejectCnt}==1">반려</a>
+							</div>
+						</div>
+					</td>
 				</tr>
-				
-				
 			</table>
+			
+			<button id="registerGuestHouseBtn">내 게스트하우스 등록하기</button>
 		</div>
 		
-		<div layout:fragment="hostPage_script">
-					
-		
-		</div>
+		<div layout:fragment="hostPage_script"></div>
 	</body>
 
 </html>
