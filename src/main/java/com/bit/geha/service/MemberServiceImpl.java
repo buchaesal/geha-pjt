@@ -80,7 +80,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	public void getSession(Authentication auth,HttpSession session) {
-		if (auth != null)  { //일반 로그인 사용자
+		
+		
+		if (auth != null && session.getAttribute("name")==null )  { 
 
 			SecurityMember sc = (SecurityMember) auth.getPrincipal();
 			MemberDto member = memberDao.findById(sc.getUsername());

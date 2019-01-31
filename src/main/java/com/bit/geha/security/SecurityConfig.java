@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilt
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
 
 import com.bit.geha.service.SocialService;
@@ -58,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/member/login")
 			.anonymous()
-			.antMatchers("/myPage/bookingList")
+			.antMatchers("/myPage/*")
 			.authenticated()
 			.antMatchers("/**").permitAll()
 			.and()
@@ -71,7 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.successHandler(successHandler())
 			.and()
 		.logout()
-			.logoutSuccessUrl("/").permitAll();
+		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		.logoutSuccessUrl("/").permitAll();
 	}
 
 	

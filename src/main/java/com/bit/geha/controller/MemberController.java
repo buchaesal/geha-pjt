@@ -20,60 +20,59 @@ import com.bit.geha.dao.MemberDao;
 import com.bit.geha.dto.MemberDto;
 import com.bit.geha.service.MemberService;
 
-
 @Controller
 @RequestMapping("/member")
 public class MemberController {
 
 	@Autowired
 	MemberDao memberDao;
-	
+
 	@Autowired
 	MemberService memberService;
-	
 
 	@GetMapping("/login")
 	public void login(HttpServletRequest request) {
 		String referrer = request.getHeader("Referer");
-		System.out.println(referrer);
-	    request.getSession().setAttribute("prevPage", referrer);
-	    
-	}
-	
+		request.getSession().setAttribute("prevPage", referrer);
 
-	
+	}
+
 	@RequestMapping("/findPw")
 	public void findPw() {
 	}
-	
+
+	@RequestMapping("/index")
+	public void index() {
+	}
+
 	@RequestMapping("/signUp")
 	public void signUp() {
 	}
-	
+
 	@RequestMapping("/hostSignUp")
 	public String hostSignUp(Model model) {
-		model.addAttribute("host","host");
+		model.addAttribute("host", "host");
 		return "/member/signUp";
 	}
-	
+
 	@RequestMapping("/changePw")
 	public void changePw() {
 	}
-	
+
 	@RequestMapping("/sendEmailComplete")
 	public void sendEmailComplete() {
 	}
-	
+
 	@RequestMapping("/chooseAuth")
 	public void chooseAuth() {
 	}
-	
-	@PostMapping(value="findPw.do")
+
+	@PostMapping(value = "findPw.do")
 	@ResponseBody
 	public String findPw(@RequestBody String id) throws Exception {
-		
+
 		return memberService.findPw(id);
-		
+
 	}
 
 	@PostMapping(value = "/idcheck.do")
@@ -93,30 +92,29 @@ public class MemberController {
 	public String create(MemberDto memberDto) throws Exception {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-		//memberDto.setAuthority("USER");
+		// memberDto.setAuthority("USER");
 		memberService.save(memberDto);
-		
+
 		return "/member/sendEmailComplete";
-		
+
 	}
-	
+
 	@RequestMapping(value = "/emailConfirming", method = RequestMethod.GET)
-	public String emailConfirming(String id,String key,Model model) 
-			throws Exception { // 이메일인증
-		
-		MemberDto memberDto= memberDao.findById(id);
-		if(key.equals(memberDto.getAuthCode())) {
+	public String emailConfirming(String id, String key, Model model) throws Exception { // 이메일인증
+
+		MemberDto memberDto = memberDao.findById(id);
+		if (key.equals(memberDto.getAuthCode())) {
 			memberDao.userAuth(id);
 			model.addAttribute("name", memberDto.getMemberName());
-		}else {
+		} else {
 			model.addAttribute("error", "인증에 실패했습니다. 다시 시도해주세요.");
 		}
-		
+
 		return "/member/emailConfirm";
 	}
-	
+
 	@RequestMapping("/emailConfirm")
 	public void emailConfirm() {
-	
+
 	}
 }
