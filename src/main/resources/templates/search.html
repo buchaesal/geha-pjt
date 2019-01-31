@@ -34,9 +34,10 @@
 	}
 	
 	hr {
-		border-color: #FFB0AE;
+/* 		border-color: #FFB0AE;
 		border-width: 1px;
-		max-width: 97%;
+		max-width: 97%; */
+		visibility:hidden;
 	}
 	
 	#mainNav { 
@@ -94,11 +95,8 @@
  	}
  	
  	#map{
- 		background-color: gray;
- 		width:97%;
- 		margin-left:1.2rem;
- 		height:450px;
  		background-color:gray;
+ 		height:450px;
  	}
  	
  	.house {
@@ -113,7 +111,7 @@
 		border:2px solid #FFB0AE;
 	}
 	
-	.searchresult{
+	#searchresult{
 		min-height:300px;
 	}
 	
@@ -130,7 +128,7 @@
 	
   	.content.gehaname{
 		padding-top:0.7rem;
-		height:6.7rem;
+		height:6rem;
 		text-align:left;
         word-break: keep-all;
         word-wrap: break-word;
@@ -149,16 +147,19 @@
 	}
 	.content.tag{
 		margin-top:1rem;
+		height:3rem;
 	}
 	.content span.tag{
+		display:inline-block;
 		background-color:gray;
 		border-radius:0.3rem;
 		color:#FFF;
+		margin-top:0.2rem;
 		padding: 0.2rem 0.2rem;
-		font-size: 1rem;
 	}
 	.content.price{
 		text-align:right;
+		margin-top: 1rem;
 		margin-bottom:1rem;
 	}
 	
@@ -286,109 +287,35 @@
 						</label>
 					</div>
 					
-					<button id="btn-search" type="submit" class="btn btn-default btn-block btn-danger" style="margin-top:150px;margin-bottom:30px;">검색</button>
+					<button id="btn-search" type="submit" class="btn btn-default btn-block btn-danger" style="margin-top:180px;margin-bottom:30px;">검색</button>
 				</form>
 			</div>
 			
 			<div class="col-md-9 col-sm-8 maparea">
 			
 				<div id="map"></div>
-				
+
 				<hr />
-				
-				<div class="searchresult">
-					<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
-						<a href="">
-							<div class="houseborder">
-								<div class="houseimage" style="background-image:url(https://image.goodchoice.kr/resize_1000X500x0/adimg_new/50411/0/d899d1afd606917e0e0ee374267aa3b6.jpg);">
-								</div>
-								<div class="contentwrapper">
-									<div class="content gehaname">
-										<h4><span class="gehaname">서울역 스테이션 게스트하우스 1호점</span></h4>
-									</div>
-									<div class="content yellowline">
-										<span class="rating">9.4</span>
-										<span class="ratingname">추천해요</span>
-										<span class="comments">(76)</span>
-									</div>
-									<div class="content tag">
-										<span class="tag">#관광</span>
-										<span class="tag">#맛집</span>
-										<span class="tag">#쇼핑</span>
-										<span class="tag">#출장</span>
-									</div>
-									<div class="content price">
-										<span class="price">16,500원</span>
-									</div>
-								</div>
-							</div>
-						</a>
-					</div> <!-- housewrapper end -->
-					<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
-						<a href="">
-							<div class="houseborder">
-								<div class="houseimage" style="background-image:url(https://image.goodchoice.kr/resize_1000X500x0/adimg_new/50411/0/d899d1afd606917e0e0ee374267aa3b6.jpg);">
-								</div>
-								<div class="contentwrapper">
-									<div class="content gehaname">
-										<h4 class="gehaname">서울역 스테이션 게스트하우스 1호점</h4>
-									</div>
-									<div class="content yellowline">
-										<span class="rating">9.4</span>
-										<span class="ratingname">추천해요</span>
-										<span class="comments">(76)</span>
-									</div>
-									<div class="content tag">
-										<span class="tag">#관광</span>
-										<span class="tag">#맛집</span>
-										<span class="tag">#쇼핑</span>
-										<span class="tag">#출장</span>
-									</div>
-									<div class="content price">
-										<span class="price">16,500원</span>
-									</div>
-								</div>
-							</div>
-						</a>
-					</div> <!-- housewrapper end -->
-					<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
-						<a href="">
-							<div class="houseborder">
-								<div class="houseimage" style="background-image:url(https://image.goodchoice.kr/resize_1000X500x0/adimg_new/50411/0/d899d1afd606917e0e0ee374267aa3b6.jpg);">
-								</div>
-								<div class="contentwrapper">
-									<div class="content gehaname">
-										<h4><span class="gehaname">홍대 준 게스트하우스</span></h4>
-									</div>
-									<div class="content yellowline">
-										<span class="rating">9.4</span>
-										<span class="ratingname">추천해요</span>
-										<span class="comments">(76)</span>
-									</div>
-									<div class="content tag">
-										<span class="tag">#관광</span>
-										<span class="tag">#맛집</span>
-										<span class="tag">#쇼핑</span>
-										<span class="tag">#출장</span>
-									</div>
-									<div class="content price">
-										<span class="price">16,500원</span>
-									</div>
-								</div>
-							</div>
-						</a>
-					</div> <!-- housewrapper end -->
+
+				<div id="searchresult"> <!-- handlebars template target -->
+					
 				</div> <!-- searchresult end -->
+				
+
 			</div> <!-- end maparea -->
 		</div> <!-- end row -->
 	</div> <!-- end container -->
+	
 </div> <!-- end layout content -->
 
 <div layout:fragment="script">
-	<!-- script start -->
+<!-- script start -->
 	<!-- jquery/ui -->
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="vendor/jquery/jquery-ui.min.js"></script>
+	
+	<!-- handlebars -->
+	<script src="js/handlebars4.js"></script>
 	
 	<!-- datepicker -->
 	<script src="js/datepicker.js"></script>
@@ -399,7 +326,6 @@
 	
 	<script>
 	$(function(){
-		
 		/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 /세미콜론(;)넣지 않음 주의 */
 	  	$(".datepicker-here").datepicker({
 			language: 'en',
@@ -433,19 +359,21 @@
 	   
 	   /* 인원수 버튼 구현 */
 	   var personCnt = 1;
+	   var spanPerson = $("span#person");
+	   var inputPerson = $("input.person");
 	   
 	   $("button#up").click(function(){
 		   plusCnt();
 		   validCnt();
-		   $("span#person").html(personCnt);
-		   $("input.person").val(personCnt);
+		   spanPerson.html(personCnt);
+		   inputPerson.val(personCnt);
 	   });
 	   
 	   $("button#down").click(function(){
 		   minusCnt();
 		   validCnt();
-		   $("span#person").html(personCnt);
-		   $("input.person").val(personCnt);
+		   spanPerson.html(personCnt);
+		   inputPerson.val(personCnt);
 	   });
 	   
 	   function plusCnt(){
@@ -464,7 +392,66 @@
 	   }
 	}); 
 	</script>
-	<!-- script end -->
+	<script id="template" type="text/x-handlebars-template">
+		{{#each .}}
+			<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
+				<a href="{{guestHouseCode}}">
+					<div class="houseborder">
+						<div class="houseimage" style="background-image:url({{originalName}});">
+						</div>
+						<div class="contentwrapper">
+							<div class="content gehaname">
+								<h4><span class="gehaname">{{guestHouseName}}</span></h4>
+							</div>
+							<div class="content yellowline">
+								<span class="rating">{{avgRating}}</span>
+								<span class="ratingname">{{recommendRating}}</span>
+								<span class="comments">({{reviewCnt}})</span>
+							</div>
+							<div class="content tag">
+								{{#ifOne trip}}
+									<span class="tag">#관광</span>
+								{{/ifOne}}
+								{{#ifOne gourmet}}
+									<span class="tag">#맛집</span>
+								{{/ifOne}}
+								{{#ifOne shopping}}
+									<span class="tag">#쇼핑</span>
+								{{/ifOne}}
+								{{#ifOne businesstrip}}
+									<span class="tag">#출장</span>
+								{{/ifOne}}
+							</div>
+							<div class="content price">
+								<span class="price">{{minprice}}원</span>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div> <!-- housewrapper end -->
+		{{/each}}
+	</script>
+	<script>
+	$(function(){
+		/* get Data from RestApi */
+		$.getJSON("search/gehainfo", function(data){
+			var source = $("#template").html();
+			var template = Handlebars.compile(source);
+			$("#searchresult").append(template(data));
+		});
+		
+		/* handlebars ifOne helper for tags */
+		Handlebars.registerHelper('ifOne', function(a, opts) {
+		    if(a == 1) // Or === depending on your needs
+		        return opts.fn(this);
+		    else
+		        return opts.inverse(this);
+		});
+		
+	});
+	</script>
+	
+<!-- script end -->
 </div> <!-- end layout script -->
 
 </body>
