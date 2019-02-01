@@ -43,7 +43,9 @@ color:green;
     
 
 }
-
+.gendT{
+text-align: center;
+}
 
 </style>
 <!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
@@ -56,7 +58,7 @@ color:green;
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
+<script th:inline="javascript">
 
 <!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
 
@@ -70,8 +72,8 @@ color:green;
 	
 	//아이디 체크여부 확인 (아이디 중복일 경우 = 0 , 중복이 아닐경우 = 1 )
 	var idck = 0;
-	var id =  $("#id").val();
-	var password = $("#password").val();
+	
+	
 	
 	$(function() {
 		
@@ -80,10 +82,10 @@ color:green;
 		
 	    //idck 버튼을 클릭했을 때 
 	    $("#idck").click(function() {
-	        
+	    	var id =  $("#id").val();
 	        //userid 를 param.
 	        
-	        
+	      
 	        
 	        $.ajax({
 	            async: true,
@@ -114,10 +116,10 @@ color:green;
 	                }
 	            },
 	            error : function(error) {
-	            	$("#idError").text('아이디를 입력해주세요.');
+	            	$("#idError").text('공백은 입력할 수 없어요.');
 	            	$("#divInputId").addClass("has-error");
-                    $("#divInputId").removeClass("has-success"); 
-                    $("#id").focus();
+                    $("#divInputId").removeClass("has-success");
+	            	
 	            }
 	        });
 	    });
@@ -125,6 +127,14 @@ color:green;
 	
 	function confirm(){
 		var getId=RegExp(/^[0-9a-zA-Z]*[@][0-9a-zA-Z]*[.][a-zA-Z]{2,3}$/i);
+		var getPw = RegExp(/^[^ ]{4,}$/gi);
+		var id =  $("#id").val();
+		var password = $("#password").val();
+		var passwordCheck = $("#passwordCheck").val();
+		var host = [[${host}]];
+		
+	
+		
 		 if(idck==0){
 			 $("#idError").text('아이디 중복체크는 필수에요.');
 			 $("#divInputId").addClass("has-error");
@@ -138,14 +148,29 @@ color:green;
 	                $("#divInputId").removeClass("has-success");
 	                id.focus();
 	    			return false;
-	    		}else if(password.length<4){ //비밀번호가 맞지 않는다면
-	    			$("#idError").text('비밀번호는 4글자 이상만 가능해요.');
-	    			$("#divInputId").addClass("has-error");
-	                $("#divInputId").removeClass("has-success");
+	    		}else if(!getPw.test(password)){ //비밀번호가 형식에 맞지 않는다면
+	    			$("#pwError").text('비밀번호는 4글자 이상만 가능해요.');
+	    			$("#divInputPw").addClass("has-error");
+	                $("#divInputPw").removeClass("has-success");
 	                password.focus();
 	    			return false;
+	    		}else if(password!==passwordCheck){
+	    			$("#pwError").text('비밀번호와 비밀번호 확인이 일치하지 않아요.');
+	    			$("#divInputPw").addClass("has-error");
+	                $("#divInputPw").removeClass("has-success");
+	                password.focus();
+	                return false;
+	    		}else if($("input[name='gender']:checked").val()==undefined){
+	    			$("#gError").text('성별을 선택해주세요.');
+	    			$("#divInputG").addClass("has-error");
+	                $("#divInputG").removeClass("has-success");
+	    		}else if(host!==null&&$("#license").val()==""){
+	    			$("#gError").text('사업자 번호는 필수에요.');
+	    			$("#divInputG").addClass("has-error");
+	                $("#divInputG").removeClass("has-success");
 	    		}else{
-	            $("#frm").submit();
+	    			
+	    			 $("#frm").submit();
 	    		}
 	        }
 	}
@@ -188,7 +213,7 @@ color:green;
 <div id="divInputId"><p id="idError"/></div>
 					<div class="wrap-input100 validate-input m-b-20">
 			
-						<input class="input100" type="password" name="password" placeholder="비밀번호">
+						<input class="input100" type="password" name="password" id="password" placeholder="비밀번호">
 						<span class="focus-input100"></span>
 					</div>
 					<div class="wrap-input100 validate-input m-b-20" data-validate = "Please enter password">
@@ -197,21 +222,25 @@ color:green;
 						<span class="focus-input100"></span>
 					</div>
 					
+					<div id="divInputPw"><p id="pwError"/></div>
+					
 					<div class="wrap-input100 validate-input m-b-16" th:if="${host}">
-						<input class="input100" type="text" name="businessLicense" placeholder="사업자번호">
+						<input class="input100" type="text" name="businessLicense" id="license" placeholder="사업자번호">
 						<span class="focus-input100"></span>
 					</div>
-					
+						<div class="gendT" id="divInputG"><p id="gError"/></div>
 					<div class="btn-group btn-group-toggle" data-toggle="buttons">
 						<label class="btn btn-info btn-lg">
 						
-							남자 <input type="radio" name="gender" value="M" required>
+							남자 <input type="radio" name="gender" value="M">
 							</label>
 							<label class="btn btn-info btn-lg">
 							여자 <input type="radio" name="gender" value="F"><br/>
 					</label>
 					
 					</div>
+					
+				
 					<div class="container-login100-form-btn">
 						<button type="button" class="login100-form-btn" onclick="confirm()">
 							회원가입
