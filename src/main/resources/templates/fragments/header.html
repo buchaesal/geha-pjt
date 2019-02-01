@@ -34,8 +34,8 @@
 							<li><span style="border: 1px;" th:text="${session.name}+'님'"></span></li>
 							<li class="divider"></li>
 							<li><a class="page-scroll" href="/myPage/bookingList">마이페이지</a></li>
-							<li sec:authorize="hasRole('HOST')"><a href="#">호스트페이지</a></li>
-							<li sec:authorize="hasRole('ADMIN')"><a href="#"
+							<li th:if="${session.auth.equals('HOST')}"><a href="#">호스트페이지</a></li>
+							<li th:if="${session.auth.equals('ADMIN')}"><a href="#"
 								class="page-scroll">관리자페이지</a></li>
 							<li><a href="/logout">로그아웃</a></li>
 						</ul>
