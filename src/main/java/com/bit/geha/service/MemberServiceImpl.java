@@ -1,5 +1,6 @@
 package com.bit.geha.service;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,22 @@ public class MemberServiceImpl implements MemberService {
 		sendMail.setFrom("eks4116@gmail.com", "샵게하 운영자");
 		sendMail.setTo(memberDto.getId());
 		sendMail.send();
+		
+	}
+	
+	public void sendMail(String id) throws Exception {
+			MemberDto member = memberDao.findById(id);
+			MailHandler sendMail = new MailHandler(mailSender);
+			sendMail.setSubject("[#GEHA 회원가입 이메일 인증]");
+			sendMail.setText(
+					new StringBuffer()
+					.append("<h1>회원가입 인증 메일입니다.</h1><h3>아래의 버튼을 눌러 회원가입을 완료해주세요.</h3>")
+					.append("<a href='http://localhost/member/emailConfirming?id=")
+					.append(id).append("&key=").append(member.getAuthCode())
+					.append("' target='_blank'>회원가입 인증 확인</a>").toString());
+			sendMail.setFrom("eks4116@gmail.com", "샵게하 운영자");
+			sendMail.setTo(id);
+			sendMail.send();
 		
 	}
 	

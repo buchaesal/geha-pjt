@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.geha.dao.MemberDao;
@@ -32,9 +33,36 @@ public class MemberController {
 
 	@GetMapping("/login")
 	public void login(HttpServletRequest request) {
+
 		String referrer = request.getHeader("Referer");
 		request.getSession().setAttribute("prevPage", referrer);
-
+	}
+	
+	@PostMapping(value="/loginCk")
+	@ResponseBody
+	public String loginCk(@RequestParam("id") String id,
+			@RequestParam("password") String password) { //로그인 유효성검사
+		
+		MemberDto member = memberDao.findById(id);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		
+		
+		if(member!=null) { //아이디가 존재한다면
+			if(passwordEncoder.matches(password, member.getPassword())){ //비밀번호도 일치한다면
+				
+				if(member.getAuthStatus()!=null) { //가입 할 때 메일인증도 받은 사람이라면!!!!
+					return "";
+				}else { //메일인증은 안받았다면
+				return "노인증";
+				}
+			}else {//일치하지 않는다면
+				return "비밀번호가 일치하지 않아요.";
+			}
+		}else {//아이디가 존재하지 않는다면
+			return "아이디가 존재하지 않아요.";
+		}
+		
+		
 	}
 
 	@RequestMapping("/findPw")
@@ -116,5 +144,11 @@ public class MemberController {
 	@RequestMapping("/emailConfirm")
 	public void emailConfirm() {
 
+	}
+	
+	@RequestMapping("sendMail.do")
+	@ResponseBody
+	public void sendMail(@RequestParam(value="id") String id) throws Exception {
+		memberService.sendMail(id);
 	}
 }
