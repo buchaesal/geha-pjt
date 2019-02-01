@@ -34,22 +34,20 @@
 							<li><span style="border: 1px;" th:text="${session.name}+'님'"></span></li>
 							<li class="divider"></li>
 							<li><a class="page-scroll" href="/myPage/bookingList">마이페이지</a></li>
-							<li th:if="${session.auth.equals('HOST')}"><a href="#">호스트페이지</a></li>
-							<li th:if="${session.auth.equals('ADMIN')}"><a href="#"
+							<li sec:authorize="hasRole('HOST')"><a href="#">호스트페이지</a></li>
+							<li sec:authorize="hasRole('ADMIN')"><a href="#"
 								class="page-scroll">관리자페이지</a></li>
-							<li><a href="#" onclick="logout()">로그아웃</a></li>
+							<li><a href="/logout">로그아웃</a></li>
 						</ul>
 					</div>
 				</ul>
 			</div>
-			<form id="logout" th:action="@{/logout}" method="post"></form>
+			
 			<!-- /.navbar-collapse -->
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
 	<script>
-		function logout() {
-			$('#logout').submit();
-		}
+	
 	</script>
 </header>

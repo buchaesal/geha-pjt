@@ -1,16 +1,50 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/main_layout">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-
+<title>회원가입</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="img/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+	<link href="/css/creative.min.css?8" rel="stylesheet">
+<!--===============================================================================================-->
 <style>
 .has-error{
-color:red;
+color:tomato;
 }
 .has-success{
 color:green;
 }
+.custom{
+    position: absolute;
+    top: 270px;
+    left: 337px;
+    
+
+}
+
+
 </style>
 <!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
 
@@ -36,12 +70,19 @@ color:green;
 	
 	//아이디 체크여부 확인 (아이디 중복일 경우 = 0 , 중복이 아닐경우 = 1 )
 	var idck = 0;
+	var id =  $("#id").val();
+	var password = $("#password").val();
+	
 	$(function() {
+		
+		
+		 
+		
 	    //idck 버튼을 클릭했을 때 
 	    $("#idck").click(function() {
 	        
 	        //userid 를 param.
-	        var id =  $("#id").val(); 
+	        
 	        
 	        
 	        $.ajax({
@@ -53,11 +94,10 @@ color:green;
 	            contentType: "application/json; charset=UTF-8",
 	            success : function(data) {
 	                if (data.cnt > 0) {
-	                    
 	                    $("#idError").text('이미 존재하는 아이디입니다.');
 	                    //아이디가 존제할 경우 빨강으로 , 아니면 파랑으로 처리하는 디자인
-	                     $("#divInputId").addClass("has-error")
-	                    $("#divInputId").removeClass("has-success") 
+	                     $("#divInputId").addClass("has-error");
+	                    $("#divInputId").removeClass("has-success");
 	                    $("#id").focus();
 	                    
 	                
@@ -65,8 +105,8 @@ color:green;
 	                	
 	                	$("#idError").text('사용 가능한 아이디입니다.');
 	                    //아이디가 존제할 경우 빨강으로 , 아니면 파랑으로 처리하는 디자인
-	                     $("#divInputId").addClass("has-success")
-	                    $("#divInputId").removeClass("has-error") 
+	                     $("#divInputId").addClass("has-success");
+	                    $("#divInputId").removeClass("has-error") ;
 	                    $("#password").focus();
 	                    //아이디가 중복하지 않으면  idck = 1 
 	                    idck = 1;
@@ -75,8 +115,8 @@ color:green;
 	            },
 	            error : function(error) {
 	            	$("#idError").text('아이디를 입력해주세요.');
-	            	$("#divInputId").addClass("has-error")
-                    $("#divInputId").removeClass("has-success") 
+	            	$("#divInputId").addClass("has-error");
+                    $("#divInputId").removeClass("has-success"); 
                     $("#id").focus();
 	            }
 	        });
@@ -84,31 +124,130 @@ color:green;
 	});
 	
 	function confirm(){
+		var getId=RegExp(/^[0-9a-zA-Z]*[@][0-9a-zA-Z]*[.][a-zA-Z]{2,3}$/i);
 		 if(idck==0){
-	            alert('아이디 중복체크를 해주세요');
+			 $("#idError").text('아이디 중복체크는 필수에요.');
+			 $("#divInputId").addClass("has-error");
+             $("#divInputId").removeClass("has-success");
+             id.focus();
 	            return false;
 	        }else{
-	        	 
-	             $("#frm").submit();
-	             
+	        	if(!getId.test(id)){ //아이디가 형식에 맞지 않는다면
+	    			$("#idError").text('아이디는 공백 없는 이메일 형식이어야만 해요.');
+	    			$("#divInputId").addClass("has-error");
+	                $("#divInputId").removeClass("has-success");
+	                id.focus();
+	    			return false;
+	    		}else if(password.length<4){ //비밀번호가 맞지 않는다면
+	    			$("#idError").text('비밀번호는 4글자 이상만 가능해요.');
+	    			$("#divInputId").addClass("has-error");
+	                $("#divInputId").removeClass("has-success");
+	                password.focus();
+	    			return false;
+	    		}else{
+	            $("#frm").submit();
+	    		}
 	        }
 	}
 	</script>
 </head>
 <body>
-	<form action="/member/create" id="frm" method="POST">
-	 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-	이름 <input type="text" id="memberName" name="memberName"><br/>
-	아이디 <input type="email" id="id" name="id">
-	<input type="button" id="idck" value="중복확인"><br/>
-	<div id="divInputId"><p id="idError"/></div>
-	비밀번호 <input type="password" id="password" name="password"><br/>
-	비밀번호확인 <input type="password" id="passwordCheck"><br/>
-	<span th:if="${host}">사업자번호<input type="text" name="businessLicense"><br/></span>
-	남 <input type="radio" name="gender" value="M" required>
-	여 <input type="radio" name="gender" value="F"><br/>
-	<input type="button" value="가입하기" onclick="confirm()">
+
+<div layout:fragment="content">
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-t-90 p-b-30">
+				<form class="login100-form validate-form" action="/member/create" id="frm" method="POST">
+					 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					<span class="login100-form-title p-b-40">
+						:: 회원가입 ::
+					</span>
+	<div class="text-center p-t-55 p-b-30">
+						<span class="txt1" th:if="${host}">
+							호스트 회원가입
+						</span>
+						<span class="txt1" th:unless="${host}">
+							일반 회원가입
+						</span>
+					</div>
+					
+
+					<div class="wrap-input100 validate-input m-b-16">
+						<input class="input100" type="text" name="memberName" placeholder="이름">
+						<span class="focus-input100"></span>
+					</div>
+					
+					<div class="wrap-input100 validate-input m-b-16">
+						<input class="input100" type="text" name="id" id="id" placeholder="Email">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="custom">
+<input type="button" class="btn btn-info btn-sm" id="idck" value="중복확인">
+
+</div>
+<div id="divInputId"><p id="idError"/></div>
+					<div class="wrap-input100 validate-input m-b-20">
+			
+						<input class="input100" type="password" name="password" placeholder="비밀번호">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-20" data-validate = "Please enter password">
+			
+						<input class="input100" type="password" id="passwordCheck" placeholder="비밀번호 확인">
+						<span class="focus-input100"></span>
+					</div>
+					
+					<div class="wrap-input100 validate-input m-b-16" th:if="${host}">
+						<input class="input100" type="text" name="businessLicense" placeholder="사업자번호">
+						<span class="focus-input100"></span>
+					</div>
+					
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						<label class="btn btn-info btn-lg">
+						
+							남자 <input type="radio" name="gender" value="M" required>
+							</label>
+							<label class="btn btn-info btn-lg">
+							여자 <input type="radio" name="gender" value="F"><br/>
+					</label>
+					
+					</div>
+					<div class="container-login100-form-btn">
+						<button type="button" class="login100-form-btn" onclick="confirm()">
+							회원가입
+						</button>
+					</div>
+					
+					</form>
+					
+			</div>
+		</div>
+	</div>
 	
-	</form>
+	
+	</div>
+	
+
+
+	
+	
+	
+	<!--===============================================================================================-->
+	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/bootstrap/js/popper.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.min2.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="/js/main.js"></script>
+	   <script src="/js/creative.min.js"></script>
 </body>
 </html>

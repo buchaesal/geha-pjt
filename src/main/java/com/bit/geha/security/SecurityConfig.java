@@ -1,9 +1,14 @@
 package com.bit.geha.security;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -16,6 +21,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
@@ -24,7 +30,9 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticat
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
 
 import com.bit.geha.service.SocialService;
@@ -58,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/member/login")
 			.anonymous()
-			.antMatchers("/myPage/bookingList")
+			.antMatchers("/myPage/*")
 			.authenticated()
 			.antMatchers("/**").permitAll()
 			.and()
@@ -71,7 +79,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.successHandler(successHandler())
 			.and()
 		.logout()
-			.logoutSuccessUrl("/").permitAll();
+		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		.logoutSuccessUrl("/").permitAll();
 	}
 
 	
@@ -113,12 +122,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        
 	        filter.setTokenServices(tokenServices);
 	        
-	        /*filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler() {
+	        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler() {
 	            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-	                this.setDefaultTargetUrl("/member/sendEmailComplete");
-	                super.onAuthenticationSuccess(request, response, authentication);
+	                
+	            	HttpSession session = request.getSession();
+	        		if (session != null) {
+	        			String redirectUrl = (String) session.getAttribute("prevPage");
+	        			
+	        			if (redirectUrl != null) {
+	        				session.removeAttribute("prevPage");
+	        				this.setDefaultTargetUrl(redirectUrl);
+	        				super.onAuthenticationSuccess(request, response, authentication);
+
+	        			} else {
+	        				super.onAuthenticationSuccess(request, response, authentication);
+	        			}
+	        		} else {
+	        			super.onAuthenticationSuccess(request, response, authentication);
+	        		}
+	        		
+	            	
 	            }
-	        });*/
+	        });
 	        
 	        return filter;
 	    }

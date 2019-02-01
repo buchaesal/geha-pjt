@@ -300,6 +300,7 @@ td, th {
 
 .glyphicon-envelope:before {
 	content: "\2709"
+	/* font-size: 60px; */
 }
 
 .glyphicon-pencil:before {
@@ -3541,7 +3542,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 .btn-info.active, .btn-info:active, .open>.dropdown-toggle.btn-info {
 	color: #fff;
-	background-color: #31b0d5;
+	background-color: #0b586f;
 	border-color: #269abc
 }
 
@@ -3959,7 +3960,7 @@ tbody.collapse.in {
 
 .btn-group .btn+.btn, .btn-group .btn+.btn-group, .btn-group .btn-group+.btn,
 	.btn-group .btn-group+.btn-group {
-	margin-left: -1px
+	margin-left: 20px
 }
 
 .btn-toolbar {
@@ -3980,7 +3981,7 @@ tbody.collapse.in {
 }
 
 .btn-group>.btn:first-child {
-	margin-left: 0
+	margin-left: 77px;
 }
 
 .btn-group>.btn:first-child:not (:last-child ):not (.dropdown-toggle ){
@@ -6518,7 +6519,7 @@ button.close {
 
 .modal-header {
 	padding: 15px;
-	border-bottom: 1px solid #e5e5e5
+	    padding-top: 31px;
 }
 
 .modal-header .close {

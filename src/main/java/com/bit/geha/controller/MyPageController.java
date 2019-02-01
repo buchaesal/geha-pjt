@@ -28,7 +28,7 @@ public class MyPageController {
 	//예약내역
 	@RequestMapping(value="/bookingList")
 	public void bookingList(Model model,HttpSession session,Authentication auth) {
-		memberService.getSession(auth, session);
+		memberService.getSession(auth,session);
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
 		log.info("bookingList()");
 		
