@@ -15,6 +15,7 @@ public class SearchDto {
 	private int trip;
 	private int shopping;
 	private int reviewCnt;
+	private String address;
 	private String originalName;
 	
 }
