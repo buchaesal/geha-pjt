@@ -1,5 +1,6 @@
 package com.bit.geha.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,17 @@ public class SearchController {
 		return "search";
 	}
 	
-	@GetMapping("search/gehainfo")
+	@GetMapping("allgehainfo")
 	@ResponseBody
 	public List<SearchDto> searchapi(SearchCriteria sc){
 		return dao.listGeha();
 	}
 	
-	
+	@GetMapping("searchgehainfo")
+	@ResponseBody
+	public List<SearchDto> searchGehaInfo(SearchCriteria sc){
+		
+		return dao.searchGeha(sc);
+	}
 	
 }

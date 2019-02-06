@@ -11,10 +11,10 @@ public class SearchDto {
 	private String recommendRating;
 	private int minprice;
 	private int businesstrip;
-	private int gourmet;
-	private int trip;
-	private int shopping;
-	private int reviewCnt;
+	private Integer gourmet;
+	private Integer trip;
+	private Integer shopping;
+	private Integer reviewCnt;
 	private String address;
 	private String originalName;
 	
