@@ -22,6 +22,11 @@
 	width: max-content;
 }
 
+p{
+    font-size: 20px;
+        width: 413px;
+}
+
 /* 별점 */
 .star-input>.input, .star-input>.input>label:hover, .star-input>.input>input:focus+label,
 	.star-input>.input>input:checked+label {
@@ -77,7 +82,7 @@
 	background-position: 0 bottom;
 }
 
-.star-input>.input>label:hover ~label{
+.star-input>.input>label:hover ~label {
 	background-image: none;
 }
 
@@ -113,72 +118,80 @@
 	text-align: right;
 	vertical-align: middle;
 }
+
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-$(function() {
+	$(function() {
 
-var starRating = function(){
-	var $star = $(".star-input"),
-	    $result = $star.find("output>b");
+		var starRating = function() {
+			var $star = $(".star-input"), $result = $star.find("output>b");
+
+			$(document).on("focusin", ".star-input>.input", function() {
+				$(this).addClass("focus");
+			})
+
+			.on("focusout", ".star-input>.input", function() {
+				var $this = $(this);
+				setTimeout(function() {
+					if ($this.find(":focus").length === 0) {
+						$this.removeClass("focus");
+					}
+				}, 100);
+			})
+
+			.on("change", ".star-input :radio", function() {
+				$result.text($(this).next().text());
+			}).on("mouseover", ".star-input label", function() {
+				$result.text($(this).text());
+			}).on("mouseleave", ".star-input>.input", function() {
+				var $checked = $star.find(":checked");
+				if ($checked.length === 0) {
+					$result.text("0");
+				} else {
+					$result.text($checked.next().text());
+				}
+			});
+		};
+
+		starRating();
 		
-	  	$(document)
-		.on("focusin", ".star-input>.input", 
-			function(){
-	   		 $(this).addClass("focus");
-	 	})
-			 
-	   	.on("focusout", ".star-input>.input", function(){
-	    	var $this = $(this);
-	    	setTimeout(function(){
-	      		if($this.find(":focus").length === 0){
-	       			$this.removeClass("focus");
-	     	 	}
-	   		}, 100);
-	 	 })
-	  
-	    .on("change", ".star-input :radio", function(){
-	    	$result.text($(this).next().text());
-	  	})
-	    .on("mouseover", ".star-input label", function(){
-	    	$result.text($(this).text());
-	    })
-	    .on("mouseleave", ".star-input>.input", function(){
-	    	var $checked = $star.find(":checked");
-	    		if($checked.length === 0){
-	     	 		$result.text("0");
-	   		 	} else {
-	     	 		$result.text($checked.next().text());
-	    		}
-	  	});
-	};
+		
 
-	starRating();
+	});
 	
-});
 	function modifyFrm() {
-		
-		
-		 var title=event.srcElement.name;
-		 var reviewNo=event.srcElement.id;
-		 var content=event.srcElement.value;
+
+		var title = event.srcElement.name;
+		var reviewNo = event.srcElement.id;
+		var content = event.srcElement.value;
 
 		$("#reviewNo").val(reviewNo);
 		$("#title").val(title);
 		$("#content").val(content);
-		
-		alert($("#bc").val())
-	$("#modifyReviewModal").modal();
-	
 
+		
+		$("#modifyReviewModal").modal();
 
 	}
-	
-	function modify(){
-		
-		
+
+	function modify() {
+	$("#reviewForm").submit();
 	}
+	
+	function showDeleteModal(){
+		
+		var reviewNo = event.srcElement.id;
+		$("#deleteInput").val(reviewNo);
+		$("#confirmModal").modal();
+	}
+	
+	function frmSubmit(){
+		
+		$("#deleteFrm").submit();
+	}
+	
 </script>
 
 </head>
@@ -200,11 +213,21 @@ var starRating = function(){
 					<span>[[${reviewDto.content}]]</span></td>
 				<td>[[${reviewDto.writingDate}]]</td>
 				<td>
-					<button type="button" th:name="${reviewDto.title}" th:id="${reviewDto.reviewNo}"
-					th:value="${reviewDto.content}" onclick="modifyFrm()">수정</button>
-					<button type="button">삭제</button></td>
+					<button type="button" th:name="${reviewDto.title}"
+						th:id="${reviewDto.reviewNo}" th:value="${reviewDto.content}"
+						onclick="modifyFrm()">수정</button>
+						<button type="button" th:id="${reviewDto.reviewNo}" 
+					onClick="showDeleteModal()">삭제</button>
 					
-					<!--Modal: idAuth-->
+				</td>
+
+
+			</tr>
+		</table>
+
+
+
+		<!--Modal: idAuth-->
 		<div class="modal fade" id="modifyReviewModal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm modal-notify modal-danger"
@@ -222,8 +245,8 @@ var starRating = function(){
 
 						<form th:action="@{/myPage/modifyReview}" id="reviewForm"
 							method="post">
-							<input type="hidden" id="bc" name="bookingCode" th:value="${reviewDto.bookingCode}">
-							<input type="hidden" id="reviewCode" name="reviewCode"> <label>작성자</label>
+							<input
+								type="hidden" id="reviewNo" name="reviewNo"> <label>작성자</label>
 							<label>[[${session.name}]]</label><br> <label>평점</label> <span
 								class="star-input"> <span class="input"> <input
 									type="radio" name="rating" value="1" id="p1"> <label
@@ -236,8 +259,7 @@ var starRating = function(){
 							</span> <output for="star-input">
 									<b>0</b>점
 								</output>
-							</span> <br>
-							<br> <label>제목</label><br> <input id="title"
+							</span> <br> <br> <label>제목</label><br> <input id="title"
 								name="title" type="text" size="50" maxlength="45" required><br>
 							<label>내용</label><br>
 							<textarea id="content" name="content" rows="8" cols="50"
@@ -249,8 +271,8 @@ var starRating = function(){
 
 					<!--Footer-->
 					<div class="modal-footer flex-center">
-						<a href="#" class="btn  btn-info waves-effect" onclick="modify()">수정</a> <a
-							type="button" class="btn  btn-info waves-effect"
+						<a href="#" class="btn  btn-info waves-effect" onclick="modify()">수정</a>
+						<a type="button" class="btn  btn-info waves-effect"
 							data-dismiss="modal">취소</a>
 					</div>
 				</div>
@@ -258,14 +280,37 @@ var starRating = function(){
 			</div>
 		</div>
 		<!--Modal: idAuth-->
-			</tr>
-		</table>
 
+<!--Modal: confirmModal-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="modal-header d-flex justify-content-center">
+        <br/><br/><p id="modalName" class="heading">이 후기를 삭제하시겠습니까?</p>
+      </div>
 
+      <!--Body-->
+      <div class="modal-body">
+<form id="deleteFrm" action="/myPage/deleteReview">
+<input type="hidden" id="deleteInput">
+</form>
 
-		
-
-
+        
+      </div>
+<br/>
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+        <a href="#" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
+        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">취소</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: confirmModal-->
 
 	</div>
 

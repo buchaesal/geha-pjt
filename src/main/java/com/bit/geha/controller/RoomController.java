@@ -2,7 +2,10 @@ package com.bit.geha.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +15,7 @@ import com.bit.geha.dao.RoomDao;
 import com.bit.geha.dto.FacilityDto;
 import com.bit.geha.dto.GuestHouseDto;
 import com.bit.geha.dto.RoomDto;
+import com.bit.geha.service.MemberService;
 
 
 
@@ -21,7 +25,8 @@ public class RoomController {
 
 	@Autowired
 	RoomDao roomDao;
-	
+	@Autowired
+	MemberService memberService;
 	
 	
 	@RequestMapping("/room")
@@ -42,7 +47,8 @@ public class RoomController {
     
     
     @RequestMapping("/roomInfo")
-    public String guestHouseInfo(@RequestParam("guestHouseCode") int guestHouseCode, Model model) {
+    public String guestHouseInfo(@RequestParam("guestHouseCode") int guestHouseCode, Authentication auth,HttpSession session,Model model) {
+    	memberService.getSession(auth, session);
     	List<RoomDto> rooms = roomDao.roomInfo(guestHouseCode);
     	List<FacilityDto> facility = roomDao.facilityInfo(guestHouseCode);
 
