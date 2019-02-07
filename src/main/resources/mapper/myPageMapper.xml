@@ -14,5 +14,15 @@ businessLicense = #{businessLicense}, gender = #{gender}
 where id = #{id}
 </update>
 
+<select id="getReviewList" resultType="ReviewDto">
+select r.*, v.guestHouseName, v.roomName, o.guestHouseCode 
+from booking_tb b, review_tb r,bkrmghmatching_view v, room_tb o 
+where b.memberCode = #{memberCode} and b.bookingCode = r.bookingCode 
+and r.bookingCode = v.bookingCode and v.roomCode = o.roomCode;
+</select>
 
+<update id="modifyReview">
+update review_tb set title = #{title}, content = #{content}, rating = #{rating}
+where reviewNo = #{reviewNo}
+</update>
 </mapper>

@@ -14,4 +14,9 @@ public class ReviewDto {
 	private String content;
 	private String replyContent;
 	private Timestamp replyDate;
+	
+	//추가
+	private String guestHouseName;
+	private String roomName;
+	private int guestHouseCode;
 }

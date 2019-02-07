@@ -34,4 +34,8 @@ public interface MyPageDao {
 	
 	public void modifyInfo(String id,String memberName, String password, String businessLicense,String gender);
 	
+	public List<ReviewDto> getReviewList(int memberCode);
+	
+	public void modifyReview(ReviewDto reviewDto);
+	
 }
