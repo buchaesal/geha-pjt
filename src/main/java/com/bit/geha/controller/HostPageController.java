@@ -65,7 +65,7 @@ public class HostPageController {
 	}
 	
 	@RequestMapping(value="/registerGuestHouseComplete", method=RequestMethod.POST)
-	public String registerGuestHouseComplete(@RequestParam List<MultipartFile> roomAttach/*, GuestHouseDto guestHouseDto, RoomDtos roomDtos, @RequestParam List<Integer> facilityCode*/) {
+	public String registerGuestHouseComplete(@RequestParam List<List<MultipartFile>> roomAttach/*, GuestHouseDto guestHouseDto, RoomDtos roomDtos, @RequestParam List<Integer> facilityCode*/) {
 		log.info("registerGuestHouseComplete()");
 		
 		System.out.println("roomAttach.size(): " + roomAttach.size());

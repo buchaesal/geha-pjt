@@ -75,7 +75,7 @@
 				<td>
 					[[${bookingDto.bookingStatus}]] <br>
 					<div th:if="${bookingDto.bookingStatus}=='예약완료'">
-						<button id="cancelBtn">취소 요청하기</button>
+						<button class="cancelBtn">취소 요청하기</button>
 								
 						<!-- cancelConfirmModal Modal -->
 						<div id="cancelConfirmModal" class="modal">
@@ -157,7 +157,7 @@
 			
 
 			$(function() {
-				$("#cancelBtn").click(function() {
+				$(".cancelBtn").click(function() {
 					cancelConfirmModal.style.display = "block";
 				})
 			})

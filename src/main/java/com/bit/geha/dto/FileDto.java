@@ -9,4 +9,6 @@ public class FileDto {
 	private int fileSize;
 	private int guestHouseCode;
 	private int roomCode;
+	
+	private boolean isMainImage;
 }
