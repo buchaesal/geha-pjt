@@ -82,9 +82,8 @@
 					<input type="file" id="input_imgs" name="files" multiple>
 					<input type="button" value="삭제" onclick="deleteImgs(this)">
 				</div>
-				<div class="imgs_wrap">
-					
-				</div>
+				<div class="imgs_wrap" name="guestHouseImg"></div>
+				<input type="hidden" name="guestHouse_imglength">
 				
 				<input type="hidden" name="memberCode" th:value="${memberCode}">
 				<table>
@@ -177,9 +176,11 @@
 					<input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
 					<input type="button" value="삭제" onclick="deleteImgs(this)">
 				</div>
-				<div class="imgs_wrap">
-					
+				<div class="imgs_wrap" name="roomsImg">
+			
 				</div>
+				<input type="hidden" name="room_imglength">
+				<input type="hidden" name="isMainRoomImg">
 				<table>
 					<tr>
 						<th>이름</th>
@@ -212,17 +213,16 @@
 		
 		<div layout:fragment="hostPage_script">
 			<script type="text/javascript" th:inline="javascript">
-				var genderIndex=1;
+				var roomIndex=1;
 				$("#addRoomInfoBtn").click(function() {
 					var div = document.createElement('div');
 					div.setAttribute('class', 'roomInfoDiv');
 					
 					document.getElementById('roomInfoList').appendChild(div);
 					
-					//$('#defaultRoomInfo').children().clone().appendTo(div);
 					var cloneRoom = $('#defaultRoomInfo').children().clone();
-					cloneRoom.find('input[type=radio]').attr('name', 'gender'+genderIndex);
-					cloneRoom.find('input[name=gender]').attr('id', 'gender'+genderIndex++);
+					cloneRoom.find('input[type=radio]').attr('name', 'gender'+roomIndex);
+					cloneRoom.find('input[name=gender]').attr('id', 'gender'+roomIndex++);
 					cloneRoom.appendTo(div);
 				})
 				
@@ -246,7 +246,7 @@
 				function handleImgsFilesSelect(e) {
 					//이미지 정보들을 초기화
 					sel_files = [];
-					var prtDiv = e.target.parentNode.nextElementSibling;
+					var prtDiv = e.target.parentNode.nextElementSibling; // div imgs_wrap
 					
 					$(prtDiv).empty();
 					
@@ -264,11 +264,19 @@
 						
 						var reader = new FileReader();
 						reader.onload = function(e) {
-							var html = 
-								"<img src=\""+e.target.result+"\" data-file='"+f.name
+							
+							if($(prtDiv).attr("name")=='roomsImg') { //방일 경우
+								var html = 
+									"<input type='radio' name='isMainRoomImg"+roomIndex+"' value='"+index
+									+"' onclick='clickMainRoomImg($(this).parent().next().next(), this.value)'><img src=\""+e.target.result+"\" data-file='"+f.name
+									+"' class='selProductFile' title='Click to remove'>";
+							} else { //게스트하우스일 경우
+								var html = "<input type='radio' name='isMainImg' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
 								+"' class='selProductFile' title='Click to remove'>";
+							}
 							$(prtDiv).append(html);
 							index++;
+							$(prtDiv).next('input[type=hidden]').val(index);
 						}
 						reader.readAsDataURL(f);
 					});
@@ -284,6 +292,11 @@
 					$(input_imgs).val("");
 					var brtDiv = obj.parentNode.nextElementSibling;
 					$(brtDiv).children().remove();
+				}
+				
+				function clickMainRoomImg(obj, chkValue) {
+					alert("clickMainRoomImg");
+					$(obj).val(chkValue);
 				}
 			</script>
 		</div>
