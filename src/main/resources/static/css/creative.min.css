@@ -3,6 +3,8 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
+ @font-face { font-family: 'yg-jalnan'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff'); font-weight: normal; font-style: normal; }
+ 
 .navbar-default, a {
 	-webkit-transition: all .35s;
 	-moz-transition: all .35s
@@ -20,7 +22,7 @@ body, html {
 }
 
 body {
-	font-family: Merriweather, 'Helvetica Neue', Arial, sans-serif;
+
 	webkit-tap-highlight-color: #222
 }
 
@@ -292,7 +294,7 @@ header .header-content .header-content-inner p {
 .portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-category,
 	.portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-name
 	{
-	font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+/* 	font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif; */
 	padding: 0 15px
 }
 
