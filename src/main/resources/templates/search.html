@@ -308,6 +308,7 @@
 	<!-- jquery/ui -->
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="vendor/jquery/jquery-ui.min.js"></script>
+	<script src="js/jquery.serializeObject.min.js"></script>
 	
 	<!-- handlebars -->
 	<script src="js/handlebars4.js"></script>
@@ -324,7 +325,6 @@
 	
 	<script>
 	$(function(){
-
 		/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 / 세미콜론(;)넣지 않음 주의 */
 	  	$(".datepicker-here").datepicker({
 			language: 'en',
@@ -351,10 +351,10 @@
 		      }
 		});
 	  	
-	   $("#amount").text( $( "#slider-range" ).slider( "values", 0 )/10000 + "만원" +
-		      " ~ " + $( "#slider-range" ).slider( "values", 1 )/10000 + "만원" );
-	   $("#minprice").val($( "#slider-range" ).slider( "values", 0 ));
-	   $("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
+   		$("#amount").text( $( "#slider-range" ).slider( "values", 0 )/10000 + "만원" +
+	    	  		" ~ " + $( "#slider-range" ).slider( "values", 1 )/10000 + "만원" );
+	   	$("#minprice").val($( "#slider-range" ).slider( "values", 0 ));
+   		$("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
 	   
 	   /* 인원수 버튼 구현 */
 	   var personCnt = 1;
@@ -441,54 +441,33 @@
 	</script>
 	<script> /* handlebars and daum maps api */
 	$(function(){
-
+		
  		var gehaArr = [];
 		var gehaObj = {};
 		
-		jQuery.fn.serializeObject = function() {
-		    var obj = null;
-		    try {
-		        if (this[0].tagName && this[0].tagName.toUpperCase() == "FORM") {
-		            var arr = this.serializeArray();
-		            if (arr) {
-		                obj = {};
-		                jQuery.each(arr, function() {
-		                    obj[this.name] = this.value;
-		                });
-		            }//if ( arr ) {
-		        }
-		    } catch (e) {
-		        alert(e.message);
-		    } finally {
-		    }
-		 
-		    return obj;
-		};
-		
-		$("#btn-search").click(function(){
+ 		$("#btn-search").click(function(){
 			var formData = $("form").serializeObject();
-			/* formData.shift(); */
+			delete formData["_csrf"];
 			console.log(formData);
 			
-			var aaa = JSON.stringify(formData);
-			console.log(aaa);
+			console.log(JSON.stringify(formData));
 			
 			var getData = $.ajax({
 			  url: "searchgehainfo",
-			  type: "get", //send it through get method
-			  contentType: "application/json; charset=UTF-8",
-			  data: JSON.stringify(formData),
+			  type: "GET",
+			  contentType: "application/json; charset=utf8",
+			  data: formData,
 			  dataType: "json"
 			})
-			.done(function(){
-				alert("sucess");
+			.done(function(data){
+				var source = $("#template").html();
+				var template = Handlebars.compile(source);
+				$("#searchresult").html(template(data));
 			})
 			.fail(function(){
 				alert("failed");
 			});
-			
 		});
-		
 		
 		/* promise로 비동기 콜백함수 문제 해결 --지도 다중 마커-- */
 /* 		function getData() {
@@ -526,7 +505,7 @@
 			.then(function (data) {
 				var source = $("#template").html();
 				var template = Handlebars.compile(source);
-				$("#searchresult").append(template(data));
+				$("#searchresult").html(template(data));
 				
 				for(var i=0, len=data.length; i<len; i++){
 					gehaObj = {
@@ -636,14 +615,11 @@
 		}
 		/* xxx */
 		
-		
-
-		
 	}); /* document onload function end */
 </script>
 <script>
 $(function(){
-	/* default 검색 데이터 설정 */
+	/* 검색 기본 날짜 설정 */
 	var getToday = new Date();
 	var getTomorrow = new Date();
 	getTomorrow.setDate(getTomorrow.getDate() + 1);
@@ -662,14 +638,8 @@ $(function(){
 			return d;
 		}
 	}
-	
-	
-
-	
 });
 </script>
-
-	
 <!-- script end -->
 </div> <!-- end layout script -->
 

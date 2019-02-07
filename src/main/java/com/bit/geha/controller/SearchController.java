@@ -1,9 +1,11 @@
 package com.bit.geha.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +21,8 @@ public class SearchController {
 	private SearchDao dao;
 	
 	@RequestMapping("/search")
-	public String search() {
+	public String search(Model model) {
+		model.addAttribute(dao.listGeha());
 		return "search";
 	}
 	
@@ -32,11 +35,19 @@ public class SearchController {
 	@GetMapping("/searchgehainfo")
 	@ResponseBody
 	public List<SearchDto> searchGehaInfo(SearchCriteria sc){
-		System.out.println("aaaaa");
+		System.out.println("searchGehaInfo()");
 		
+		if(sc.getGender() == null) {
+			List<String> gender = new ArrayList<>();
+			sc.setGender(gender);
+		}
 		System.out.println(sc.getGender());
 		System.out.println(sc.getGender().size());
 		
+		if(sc.getFacilities() == null) {
+			List<Integer> facilities = new ArrayList<>();
+			sc.setFacilities(facilities);
+		}
 		System.out.println(sc.getFacilities());
 		System.out.println(sc.getFacilities().size());
 		
