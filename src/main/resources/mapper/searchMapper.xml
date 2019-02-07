@@ -26,7 +26,7 @@ from guestHouse_tb gh
 			on rm.guestHouseCode = gh.guestHouseCode
 			<if test="gender != null">
 				<if test="gender.size() > 0">
-				and rm.gender in
+					and rm.gender in
 			        <foreach collection="gender" item="gender" open="(" separator="," close=")">
 			            #{gender}
 			        </foreach>
@@ -52,18 +52,20 @@ from guestHouse_tb gh
 	on gh.guestHouseCode = ghf.guestHouseCode
 	<if test="facilities != null">
 		<if test="facilities.size() > 0">
-			join
-				(select ghf.guestHouseCode, COUNT(ghf.facilityCode)
-				from guesthouse_has_facility_tb ghf
-				where ghf.facilityCode in
-			        <foreach collection="facilities" item="fa" open="(" separator="," close=")">
-			            #{fa}
-			        </foreach>
-				group by ghf.guestHouseCode
-				<bind name="fasize" value="facilities.size()" />
-				having COUNT(ghf.facilityCode) = #{fasize}
-				) fa
-			on fa.guestHouseCode = gh.guestHouseCode
+			<if test="facilities.get(0) > 0">
+				join
+					(select ghf.guestHouseCode, COUNT(ghf.facilityCode)
+					from guestHouse_has_facility_tb ghf
+					where ghf.facilityCode in
+				        <foreach collection="facilities" item="fa" open="(" separator="," close=")">
+				            #{fa}
+				        </foreach>
+					group by ghf.guestHouseCode
+					<bind name="fasize" value="facilities.size()" />
+					having COUNT(ghf.facilityCode) = #{fasize}
+					) fa
+				on fa.guestHouseCode = gh.guestHouseCode
+			</if>
 		</if>
 	</if>
 	join room_tb rm
