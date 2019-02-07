@@ -27,7 +27,7 @@ public interface MyPageDao {
 	@Select("SELECT memberName FROM member_tb WHERE memberCode=#{memberCode}")
 	public String getMemberName(int memberCode);
 	
-	@Insert("insert into review_tb (bookingCode, rating, writingDate, title, content) values (#{bookingCode}, #{rating}, now(), #{title}, #{content})")
+	@Insert("INSERT INTO review_tb (bookingCode, rating, writingDate, title, content) VALUES (#{bookingCode}, #{rating}, now(), #{title}, #{content})")
 	public void addReview(ReviewDto reviewDto);
 	
 	public void modifyNameEtc(String id,String memberName,String businessLicense,String gender);

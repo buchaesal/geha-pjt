@@ -20,22 +20,36 @@ public class SearchController {
 	@Autowired
 	private SearchDao dao;
 	
-	@RequestMapping("search")
-	public String search(SearchCriteria sc, Model model) {
-		model.addAttribute("list", dao.listGeha());
-		/*model.addAttribute("list", dao.searchGeha(sc));*/
+	@RequestMapping("/search")
+	public String search(Model model) {
+		model.addAttribute(dao.listGeha());
 		return "search";
 	}
 	
-	@GetMapping("allgehainfo")
+	@GetMapping("/allgehainfo")
 	@ResponseBody
 	public List<SearchDto> searchapi(SearchCriteria sc){
 		return dao.listGeha();
 	}
 	
-	@GetMapping("searchgehainfo")
+	@GetMapping("/searchgehainfo")
 	@ResponseBody
 	public List<SearchDto> searchGehaInfo(SearchCriteria sc){
+		System.out.println("searchGehaInfo()");
+		
+		if(sc.getGender() == null) {
+			List<String> gender = new ArrayList<>();
+			sc.setGender(gender);
+		}
+		System.out.println(sc.getGender());
+		System.out.println(sc.getGender().size());
+		
+		if(sc.getFacilities() == null) {
+			List<Integer> facilities = new ArrayList<>();
+			sc.setFacilities(facilities);
+		}
+		System.out.println(sc.getFacilities());
+		System.out.println(sc.getFacilities().size());
 		
 		return dao.searchGeha(sc);
 	}

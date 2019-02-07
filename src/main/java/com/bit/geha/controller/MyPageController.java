@@ -35,10 +35,12 @@ public class MyPageController {
 	
 	//예약내역
 	@RequestMapping(value="/bookingList")
-	public void bookingList(Model model,HttpSession session,Authentication auth) {
+	public void bookingList(Model model, HttpSession session, Authentication auth) {
+		log.info("bookingList()");
+		
+		//로그인 계정 가져오기
 		memberService.getSession(auth,session);
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
-		log.info("bookingList()");
 		
 		model.addAttribute("bookingList", myPageDao.getBookingListByMemberCode(memberCode));
 		model.addAttribute("reviewList", myPageDao.getReviewListByMemberCode(memberCode));

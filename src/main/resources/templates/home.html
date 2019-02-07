@@ -16,6 +16,19 @@
     <link href="/css/creative.min.css" rel="stylesheet">
 
 <style>
+
+@font-face {
+	font-family: 'yg-jalnan';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+*{
+
+font-family: 'yg-jalnan';
+}
  .navbar-default .btn-group>.btn:first-child{margin-left: 0;
     background: transparent;
     color: rgba(255,255,255,.7);
@@ -64,7 +77,7 @@ right-padding:20px;
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"  th:object="${session.member}">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="search">방찾기</a>
+                        <a class="page-scroll" href="/search">방찾기</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="/myPage/bookingList">예약내역</a>

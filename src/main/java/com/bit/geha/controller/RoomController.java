@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.bit.geha.dao.RoomDao;
 import com.bit.geha.dto.FacilityDto;
 import com.bit.geha.dto.GuestHouseDto;
-import com.bit.geha.dto.ReplyReviewDto;
 import com.bit.geha.dto.RoomDto;
 
 
 
 @Controller
+@RequestMapping(value="/room")
 public class RoomController {
 
 	@Autowired

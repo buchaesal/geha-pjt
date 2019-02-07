@@ -1,6 +1,5 @@
 package com.bit.geha.controller;
 
-
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,8 @@ public class BookingController {
 	
 	@RequestMapping("/bookingPage")
 	public void loadBookingPage(Model model, int roomCode
-			, @RequestParam(value="checkin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkin
-			, @RequestParam(value="checkout") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkout) {
+			, @RequestParam(value="bookingStart") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date bookingStart
+			, @RequestParam(value="bookingEnd") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date bookingEnd) {
 		log.info("loadBookingPage()");
 		RoomDto roomDto = bookingDao.getRoom(roomCode);
 		log.info("roomDto: " + roomDto);
@@ -36,8 +35,8 @@ public class BookingController {
 		log.info("guestHouseName: " + guestHouseName);
 		
 		
-		model.addAttribute("checkin", checkin);
-		model.addAttribute("checkout", checkout);
+		model.addAttribute("checkin", bookingStart);
+		model.addAttribute("checkout", bookingEnd);
 		model.addAttribute("roomDto", roomDto);
 		model.addAttribute("guestHouseName", guestHouseName);
 	}
