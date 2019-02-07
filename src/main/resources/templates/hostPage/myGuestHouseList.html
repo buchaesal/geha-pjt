@@ -5,6 +5,33 @@
 	
 	<head>
 		<title>내 게스트하우스</title>
+		<style>
+			/* The Modal (background) */
+			.modal {
+	            display: none; /* Hidden by default */
+	            position: fixed; /* Stay in place */
+	            z-index: 1; /* Sit on top */
+	            left: 0;
+	            top: 0;
+	            width: 100%; /* Full width */
+	            height: 100%; /* Full height */
+	            overflow: auto; /* Enable scroll if needed */
+	            background-color: rgb(0,0,0); /* Fallback color */
+	            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	        }
+	    
+	        /* Modal Content/Box */
+	        .modal-content {
+	            background-color: #fefefe;
+	            margin: 15% auto; /* 15% from the top and centered */
+	            padding: 20px;
+	            border: 1px solid #888;
+	            width: 50%; /* Could be more or less, depending on screen size */                          
+	        }
+	        p {
+				font-weight: bold;
+			}
+		</style>
 	</head>
 	
 	<body>
@@ -27,17 +54,24 @@
 						<div th:unless="${guestHouseDto.approvalDate}">
 							<label th:if="${#lists.size(rejectList)}==0">등록신청<br><a>보기/수정</a></label>
 							<div th:unless="${#lists.size(rejectList)}==0" th:each="rejectDto : ${rejectList}">
-								<a th:if="${guestHouseDto.guestHouseCode}==${rejectDto.guestHouseCode} and ${rejectDto.rejectCnt}==1">반려</a>
+								<div th:if="${guestHouseDto.guestHouseCode}==${rejectDto.guestHouseCode} and ${rejectDto.rejectCnt}==1">
+									<button id="rejectHistoryBtn">반려</button><br>
+									<a>보기/수정</a>
+								</div>
 							</div>
 						</div>
 					</td>
 				</tr>
 			</table>
 			
-			<button id="registerGuestHouseBtn">내 게스트하우스 등록하기</button>
+			<a href="registerGuestHouse">내 게스트하우스 등록하기</a>
 		</div>
 		
-		<div layout:fragment="hostPage_script"></div>
+		<div layout:fragment="hostPage_script">
+			<script type="text/javascript">
+
+			</script>
+		</div>
 	</body>
 
 </html>
