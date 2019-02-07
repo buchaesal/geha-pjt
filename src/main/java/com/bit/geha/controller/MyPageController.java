@@ -1,6 +1,9 @@
 package com.bit.geha.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.geha.dao.MyPageDao;
 import com.bit.geha.dto.ReviewDto;
+import com.bit.geha.service.MemberService;
 
 import lombok.extern.java.Log;
 
@@ -18,9 +22,14 @@ public class MyPageController {
 	@Autowired
 	MyPageDao myPageDao;
 	
+	@Autowired
+	MemberService memberService;
+	
 	//예약내역
 	@RequestMapping(value="/bookingList")
-	public void bookingList(int memberCode, Model model) {
+	public void bookingList(Model model,HttpSession session,Authentication auth) {
+		memberService.getSession(auth,session);
+		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
 		log.info("bookingList()");
 		
 		model.addAttribute("bookingList", myPageDao.getBookingListByMemberCode(memberCode));

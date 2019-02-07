@@ -9,5 +9,6 @@ import com.bit.geha.dto.SearchDto;
 
 @Mapper
 public interface SearchDao {
-	public List<SearchDto> listGeha(SearchCriteria sc);
+	public List<SearchDto> listGeha();
+	public List<SearchDto> searchGeha(SearchCriteria sc);
 }

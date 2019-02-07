@@ -19,7 +19,7 @@
  .navbar-default .btn-group>.btn:first-child{margin-left: 0;
     background: transparent;
     color: rgba(255,255,255,.7);
-    padding: 15px 15px; 
+    padding: 14px 20px; 
     font-size: large;
     }
  .navbar-default.affix .btn-group>.btn:first-child{margin-left: 0;
@@ -40,7 +40,10 @@ font-size: large;
 .navbar-right{
 padding-top:15px;
 }
-
+.glyphicon.glyphicon-user{
+font-size:25px;
+right-padding:20px;
+}
 
 </style>
 
@@ -58,7 +61,7 @@ padding-top:15px;
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"  th:object="${session.member}">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a class="page-scroll" href="search">방찾기</a>
@@ -85,11 +88,10 @@ padding-top:15px;
                	  	   	 <li><a href="/myPage/bookingList" class="page-scroll">마이페이지</a></li>
                	  	   	 <li th:if="${session.auth.equals('HOST')}"><a href="#" class="page-scroll">호스트페이지</a></li>
                	  	   	 <li th:if="${session.auth.equals('ADMIN')}"><a href="#" class="page-scroll">관리자페이지</a></li>
-   						 <li><a href="#" onclick="logout()">로그아웃</a></li>
+   						 <li><a href="/logout" onclick="">로그아웃</a></li>
  						 </ul>
 				</div>
                 </ul>
-                 <form id="logout" th:action="@{/logout}" method="post"></form>
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -232,13 +234,7 @@ padding-top:15px;
     <script src="/vendor/scrollreveal/scrollreveal.min.js"></script>
     <script src="/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
-    <!-- Theme JavaScript -->
-    <script src="/js/creative.min.js"></script>
-	<script>
-	function logout(){
-		$('#logout').submit();
-	}
-	</script>
+ 
 	
 </body>
 
