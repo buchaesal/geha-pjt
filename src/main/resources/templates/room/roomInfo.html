@@ -362,9 +362,7 @@ position: absolute;
 			  	<!-- 객실안내/예약탭  -->
 			    <div id="home" class="tab-pane active">
 			      	<div class="picker">
-						<input type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en"	class="datepicker-here" readonly   />
-						<input type="hidden" id="startdate" name="bookingStart" />
-						<input type="hidden" id="enddate" name="bookingEnd" />
+						<input type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en"	id= "date" class="datepicker-here"     />
 					</div>
 					<br><br>
 					
@@ -390,7 +388,7 @@ position: absolute;
 							    <div class="swiper-pagination"></div>
 							  </div>
 						<div class="rInfo">
-							<h1 th:text="*{roomName}"></h1>
+							<h1 th:text=*{roomName}></h1>
 							<div class="flexbox">
 								<div class="fav-btn">
 									<span href="" class="favme dashicons dashicons-heart"></span>
@@ -399,7 +397,7 @@ position: absolute;
 							<span th:text="|*{capacity}명|"></span>
 							<span th:text="|*{charge}원|"></span>
 							
-							<span th:switch="*{gender}">
+							<span th:switch=*{gender}>
 								<span th:case="F" th:text="여성전용"></span>
 								<span th:case="M" th:text="남성전용"></span>
 								<span th:case="N" th:text="남녀공용"></span>
@@ -419,6 +417,12 @@ position: absolute;
 			            		<a class="close" href="#close"></a>
 			       			</div>
 						</div>
+						<form action="/booking/bookingPage" >
+							<input type="hidden" id="startdate" name="bookingStart" />
+							<input type="hidden" id="enddate" name="bookingEnd" />
+							<input type="hidden" name="roomCode" th:value="*{roomCode}">
+							<button class="btn btn-primary" type="submit">예약하기</button>
+						</form>
 					</div>
 					</article>
 			
@@ -451,18 +455,18 @@ position: absolute;
 						</ul>
 						<ul class ="facility"  >
 							<li th:each="FacilityDto,stat: ${facility}" th:object="${FacilityDto}"  th:switch="*{facilityName}" > 
-							<img th:case="세탁기" th:src="@{/img/facility/washing-machine.png}"></img> 
-							<img th:case="주차장" th:src="@{/img/facility/parking.png}"></img> 
-							<img th:case="주방" th:src="@{/img/facility/kitchen.png}"></img>
-							<img th:case="엘리베이터" th:src="@{/img/facility/elevator.png}"></img>
-							<img th:case="취사가능" th:src="@{/img/facility/cooking.png}"></img>
-							<img th:case="전자레인지" th:src="@{/img/facility/microwave.png}"></img>	
-							<img th:case="와이파이" th:src="@{/img/facility/wifi.png}"></img>
-							<img th:case="에어컨" th:src="@{/img/facility/air-conditioner.png}"></img>
-							<img th:case="냉장고" th:src="@{/img/facility/fridge.png}"	></img>
-							<img th:case="욕조" th:src="@{/img/facility/bath-tub.png}"	></img>
-							<img th:case="드라이기" th:src="@{/img/facility/dryer.png}"	></img>
-							<img th:case="TV" th:src="@{/img/facility/television.png}"></img>	
+								<img th:case="세탁기" th:src="@{/img/facility/washing-machine.png}"></img> 
+								<img th:case="주차장" th:src="@{/img/facility/parking.png}"></img> 
+								<img th:case="주방" th:src="@{/img/facility/kitchen.png}"></img>
+								<img th:case="엘리베이터" th:src="@{/img/facility/elevator.png}"></img>
+								<img th:case="취사가능" th:src="@{/img/facility/cooking.png}"></img>
+								<img th:case="전자레인지" th:src="@{/img/facility/microwave.png}"></img>	
+								<img th:case="와이파이" th:src="@{/img/facility/wifi.png}"></img>
+								<img th:case="에어컨" th:src="@{/img/facility/air-conditioner.png}"></img>
+								<img th:case="냉장고" th:src="@{/img/facility/fridge.png}"	></img>
+								<img th:case="욕조" th:src="@{/img/facility/bath-tub.png}"	></img>
+								<img th:case="드라이기" th:src="@{/img/facility/dryer.png}"	></img>
+								<img th:case="TV" th:src="@{/img/facility/television.png}"></img>	
 							</li>
 						</ul>
 						<div id="map" style="width:100%;height:300px;"></div>
@@ -594,6 +598,7 @@ position: absolute;
 		minDate: new Date(),
 		range: true,
 		autoClose: true,
+		defaultDate : new Date(),
 	    onSelect: function onSelect(fd, date){
 	    	$("#startdate").val(fd.split(" ~ ")[0])
 	    	$("#enddate").val(fd.split(" ~ ")[1])
@@ -700,6 +705,33 @@ position: absolute;
 	});
 
 	</script>
+	<script>
+$(function(){
+	/* default 검색 데이터 설정 */
+	var getToday = new Date();
+	var getTomorrow = new Date();
+	getTomorrow.setDate(getTomorrow.getDate() + 1);
+	
+	var strToday = getToday.getFullYear() + '-' + lessThanTen(getToday.getMonth() + 1) + '-' + lessThanTen(getToday.getDate());
+	var strTomorrow = getTomorrow.getFullYear() + '-' + lessThanTen(getTomorrow.getMonth() + 1) + '-' + lessThanTen(getTomorrow.getDate());
+	
+	$('#date').val(strToday + ' ~ ' + strTomorrow);
+	$('#startdate').val(strToday);
+	$('#enddate').val(strTomorrow);
+	
+	function lessThanTen(d){
+		if (d < 10){
+			return '0'+d;
+		} else {
+			return d;
+		}
+	}
+	
+	
+
+	
+});
+</script>
 	</div>
 </body>
 </html>
