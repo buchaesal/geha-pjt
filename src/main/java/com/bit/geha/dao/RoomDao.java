@@ -17,5 +17,5 @@ public interface RoomDao {
 	GuestHouseDto gehaInfo(int guestHouseCode);
 	List<RoomDto> roomInfo(int guestHouseCode);
 	List<FacilityDto> facilityInfo(int guestHouseCode);
-	List<ReplyReviewDto> reviewInfo(int guestHouseCode);
+
 }

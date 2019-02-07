@@ -14,11 +14,14 @@ import com.bit.geha.dto.GuestHouseDto;
 import com.bit.geha.dto.ReplyReviewDto;
 import com.bit.geha.dto.RoomDto;
 
+
+
 @Controller
 public class RoomController {
-	
+
 	@Autowired
 	RoomDao roomDao;
+	
 	
 	
 	@RequestMapping("/room")
@@ -36,17 +39,22 @@ public class RoomController {
     	
     }
     
+    
+    
     @RequestMapping("/roomInfo")
     public String guestHouseInfo(@RequestParam("guestHouseCode") int guestHouseCode, Model model) {
     	List<RoomDto> rooms = roomDao.roomInfo(guestHouseCode);
     	List<FacilityDto> facility = roomDao.facilityInfo(guestHouseCode);
-    	List<ReplyReviewDto> reply = roomDao.reviewInfo(guestHouseCode);
+
     	
     	model.addAttribute("geha", roomDao.gehaInfo(guestHouseCode));
     	model.addAttribute("room", rooms);
     	model.addAttribute("facility", facility );
-    	model.addAttribute("reply" , reply);    	
+
     	return "/room/roomInfo";
     	
     }
+    
+
+    
 }
