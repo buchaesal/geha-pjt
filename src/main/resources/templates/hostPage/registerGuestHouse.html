@@ -180,7 +180,7 @@
 			
 				</div>
 				<input type="hidden" name="room_imglength">
-				<input type="hidden" name="isMainRoomImg">
+				<input type="hidden" name="isMainRoomImage">
 				<table>
 					<tr>
 						<th>이름</th>
@@ -267,11 +267,11 @@
 							
 							if($(prtDiv).attr("name")=='roomsImg') { //방일 경우
 								var html = 
-									"<input type='radio' name='isMainRoomImg"+roomIndex+"' value='"+index
+									"<input type='radio' name='isMainRoomImage"+roomIndex+"' value='"+index
 									+"' onclick='clickMainRoomImg($(this).parent().next().next(), this.value)'><img src=\""+e.target.result+"\" data-file='"+f.name
 									+"' class='selProductFile' title='Click to remove'>";
 							} else { //게스트하우스일 경우
-								var html = "<input type='radio' name='isMainImg' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
+								var html = "<input type='radio' name='isMainImage' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
 								+"' class='selProductFile' title='Click to remove'>";
 							}
 							$(prtDiv).append(html);
