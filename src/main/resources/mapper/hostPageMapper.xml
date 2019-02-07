@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.geha.dao.HostPageDao">
+
+	<insert id="addGuestHouse" useGeneratedKeys="true" keyProperty="guestHouseCode" parameterType="GuestHouseDto">
+		INSERT INTO guestHouse_tb (guestHouseName, guestHouseInfo, rules, parkingInfo, address, directions, registerDate
+			, memberCode, businessTrip, gourmet, trip, shopping, bankName, accountNumber)
+		VALUES 
+		(#{guestHouseName}, #{guestHouseInfo}, #{rules}, #{parkingInfo}, #{address}, #{directions}, now()
+			, #{memberCode}, #{businessTrip}, #{gourmet}, #{trip}, #{shopping}, #{bankName}, #{accountNumber})
+	</insert>
+	
+	<insert id="addRooms" parameterType="java.util.List">
+		INSERT INTO room_tb (guestHouseCode, roomName, charge, gender, capacity, roomInfo) 
+		VALUES
+		<foreach collection="list" item="roomDto" separator=", ">
+			(#{roomDto.guestHouseCode}, #{roomDto.roomName}, #{roomDto.charge}, #{roomDto.gender}, #{roomDto.capacity}, #{roomDto.roomInfo})
+		</foreach>
+	</insert>
+	
+	<insert id="addFacilities" parameterType="java.util.Map">
+		INSERT INTO guesthouse_has_facility_tb (guestHouseCode, facilityCode) 
+		VALUES 
+		<foreach collection="facilityCode" item="facilityCode" separator=", ">
+			(#{guestHouseCode}, #{facilityCode})
+		</foreach>
+	</insert>
+
+</mapper>
