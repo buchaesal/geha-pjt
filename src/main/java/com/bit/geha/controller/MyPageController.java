@@ -67,6 +67,8 @@ public class MyPageController {
 		System.out.println("reviewDto: " + reviewDto);
 		myPageDao.addReview(reviewDto);
 		
+		//평점평점 구하기
+		
 		return "redirect:/myPage/bookingList?memberCode="+memberCode;
 	}
 	
