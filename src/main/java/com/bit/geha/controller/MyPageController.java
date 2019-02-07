@@ -69,8 +69,9 @@ public class MyPageController {
 	}
 	
 	@RequestMapping("/myReview")
-	public void myReview() {
-		
+	public void myReview(Model model,HttpSession session) {
+		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
+		model.addAttribute("reviewList",myPageDao.getReviewList(memberCode));
 	}
 	
 	@RequestMapping("/myInfo")
@@ -95,5 +96,11 @@ public class MyPageController {
 			
 			return "redirect:/myPage/myInfo";
 			
+	}
+	
+	@RequestMapping("/modifyReview")
+	public String modifyReview(ReviewDto reviewDto) {
+		myPageDao.modifyReview(reviewDto);
+		return "redirect:/myPage/myReview";
 	}
 }
