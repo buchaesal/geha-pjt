@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import com.bit.geha.dto.MemberDto;
 import com.bit.geha.service.SocialService;
-import com.bit.geha.service.UserDetailService;
 
 public class FacebookFilter extends OAuth2ClientAuthenticationProcessingFilter {
 	

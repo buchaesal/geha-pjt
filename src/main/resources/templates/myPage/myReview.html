@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/myPage_layout">
+<head>
+<meta charset="UTF-8">
+<title>리뷰관리</title>
+</head>
+<body>
+<div layout:fragment="myPage_content">
+<table border="2">
+			<tr>
+				<th>게스트하우스</th>
+				<th>작성내용</th>
+				<th>작성일</th>
+				<th></th>
+			</tr>
+			<tr th:each="bookingDto : ${bookingList}">
+				<td th:text="${bookingDto.bookingCode}"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				</tr>
+				</table>
+</div>
+</body>
+</html>

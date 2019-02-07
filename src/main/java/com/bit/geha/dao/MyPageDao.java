@@ -29,4 +29,9 @@ public interface MyPageDao {
 	
 	@Insert("insert into review_tb (bookingCode, rating, writingDate, title, content) values (#{bookingCode}, #{rating}, now(), #{title}, #{content})")
 	public void addReview(ReviewDto reviewDto);
+	
+	public void modifyNameEtc(String id,String memberName,String businessLicense,String gender);
+	
+	public void modifyInfo(String id,String memberName, String password, String businessLicense,String gender);
+	
 }
