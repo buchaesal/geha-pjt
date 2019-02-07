@@ -64,7 +64,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/member/login")
+			.antMatchers("/member/login","/member/findPw","/member/signUp",
+					"/member/hostSignUp","/member/changePw","/member/chooseAuth",
+					"/member/sendEmailComplete","/member/emailConfirm")
 			.anonymous()
 			.antMatchers("/myPage/*")
 			.authenticated()
@@ -96,7 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public AuthenticationSuccessHandler successHandler() {
-	    return new CustomLoginSuccessHandler("/defaultUrl");
+	    return new CustomLoginSuccessHandler("/yourdefaultsuccessurl");
 	}
 	
 	 private Filter ssoFilter() {

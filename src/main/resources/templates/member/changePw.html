@@ -36,7 +36,74 @@
     border-bottom: 0;
 }
 </style>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+	
+	<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
 
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(function() {
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
+	
+	
+	
+});
+
+function passwordChange(){
+	var getPw = RegExp(/^[^ ]{4,}$/gi);
+	var password = $("#password").val();
+	var passwordCheck = $("#passwordCheck").val();
+	
+	if(password!==passwordCheck){
+		$("#pwError").text('비밀번호 확인이 일치하지 않습니다.');
+		return false;
+	}else if(!getPw.test(password)){
+		$("#pwError").text('비밀번호는 4자리 이상이어야 합니다.');
+		return false;
+	}else{
+		
+		var frm= $("#frm").serialize();
+		
+		$.ajax({
+			type : "POST",
+			url : "updatePw.do",
+			cache : false,
+			data : frm,
+			success : function(data){
+				$("#updatePwModal").modal({backdrop: 'static', keyboard: false});
+			},
+			error : function(error){
+				alert(error);
+			}
+		});
+		
+		
+	}
+}
+</script>
+<style>
+.error{
+color:tomato;
+}
+.modal-content {
+width: max-content;
+}
+.modal-header {
+    padding: 15px;
+    padding-top: 28px;
+    padding-left: 43px;
+    padding-right: 53px;
+}
+
+</style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -44,28 +111,65 @@
 <div class="container-login100">
 			<div class="wrap-login100 p-t-90 p-b-30">
 			
-			<form class="login100-form validate-form">
+			<form class="login100-form validate-form" id="frm">
 			<span class="login100-form-title p-b-40">
 						:: 비밀번호 변경 ::
 					</span>
+					<input type="hidden" id="id" name="id" th:value="${id}">
 					<div class="wrap-input100 validate-input m-b-16">
-					<input class="input100" type="password" placeholder="새 비밀번호">
+					<input class="input100" type="password" id="password" name="password" placeholder="새 비밀번호">
 					<span class="focus-input100"></span>
 					</div>
 					<div class="wrap-input100 validate-input m-b-16">
-					<input class="input100" type="password" placeholder="비밀번호 확인">
+					<input class="input100" type="password" id="passwordCheck" name="passwordCheck" placeholder="비밀번호 확인">
 					<span class="focus-input100"></span>
 					</div>
 					
-			</form>
 			
+			<p id="pwError" class="error"></p>
 			<div class="container-login100-form-btn">
-						<button type="button" class="login100-form-btn" onClick="location.href='/'">
+						<button type="button" class="login100-form-btn" onClick="passwordChange()">
 							변경하기
 						</button>
 					</div>
+					</form>
 			</div></div>
 </div>
+<!--Modal: modalConfirmDelete-->
+<div class="modal fade" id="updatePwModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="modal-header d-flex justify-content-center">
+        <br/><br/>
+       <span class="login100-form-title p-b-40">
+						비밀번호가 변경되었습니다!
+					</span>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+
+<div class="container-login100-form-btn">
+						<button type="button" class="login100-form-btn" onClick="location.href='/'">
+							메인으로
+						</button>
+					</div>
+        
+      </div>
+<br/>
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+       
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: modalConfirmDelete-->
+
 </div>
 	
 <!--===============================================================================================-->

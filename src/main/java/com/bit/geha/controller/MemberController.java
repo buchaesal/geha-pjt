@@ -84,7 +84,8 @@ public class MemberController {
 	}
 
 	@RequestMapping("/changePw")
-	public void changePw() {
+	public void changePw(Model model,@RequestParam("hiddenId")String id) {
+		model.addAttribute("id",id);
 	}
 
 	@RequestMapping("/sendEmailComplete")
@@ -98,9 +99,12 @@ public class MemberController {
 	@PostMapping(value = "findPw.do")
 	@ResponseBody
 	public String findPw(@RequestBody String id) throws Exception {
-
+		id = id.replace("%40", "@").substring(3);
+		if(memberDao.findById(id)==null) { //그 이메일을 가진 회원이 존재하지 않는다면
+			return "";
+		}else { //존재한다면 인증코드 메일을 보낸다
 		return memberService.findPw(id);
-
+		}
 	}
 
 	@PostMapping(value = "/idcheck.do")
@@ -150,5 +154,14 @@ public class MemberController {
 	@ResponseBody
 	public void sendMail(@RequestParam(value="id") String id) throws Exception {
 		memberService.sendMail(id);
+	}
+	
+	@RequestMapping("updatePw.do")
+	@ResponseBody
+	public void updatePw(@RequestParam(value="password") String password,
+			@RequestParam(value="id")String id) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		memberDao.changePw(id, passwordEncoder.encode(password));
+		
 	}
 }
