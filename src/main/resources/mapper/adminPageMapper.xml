@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.geha.dao.AdminPageDao">
+<select id="getMemberList" resultType="MemberDto">
+select * from member_tb;
+</select>
+
+<update id="changeAdmin">
+update member_tb set authority = 'ADMIN'
+where id = #{id}
+</update>
+
+<update id="changeUser">
+update member_tb set authority = 'USER'
+where id = #{id}
+</update>
+
+
+</mapper>

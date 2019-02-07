@@ -2,11 +2,6 @@
 <html 	xmlns:th="http://www.thymeleaf.org" 
    		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   		layout:decorator="fragments/main_layout"  >
-	
-  		
-<!-- 	
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="fragments/main_layout" -->
 
 <head>
 <meta charset="UTF-8">
@@ -44,7 +39,7 @@
 <!-- 				<th>guestHouseInfo</th>
 				<th>rules</th>
 				<th>parkingInfo</th> -->
-				<th>address</th>
+				<th  >address</th>
 <!-- 				<th>directions</th> -->
 				<th>registerDate</th>
 				<th>approvalDate</th>
@@ -57,14 +52,12 @@
 				<th>bankName</th>
 				<th>accountNumber</th>		
 			</tr>
-			<tr th:each="GuestHouseDto,stat: ${geha}" th:object="${GuestHouseDto}">
+			<tr th:each="GuestHouseDto,stat: ${geha}" th:object="${GuestHouseDto}" >
 				<td th:text="*{guestHouseCode}">guestHouseCode</td>
-				<td> <a th:href="@{roomInfo(guestHouseCode=*{guestHouseCode})}" th:text="*{guestHouseName}">guestHouseName</a> </td>
+				<td> <a th:href="@{roomInfo(guestHouseCode=*{guestHouseCode})}" th:text="*{guestHouseName}" 				>guestHouseName</a> </td>
 			
-<!-- 				<td th:text="*{guestHouseInfo}">guestHouseInfo</td>
-				<td th:text="*{rules}">rules</td>
-				<td th:text="*{parkingInfo}">parkingInfo</td> -->
-				<td th:text="*{address}">address</td>
+
+				<td th:text="*{address}"  >address</td>
 <!-- 				<td >directions</td> -->
 				<td th:text="*{#dates.format(registerDate,'YYYY-MM-dd')}">registerDate</td>
 				<td th:text="*{#dates.format(approvalDate,'YYYY-MM-dd')}">approvalDate</td>

@@ -1,5 +1,7 @@
 package com.bit.geha.criteria;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,12 +14,12 @@ public class SearchCriteria {
 	private int bookingNumber;
 	private int minprice;
 	private int maxprice;
-	private String gender;
+	private List<String> gender;
 	
 	private int trip;
 	private int gourmet;
 	private int shopping;
 	private int business;
 	
-	private int facilities;
+	private List<Integer> facilities;
 }
