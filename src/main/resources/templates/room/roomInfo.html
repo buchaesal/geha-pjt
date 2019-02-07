@@ -396,9 +396,14 @@ position: absolute;
 									<span href="" class="favme dashicons dashicons-heart"></span>
 								</div>
 							</div>
-							<span th:text="*{capacity}"></span>
-							<span th:text="*{charge}"></span>
-							<span th:text="*{gender}"></span>
+							<span th:text="|*{capacity}명|"></span>
+							<span th:text="|*{charge}원|"></span>
+							
+							<span th:switch="*{gender}">
+								<span th:case="F" th:text="여성전용"></span>
+								<span th:case="M" th:text="남성전용"></span>
+								<span th:case="N" th:text="남녀공용"></span>
+							</span>
 							
 				
 							  <!-- panel with buttons -->
