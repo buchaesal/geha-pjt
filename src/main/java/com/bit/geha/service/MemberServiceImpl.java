@@ -1,6 +1,5 @@
 package com.bit.geha.service;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
