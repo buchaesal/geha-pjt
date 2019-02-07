@@ -151,7 +151,7 @@ text-align: center;
 	    		}else if(!getPw.test(password)){ //비밀번호가 형식에 맞지 않는다면
 	    			$("#pwError").text('비밀번호는 4글자 이상만 가능해요.');
 	    			$("#divInputPw").addClass("has-error");
-	                $("#divInputPw").removeClass("has-success");
+	    			$("#divInputPw").removeClass("has-success");
 	                password.focus();
 	    			return false;
 	    		}else if(password!==passwordCheck){
@@ -163,13 +163,13 @@ text-align: center;
 	    		}else if($("input[name='gender']:checked").val()==undefined){
 	    			$("#gError").text('성별을 선택해주세요.');
 	    			$("#divInputG").addClass("has-error");
-	                $("#divInputG").removeClass("has-success");
 	    		}else if(host!==null&&$("#license").val()==""){
 	    			$("#gError").text('사업자 번호는 필수에요.');
 	    			$("#divInputG").addClass("has-error");
-	                $("#divInputG").removeClass("has-success");
 	    		}else{
-	    			
+	    			$("#pwError").text('비밀번호와 비밀번호 확인이 일치합니다!');
+	    			$("#divInputPw").addClass("has-success");
+                    $("#divInputPw").removeClass("has-error") ;
 	    			 $("#frm").submit();
 	    		}
 	        }
