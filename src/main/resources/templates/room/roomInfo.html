@@ -396,28 +396,21 @@ position: absolute;
 									<span href="" class="favme dashicons dashicons-heart"></span>
 								</div>
 							</div>
-							<span th:text="|*{capacity}명|"></span>
-							<span th:text="|*{charge}원|"></span>
-							
-							<span th:switch="*{gender}">
-								<span th:case="F" th:text="여성전용"></span>
-								<span th:case="M" th:text="남성전용"></span>
-								<span th:case="N" th:text="남녀공용"></span>
-							</span>
+							<span th:text="*{capacity}"></span>
+							<span th:text="*{charge}"></span>
+							<span th:text="*{gender}"></span>
 							
 				
 							  <!-- panel with buttons -->
-				            <div class="panel" >
-				                <a href="#login_form"  id="login_pop">객실 이용 안내</a>
-				                <input type="hidden" th:value="*{roomInfo}">
-				                
+				            <div class="panel">
+				                <a href="#login_form" cl id="login_pop">객실 이용 안내</a>
 				            </div>
 			            
 			        		<!-- popup form #1 -->
 			        		<a href="#x" class="overlay" id="login_form"></a>
-			        		<div class="popup" >
+			        		<div class="popup">
 			           			<h2>객실 이용 안내</h2>
-								<p th:utext=*{roomInfo}></p>
+								<p th:utext="*{roomInfo}"></p>
 			            		<a class="close" href="#close"></a>
 			       			</div>
 						</div>
