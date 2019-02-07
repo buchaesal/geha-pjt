@@ -1,6 +1,9 @@
 package com.bit.geha.dto;
 
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
@@ -24,4 +27,5 @@ public class GuestHouseDto {
 	private String bankName;
 	private String accountNumber;
 	
+	List<MultipartFile> files;
 }

@@ -62,7 +62,7 @@
 				<th>예약 코드</th>
 				<th>예약 정보</th>
 				<th>가격</th>
-				<th>${memberCode}</th>
+				<th>상태</th>
 			</tr>
 			<tr th:each="bookingDto : ${bookingList}">
 				<td th:text="${bookingDto.bookingCode}"></td>
@@ -128,7 +128,7 @@
 									<br><br>
 									
 									<label>제목</label><br>
-									<input name="title" type="text" size="50" maxlength="45" required><br>
+									<input name="title" type="text" size="50" maxlength="30" required><br>
 									<label>내용</label><br>
 									<textarea id="content" name="content" rows="8" cols="50" maxlength="500" required></textarea>
 									<br>
