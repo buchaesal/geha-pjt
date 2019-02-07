@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bit.geha.dao.CommentDao">
 
-    
     	<select id="commentList" resultType="ReplyReviewDto">
 		select
 		a.reviewNo,a.title,a.rating,a.content,c.roomName,b.booker,a.writingDate,a.replyContent,a.replyDate 
@@ -16,7 +15,6 @@
 		ORDER by a.reviewNo DESC ;
 	</select>
     
-    
     <update id="commentUpdate">
         UPDATE review_tb
             SET
@@ -25,7 +23,4 @@
         WHERE reviewNo = #{reviewNo}
     </update>
     
-
-
-
 </mapper>

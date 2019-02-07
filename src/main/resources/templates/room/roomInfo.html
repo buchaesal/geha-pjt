@@ -512,11 +512,8 @@ position: absolute;
 		});
 	});
 
-
 	var guestHouseCode = [[${geha.guestHouseCode}]];
-		
-
-
+	
  	 	function commentList(){
 		    $.ajax({
 		        url : '/comment/list',
@@ -546,6 +543,10 @@ position: absolute;
 		              		a += '<h1>관리자 답변</h1>'
 		              		a += '<p>' + value.replyContent + '</p>'
 		              		a += '<p>' + jQuery.timeago(new Date(value.replyDate)) + '</p>'
+								if (value.replyContent != null && [[${session.memberCode}]] == [[${geha.memberCode}]] ) {
+			              			a += '<button class="btn btn-primary" type="button">수정하기</button>'
+			              			a += '<button class="btn btn-primary" type="button">삭제하기</button>'
+			              		}	
 		              		a += '</div></div>'
 		              	}
 		            });	
