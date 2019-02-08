@@ -53,7 +53,6 @@ public class SearchController {
 			List<String> gender = new ArrayList<>();
 			sc.setGender(gender);
 		}
-		
 		if(sc.getFacilities() == null) {
 			List<Integer> facilities = new ArrayList<>();
 			sc.setFacilities(facilities);
