@@ -21,7 +21,7 @@ where b.memberCode = #{memberCode} and b.bookingCode = r.bookingCode
 and r.bookingCode = v.bookingCode and v.roomCode = o.roomCode;
 </select>
 
-<update id="modifyReview">
+<update id="modifyReview" parameterType="ReviewDto">
 update review_tb set title = #{title}, content = #{content}, rating = #{rating}
 where reviewNo = #{reviewNo}
 </update>

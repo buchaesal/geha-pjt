@@ -107,4 +107,9 @@ public class MyPageController {
 		myPageDao.modifyReview(reviewDto);
 		return "redirect:/myPage/myReview";
 	}
+	
+	@RequestMapping("/deleteReview")
+	public String deleteReview() {
+		return "redirect:/myPage/myReview";
+	}
 }
