@@ -67,7 +67,7 @@
 
 	.top-container{
 		 width: 100%;
- 		 height: 65%;
+ 		 height: 70%;
  		 position: relative;
  		 margin-left: 78px;
 	}
@@ -123,7 +123,9 @@ display: inline-block;
 padding:0;
 list-style: none;
 }
-
+#menu2>p{
+text-align: center;
+}
 #menu1>ul>li>img{
 height: 35px;
 width: 35px;
@@ -387,11 +389,13 @@ position: absolute;
 							    <!-- Add Pagination -->
 							    <div class="swiper-pagination"></div>
 							  </div>
+							  
 						<div class="rInfo">
 							<h1 th:text=*{roomName}></h1>
 							<div class="flexbox">
 								<div class="fav-btn">
-									<span href="" class="favme dashicons dashicons-heart"></span>
+									<input type="text" id="favmecode" name="favmecode" th:value="*{roomCode}">
+									<span class="favme dashicons dashicons-heart" th:name=|favme*{roomCode}| th:onclick=|like(*{roomCode})|></span>
 								</div>
 							</div>
 							<span th:text="|*{capacity}명|"></span>
@@ -473,7 +477,11 @@ position: absolute;
 					</div>
 		
 					<!-- 리뷰 탭 -->
-    				<div id="menu2" class="tab-pane ">
+    				<div id="menu2" class="tab-pane "><br>
+    				<p th:text="${rating.recommendRating}" ></p>
+    				<p th:text="${rating.avgRating}" ></p>
+					<p th:text=|전체리뷰:${rating.reviewCnt}| ></p>
+					
    						<ul >
    							<li >
    								<div class="guest" ></div> 
@@ -483,6 +491,7 @@ position: absolute;
   
 				  	<!--  #태그 탭 -->
 				    <div id="menu3" class="tab-pane ">
+
 					</div>
     	</div>
   </div>
@@ -513,7 +522,7 @@ position: absolute;
 	});
 
 	var guestHouseCode = [[${geha.guestHouseCode}]];
-	
+		//리뷰리스트 
  	 	function commentList(){
 		    $.ajax({
 		        url : '/comment/list',
@@ -522,6 +531,7 @@ position: absolute;
 		        success : function(data){
 		       		var a ='';
 		            $.each(data, function(key, value){ 
+
 		           		a+= '<div style="border: 1px solid gray; margin : 30px 0px;"'
 		              	a += '<h1>'+ value.title +'</h1>';
 		                a += '<p>'+value.rating+'</p>';
@@ -533,7 +543,7 @@ position: absolute;
 		              	if(value.replyContent == null && [[${session.auth}]] == 'HOST' && [[${session.memberCode}]] == [[${geha.memberCode}]]){
 		              		a += '<form id="commentForm">'
 		              		a += '<input type="text" id="replyContent"  name="content_'+value.reviewNo+'" required >'
-				            a += '<input id="reviewno"  name="reviewno_'+value.reviewNo+'" type="hidden" value="' + value.reviewNo + '">' 
+				            a += '<input id="reviewno"  name="reviewno_'+ value.reviewNo +'" type="hidden" value="' + value.reviewNo + '">' 
 			                a += '<button class="btn btn-primary" id="commentBtn" type="button" onclick="commentCheck('+value.reviewNo+')" style="margin: 10px"> 답변하기 </button>'
 		              		a += '</form>'
 		              	};
@@ -541,11 +551,11 @@ position: absolute;
 		              		a += '<div class="host" style="border: 1px solid red " >'
 		              		a += '<div class="commentList"'
 		              		a += '<h1>관리자 답변</h1>'
-		              		a += '<p>' + value.replyContent + '</p>'
-		              		a += '<p>' + jQuery.timeago(new Date(value.replyDate)) + '</p>'
+		              		a += '<p class="replyContent'+value.reviewNo+'">' + value.replyContent + '</p>'
+		              		a += '<p class="replyDate">' + jQuery.timeago(new Date(value.replyDate)) + '</p>'
 								if (value.replyContent != null && [[${session.memberCode}]] == [[${geha.memberCode}]] ) {
-			              			a += '<button class="btn btn-primary" type="button">수정하기</button>'
-			              			a += '<button class="btn btn-primary" type="button">삭제하기</button>'
+			              			a += '<button class="btn btn-primary" type="button" id="up" onclick="commentUpdateProc('+value.reviewNo+',\''+value.replyContent+'\')">수정하기</button>'
+			              			a += '<button class="btn btn-primary" type="button" id="del" onclick="commentDelete('+value.reviewNo+')">삭제하기</button>'
 			              		}	
 		              		a += '</div></div>'
 		              	}
@@ -556,20 +566,46 @@ position: absolute;
 
 		    });
 		} ;
-		
+		//호스트답글 유효성
 		function commentCheck(reviewNo) {
 			  if($.trim($('#replyContent').val()) == ''){
 				   alert("내용을 입력하십시오.");
 				   $('#replyContent').focus();
 				   return false;
 			}else {
-				commentUpdateProc(reviewNo);
+				commentUpdate(reviewNo);
+			};
+		}
+		//댓글수정폼
+		function commentUpdateProc(reviewNo, replyContent){
+			
+		    var a ='';
+		    $('.replyDate').hide();
+		    $('#up').hide();
+		    $('#del').hide();
+		    
+		  	a += '<input type="text" class="replyContentUpdate" name="content_'+reviewNo+'" value="'+replyContent+'"/>';
+		    a += '<button class="btn btn-primary" type="button" onclick="commentUpCheck('+reviewNo+');">수정</button>';
+
+		    $('.replyContent'+reviewNo).html(a);
+		    
+		}
+		//댓글수정시 유효성
+		function commentUpCheck(reviewNo) {
+			  if($.trim($('.replyContentUpdate').val()) == ''){
+				   alert("내용을 입력하십시오.");
+				   $('.replyContentUpdate').focus();
+				   return false;
+			}else {
+				commentUpdate(reviewNo);
 			};
 		}
 		
-		function commentUpdateProc(reviewNo){
+		//댓글 수정
+		function commentUpdate(reviewNo){
   			var replyContent = $('[name=content_'+reviewNo+']').val();
   			var reno = $('[name=reviewno_'+reviewNo+']').val();
+  			reno = reviewNo;
 	 	    $.ajax({
 		        url : '/comment/update',
 		        type : 'post',
@@ -579,15 +615,93 @@ position: absolute;
 		        }
 		    }) 
 		}; 
+		//댓글 삭제 
+		function commentDelete(reviewNo){
+		    $.ajax({
+		        url : '/comment/delete/'+reviewNo,
+		        type : 'post',
+		        success : function(data){
+		            if(data == 1) commentList(); //댓글 삭제후 목록 출력 
+		        }
+		    });
+		}
 
+		//좋아요 유지
+		function likeList(memberCode){
+			var memberCode = [[${session.memberCode}]];
+			var roomCode = new Array();
+			var size = $("input[name='favmecode']").length;
+
+			 $.ajax({
+			        url : '/comment/selectlike',
+			        type : 'post',
+			        data : { "roomCode": roomCode, "memberCode" : memberCode}, 
+			        success : function(data){
+			        	 $.each(data, function(key, value){
+							for(i =0 ; i < size; i++){
+								roomCode = $("input[name='favmecode']").eq(i).attr("value")
+								if(value.roomCode == roomCode){
+									$('[name=favme'+roomCode+']').toggleClass('active')
+								}
+							}
+			        	 })
+			        }
+			    }) 
+		};				
+	 	
+	 	
+		function like(roomCode){
+			var memberCode = [[${session.memberCode}]]
+		
+			if(memberCode == null){
+				alert("login해주세요");
+			}else{
+				if($('[name=favme'+roomCode+']').hasClass('active')){
+					 $.ajax({
+					        url : '/comment/deletelike',
+					        type : 'post',
+					        data : {"roomCode" : roomCode, "memberCode" : memberCode}, 
+					        success : function(){
+								alert(roomCode+"좋아요취소");
+					        }
+					    }); 
+					
+				}else { 
+					
+			 	    $.ajax({
+				        url : '/comment/addlike',
+				        type : 'post',
+				        data : {"roomCode" : roomCode, "memberCode" : memberCode}, 
+				        success : function(){
+				        	alert("좋아요");
+				        }
+				    }); 
+				}
+				$('[name=favme'+roomCode+']').toggleClass('active');
+			}
+		};
+		
 	 	$(document).ready(function(){
 	 		commentList();
+	 		if([[${session.memberCode}]] != 'null'){
+	 		likeList();
+	 			
+	 		}
 
 	 	});
 
+ 		/* when a user clicks, toggle the 'is-animating' class */
+  		$(".favme").on('click touchstart', function(){
+  		$(this).toggleClass('is_animating');
+  		});
 
- 	
- 	
+  		/*when the animation is over, remove the class*/
+  		$(".favme").on('animationend', function(){
+  		$(this).toggleClass('is_animating');
+  		});
+  		
+	 	
+	 	
  	$(function() {
  		
  	/*  datepicker start  */
@@ -650,24 +764,7 @@ position: absolute;
   		$('.nav-tabs a[href="#home"]').tab('show')
   		/*  tab end */
   		
-  		
-  		$('.favme').click(function() {
-  			$(this).toggleClass('active');
-  		});
 
-  		/* when a user clicks, toggle the 'is-animating' class */
-  		$(".favme").on('click touchstart', function(){
-  		$(this).toggleClass('is_animating');
-  		});
-
-  		/*when the animation is over, remove the class*/
-  		$(".favme").on('animationend', function(){
-  		$(this).toggleClass('is_animating');
-  		});
-  		
-
-
-  		
 
  	});
  	 </script>

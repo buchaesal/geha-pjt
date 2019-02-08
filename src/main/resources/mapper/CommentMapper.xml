@@ -6,12 +6,12 @@
 
     	<select id="commentList" resultType="ReplyReviewDto">
 		select
-		a.reviewNo,a.title,a.rating,a.content,c.roomName,b.booker,a.writingDate,a.replyContent,a.replyDate 
+			a.reviewNo,a.title,a.rating,a.content,c.roomName,b.booker,a.writingDate,a.replyContent,a.replyDate 
 		from review_tb a , booking_tb b ,room_tb c, guestHouse_tb d
-		where d.guestHouseCode =#{guestHouseCode}
-		and a.bookingCode = b.bookingCode
-		and b.roomCode = c.roomCode
-		and c.guestHouseCode = d.guestHouseCode
+			where d.guestHouseCode =#{guestHouseCode}
+			and a.bookingCode = b.bookingCode
+			and b.roomCode = c.roomCode
+			and c.guestHouseCode = d.guestHouseCode
 		ORDER by a.reviewNo DESC ;
 	</select>
     
@@ -23,4 +23,41 @@
         WHERE reviewNo = #{reviewNo}
     </update>
     
+    <select id="commentCnt" resultType="SearchDto">
+	select sv.guestHouseCode, sv.avgRating , sv.recommendRating, sv.reviewCnt
+	from searchview sv
+	where sv.guestHouseCode = #{guestHouseCode}
+    </select>
+    
+    
+    <update id="commentDelete">
+        UPDATE review_tb
+            SET
+            replyContent = null,
+            replyDate = null
+        WHERE reviewNo = #{reviewNo}
+    </update>
+	
+	
+	<insert id="addlike">
+	insert into like_tb (roomCode,memberCode)
+	
+	values(
+		#{roomCode},#{memberCode}
+	)
+	</insert>
+
+	<delete id="deletelike">
+	DELETE from like_tb 
+	where memberCode = #{memberCode}
+	and roomCode = #{roomCode}
+	</delete>
+	
+	<select id="selectlike" resultType="LikeDto" >
+	select * 
+	from like_tb 
+	where memberCode = #{memberCode};
+	</select>
+
+
 </mapper>

@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -42,7 +43,7 @@ public class SearchController {
 	
 	@GetMapping("/searchgehainfo")
 	@ResponseBody
-	public List<SearchDto> searchGehaInfo(SearchCriteria sc){
+	public List<SearchDto> searchGehaInfo(@RequestBody SearchCriteria sc){
 		System.out.println("searchGehaInfo()");
 		
 		if(sc.getGender() == null) {

@@ -441,8 +441,9 @@
 			var formData = $("form").serializeObject();
 			delete formData["_csrf"];
 			console.log(formData);
+			var facilities = []; 
 			
-			console.log(JSON.stringify(formData));
+			console.log(typeof JSON.stringify(formData));
 			
 			var getData = $.ajax({
 			  url: "searchgehainfo",
