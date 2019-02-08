@@ -10,9 +10,7 @@
 	</select>
 
 	<select id="gehaInfo" resultType="GuestHouseDto">
-		select
-		guestHouseName, guestHouseInfo, rules,
-		parkingInfo,address,directions,avgRating,businessTrip,gourmet,trip,shopping
+		select	*
 		from guestHouse_tb
 		where guestHouseCode = #{guestHouseCode}
 
@@ -32,5 +30,6 @@
 		and b.facilityCode = a.facilityCode
 		
 	</select>
+
 
 </mapper>

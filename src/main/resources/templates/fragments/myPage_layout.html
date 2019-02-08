@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="fragments/main_layout">
@@ -47,7 +48,7 @@
 		}
 		
 		.myPage_main {
-		   padding: 50px;
+		  
 		   float: right;
 		   width: 70%
 		}
@@ -72,10 +73,10 @@
 	      <section class="myPage_section">	
 	         <nav class="myPage_nav">
 	            <ul class="myPage_ul">
-	               <li class="myPage_li"><a href="#" class="myPage_a">예약내역</a></li>
-	               <li class="myPage_li"><a href="#" class="myPage_a">리뷰관리</a></li>
+	               <li class="myPage_li"><a href="/myPage/bookingList" class="myPage_a">예약내역</a></li>
+	               <li class="myPage_li"><a href="/myPage/myReview" class="myPage_a">리뷰관리</a></li>
 	               <li class="myPage_li"><a href="#" class="myPage_a">찜한숙소</a></li>
-	               <li class="myPage_li"><a href="#" class="myPage_a">내정보관리</a></li>
+	               <li class="myPage_li"><a href="/myPage/myInfo" class="myPage_a">내정보관리</a></li>
 	            </ul>
 	         </nav>
 	         
@@ -85,7 +86,6 @@
 	      </section>
 
 	      <footer class="myPage_footer">
-	         <a href="https://opentutorials.org/course/1">홈페이지</a>
 	      </footer>
 
 	   </div>

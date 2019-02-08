@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.geha.dao.CommentDao">
+
+
+<!--     <select id="commentCount" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM comment
+    </select> -->
+    
+<!--     	<select id="commentList" resultType="ReplyReviewDto">
+		select
+		a.reviewNo,a.title,a.rating,a.content,c.roomName,b.booker,a.writingDate,a.replyContent,a.replyDate 
+		from review_tb a , booking_tb b ,room_tb c, guestHouse_tb d
+		where d.guestHouseCode =#{guestHouseCode}
+		and a.bookingCode = b.bookingCode
+		and b.roomCode = c.roomCode
+		and c.guestHouseCode = d.guestHouseCode
+		ORDER by a.reviewNo DESC ;
+	</select> -->
+    
+    	<select id="commentList" resultType="ReplyReviewDto">
+		select
+		a.reviewNo,a.title,a.rating,a.content,c.roomName,b.booker,a.writingDate,a.replyContent,a.replyDate 
+		from review_tb a , booking_tb b ,room_tb c, guestHouse_tb d
+		where d.guestHouseCode =#{guestHouseCode}
+		and a.bookingCode = b.bookingCode
+		and b.roomCode = c.roomCode
+		and c.guestHouseCode = d.guestHouseCode
+		ORDER by a.reviewNo DESC ;
+	</select>
+    
+ 
+    
+  <!--   
+    <insert id="commentInsert" parameterType="com.example.demo.vo.CommentVO">
+        INSERT INTO
+        comment (cno, bno, content, writer, reg_date)
+        VALUES(#{cno},1,#{content},#{writer},now()) 
+    </insert>
+    
+        <delete id="commentDelete" parameterType="int">
+        DELETE FROM comment WHERE cno = #{cno}
+    </delete>
+     -->
+    
+    <update id="commentUpdate">
+        UPDATE review_tb
+            SET
+            replyContent = #{replyContent},
+            replyDate = now()
+        WHERE reviewNo = #{reviewNo}
+    </update>
+    
+
+
+
+</mapper>

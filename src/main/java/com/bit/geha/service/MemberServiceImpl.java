@@ -47,9 +47,24 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 	
+	public void sendMail(String id) throws Exception {
+			MemberDto member = memberDao.findById(id);
+			MailHandler sendMail = new MailHandler(mailSender);
+			sendMail.setSubject("[#GEHA 회원가입 이메일 인증]");
+			sendMail.setText(
+					new StringBuffer()
+					.append("<h1>회원가입 인증 메일입니다.</h1><h3>아래의 버튼을 눌러 회원가입을 완료해주세요.</h3>")
+					.append("<a href='http://localhost/member/emailConfirming?id=")
+					.append(id).append("&key=").append(member.getAuthCode())
+					.append("' target='_blank'>회원가입 인증 확인</a>").toString());
+			sendMail.setFrom("eks4116@gmail.com", "샵게하 운영자");
+			sendMail.setTo(id);
+			sendMail.send();
+		
+	}
+	
 	public String findPw(String id) throws Exception {
 		
-		id = id.replace("%40", "@").substring(3);
 		
 		char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 				'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
@@ -80,7 +95,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	public void getSession(Authentication auth,HttpSession session) {
-		if (auth != null)  { //일반 로그인 사용자
+		
+		
+		if (auth != null && session.getAttribute("name")==null )  { 
 
 			SecurityMember sc = (SecurityMember) auth.getPrincipal();
 			MemberDto member = memberDao.findById(sc.getUsername());

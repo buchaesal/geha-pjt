@@ -19,4 +19,6 @@ public interface MemberDao {
 	public void createAuthKey(String id, String authCode);
 	
 	public void userAuth(String id);
+	
+	public void changePw(String id,String password);
 }

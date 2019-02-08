@@ -13,13 +13,26 @@
     <!-- Plugin CSS -->
     <link href="/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
     <!-- Theme CSS -->
-    <link href="/css/creative.min.css?8" rel="stylesheet">
+    <link href="/css/creative.min.css" rel="stylesheet">
 
 <style>
+
+@font-face {
+	font-family: 'yg-jalnan';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+*{
+
+font-family: 'yg-jalnan';
+}
  .navbar-default .btn-group>.btn:first-child{margin-left: 0;
     background: transparent;
     color: rgba(255,255,255,.7);
-    padding: 15px 15px; 
+/*     padding: 14px 20px;  */
     font-size: large;
     }
  .navbar-default.affix .btn-group>.btn:first-child{margin-left: 0;
@@ -40,7 +53,10 @@ font-size: large;
 .navbar-right{
 padding-top:15px;
 }
-
+.glyphicon.glyphicon-user{
+font-size:25px;
+right-padding:20px;
+}
 
 </style>
 
@@ -61,7 +77,7 @@ padding-top:15px;
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"  th:object="${session.member}">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="search">방찾기</a>
+                        <a class="page-scroll" href="/search">방찾기</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="/myPage/bookingList">예약내역</a>
@@ -83,13 +99,12 @@ padding-top:15px;
  					 	 <li><span style="border:1px;" th:text="${session.name}+'님'"></span></li>
  					 	 <li class="divider"></li>
                	  	   	 <li><a href="/myPage/bookingList" class="page-scroll">마이페이지</a></li>
-               	  	   	 <li th:if="${session.auth.equals('HOST')}"><a href="#" class="page-scroll">호스트페이지</a></li>
-               	  	   	 <li th:if="${session.auth.equals('ADMIN')}"><a href="#" class="page-scroll">관리자페이지</a></li>
-   						 <li><a href="#" onclick="logout()">로그아웃</a></li>
+               	  	   	 <li th:if="${session.auth.equals('HOST')}"><a href="/hostPage/myGuestHouseList" class="page-scroll">호스트페이지</a></li>
+               	  	   	 <li th:if="${session.auth.equals('ADMIN')}"><a href="/adminPage/memberList" class="page-scroll">관리자페이지</a></li>
+   						 <li><a href="/logout" onclick="">로그아웃</a></li>
  						 </ul>
 				</div>
                 </ul>
-                 <form id="logout" th:action="@{/logout}" method="post"></form>
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -232,14 +247,7 @@ padding-top:15px;
     <script src="/vendor/scrollreveal/scrollreveal.min.js"></script>
     <script src="/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
-    <!-- Theme JavaScript -->
-    <script src="/js/creative.min.js"></script>
-	<script>
-	function logout(){
-		$('#logout').submit();
-	}
-	</script>
-	
+
 </body>
 
 </html>

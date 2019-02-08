@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bit.geha.criteria.SearchCriteria;
 import com.bit.geha.dao.SearchDao;
 import com.bit.geha.dto.SearchDto;
+import com.bit.geha.service.MemberService;
 
 @Controller
 public class SearchController {
@@ -25,6 +28,9 @@ public class SearchController {
 	
 	@Autowired
 	private SearchDao dao;
+	
+	@Autowired
+	MemberService memberService;
 	
 	@RequestMapping("/search")
 	public String search(Model model) {
