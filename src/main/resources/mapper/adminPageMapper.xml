@@ -3,7 +3,27 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bit.geha.dao.AdminPageDao">
 <select id="getMemberList" resultType="MemberDto">
-select * from member_tb;
+
+<!-- criteria 를 적용한 게시판 페이징 조회 -->
+
+<![CDATA[
+select
+    *
+from
+    member_tb
+where memberCode > 0]]>
+
+<if test="auth!=''">
+and authority like #{auth}
+</if>
+
+
+<![CDATA[
+order by memberCode desc
+limit #{cri.pageStart}, #{cri.perPageNum}]]>
+
+
+
 </select>
 
 <update id="changeAdmin">
@@ -15,6 +35,17 @@ where id = #{id}
 update member_tb set authority = 'USER'
 where id = #{id}
 </update>
+
+
+	
+<select id="getTotal" resultType="int">
+		select count(*) from
+		member_tb
+		<if test="auth!=''">
+where authority like #{auth}
+</if>
+		
+	</select>
 
 
 </mapper>

@@ -5,9 +5,30 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
+
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
+<script th:inline="javascript">
+<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
+
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(function() {
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
+	
+	var auth = [[${auth}]];
+	
+	if(auth!==""){
+	$("#"+auth).attr("selected","selected");
+	}
+});
 
 
 var id = "";
@@ -40,6 +61,13 @@ function frmSubmit(){
 		
 	}
 	
+	
+	
+}
+
+function authSelect(auth){
+	window.location.href="/adminPage/adminPage?auth="+auth;
+
 }
 </script>
 <style>
@@ -54,6 +82,14 @@ p{
 </head>
 <body>
 <div layout:fragment="adminPage_content">
+
+<select class="selectpicker" onchange="authSelect(this.value)">
+	<option value=''>전체보기</option>
+  <option value='user' id="user">USER</option>
+  <option value='host' id="host">HOST</option>
+  <option value='admin' id="admin">ADMIN</option>
+</select>
+
 <table border="2">
 			<tr>
 				<th>회원코드</th>
@@ -75,9 +111,30 @@ p{
 				</td>
 			</tr>
 				</table>
+				 <!-- 게시판 하단의 페이징 버튼 -->
+            <div class="box-footer clearfix">
+              <ul class="pagination pagination-sm no-margin pull-right">
+              
+              <li th:if="${pageMaker.prev} == true">
+              	<a th:href="@{/adminPage/memberList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+              </li>
+              
+              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+                <a th:href="@{/adminPage/memberList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+              </li>
+                
+              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+              	<a th:href="@{/adminPage/memberList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+              </li>
+              
+              </ul>
+              
+            </div>
 				<form id="frm">
 				<input type="hidden" id="id" name="id">
 				</form>
+				
+		
 				
 <!--Modal: confirmModal-->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/myPage_layout">
+<head>
+<meta charset="UTF-8">
+<title>찜 한 숙소</title>
+<style>
+.center{
+float:left;
+}
+.free{
+display: inline
+}
+th {
+    text-align: center;
+}
+table{
+width:700px;
+}
+
+p{
+all:unset;
+}
+</style>
+</head>
+<body>
+<div layout:fragment="myPage_content">
+<div>
+
+<table border="2" class="tableOne">
+			<tr align="center">
+				<th>게스트하우스</th>
+				<th>가격</th>
+				<th>평점</th>
+				<th></th>
+				<th><input type="checkbox" id="checkall"></th>
+			</tr>
+			<form action="/myPage/deleteLike" id="deleteFrm">
+			<tr th:each="likeDto : ${likeList}" align="center">
+			
+				<td class="big">
+				 <div class="center"><img src="../img/portfolio/thumbnails/1.jpg" width ="60px" height="50px">
+				 </div>
+				 <div class="free">
+				[[${likeDto.guestHouseName}]]<br>
+					<p style="color:gray;">([[${likeDto.roomName}]])</p>
+					</div>
+				</td>
+				<td>[[${likeDto.charge}]]</td>
+				<td>[[${likeDto.avgRating}]]</td>
+				<td><a th:href="@{'/room/roomInfo?guestHouseCode='+${likeDto.guestHouseCode}}">
+				예약하러가기</a></td>
+				<td>
+				
+				<input type="checkbox" name="chk" th:value="${likeDto.roomCode}">
+				
+				</td>
+				
+
+	
+			</tr>
+		</form>
+			
+		</table>
+		<button type="button" onClick="deleteLike()">삭제</button>
+		</div>
+		
+		<!--Modal: confirmModal(삭제 완료 모달)-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="modal-header d-flex justify-content-center">
+        <br/><br/><p id="modalName" class="heading"></p>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+<form id="deleteFrm" action="/myPage/deleteReview">
+<input type="hidden" id="deleteInput" name="reviewNo">
+</form>
+
+        
+      </div>
+<br/>
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">확인</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: confirmModal-->
+		
+		
+<div layout:fragment="myPage_script">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script th:inline="javascript" type="text/javascript">
+		
+		
+		$(document).ready(function(){
+			
+			//삭제하면 삭제되었다고 띄움.
+			var deleteOk = [[${deleteOk}]];
+			if(deleteOk!==null){
+				$("#modalName").text(deleteOk);
+				$("#confirmModal").modal();}
+			
+		    //최상단 체크박스 클릭
+		    $("#checkall").click(function(){
+		        //클릭되었으면
+		        if($("#checkall").prop("checked")){
+		            //input태그의 name이 chk인 태그들을 찾아서 checked옵션을 true로 정의
+		            $("input[name=chk]").prop("checked",true);
+		            //클릭이 안되있으면
+		        }else{
+		            //input태그의 name이 chk인 태그들을 찾아서 checked옵션을 false로 정의
+		            $("input[name=chk]").prop("checked",false);
+		        }
+		    });
+		    
+		});
+
+	function deleteLike(){
+		$("#deleteFrm").submit();
+	}
+	
+
+		</script>
+		</div>
+</div>
+</body>
+</html>

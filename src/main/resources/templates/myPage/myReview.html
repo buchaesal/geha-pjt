@@ -122,8 +122,14 @@ p{
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
+<script th:inline="javascript">
 	$(function() {
+		
+		var deleteInfo = [[${deleteInfo}]];
+		if(deleteInfo!==null){
+			$("#modalName").text(deleteInfo);
+			$("#confirmModal").modal();
+		}
 
 		var starRating = function() {
 			var $star = $(".star-input"), $result = $star.find("output>b");
@@ -184,6 +190,7 @@ p{
 		
 		var reviewNo = event.srcElement.id;
 		$("#deleteInput").val(reviewNo);
+		$("#modalName").text('이 후기를 삭제하시겠습니까?');
 		$("#confirmModal").modal();
 	}
 	
@@ -203,6 +210,7 @@ p{
 				<th>게스트하우스</th>
 				<th>작성내용</th>
 				<th>작성일</th>
+				<th>나의  평점</th>
 				<th></th>
 			</tr>
 			<tr th:each="reviewDto : ${reviewList}">
@@ -212,6 +220,7 @@ p{
 				<td class="short_txt01"><span th:name="${reviewDto}">[[${reviewDto.title}]]</span><br>
 					<span>[[${reviewDto.content}]]</span></td>
 				<td>[[${reviewDto.writingDate}]]</td>
+				<td>[[${reviewDto.rating}]]</td>
 				<td>
 					<button type="button" th:name="${reviewDto.title}"
 						th:id="${reviewDto.reviewNo}" th:value="${reviewDto.content}"
@@ -220,6 +229,7 @@ p{
 					onClick="showDeleteModal()">삭제</button>
 					
 				</td>
+				
 
 
 			</tr>
@@ -245,25 +255,47 @@ p{
 
 						<form th:action="@{/myPage/modifyReview}" id="reviewForm"
 							method="post">
-							<input
-								type="hidden" id="reviewNo" name="reviewNo"> <label>작성자</label>
-							<label>[[${session.name}]]</label><br> <label>평점</label> <span
-								class="star-input"> <span class="input"> <input
-									type="radio" name="rating" value="1" id="p1"> <label
-									for="p1">1</label> <input type="radio" name="rating" value="2"
-									id="p2"> <label for="p2">2</label> <input type="radio"
-									name="rating" value="3" id="p3"> <label for="p3">3</label>
-									<input type="radio" name="rating" value="4" id="p4"> <label
-									for="p4">4</label> <input type="radio" name="rating" value="5"
-									id="p5"> <label for="p5">5</label>
-							</span> <output for="star-input">
+							
+							<input type="hidden" id="reviewNo" name="reviewNo"> 
+							<label>작성자</label>
+							<label>[[${session.name}]]</label><br> 
+							
+							<label>평점</label> 
+							<span class="star-input"> <span class="input"> 
+							
+							<input type="radio" name="rating" value="1" id="p1"> 
+							<label for="p1">1</label> 
+							
+							<input type="radio" name="rating" value="2" id="p2"> 
+							<label for="p2">2</label> 
+							
+							<input type="radio" name="rating" value="3" id="p3"> 
+							<label for="p3">3</label>
+							
+							<input type="radio" name="rating" value="4" id="p4"> 
+							<label for="p4">4</label> 
+							
+							<input type="radio" name="rating" value="5" id="p5"> 
+							<label for="p5">5</label>
+							
+							</span> 
+							
+							<output for="star-input">
 									<b>0</b>점
 								</output>
-							</span> <br> <br> <label>제목</label><br> <input id="title"
-								name="title" type="text" size="50" maxlength="45" required><br>
+								
+							</span> <br> <br> 
+							
+							<label>제목</label><br> 
+							
+							<input id="title" name="title" type="text" size="50" 
+							maxlength="45" required><br>
+							
 							<label>내용</label><br>
+							
 							<textarea id="content" name="content" rows="8" cols="50"
 								maxlength="500" required></textarea>
+								
 							<br>
 						</form>
 
@@ -289,13 +321,13 @@ p{
     <div class="modal-content text-center">
       <!--Header-->
       <div class="modal-header d-flex justify-content-center">
-        <br/><br/><p id="modalName" class="heading">이 후기를 삭제하시겠습니까?</p>
+        <br/><br/><p id="modalName" class="heading"></p>
       </div>
 
       <!--Body-->
       <div class="modal-body">
 <form id="deleteFrm" action="/myPage/deleteReview">
-<input type="hidden" id="deleteInput">
+<input type="hidden" id="deleteInput" name="reviewNo">
 </form>
 
         
@@ -303,8 +335,8 @@ p{
 <br/>
       <!--Footer-->
       <div class="modal-footer flex-center">
-        <a href="#" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
-        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">취소</a>
+        <a href="#" th:unless = "${deleteInfo}" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
+        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
       </div>
     </div>
     <!--/.Content-->
