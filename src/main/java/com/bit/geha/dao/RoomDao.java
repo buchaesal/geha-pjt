@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.bit.geha.dto.FacilityDto;
 import com.bit.geha.dto.GuestHouseDto;
+import com.bit.geha.dto.LikeDto;
 import com.bit.geha.dto.ReplyReviewDto;
 import com.bit.geha.dto.RoomDto;
 
@@ -17,5 +18,7 @@ public interface RoomDao {
 	GuestHouseDto gehaInfo(int guestHouseCode);
 	List<RoomDto> roomInfo(int guestHouseCode);
 	List<FacilityDto> facilityInfo(int guestHouseCode);
+	
+	void addlike(LikeDto likeDto);
 
 }
