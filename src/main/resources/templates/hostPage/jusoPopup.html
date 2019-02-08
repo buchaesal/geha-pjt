@@ -4,34 +4,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here (팝업API 호출)</title>
 </head>
-<script th:inline="javascript" language="javascript">
+<script language="javascript">
 // opener관련 오류가 발생하는 경우 아래 주석을 해지하고, 사용자의 도메인정보를 입력합니다. ("주소입력화면 소스"도 동일하게 적용시켜야 합니다.)
 //document.domain = "abc.go.kr";
-	String inputYn = [[${request.inputYn}]]; 
-	String roadFullAddr = [[${request.roadFullAddr}]]; //전체 도로명주소
+
+	var request = new Request();
+	
+	var inputYn = request.getParameter("inputYn"); 
+	var roadFullAddr = request.getParameter("roadFullAddr"); //전체 도로명주소
 
 	alert("inputYn : " + inputYn);
 	alert("roadFullAddr : " + roadFullAddr);
 
-function init(){
-	var url = location.href;
-	var confmKey = "U01TX0FVVEgyMDE5MDExMDExNDIwNDEwODQzNjE=";
-	var resultType = "2"; // 도로명주소 검색결과 화면 출력내용, 1 : 도로명, 2 : 도로명+지번, 3 : 도로명+상세건물명, 4 : 도로명+지번+상세건물명
-	var inputYn2= inputYn;
-	if(inputYn2 != "Y"){
-		alert("inputYn : Y");
-		document.form.confmKey.value = confmKey;
-		document.form.returnUrl.value = url;
-		document.form.resultType.value = resultType;
-		document.form.action="http://www.juso.go.kr/addrlink/addrLinkUrl.do"; //인터넷망
-		//document.form.action="http://www.juso.go.kr/addrlink/addrMobileLinkUrl.do"; //모바일 웹인 경우, 인터넷망
-		document.form.submit();
-	}else{
-		alert("inputYn : N");
-		opener.jusoCallBack(roadFullAddr);
-		window.close();
+	function Request(){
+		 var requestParam ="";
+		 
+		 //getParameter 펑션
+		  this.getParameter = function(param){
+		  //현재 주소를 decoding
+		  var url = unescape(location.href); 
+		  //파라미터만 자르고, 다시 &그분자를 잘라서 배열에 넣는다. 
+		   var paramArr = (url.substring(url.indexOf("?")+1,url.length)).split("&"); 
+		 
+		   for(var i = 0 ; i < paramArr.length ; i++){
+		     var temp = paramArr[i].split("="); //파라미터 변수명을 담음
+		 
+		     if(temp[0].toUpperCase() == param.toUpperCase()){
+		       // 변수명과 일치할 경우 데이터 삽입
+		       requestParam = paramArr[i].split("=")[1]; 
+		       break;
+		     }
+		   }
+		   return requestParam;
+		 }
 		}
-}
+
+	function init(){
+		var url = location.href;
+		var confmKey = "U01TX0FVVEgyMDE5MDExMDExNDIwNDEwODQzNjE=";
+		var resultType = "2"; // 도로명주소 검색결과 화면 출력내용, 1 : 도로명, 2 : 도로명+지번, 3 : 도로명+상세건물명, 4 : 도로명+지번+상세건물명
+		var inputYn= inputYn;
+		if(inputYn != "Y"){
+			alert("inputYn : Y");
+			document.form.confmKey.value = confmKey;
+			document.form.returnUrl.value = url;
+			document.form.resultType.value = resultType;
+			document.form.action="http://www.juso.go.kr/addrlink/addrLinkUrl.do"; //인터넷망
+			//document.form.action="http://www.juso.go.kr/addrlink/addrMobileLinkUrl.do"; //모바일 웹인 경우, 인터넷망
+			document.form.submit();
+		}else{
+			alert("inputYn : N");
+			opener.jusoCallBack(roadFullAddr);
+			window.close();
+		}
+	}
 </script>
 <body onload="init()">
 	<form id="form" name="form" method="post">
