@@ -62,7 +62,7 @@
 				<th>예약 코드</th>
 				<th>예약 정보</th>
 				<th>가격</th>
-				<th>${memberCode}</th>
+				<th>상태</th>
 			</tr>
 			<tr th:each="bookingDto : ${bookingList}">
 				<td th:text="${bookingDto.bookingCode}"></td>
@@ -75,7 +75,7 @@
 				<td>
 					[[${bookingDto.bookingStatus}]] <br>
 					<div th:if="${bookingDto.bookingStatus}=='예약완료'">
-						<button id="cancelBtn">취소 요청하기</button>
+						<button class="cancelBtn">취소 요청하기</button>
 								
 						<!-- cancelConfirmModal Modal -->
 						<div id="cancelConfirmModal" class="modal">
@@ -128,7 +128,7 @@
 									<br><br>
 									
 									<label>제목</label><br>
-									<input name="title" type="text" size="50" maxlength="45" required><br>
+									<input name="title" type="text" size="50" maxlength="30" required><br>
 									<label>내용</label><br>
 									<textarea id="content" name="content" rows="8" cols="50" maxlength="500" required></textarea>
 									<br>
@@ -157,7 +157,7 @@
 			
 
 			$(function() {
-				$("#cancelBtn").click(function() {
+				$(".cancelBtn").click(function() {
 					cancelConfirmModal.style.display = "block";
 				})
 			})
@@ -255,5 +255,4 @@
 
 	
 	</body>
->>>>>>> refs/remotes/origin/ksk
 </html>

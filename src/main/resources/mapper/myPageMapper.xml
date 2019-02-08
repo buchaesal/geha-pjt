@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.geha.dao.MyPageDao">
+<update id="modifyNameEtc">
+update member_tb set memberName = #{memberName}, businessLicense = #{businessLicense},
+gender = #{gender}
+where id = #{id}
+</update>
+
+<update id="modifyInfo">
+update member_tb set memberName = #{memberName}, password = #{password}, 
+businessLicense = #{businessLicense}, gender = #{gender} 
+where id = #{id}
+</update>
+
+<select id="getReviewList" resultType="ReviewDto">
+select r.*, v.guestHouseName, v.roomName, o.guestHouseCode 
+from booking_tb b, review_tb r,bkrmghmatching_view v, room_tb o 
+where b.memberCode = #{memberCode} and b.bookingCode = r.bookingCode 
+and r.bookingCode = v.bookingCode and v.roomCode = o.roomCode;
+</select>
+
+<update id="modifyReview" parameterType="ReviewDto">
+update review_tb set title = #{title}, content = #{content}, rating = #{rating}
+where reviewNo = #{reviewNo}
+</update>
+</mapper>

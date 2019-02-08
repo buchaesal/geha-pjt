@@ -33,7 +33,6 @@ public class SocialService {
 	    	MemberDto member = memberDao.findById(memberDto.getId());
 	    	
 	        final SecurityMember user = new SecurityMember(member);
-	        System.out.println(user.toString());
 	        
 	        
 	      

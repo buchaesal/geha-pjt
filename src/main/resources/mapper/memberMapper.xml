@@ -39,5 +39,9 @@
 	<update id="userAuth">
 		update member_tb set authStatus = 'OK' where id = #{id}
 	</update>
+	
+	<update id="changePw">
+		update member_tb set password = #{password} where id = #{id}
+	</update>
 
 </mapper>

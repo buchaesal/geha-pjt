@@ -14,5 +14,7 @@ public interface MemberService {
 	
 	public void getSession(Authentication auth,HttpSession session);
 	
+	public void sendMail(String id) throws Exception;
+	
 
 }
