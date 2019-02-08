@@ -4,11 +4,15 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="fragments/main_layout">
 <head>
+<!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Mapapi Test</title>
+<title>GEHA-방찾기</title>
 
 <!-- jquery ui-->
 <link rel="stylesheet" href="/css/jquery-ui.min.css" />
@@ -22,6 +26,10 @@
 		src: url('fonts/SCDream3.otf') format('opentype');
 		font-weight: normal;
 		font-style: normal;
+	}
+	
+	body {
+		font-family: 'S-CoreDream-3Light';
 	}
 	
 	/* a tag reset */
@@ -175,6 +183,7 @@
 					
 					<div class="form-group">
 						<label for="keywordsearch">키워드 검색</label>
+						<small>(이름, 주소)</small>
 						<input type="text" id="keywordsearch" name="keyword" class="form-control"/>				
 					</div>
 					
@@ -190,6 +199,7 @@
 						</div>
 					</div>
 					
+					<hr />
 					<hr />
 					
 					<div class="form-group">
@@ -317,6 +327,16 @@
 	
 	<script>
 	$(function(){
+		
+		/* 시큐리티 + 에이젝스 에러 방지 설정222 */
+	   var token = $("meta[name='_csrf']").attr("content");
+	   var header = $("meta[name='_csrf_header']").attr("content");
+	   $(function() {
+	      $(document).ajaxSend(function(e, xhr, options) {
+	         xhr.setRequestHeader(header, token);
+	      });
+	   });
+		
 		/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 / 세미콜론(;)넣지 않음 주의 */
 	  	$(".datepicker-here").datepicker({
 			language: 'en',
@@ -333,9 +353,9 @@
 	  	$("#slider-range").slider({
 		      range: true,
 		      min: 10000,
-		      max: 300000,
+		      max: 100000,
 		      step: 10000,
-		      values: [ 10000, 300000 ],
+		      values: [ 10000, 100000 ],
 		      slide: function( event, ui ) {
 		        $("#amount").text( Math.floor(ui.values[0]/10000) + "만원 ~ " + Math.floor(ui.values[1]/10000) + "만원");
 		        $("#minprice").val(ui.values[0]);
@@ -440,15 +460,20 @@
  		$("#btn-search").click(function(){
 			var formData = $("form").serializeObject();
 			delete formData["_csrf"];
-			console.log(formData);
 			
-			console.log(JSON.stringify(formData));
-			
+			/* 성별, 편의시설 하나만 선택할때 스트링으로 들어가는 것을 배열로 변경 */
+			if(typeof formData.gender =="string"){
+				formData.gender = [formData.gender];
+			}
+			if(typeof formData.facilities == "string"){
+				formData.facilities = [formData.facilities];
+			}
+
 			var getData = $.ajax({
-			  url: "searchgehainfo",
-			  type: "GET",
+			  url: "/searchgehainfo",
+			  type: "post",
 			  contentType: "application/json; charset=utf8",
-			  data: formData,
+			  data: JSON.stringify(formData),
 			  dataType: "json"
 			})
 			.done(function(data){
@@ -456,41 +481,30 @@
 				var template = Handlebars.compile(source);
 				$("#searchresult").html(template(data));
 			})
+			.done(function(data){
+				var geocoder = new daum.maps.services.Geocoder();
+				
+				for(var i=0, len=data.length; i<len ; i++){
+					console.log(data[i].address);
+					
+					geocoder.addressSearch(data[i].address, function(result, status) {
+					     if (status === daum.maps.services.Status.OK) {
+					    	console.log("this", this);
+							
+					    	var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+					        var marker = new daum.maps.Marker({
+					            map: map,
+					            position: coords
+					        });
+					    }
+					});
+				}
+			})
 			.fail(function(){
 				alert("failed");
 			});
 		});
-		
-		/* promise로 비동기 콜백함수 문제 해결 --지도 다중 마커-- */
-/* 		function getData() {
-		  return new Promise(function (resolve, reject) {
-		    $.get('searchgehainfo', function (response) {
-		      if (response) {
-		        resolve(response);
-		      }
-		      reject(new Error("Request is failed"));
-		    });
-		  });
-		} */
-		
-		/* var getData = $.ajax({
-		  url: "searchgehainfo",
-		  type: "get", //send it through get method
-		  data: { 
-		    ajaxid: 4, 
-		    UserID: UserID, 
-		    EmailAddress: EmailAddress
-		  },
-		})
-		.done(function(){
-			
-		})
-		.done(function(){
-			
-		})
-		.fail(function(){
-			
-		}); */
+
 		
 
 /* 		getData()
