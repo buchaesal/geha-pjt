@@ -1,35 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="fragments/main_layout">
+	layout:decorator="fragments/member_layout">
 <head>
 	<title>로그인</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="img/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/css/util.css">
-	<link rel="stylesheet" type="text/css" href="/css/main.css">
-	<link href="/css/creative.min.css?8" rel="stylesheet">
-	<link src="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<!--===============================================================================================-->
+
 <style>
 .error{
 color:tomato;
@@ -50,81 +27,10 @@ padding-bottom:20px;
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
 	
-	<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
-
-var token = $("meta[name='_csrf']").attr("content");
-var header = $("meta[name='_csrf_header']").attr("content");
-$(function() {
-	$(document).ajaxSend(function(e, xhr, options) {
-		xhr.setRequestHeader(header, token);
-	});
 	
-	
-	
-});
-
-$(function() {
-	
-	
-	$("#mailAuth").hide();
-	
-	$("#loginCk").click(function() {
-		var frm = $("#frm").serialize();
-		
-		
-		   $.ajax({
-	            async: true,
-	            type : "POST",
-	            data : frm,
-	            url : "loginCk",
-	            /* dataType : "json", */
-	            /* contentType: "application/json; charset=UTF-8", */
-	            success : function(data) {
-	            	if(data===""){
-	            		$("#frm").submit();
-	            	}else if(data=='노인증'){
-	            		$("#error").text('로그인을 위해서는 메일 인증이 필요해요.');
-	            		$("#mailAuth").show();
-	            		return;
-	            	}else{
-	            		$("#error").text(data);
-	            		return;
-	            	}
-	               
-	              
-	            },
-	            error : function(error) {
-	            	alert(error);
-	            }
-	        });
-		
-		
-	});
-	
-	$("#loginCk").click(function() {
-		var frm = $("#frm").serialize();
-		
-		$.ajax({
-			type : "POST",
-			url : "sendMail.do",
-			cache : false,
-			data : frm,
-			success : function(data){
-				$("#idAuth").modal();
-			},
-			error : onError
-		});
-	});
-	
-});
-
-</script>
 </head>
 <body>
-	<div layout:fragment="content">
+	<div layout:fragment="member_content">
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-90 p-b-30">
@@ -270,28 +176,83 @@ $(function() {
 	
 	
 	</div>
+	<div layout:fragment="member_script">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+<script>
+<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
+
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(function() {
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
 	
 	
-<!--===============================================================================================-->
-	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/bootstrap/js/popper.js"></script>
-	<script src="/vendor/bootstrap/js/bootstrap.min2.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/daterangepicker/moment.min.js"></script>
-	<script src="/vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
-	<script src="/js/main.js"></script>
-	   <script src="/js/creative.min.js"></script>
+	
+});
 
+$(function() {
+	
+	
+	$("#mailAuth").hide();
+	
+	$("#loginCk").click(function() {
+		var frm = $("#frm").serialize();
+		
+		
+		   $.ajax({
+	            async: true,
+	            type : "POST",
+	            data : frm,
+	            url : "loginCk",
+	            /* dataType : "json", */
+	            /* contentType: "application/json; charset=UTF-8", */
+	            success : function(data) {
+	            	if(data===""){
+	            		$("#frm").submit();
+	            	}else if(data=='노인증'){
+	            		$("#error").text('로그인을 위해서는 메일 인증이 필요해요.');
+	            		$("#mailAuth").show();
+	            		return;
+	            	}else{
+	            		$("#error").text(data);
+	            		return;
+	            	}
+	               
+	              
+	            },
+	            error : function(error) {
+	            	alert(error);
+	            }
+	        });
+		
+		
+	});
+	
+	$("#loginCk").click(function() {
+		var frm = $("#frm").serialize();
+		
+		$.ajax({
+			type : "POST",
+			url : "sendMail.do",
+			cache : false,
+			data : frm,
+			success : function(data){
+				$("#idAuth").modal();
+			},
+			error : onError
+		});
+	});
+	
+});
 
+</script>
 
+</div>
 
 
 </body>

@@ -1,5 +1,10 @@
 package com.bit.geha.controller;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bit.geha.dao.MemberDao;
 import com.bit.geha.dao.MyPageDao;
-import com.bit.geha.dto.MemberDto;
 import com.bit.geha.dto.ReviewDto;
 import com.bit.geha.security.SecurityMember;
 import com.bit.geha.service.MemberService;
@@ -72,21 +77,25 @@ public class MyPageController {
 		return "redirect:/myPage/bookingList?memberCode="+memberCode;
 	}
 	
+	//리뷰관리
 	@RequestMapping("/myReview")
 	public void myReview(Model model,HttpSession session) {
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
 		model.addAttribute("reviewList",myPageDao.getReviewList(memberCode));
 	}
 	
+	//내정보관리
 	@RequestMapping("/myInfo")
 	public void myInfo(Model model,Authentication auth) {
 		SecurityMember sc = (SecurityMember) auth.getPrincipal();
 		model.addAttribute("memberDto",memberDao.findById(sc.getUsername()));
 	}
 	
+	//내정보수정
 	@RequestMapping("/updateInfo")
 	public String updateInfo(@RequestParam String id,@RequestParam String memberName,@RequestParam String password,
-			@RequestParam(required=false) String businessLicense, @RequestParam String gender) {
+			@RequestParam(required=false) String businessLicense, 
+			@RequestParam String gender,RedirectAttributes redirectAttributes) {
 			if(password=="") {
 				
 			myPageDao.modifyNameEtc(id, memberName, businessLicense,gender);
@@ -97,19 +106,47 @@ public class MyPageController {
 						passwordEncoder.encode(password), 
 						businessLicense,gender);
 			}
-			
+			redirectAttributes.addFlashAttribute("updateInfo","정보가 수정되었습니다!");
 			return "redirect:/myPage/myInfo";
 			
 	}
 	
+	//리뷰 수정
 	@RequestMapping("/modifyReview")
-	public String modifyReview(ReviewDto reviewDto) {
+	public String modifyReview(ReviewDto reviewDto,RedirectAttributes redirectAttributes) {
 		myPageDao.modifyReview(reviewDto);
+		redirectAttributes.addFlashAttribute("modifyOk","리뷰가 수정되었습니다!");
 		return "redirect:/myPage/myReview";
 	}
 	
+	//리뷰 삭제
 	@RequestMapping("/deleteReview")
-	public String deleteReview() {
+	public String deleteReview(@RequestParam int reviewNo,RedirectAttributes redirectAttributes) {
+		myPageDao.deleteReview(reviewNo);
+		redirectAttributes.addFlashAttribute("deleteInfo","선택한 후기가 삭제되었습니다.");
 		return "redirect:/myPage/myReview";
+	}
+	
+	//찜한숙소
+	@RequestMapping("/myLike")
+	public void myLike(Model model,HttpSession session) {
+		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
+		model.addAttribute("likeList",myPageDao.myLike(memberCode));
+		
+	}
+	
+	
+	//찜 삭제
+	@RequestMapping("/deleteLike")
+	public String deleteLike(HttpServletRequest request,HttpSession session,
+			RedirectAttributes redirectAttributes) {
+		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
+		String[] arr = request.getParameterValues("chk");
+		List<String> list=Arrays.asList(arr);
+		List<Integer> deleteLikeList = list.stream().map(Integer::parseInt)
+				.collect(Collectors.toList());
+		myPageDao.deleteLike(memberCode,deleteLikeList);
+		redirectAttributes.addFlashAttribute("deleteOk","선택한 찜이 삭제되었습니다.");
+		return "redirect:/myPage/myLike";
 	}
 }
