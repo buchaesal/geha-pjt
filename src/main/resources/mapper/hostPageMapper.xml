@@ -11,7 +11,7 @@
 			, #{memberCode}, #{businessTrip}, #{gourmet}, #{trip}, #{shopping}, #{bankName}, #{accountNumber})
 	</insert>
 	
-	<insert id="addRooms" parameterType="java.util.List">
+	<insert id="addRooms" useGeneratedKeys="true" keyProperty="roomCode" parameterType="java.util.List">
 		INSERT INTO room_tb (guestHouseCode, roomName, charge, gender, capacity, roomInfo) 
 		VALUES
 		<foreach collection="list" item="roomDto" separator=", ">
@@ -20,11 +20,18 @@
 	</insert>
 	
 	<insert id="addFacilities" parameterType="java.util.Map">
-		INSERT INTO guesthouse_has_facility_tb (guestHouseCode, facilityCode) 
+		INSERT INTO guestHouse_has_facility_tb (guestHouseCode, facilityCode) 
 		VALUES 
 		<foreach collection="facilityCode" item="facilityCode" separator=", ">
 			(#{guestHouseCode}, #{facilityCode})
 		</foreach>
 	</insert>
-
+	
+	<insert id="addFiles" parameterType="java.util.List">
+		INSERT INTO file_tb
+		VALUES
+		<foreach collection="list" item="fileDto" separator=", ">
+			(#{fileDto.savedName}, #{fileDto.originalName}, #{fileDto.guestHouseCode}, #{fileDto.roomCode}, #{fileDto.isMainImage})
+		</foreach>
+	</insert>
 </mapper>
