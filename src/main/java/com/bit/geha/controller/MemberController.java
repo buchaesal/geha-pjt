@@ -69,9 +69,7 @@ public class MemberController {
 	public void findPw() {
 	}
 
-	@RequestMapping("/index")
-	public void index() {
-	}
+	
 
 	@RequestMapping("/signUp")
 	public void signUp() {
@@ -92,9 +90,6 @@ public class MemberController {
 	public void sendEmailComplete() {
 	}
 
-	@RequestMapping("/chooseAuth")
-	public void chooseAuth() {
-	}
 
 	@PostMapping(value = "findPw.do")
 	@ResponseBody
@@ -124,7 +119,6 @@ public class MemberController {
 	public String create(MemberDto memberDto) throws Exception {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-		// memberDto.setAuthority("USER");
 		memberService.save(memberDto);
 
 		return "/member/sendEmailComplete";

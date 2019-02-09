@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/adminPage_layout">
+<head>
+<meta charset="UTF-8">
+<title>신규 게스트하우스 승인</title>
+</head>
+<body>
+<div layout:fragment="adminPage_content">
+<table border="2"  frame=void>
+			<tr align="center" bgcolor="#fffc7d">
+				
+				<th>이름</th>
+				<th>이메일</th>
+				<th>권한</th>
+				<th>성별</th>
+				<th>인증상태</th>
+				<th><input type="checkbox" id="checkall"></th>
+			</tr>
+			<tr th:each="list : ${list}" align="center">
+				
+				<td th:text="${list.memberName}"></td>
+				<td th:text="${list.id}"></td>
+				<td th:text="${list.authority}"></td>
+				<td th:text="${list.gender}"></td>
+				<td th:text="${list.authStatus}==null?'NO':'OK'"></td>
+				<td>
+				<input type="checkbox" name="chk" th:id="${list.id}" 
+				th:value="${list.authority}">
+				</td>
+			</tr>
+				</table>
+				</div>
+</body>
+</html>

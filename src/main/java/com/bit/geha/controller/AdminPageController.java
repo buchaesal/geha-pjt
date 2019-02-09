@@ -86,12 +86,10 @@ public class AdminPageController {
 		redirectAttributes.addFlashAttribute("changeUser","선택한 관리자를 일반회원으로 강등하였습니다.");
 		return "redirect:/adminPage/memberList";
 	}
+
 	
-	@PostMapping("/authSelect")
-	@ResponseBody
-	public String authSelect(String param) {
-		System.out.println(param);
+	@RequestMapping("/approvalHouse")
+	public void approvalHouse() {
 		
-		return "/adminPage/adminPage?auth="+param;
 	}
 }
