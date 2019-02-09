@@ -11,9 +11,16 @@
 <script th:inline="javascript">
 $(function() {
 	
+	$("#secret").hide();
+	
+	var updateInfo = [[${updateInfo}]];
 	var gender = [[${memberDto.gender}]];
 $('input:radio[name="gender"][value='+gender+']').prop('checked', true);
-
+	
+	if(updateInfo!==null){
+		$("#modalName").text(updateInfo);
+		$("#confirmModal").modal();
+	}
 
 });
 
@@ -25,17 +32,23 @@ function check(){
 	
 	if(password!==""){
 		if(memberName.length<2 || memberName.length>10){
-			$("#nameError").text('이름은 2~10글자만 가능합니다.')
-			memberName.focus();
+			$("#nameError").text('이름은 2~10글자만 가능합니다.');
+			$("#pwError").hide();
+			$("#memberName").focus();
 			return false;
 		}
 		else if(!getPw.test(password)){ //비밀번호가 형식에 맞지 않는다면
+		
 		$("#pwError").text('비밀번호는 4글자 이상만 가능해요.');
-        password.focus();
+		$("#nameError").hide();
+		$("#pwError").show();
+		$("#password").focus();
 		return false;
 	}else if(password!==passwordCheck){
 		$("#pwError").text('비밀번호와 비밀번호 확인이 일치하지 않아요.');
-        password.focus();
+		$("#nameError").hide();
+		$("#pwError").show();
+		$("#password").focus();
         return false;
 	}else if($("input[name='gender']:checked").val()==undefined){
 		$("#gError").text('성별을 선택해주세요.');
@@ -47,7 +60,7 @@ function check(){
 	}else{
 		if(memberName.length<2 || memberName.length>10){
 			$("#nameError").text('이름은 2~10글자만 가능합니다.')
-			memberName.focus();
+			$("#memberName").focus();
 			return false;
 		}
 		else if($("input[name='gender']:checked").val()==undefined){
@@ -55,6 +68,7 @@ function check(){
 			return false;
 		}else{
 			$("#modalName").text('정보를 변경하시겠습니까?');
+			$("#secret").show();
 			$("#confirmModal").modal();
 		}
 	}
@@ -117,8 +131,8 @@ color:tomato;
       <!--Body-->
       <div class="modal-body">
 
- <a href="#" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
-        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">취소</a>
+ <a href="#" id="secret" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
+        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
         
       </div>
 <br/>

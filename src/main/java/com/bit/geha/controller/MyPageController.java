@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -95,7 +94,8 @@ public class MyPageController {
 	//내정보수정
 	@RequestMapping("/updateInfo")
 	public String updateInfo(@RequestParam String id,@RequestParam String memberName,@RequestParam String password,
-			@RequestParam(required=false) String businessLicense, @RequestParam String gender) {
+			@RequestParam(required=false) String businessLicense, 
+			@RequestParam String gender,RedirectAttributes redirectAttributes) {
 			if(password=="") {
 				
 			myPageDao.modifyNameEtc(id, memberName, businessLicense,gender);
@@ -106,23 +106,24 @@ public class MyPageController {
 						passwordEncoder.encode(password), 
 						businessLicense,gender);
 			}
-			
+			redirectAttributes.addFlashAttribute("updateInfo","정보가 수정되었습니다!");
 			return "redirect:/myPage/myInfo";
 			
 	}
 	
 	//리뷰 수정
 	@RequestMapping("/modifyReview")
-	public String modifyReview(ReviewDto reviewDto) {
+	public String modifyReview(ReviewDto reviewDto,RedirectAttributes redirectAttributes) {
 		myPageDao.modifyReview(reviewDto);
+		redirectAttributes.addFlashAttribute("modifyOk","리뷰가 수정되었습니다!");
 		return "redirect:/myPage/myReview";
 	}
 	
 	//리뷰 삭제
 	@RequestMapping("/deleteReview")
-	public String deleteReview(@RequestParam int reviewNo,Model model) {
-		/*myPageDao.deleteReview(reviewNo);*/
-		model.addAttribute("deleteInfo","선택한 후기가 삭제되었습니다.");
+	public String deleteReview(@RequestParam int reviewNo,RedirectAttributes redirectAttributes) {
+		myPageDao.deleteReview(reviewNo);
+		redirectAttributes.addFlashAttribute("deleteInfo","선택한 후기가 삭제되었습니다.");
 		return "redirect:/myPage/myReview";
 	}
 	

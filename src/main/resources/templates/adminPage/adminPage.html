@@ -23,43 +23,123 @@ $(function() {
 		xhr.setRequestHeader(header, token);
 	});
 	
+	$("#secret").hide();
 	var auth = [[${auth}]];
 	
 	if(auth!==""){
 	$("#"+auth).attr("selected","selected");
 	}
+	
+	//임명하면 임명되었다고 띄움.
+	var changeAdmin = [[${changeAdmin}]];
+	var changeUser = [[${changeUser}]];
+	if(changeAdmin!==null){
+		$("#modalName").text(changeAdmin);
+		$("#confirmModal").modal();}
+	if(changeUser!==null){
+		$("#modalName").text(changeUser);
+		$("#confirmModal").modal();
+	}
+	
+    //최상단 체크박스 클릭
+    $("#checkall").click(function(){
+        //클릭되었으면
+        if($("#checkall").prop("checked")){
+            //input태그의 name이 chk인 태그들을 찾아서 checked옵션을 true로 정의
+            $("input[name=chk]").prop("checked",true);
+            //클릭이 안되있으면
+        }else{
+            //input태그의 name이 chk인 태그들을 찾아서 checked옵션을 false로 정의
+            $("input[name=chk]").prop("checked",false);
+        }
+    });
+    
 });
 
 
 var id = "";
 var check = "";
+var arr=[];
 
+/* 권한을 관리자로 바꾸는 메소드 */
 function changeAdmin(){
 	
-	var name = event.srcElement.id; /* 클릭한 태그의 id를 가져옴 */
-	id = event.srcElement.value;
-	$("#modalName").text(name+'님을 관리자로 임명하시겠습니까?');
+	$('input:checkbox[name="chk"]').each(function() {
+
+
+	      if(this.checked){//checked 처리된 항목의 값
+					
+	            if(this.value=='HOST'){
+	            	$("#modalName").text('호스트의 권한은 변경할 수 없습니다.');
+	        		$("#confirmModal").modal();
+	            	return false;
+	            }else if(this.value=='ADMIN'){
+	            	$("#modalName").text('이미 관리자인 회원입니다.');
+	    	        		$("#confirmModal").modal();
+	            	return false;
+	      }
+	      
+	      arr.push(this.id);
+	      
+	      }
+	      
+	    
+	 });
+	if(arr.length>0){
+		$("#secret").show();
+	$("#modalName").text('선택한 회원을 관리자로 임명하시겠습니까?');
 	$("#confirmModal").modal();
+	}
+	
+
 }
 
+/* 관리자를 일반회원으로 강등시키는 메소드 */
 function changeUser(){
 	check = "음후히히";
-	var name = event.srcElement.id; /* 클릭한 태그의 id를 가져옴 */
-	id = event.srcElement.value;
-	$("#modalName").text(name+'님을 일반회원으로 강등하시겠습니까?');
+	
+	$('input:checkbox[name="chk"]').each(function() {
+
+
+	      if(this.checked){//checked 처리된 항목의 값
+					
+	            if(this.value=='HOST'){
+	            	$("#modalName").text('호스트의 권한은 변경할 수 없습니다.');
+	        		$("#confirmModal").modal();
+	            	return false;
+	            }else if(this.value=='USER'){
+	            	$("#modalName").text('이미 일반회원인 회원입니다.');
+	        		$("#confirmModal").modal();
+	            	return false;
+	      }
+	      
+	      arr.push(this.id);
+	      
+	      }
+	      
+	    
+	 });
+	
+	if(arr.length>0){
+		$("#secret").show();
+	$("#modalName").text('선택한 관리자를 일반회원으로 강등하시겠습니까?');
 	$("#confirmModal").modal();
+	}
+	
+	
 }
 
 function frmSubmit(){
 	
-	$("#id").val(id);
+	$("#id").val(arr);
 	
-	if(check==""){
+	
+	  if(check==""){  /*관리자승급 */
 	$("#frm").attr("action", "/adminPage/changeAdmin").submit();
-	}else{
+	}else{  /* 강등 */
 		$("#frm").attr("action", "/adminPage/changeUser").submit();
 		
-	}
+	}  
 	
 	
 	
@@ -78,42 +158,72 @@ p{
     font-size: 20px;
         width: 413px;
 }
+th {
+    text-align: center;
+}
+table{
+width:600px;
+}
+
+button, select {
+    margin-bottom: 19px;
+}
+
+
+.btns {
+    border-bottom: 1px solid darkgray;
+    padding-bottom: 15px;
+}
+
+tr{
+
+}
+
+
 </style>
 </head>
 <body>
 <div layout:fragment="adminPage_content">
 
-<select class="selectpicker" onchange="authSelect(this.value)">
+<select class="selectpicker" onchange="authSelect(this.value)" style="width:80px;height:30px;">
 	<option value=''>전체보기</option>
   <option value='user' id="user">USER</option>
   <option value='host' id="host">HOST</option>
   <option value='admin' id="admin">ADMIN</option>
 </select>
-
-<table border="2">
-			<tr>
-				<th>회원코드</th>
+<br>
+<table border="2"  frame=void>
+			<tr align="center" bgcolor="#fffc7d">
+				
 				<th>이름</th>
 				<th>이메일</th>
 				<th>권한</th>
-				<th></th>
+				<th>성별</th>
+				<th>인증상태</th>
+				<th><input type="checkbox" id="checkall"></th>
 			</tr>
-			<tr th:each="list : ${list}">
-				<td th:text="${list.memberCode}"></td>
+			<tr th:each="list : ${list}" align="center">
+				
 				<td th:text="${list.memberName}"></td>
 				<td th:text="${list.id}"></td>
 				<td th:text="${list.authority}"></td>
+				<td th:text="${list.gender}"></td>
+				<td th:text="${list.authStatus}==null?'NO':'OK'"></td>
 				<td>
-				<button type="button" th:id="${list.memberName}" th:value="${list.id}" 
-				th:if="${list.authority.equals('USER')}" onclick="changeAdmin()">관리자임명</button>
-				<button type="button" th:id="${list.memberName}" th:value="${list.id}" 
-				th:if="${list.authority.equals('ADMIN')}" onclick="changeUser()">강등</button>
+				<input type="checkbox" name="chk" th:id="${list.id}" 
+				th:value="${list.authority}">
 				</td>
 			</tr>
 				</table>
+				<br>
+				
+				<div class="btns">
+				<button class="btn btn-info waves-effect" onclick="changeAdmin()">관리자 임명</button>
+				<button class="btn btn-info waves-effect" onclick="changeUser()">강등</button>
+				</div>
 				 <!-- 게시판 하단의 페이징 버튼 -->
             <div class="box-footer clearfix">
-              <ul class="pagination pagination-sm no-margin pull-right">
+              <ul class="pagination pagination-sm no-margin pull-center">
               
               <li th:if="${pageMaker.prev} == true">
               	<a th:href="@{/adminPage/memberList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
@@ -150,8 +260,8 @@ p{
       <!--Body-->
       <div class="modal-body">
 
- <a href="#" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
-        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">취소</a>
+ <a href="#" class="btn btn-primary btn-lg" id="secret" onclick="frmSubmit()">확인</a>
+        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
         
       </div>
 <br/>
