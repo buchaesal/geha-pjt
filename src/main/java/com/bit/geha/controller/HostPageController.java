@@ -118,7 +118,12 @@ public class HostPageController {
 		model.addAttribute("guestHouseDto", hostPageDao.getGuestHouse(guestHouseCode));
 		model.addAttribute("rooms", hostPageDao.getRooms(guestHouseCode));
 		model.addAttribute("facilities", hostPageDao.getFacilities(guestHouseCode));
-		model.addAttribute("imgs", hostPageDao.getFiles(guestHouseCode));
+		List<FileDto> guestHouseImgs = hostPageDao.getGuestHouseImgs(guestHouseCode);
+		for(FileDto img : guestHouseImgs) {
+			System.out.println(img.getSavedName());
+		}
+		model.addAttribute("guestHouseImgs", guestHouseImgs);
+		
 	}
 	
 	@RequestMapping(value="guestBookingList")
