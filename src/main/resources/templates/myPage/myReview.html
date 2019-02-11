@@ -11,7 +11,13 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	width: 400px;
+	width: 300px;
+}
+
+.glyphicon-bell:before {
+    font-size: 17px;
+    color: #f3ab04;
+    text-shadow: 0 0 1px #170b0b;
 }
 
 .modal-content {
@@ -25,6 +31,10 @@
 p{
     font-size: 20px;
         width: 413px;
+}
+
+th {
+    text-align: center;
 }
 
 /* 별점 */
@@ -122,8 +132,23 @@ p{
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
+<script th:inline="javascript">
 	$(function() {
+		$("#secret").hide();
+		
+		var deleteInfo = [[${deleteInfo}]];
+		var modifyOk = [[${modifyOk}]];
+
+		
+		if(deleteInfo!==null){
+			$("#modalName").text(deleteInfo);
+			$("#confirmModal").modal();
+		}
+		
+		if(modifyOk!==null){
+			$("#modalName").text(modifyOk);
+			$("#confirmModal").modal();
+		}
 
 		var starRating = function() {
 			var $star = $(".star-input"), $result = $star.find("output>b");
@@ -166,7 +191,6 @@ p{
 		var title = event.srcElement.name;
 		var reviewNo = event.srcElement.id;
 		var content = event.srcElement.value;
-
 		$("#reviewNo").val(reviewNo);
 		$("#title").val(title);
 		$("#content").val(content);
@@ -184,6 +208,9 @@ p{
 		
 		var reviewNo = event.srcElement.id;
 		$("#deleteInput").val(reviewNo);
+		$("#modalName").text('이 후기를 삭제하시겠습니까?');
+		$("#modalBody").hide();
+		$("#secret").show();
 		$("#confirmModal").modal();
 	}
 	
@@ -192,40 +219,65 @@ p{
 		$("#deleteFrm").submit();
 	}
 	
+	function showReply(){
+		var content = event.srcElement.name;
+		var gehaName = event.srcElement.id;
+		
+		$("#modalName").text('From.'+gehaName);
+		$("#modalBody").text(content);
+		$("#confirmModal").modal();
+	}
+	
 </script>
 
 </head>
 <body>
 	<div layout:fragment="myPage_content">
-
+	<div th:if="${#lists.size(reviewList)==0}">
+		<p class="heading">작성한 리뷰가 없습니다.</p>
+		<a href="/myPage/bookignList" class="btn btn-info waves-effect">리뷰쓰러가기</a>
+		</div>
+	<div th:if="${#lists.size(reviewList)>0}">
 		<table border="2">
 			<tr>
 				<th>게스트하우스</th>
 				<th>작성내용</th>
 				<th>작성일</th>
+				<th>나의  평점</th>
+				<th>답변</th>
 				<th></th>
 			</tr>
-			<tr th:each="reviewDto : ${reviewList}">
-				<td>[[${reviewDto.guestHouseName}]]<br>
+			<tr th:each="reviewDto : ${reviewList}" align="center">
+				<td><a th:href="@{'/room/roomInfo?guestHouseCode='+${reviewDto.guestHouseCode}}">
+				[[${reviewDto.guestHouseName}]]</a><br>
 					([[${reviewDto.roomName}]])
 				</td>
-				<td class="short_txt01"><span th:name="${reviewDto}">[[${reviewDto.title}]]</span><br>
-					<span>[[${reviewDto.content}]]</span></td>
-				<td>[[${reviewDto.writingDate}]]</td>
+				<td class="short_txt01"><span style = "font-size:1.2em;" th:name="${reviewDto}">
+				[[${reviewDto.title}]]</span><br>
+				<span style="font-size:0.8em;">[[${reviewDto.content}]]</span></td>
+				<td>[[${#dates.format(reviewDto.writingDate, 'yy.MM.dd')}]]</td>
+				<td>[[${reviewDto.rating}]]</td>
+				<td><a href="#" th:name="${reviewDto.replyContent}" 
+				th:id="${reviewDto.guestHouseName}" th:if="${reviewDto.replyContent}" 
+				class="glyphicon glyphicon-bell" 
+				style="text-decoration:none" onclick="showReply()"></a></td>
+				
 				<td>
-					<button type="button" th:name="${reviewDto.title}"
-						th:id="${reviewDto.reviewNo}" th:value="${reviewDto.content}"
-						onclick="modifyFrm()">수정</button>
-						<button type="button" th:id="${reviewDto.reviewNo}" 
-					onClick="showDeleteModal()">삭제</button>
+					<button type="button" class="btn btn-info waves-effect" 
+					th:name="${reviewDto.title}" th:id="${reviewDto.reviewNo}" 
+					th:value="${reviewDto.content}" onclick="modifyFrm()">수정</button>
+					<button type="button" class="btn btn-info waves-effect" 
+					th:id="${reviewDto.reviewNo}" onClick="showDeleteModal()">삭제</button>
 					
 				</td>
+				
 
 
 			</tr>
+
 		</table>
 
-
+</div>
 
 		<!--Modal: idAuth-->
 		<div class="modal fade" id="modifyReviewModal" tabindex="-1"
@@ -245,25 +297,47 @@ p{
 
 						<form th:action="@{/myPage/modifyReview}" id="reviewForm"
 							method="post">
-							<input
-								type="hidden" id="reviewNo" name="reviewNo"> <label>작성자</label>
-							<label>[[${session.name}]]</label><br> <label>평점</label> <span
-								class="star-input"> <span class="input"> <input
-									type="radio" name="rating" value="1" id="p1"> <label
-									for="p1">1</label> <input type="radio" name="rating" value="2"
-									id="p2"> <label for="p2">2</label> <input type="radio"
-									name="rating" value="3" id="p3"> <label for="p3">3</label>
-									<input type="radio" name="rating" value="4" id="p4"> <label
-									for="p4">4</label> <input type="radio" name="rating" value="5"
-									id="p5"> <label for="p5">5</label>
-							</span> <output for="star-input">
+							
+							<input type="hidden" id="reviewNo" name="reviewNo"> 
+							<label>작성자</label>
+							<label>[[${session.name}]]</label><br> 
+							
+							<label>평점</label> 
+							<span class="star-input"> <span class="input"> 
+							
+							<input type="radio" name="rating" value="1" id="p1"> 
+							<label for="p1">1</label> 
+							
+							<input type="radio" name="rating" value="2" id="p2"> 
+							<label for="p2">2</label> 
+							
+							<input type="radio" name="rating" value="3" id="p3"> 
+							<label for="p3">3</label>
+							
+							<input type="radio" name="rating" value="4" id="p4"> 
+							<label for="p4">4</label> 
+							
+							<input type="radio" name="rating" value="5" id="p5"> 
+							<label for="p5">5</label>
+							
+							</span> 
+							
+							<output for="star-input">
 									<b>0</b>점
 								</output>
-							</span> <br> <br> <label>제목</label><br> <input id="title"
-								name="title" type="text" size="50" maxlength="45" required><br>
+								
+							</span> <br> <br> 
+							
+							<label>제목</label><br> 
+							
+							<input id="title" name="title" type="text" size="50" 
+							maxlength="45" required><br>
+							
 							<label>내용</label><br>
+							
 							<textarea id="content" name="content" rows="8" cols="50"
 								maxlength="500" required></textarea>
+								
 							<br>
 						</form>
 
@@ -289,22 +363,22 @@ p{
     <div class="modal-content text-center">
       <!--Header-->
       <div class="modal-header d-flex justify-content-center">
-        <br/><br/><p id="modalName" class="heading">이 후기를 삭제하시겠습니까?</p>
+        <br/><br/><p id="modalName" class="heading"></p>
       </div>
 
       <!--Body-->
       <div class="modal-body">
 <form id="deleteFrm" action="/myPage/deleteReview">
-<input type="hidden" id="deleteInput">
+<input type="hidden" id="deleteInput" name="reviewNo">
 </form>
 
-        
+        <p id="modalBody" class="heading"></p>
       </div>
 <br/>
       <!--Footer-->
       <div class="modal-footer flex-center">
-        <a href="#" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
-        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">취소</a>
+        <a href="#" id="secret" th:unless = "${deleteInfo}" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
+        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
       </div>
     </div>
     <!--/.Content-->

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.bit.geha.dto.BookingDto;
+import com.bit.geha.dto.LikeDto;
 import com.bit.geha.dto.ReviewDto;
 
 @Mapper
@@ -38,4 +39,9 @@ public interface MyPageDao {
 	
 	public void modifyReview(ReviewDto reviewDto);
 	
+	public void deleteReview(int reviewNo);
+	
+	public List<LikeDto> myLike(int memberCode);
+	
+	public void deleteLike(int memberCode,List<Integer> deleteLikeList);
 }

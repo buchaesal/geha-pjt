@@ -11,9 +11,16 @@
 <script th:inline="javascript">
 $(function() {
 	
+	$("#secret").hide();
+	
+	var updateInfo = [[${updateInfo}]];
 	var gender = [[${memberDto.gender}]];
 $('input:radio[name="gender"][value='+gender+']').prop('checked', true);
-
+	
+	if(updateInfo!==null){
+		$("#modalName").text(updateInfo);
+		$("#confirmModal").modal();
+	}
 
 });
 
@@ -21,15 +28,27 @@ function check(){
 	var getPw = RegExp(/^[^ ]{4,}$/gi);
 	var password = $("#password").val();
 	var passwordCheck = $("#passwordCheck").val();
+	var memberName = $("#memberName").val();
 	
 	if(password!==""){
-	if(!getPw.test(password)){ //비밀번호가 형식에 맞지 않는다면
+		if(memberName.length<2 || memberName.length>10){
+			$("#nameError").text('이름은 2~10글자만 가능합니다.');
+			$("#pwError").hide();
+			$("#memberName").focus();
+			return false;
+		}
+		else if(!getPw.test(password)){ //비밀번호가 형식에 맞지 않는다면
+		
 		$("#pwError").text('비밀번호는 4글자 이상만 가능해요.');
-        password.focus();
+		$("#nameError").hide();
+		$("#pwError").show();
+		$("#password").focus();
 		return false;
 	}else if(password!==passwordCheck){
 		$("#pwError").text('비밀번호와 비밀번호 확인이 일치하지 않아요.');
-        password.focus();
+		$("#nameError").hide();
+		$("#pwError").show();
+		$("#password").focus();
         return false;
 	}else if($("input[name='gender']:checked").val()==undefined){
 		$("#gError").text('성별을 선택해주세요.');
@@ -39,11 +58,17 @@ function check(){
 		$("#confirmModal").modal();
 	}
 	}else{
-		if($("input[name='gender']:checked").val()==undefined){
+		if(memberName.length<2 || memberName.length>10){
+			$("#nameError").text('이름은 2~10글자만 가능합니다.')
+			$("#memberName").focus();
+			return false;
+		}
+		else if($("input[name='gender']:checked").val()==undefined){
 			$("#gError").text('성별을 선택해주세요.');
 			return false;
 		}else{
 			$("#modalName").text('정보를 변경하시겠습니까?');
+			$("#secret").show();
 			$("#confirmModal").modal();
 		}
 	}
@@ -63,6 +88,9 @@ p{
     font-size: 20px;
         width: 413px;
 }
+.Error{
+color:tomato;
+}
 </style>
 </head>
 <body>
@@ -70,11 +98,12 @@ p{
 <h2>내 정보 관리</h2>
 				<form action="/myPage/updateInfo" id="frm">
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-				<input type="text" name="memberName" th:value="${memberDto.memberName}"><br/>
-				<input type="email" th:value="${memberDto.id}" name="id" readonly="readonly"><br/>
-				<input type="password" name="password" id="password" placeholder="비밀번호"><br/>
+				<input type="text" id="memberName" name="memberName" th:value="${memberDto.memberName}"><br/>
+				<span id="nameError" class="Error"></span><br/>
+				<input type="email" th:value="${memberDto.id}" name="id" readonly="readonly"><br/><br/>
+				<input type="password" name="password" id="password" placeholder="비밀번호"><br/><br/>
 				<input type="password" id="passwordCheck" placeholder="비밀번호 확인"><br/>
-				<span id="pwError"></span>
+				<span id="pwError" class="Error"></span><br/>
 				<div th:if="${session.auth.equals('HOST')}">
 				<input type="text" name="businessLicense" th:value="${memberDto.businessLicense}">
 				</div>
@@ -84,7 +113,7 @@ p{
 							여자 <input type="radio" name="gender" value="F"><br/>
 					
 					</div>
-					<span id="gError"></span>
+					<span id="gError" class="Error"></span><br/>
 					<button type="button" onclick="check()">수정</button>
 				</form>
 			
@@ -102,8 +131,8 @@ p{
       <!--Body-->
       <div class="modal-body">
 
- <a href="#" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
-        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">취소</a>
+ <a href="#" id="secret" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
+        <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
         
       </div>
 <br/>
