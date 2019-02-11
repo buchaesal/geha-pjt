@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/adminPage_layout">
+<head>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+<title>신규 게스트하우스 승인</title>
+<style>
+th{
+text-align:center;
+}
+.test{
+border-bottom: 1px solid gray;
+}
+tr {
+    height: 60px;
+}
+
+</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
+
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(function() {
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
+	
+	
+	
+});
+
+function showHostInfo(){
+	var memberCode = event.srcElement.name;
+	
+	$.ajax({
+		type : "POST",
+		url : "getMemberInfo.do",
+		data : memberCode,
+		contentType : "application/json; charset=utf-8",
+		dataType : "json",
+		error : function(error) {
+			console.log(error);
+		},
+		success : function(data) {
+			
+		console.log(data[0].id);
+		$(data).each(function(){
+			console.log(this.guestHouseName);
+			$("#guestHouseList").append("<tr>"+"<td>"+this.guestHouseName+"</td>"
+					+"<td>"+this.approvalDate+"</td>"+"</tr>");
+			
+		});
+		
+	 	$("#hostName").text(data[0].memberName);
+		$("#hostId").text(data[0].id);
+		$("#businessLicense").text(data[0].businessLicense);
+		$("#infoModal").modal(); 
+		}
+	});
+	
+	
+}
+</script>
+</head>
+<body>
+<div layout:fragment="adminPage_content">
+<table width="700px">
+			<tr align="center" class="test">
+				
+				<th>호스트</th>
+				<th>상호명</th>
+				<th>신청일</th>
+				<th>신청내역</th>
+				<th>상태</th>
+			</tr>
+			<tr th:each="list : ${list}" align="center" >
+				
+				<td><a href="#" style="text-decoration:none" th:name="${list.memberCode}" 
+				onclick="showHostInfo()">
+				[[${list.memberName}]]</a></td>
+				<td th:text="${list.guestHouseName}"></td>
+				<td th:text="${#dates.format(list.registerDate, 'yy.MM.dd')}"></td>
+				<td><a href="#">보기</a></td>
+				<td th:text="${list.status}"></td>
+			
+			</tr>
+				</table>
+				
+				<!--Modal-->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="d-flex justify-content-center">
+        <br/><br/>
+        호스트 정보 
+
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+		<table>
+		<tr>
+		<th>이름</th>
+		<th id="hostName"></th>
+		</tr>
+		<tr>
+		<th>아이디</th>
+		<th id="hostId"></th>
+		</tr>
+		<tr>
+		<th>사업자번호</th>
+		<th id="businessLicense"></th>
+		</tr>
+		</table>
+		<p class="test">현재 운영중인 게스트하우스</p>
+		<table id="guestHouseList">
+		
+			
+			
+        </table>
+        
+      </div>
+<br/>
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+       <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal-->
+				
+				
+				
+				</div>
+</body>
+</html>

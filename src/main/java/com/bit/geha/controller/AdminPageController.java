@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bit.geha.criteria.AdminPageCriteria;
 import com.bit.geha.dao.AdminPageDao;
+import com.bit.geha.dto.MemberDto;
 import com.bit.geha.service.MemberService;
 import com.bit.geha.util.PageMaker;
 
@@ -86,12 +87,18 @@ public class AdminPageController {
 		redirectAttributes.addFlashAttribute("changeUser","선택한 관리자를 일반회원으로 강등하였습니다.");
 		return "redirect:/adminPage/memberList";
 	}
+
 	
-	@PostMapping("/authSelect")
+	@RequestMapping("/approvalHouse")
+	public void approvalHouse(Model model) {
+		model.addAttribute("list",adminPageDao.getApprovalHouseList());
+	}
+	
+	@RequestMapping("getMemberInfo.do")
 	@ResponseBody
-	public String authSelect(String param) {
-		System.out.println(param);
+	public List<MemberDto> getMemberInfo(@RequestBody int memberCode) {
 		
-		return "/adminPage/adminPage?auth="+param;
+		
+		return memberService.findByMemberCode(memberCode);
 	}
 }
