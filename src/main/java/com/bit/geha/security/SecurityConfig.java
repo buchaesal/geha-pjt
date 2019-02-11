@@ -32,7 +32,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.CompositeFilter;
 
 import com.bit.geha.service.SocialService;
@@ -125,26 +129,51 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        filter.setTokenServices(tokenServices);
 	        
 	        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler() {
-	            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+	        	private RequestCache requestCache = new HttpSessionRequestCache();
+	            public void onAuthenticationSuccess(HttpServletRequest request, 
+	            		HttpServletResponse response, Authentication authentication) 
+	            				throws IOException, ServletException {
 	                
-	            	HttpSession session = request.getSession();
-	        		if (session != null) {
-	        			String redirectUrl = (String) session.getAttribute("prevPage");
-	        			
-	        			if (redirectUrl != null) {
-	        				session.removeAttribute("prevPage");
-	        				this.setDefaultTargetUrl(redirectUrl);
-	        				super.onAuthenticationSuccess(request, response, authentication);
-
-	        			} else {
-	        				super.onAuthenticationSuccess(request, response, authentication);
-	        			}
-	        		} else {
-	        			super.onAuthenticationSuccess(request, response, authentication);
-	        		}
-	        		
+	            	SavedRequest savedRequest = requestCache.getRequest(request, response);
 	            	
+	            	if (savedRequest == null) {
+	            		HttpSession session = request.getSession();
+	            		if (session != null) {
+	            			String redirectUrl = (String) session.getAttribute("prevPage");
+	            			
+	            			if (redirectUrl != null) {
+	            				session.removeAttribute("prevPage");
+	            				getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+
+	            			} else {
+	            				super.onAuthenticationSuccess(request, response, authentication);
+	            			}
+	            		} else {
+	            			super.onAuthenticationSuccess(request, response, authentication);
+	            		}
+	            		return;
+	            	}
+	            		
+	            		String targetUrlParameter = getTargetUrlParameter();
+	                    if (isAlwaysUseDefaultTargetUrl()
+	                            || (targetUrlParameter != null 
+	                            && StringUtils.hasText(request.getParameter(targetUrlParameter)))) {
+	                        requestCache.removeRequest(request, response);
+	                        super.onAuthenticationSuccess(request, response, authentication);
+
+	                        return;
+	                    }
+	                    
+	                    clearAuthenticationAttributes(request);
+	                    
+	                 // Use the DefaultSavedRequest URL
+	                    String targetUrl = savedRequest.getRedirectUrl();
+	                    logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
+	                    getRedirectStrategy().sendRedirect(request, response, targetUrl);
+
 	            }
+	            	
+	            
 	        });
 	        
 	        return filter;

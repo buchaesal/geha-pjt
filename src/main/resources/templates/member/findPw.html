@@ -1,35 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="fragments/main_layout">
+	layout:decorator="fragments/member_layout">
 <head>
 
 <meta charset="UTF-8">
 <title>비밀번호 찾기</title>
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="img/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/css/util.css">
-	<link rel="stylesheet" type="text/css" href="/css/main.css">
-	<link href="/css/creative.min.css?8" rel="stylesheet">
-	<link src="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<!--===============================================================================================-->
+
 <!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
 
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
@@ -38,7 +15,80 @@
 	th:content="${_csrf.headerName}" />
 
 
-<script
+
+<style>
+.error2{
+color: tomato;
+position: absolute;
+    padding-top: 19px;
+    /* align-content: center; */
+    left: 228px;
+}
+.error{
+color:tomato;
+}
+
+.loading{
+    position: absolute;
+    bottom: 119px;
+    right: 304px;
+}
+</style>
+</head>
+<body>
+<div layout:fragment="member_content">
+<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-t-90 p-b-30">
+			<span class="login100-form-title p-b-40">
+						:: 비밀번호 찾기 ::
+					</span>
+			<div class="text-center p-t-55 p-b-30">
+						<span class="txt1">
+							등록한 이메일을 입력해주세요.
+						</span>
+					</div>
+	<div class="wrap-input100 validate-input m-b-16">
+						<input class="input100" type="email" id="id" placeholder="Email">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="container-login100-form-btn">
+						<button type="button" class="login100-form-btn" onclick="showFrm()">
+							입력
+						</button>
+					</div>
+					<span class="error2 txt1" id="error2"></span>
+					<span class="txt1 loading" id="loading"></span>
+
+
+
+	<div class="text-center p-t-55 p-b-30" id="pwEmail" style="display: none;">
+		<span class="txt1">이메일에 인증코드가 전송되었어요. 입력해주세요.</span>
+		<div> &nbsp;&nbsp;&nbsp;</div>
+		
+		
+		<form class="login100-form validate-form" action="/member/changePw" id="checkMail">
+			<input type="hidden" id="text" th:value="${text}" name="text">
+			<input type="hidden" id="hiddenId" name="hiddenId">
+			<div class="wrap-input100 validate-input m-b-16">
+						<input class="input100" type="text" id="input" name="input" placeholder="인증코드">
+						<span class="focus-input100"></span>
+					</div>
+					<span class="txt1 error" id="error"></span>
+						<div class="container-login100-form-btn">
+						<button type="button" class="login100-form-btn" onclick="checkMail()">
+							확인
+						</button>
+					</div>
+		</form>
+	</div>
+	
+	
+	</div>
+	</div>
+	</div>
+	<div layout:fragment="member_script">
+	<script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 
@@ -100,77 +150,12 @@
 		}
 	}
 </script>
-<style>
-.error2{
-color: tomato;
-position: absolute;
-    padding-top: 19px;
-    /* align-content: center; */
-    left: 228px;
-}
-.error{
-color:tomato;
-}
-
-.loading{
-    position: absolute;
-    bottom: 119px;
-    right: 304px;
-}
-</style>
-</head>
-<body>
-<div layout:fragment="content">
-<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100 p-t-90 p-b-30">
-			<span class="login100-form-title p-b-40">
-						:: 비밀번호 찾기 ::
-					</span>
-			<div class="text-center p-t-55 p-b-30">
-						<span class="txt1">
-							등록한 이메일을 입력해주세요.
-						</span>
-					</div>
-	<div class="wrap-input100 validate-input m-b-16">
-						<input class="input100" type="email" id="id" placeholder="Email">
-						<span class="focus-input100"></span>
-					</div>
-					<div class="container-login100-form-btn">
-						<button type="button" class="login100-form-btn" onclick="showFrm()">
-							입력
-						</button>
-					</div>
-					<span class="error2 txt1" id="error2"></span>
-					<span class="txt1 loading" id="loading"></span>
-
-
-
-	<div class="text-center p-t-55 p-b-30" id="pwEmail" style="display: none;">
-		<span class="txt1">이메일에 인증코드가 전송되었어요. 입력해주세요.</span>
-		<div> &nbsp;&nbsp;&nbsp;</div>
-		
-		
-		<form class="login100-form validate-form" action="/member/changePw" id="checkMail">
-			<input type="hidden" id="text" th:value="${text}" name="text">
-			<input type="hidden" id="hiddenId" name="hiddenId">
-			<div class="wrap-input100 validate-input m-b-16">
-						<input class="input100" type="text" id="input" name="input" placeholder="인증코드">
-						<span class="focus-input100"></span>
-					</div>
-					<span class="txt1 error" id="error"></span>
-						<div class="container-login100-form-btn">
-						<button type="button" class="login100-form-btn" onclick="checkMail()">
-							확인
-						</button>
-					</div>
-		</form>
-	</div>
 	
 	
 	</div>
-	</div>
-	</div>
+	
+	
+	
 </div>
 </body>
 </html>

@@ -21,14 +21,14 @@
 <link rel="stylesheet" href="/css/datepicker.css" />
 
 <style>
-	@font-face { 
+	@font-face {
 		font-family: 'S-CoreDream-3Light';
 		src: url('fonts/SCDream3.otf') format('opentype');
 		font-weight: normal;
 		font-style: normal;
 	}
 	
-	body {
+	body .container * {
 		font-family: 'S-CoreDream-3Light';
 	}
 	
@@ -41,9 +41,6 @@
 	hr {
 		visibility:hidden;
 	}
-	
-	
-
 	
 	.container{
 		margin-top: 3rem;
@@ -68,7 +65,7 @@
   		width:90%;
    		margin: 0 auto;
  	}
-
+	
  	button.resetStyle {
  		position: static;
 		border: 0;
@@ -89,7 +86,7 @@
 	button:disabled{
 		opacity: 0.2;
 	}
- 	 
+ 	
  	.maparea{ 
  		margin-bottom:3rem;	
  	}
@@ -291,13 +288,13 @@
 			</div>
 			
 			<div class="col-md-9 col-sm-8 maparea">
-			
+				
 				<div id="map"></div>
-
+				
 				<hr />
-
+				
 				<div id="searchresult"> <!-- handlebars template target -->
-					
+				
 				</div> <!-- searchresult end -->
 				
 			</div> <!-- end maparea -->
@@ -328,88 +325,88 @@
 	<script>
 	$(function(){
 		
-		/* 시큐리티 + 에이젝스 에러 방지 설정222 */
-	   var token = $("meta[name='_csrf']").attr("content");
-	   var header = $("meta[name='_csrf_header']").attr("content");
-	   $(function() {
-	      $(document).ajaxSend(function(e, xhr, options) {
-	         xhr.setRequestHeader(header, token);
-	      });
-	   });
+		/* 시큐리티 + 에이젝스 에러 방지 설정 */
+	    var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+	    $(function() {
+	       $(document).ajaxSend(function(e, xhr, options) {
+	          xhr.setRequestHeader(header, token);
+	       });
+	    });
 		
 		/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 / 세미콜론(;)넣지 않음 주의 */
-	  	$(".datepicker-here").datepicker({
+		$(".datepicker-here").datepicker({
 			language: 'en',
 			minDate: new Date(),
 			range: true,
 			autoClose: true,
-		    onSelect: function onSelect(fd, date){
-		    	$("#startdate").val(fd.split(" ~ ")[0])
-		    	$("#enddate").val(fd.split(" ~ ")[1])
-		    }
+			onSelect: function onSelect(fd, date){
+				$("#startdate").val(fd.split(" ~ ")[0])
+				$("#enddate").val(fd.split(" ~ ")[1])
+			}
 		});
 		
-	  	/* slider-range */
-	  	$("#slider-range").slider({
-		      range: true,
-		      min: 10000,
-		      max: 100000,
-		      step: 10000,
-		      values: [ 10000, 100000 ],
-		      slide: function( event, ui ) {
-		        $("#amount").text( Math.floor(ui.values[0]/10000) + "만원 ~ " + Math.floor(ui.values[1]/10000) + "만원");
-		        $("#minprice").val(ui.values[0]);
-		        $("#maxprice").val(ui.values[1]);
-		      }
+		/* slider-range */
+		$("#slider-range").slider({
+			range: true,
+			min: 10000,
+			max: 100000,
+			step: 10000,
+			values: [ 10000, 100000 ],
+			slide: function( event, ui ) {
+			  $("#amount").text( Math.floor(ui.values[0]/10000) + "만원 ~ " + Math.floor(ui.values[1]/10000) + "만원");
+			  $("#minprice").val(ui.values[0]);
+			  $("#maxprice").val(ui.values[1]);
+			}
 		});
 	  	
-   		$("#amount").text( $( "#slider-range" ).slider( "values", 0 )/10000 + "만원" +
-	    	  		" ~ " + $( "#slider-range" ).slider( "values", 1 )/10000 + "만원" );
-	   	$("#minprice").val($( "#slider-range" ).slider( "values", 0 ));
-   		$("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
-	   
-	   /* 인원수 버튼 구현 */
-	   var personCnt = 1;
-	   var spanPerson = $("span#person");
-	   var inputPerson = $("input.person");
-	   var buttonUp = $("button#up");
-	   var buttonDown = $("button#down");
-	   
-	   buttonUp.click(function(){
-		   plusCnt();
-		   validCnt();
-		   spanPerson.html(personCnt);
-		   inputPerson.val(personCnt);
-	   });
-	   
-	   buttonDown.click(function(){
-		   minusCnt();
-		   validCnt();
-		   spanPerson.html(personCnt);
-		   inputPerson.val(personCnt);
-	   });
-	   
-	   function plusCnt(){
-		   personCnt++;
-	   }
-	   function minusCnt(){
-		   personCnt--;
-	   }
-	   function validCnt(){
-		   if (personCnt >= 10){
-			   personCnt = 10;
-			   buttonUp.attr("disabled", true);
-		   } else {
-			   buttonUp.attr("disabled", false);
-		   }
-		   
-		   if (personCnt <= 1){
-			   personCnt = 1;
-			   buttonDown.attr("disabled", true);
-		   } else {
-			   buttonDown.attr("disabled", false);
-		   }
-	   }
+		$("#amount").text( $( "#slider-range" ).slider( "values", 0 )/10000 + "만원" +
+		 	  		" ~ " + $( "#slider-range" ).slider( "values", 1 )/10000 + "만원" );
+		$("#minprice").val($( "#slider-range" ).slider( "values", 0 ));
+		$("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
+	    
+		/* 인원수 버튼 구현 */
+		var personCnt = 1;
+		var spanPerson = $("span#person");
+		var inputPerson = $("input.person");
+		var buttonUp = $("button#up");
+		var buttonDown = $("button#down");
+	    
+		buttonUp.click(function(){
+			plusCnt();
+			validCnt();
+			spanPerson.html(personCnt);
+			inputPerson.val(personCnt);
+		});
+	    
+		buttonDown.click(function(){
+			minusCnt();
+			validCnt();
+			spanPerson.html(personCnt);
+			inputPerson.val(personCnt);
+		});
+	    
+		function plusCnt(){
+			personCnt++;
+		}
+		function minusCnt(){
+			personCnt--;
+		}
+		function validCnt(){
+			if (personCnt >= 10){
+			 personCnt = 10;
+			 buttonUp.attr("disabled", true);
+			} else {
+			 buttonUp.attr("disabled", false);
+			}
+		
+			if (personCnt <= 1){
+			 personCnt = 1;
+			 buttonDown.attr("disabled", true);
+			} else {
+			 buttonDown.attr("disabled", false);
+			}
+		}
 	});
 	</script>
 	<script id="template" type="text/x-handlebars-template">
@@ -458,6 +455,10 @@
 		var gehaObj = {};
 		
  		$("#btn-search").click(function(){
+			getData();
+		});
+ 		
+		function getData(){
 			var formData = $("form").serializeObject();
 			delete formData["_csrf"];
 			
@@ -468,8 +469,8 @@
 			if(typeof formData.facilities == "string"){
 				formData.facilities = [formData.facilities];
 			}
-
-			var getData = $.ajax({
+			
+			$.ajax({
 			  url: "/searchgehainfo",
 			  type: "post",
 			  contentType: "application/json; charset=utf8",
@@ -489,7 +490,6 @@
 					
 					geocoder.addressSearch(data[i].address, function(result, status) {
 					     if (status === daum.maps.services.Status.OK) {
-					    	console.log("this", this);
 							
 					    	var coords = new daum.maps.LatLng(result[0].y, result[0].x);
 					        var marker = new daum.maps.Marker({
@@ -503,52 +503,7 @@
 			.fail(function(){
 				alert("failed");
 			});
-		});
-
-		
-
-/* 		getData()
-			.then(function (data) {
-				var source = $("#template").html();
-				var template = Handlebars.compile(source);
-				$("#searchresult").html(template(data));
-				
-				for(var i=0, len=data.length; i<len; i++){
-					gehaObj = {
-						ghname : data[i].guestHouseName,
-						ghaddress : data[i].address
-					}
-					gehaArr.push(gehaObj);
-				}
-				console.log(gehaArr);
-			})
-			.then(function() {
-				var geocoder = new daum.maps.services.Geocoder();
-
-				console.log("gehaArr", gehaArr);
-				
-				console.log(gehaArr[0]);
-				
-				for (var i=0; i < gehaArr.length ; i++) {
-					
-					console.log("gehaArr[i]-1", gehaArr[i]);
-					
-					geocoder.addressSearch(gehaArr[i].ghaddress, function(result, status) {
-					     if (status === daum.maps.services.Status.OK) {
-					    	console.log("this", this);
-
-					    	var coords = new daum.maps.LatLng(result[0].y, result[0].x);	
-					        var marker = new daum.maps.Marker({
-					            map: map,
-					            position: coords
-					        });
-					    }
-					});
-				}
-			})
-			.catch(function (err) {
-			  console.error(err); // Error 출력
-			}); */
+		}
 		
 		/* handlebars ifOne helper for tags */
 		Handlebars.registerHelper('ifOne', function(a, opts) {
@@ -610,7 +565,7 @@
 		    
 		    // 영역의 북동쪽 좌표를 얻어옵니다 
 		    var neLatLng = bounds.getNorthEast(); 
-
+			
 		    var message = '지도 중심좌표는 위도 ' + center.getLat() + ', <br>';
 		    message += '경도 ' + center.getLng() + ' 이고 <br>';
 		    message += '지도 레벨은 ' + level + ' 입니다 <br> <br>';
@@ -622,32 +577,31 @@
 		/* xxx */
 		
 	}); /* document onload function end */
-</script>
-<script>
-$(function(){
-	/* 검색 기본 날짜 설정 */
-	var getToday = new Date();
-	var getTomorrow = new Date();
-	getTomorrow.setDate(getTomorrow.getDate() + 1);
-	
-	var strToday = getToday.getFullYear() + '-' + lessThanTen(getToday.getMonth() + 1) + '-' + lessThanTen(getToday.getDate());
-	var strTomorrow = getTomorrow.getFullYear() + '-' + lessThanTen(getTomorrow.getMonth() + 1) + '-' + lessThanTen(getTomorrow.getDate());
-	
-	$('#date').val(strToday + ' ~ ' + strTomorrow);
-	$('#startdate').val(strToday);
-	$('#enddate').val(strTomorrow);
-	
-	function lessThanTen(d){
-		if (d < 10){
-			return '0'+d;
-		} else {
-			return d;
+	</script>
+	<script>
+	$(function(){
+		/* 검색 기본 날짜 설정 */
+		var getToday = new Date();
+		var getTomorrow = new Date();
+		getTomorrow.setDate(getTomorrow.getDate() + 1);
+		
+		var strToday = getToday.getFullYear() + '-' + lessThanTen(getToday.getMonth() + 1) + '-' + lessThanTen(getToday.getDate());
+		var strTomorrow = getTomorrow.getFullYear() + '-' + lessThanTen(getTomorrow.getMonth() + 1) + '-' + lessThanTen(getTomorrow.getDate());
+		
+		$('#date').val(strToday + ' ~ ' + strTomorrow);
+		$('#startdate').val(strToday);
+		$('#enddate').val(strTomorrow);
+		
+		function lessThanTen(d){
+			if (d < 10){
+				return '0'+d;
+			} else {
+				return d;
+			}
 		}
-	}
-});
-</script>
-<!-- script end -->
+	});
+	</script>
+	<!-- script end -->
 </div> <!-- end layout script -->
-
 </body>
 </html>

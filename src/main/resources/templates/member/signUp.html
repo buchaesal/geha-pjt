@@ -1,36 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="fragments/main_layout">
+	layout:decorator="fragments/member_layout">
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="img/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/css/util.css">
-	<link rel="stylesheet" type="text/css" href="/css/main.css">
-	<link href="/css/creative.min.css?8" rel="stylesheet">
-<!--===============================================================================================-->
+
 <style>
-.has-error{
+.has-error,.error{
 color:tomato;
 }
 .has-success{
@@ -56,7 +34,90 @@ text-align: center;
 	th:content="${_csrf.headerName}" />
 
 
-<script
+
+</head>
+<body>
+
+<div layout:fragment="member_content">
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-t-90 p-b-30">
+				<form class="login100-form validate-form" action="/member/create" id="frm" method="POST">
+					 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					<span class="login100-form-title p-b-40">
+						:: 회원가입 ::
+					</span>
+	<div class="text-center p-t-55 p-b-30">
+						<span class="txt1" th:if="${host}">
+							호스트 회원가입
+						</span>
+						<span class="txt1" th:unless="${host}">
+							일반 회원가입
+						</span>
+					</div>
+					
+
+					<div class="wrap-input100 validate-input m-b-16">
+						<input class="input100" type="text" id="name" name="memberName" placeholder="이름">
+						<span class="focus-input100"></span>
+					</div>
+					<p id="nameError" class="error msg"/>
+					<div class="wrap-input100 validate-input m-b-16">
+						<input class="input100" type="text" name="id" id="id" placeholder="Email">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="custom">
+<input type="button" class="btn btn-info btn-sm" id="idck" value="중복확인">
+
+</div>
+<div id="divInputId"><p id="idError"/></div>
+					<div class="wrap-input100 validate-input m-b-20">
+			
+						<input class="input100" type="password" name="password" id="password" placeholder="비밀번호">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-20" data-validate = "Please enter password">
+			
+						<input class="input100" type="password" id="passwordCheck" placeholder="비밀번호 확인">
+						<span class="focus-input100"></span>
+					</div>
+					
+					
+					
+					<div class="wrap-input100 validate-input m-b-16" th:if="${host}">
+						<input class="input100" type="text" name="businessLicense" id="license" placeholder="사업자번호">
+						<span class="focus-input100"></span>
+					</div>
+					
+					<p id="pwError" class="error msg"/>
+					
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						<label class="btn btn-info btn-lg">
+						
+							남자 <input type="radio" name="gender" value="M">
+							</label>
+							<label class="btn btn-info btn-lg">
+							여자 <input type="radio" name="gender" value="F"><br/>
+					</label>
+					
+					</div>
+					
+				
+					<div class="container-login100-form-btn">
+						<button type="button" class="login100-form-btn" onclick="confirm()">
+							회원가입
+						</button>
+					</div>
+					
+					</form>
+					
+			</div>
+		</div>
+	</div>
+	
+	
+		<div layout:fragment="member_script">
+		<script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script th:inline="javascript">
 
@@ -84,8 +145,14 @@ text-align: center;
 	    $("#idck").click(function() {
 	    	var id =  $("#id").val();
 	        //userid 를 param.
-	        
+	        var getId=RegExp(/^[0-9a-zA-Z]*[@][0-9a-zA-Z]*[.][a-zA-Z]{2,3}$/i);
 	      
+	        if(!getId.test(id)){ //아이디가 형식에 맞지 않는다면
+    			$("#idError").text('이메일형식만 가능합니다.');
+    			$("#divInputId").addClass("has-error");
+                $("#divInputId").removeClass("has-success");
+                $("#id").focus();
+    			return false;}else{
 	        
 	        $.ajax({
 	            async: true,
@@ -116,142 +183,75 @@ text-align: center;
 	                }
 	            },
 	            error : function(error) {
-	            	$("#idError").text('공백은 입력할 수 없어요.');
+	            	$("#idError").text('공백은 입력할 수 없습니다.');
 	            	$("#divInputId").addClass("has-error");
                     $("#divInputId").removeClass("has-success");
 	            	
 	            }
 	        });
+	        
+    			}
 	    });
+	    
+	    
 	});
 	
 	function confirm(){
-		var getId=RegExp(/^[0-9a-zA-Z]*[@][0-9a-zA-Z]*[.][a-zA-Z]{2,3}$/i);
 		var getPw = RegExp(/^[^ ]{4,}$/gi);
-		var id =  $("#id").val();
 		var password = $("#password").val();
 		var passwordCheck = $("#passwordCheck").val();
+		var name = $("#name").val();
 		var host = [[${host}]];
 		
 	
 		
 		 if(idck==0){
-			 $("#idError").text('아이디 중복체크는 필수에요.');
+			 $("#idError").text('아이디 중복체크를 해주세요.');
 			 $("#divInputId").addClass("has-error");
              $("#divInputId").removeClass("has-success");
              id.focus();
 	            return false;
 	        }else{
-	        	if(!getId.test(id)){ //아이디가 형식에 맞지 않는다면
-	    			$("#idError").text('아이디는 공백 없는 이메일 형식이어야만 해요.');
-	    			$("#divInputId").addClass("has-error");
-	                $("#divInputId").removeClass("has-success");
-	                id.focus();
-	    			return false;
-	    		}else if(!getPw.test(password)){ //비밀번호가 형식에 맞지 않는다면
-	    			$("#pwError").text('비밀번호는 4글자 이상만 가능해요.');
-	    			$("#divInputPw").addClass("has-error");
-	    			$("#divInputPw").removeClass("has-success");
+	        	if(name.length<2 || name.length>10){
+	        		$("#pwError").hide();
+	        		$("#nameError").text('이름은 2~10글자이어야 합니다.');
+	        		$("#nameError").show();
+	        		name.focus();
+	        		return false;
+	        	}
+	        	else if(!getPw.test(password)){ //비밀번호가 형식에 맞지 않는다면
+	        		$("#nameError").hide();
+	    			$("#pwError").text('비밀번호는 4글자 이상만 가능합니다.');
+	    			$("#pwError").show();
 	                password.focus();
 	    			return false;
 	    		}else if(password!==passwordCheck){
-	    			$("#pwError").text('비밀번호와 비밀번호 확인이 일치하지 않아요.');
-	    			$("#divInputPw").addClass("has-error");
-	                $("#divInputPw").removeClass("has-success");
+	    			$("#nameError").hide();
+	    			$("#pwError").text('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+	    			$("#pwError").show();
 	                password.focus();
 	                return false;
 	    		}else if($("input[name='gender']:checked").val()==undefined){
-	    			$("#gError").text('성별을 선택해주세요.');
-	    			$("#divInputG").addClass("has-error");
+	    			$("#nameError").hide();
+	    			$("#pwError").text('성별을 선택해주세요.');
+	    			$("#pwError").show();
+	    			return false;
 	    		}else if(host!==null&&$("#license").val()==""){
-	    			$("#gError").text('사업자 번호는 필수에요.');
-	    			$("#divInputG").addClass("has-error");
+	    			$("#nameError").hide();
+	    			$("#pwError").text('사업자 번호는 필수입니다.');
+	    			$("#pwError").show();
+	    			return false;
 	    		}else{
-	    			$("#pwError").text('비밀번호와 비밀번호 확인이 일치합니다!');
-	    			$("#divInputPw").addClass("has-success");
-                    $("#divInputPw").removeClass("has-error") ;
+	    			$(".msg").hide();
 	    			 $("#frm").submit();
 	    		}
 	        }
 	}
 	</script>
-</head>
-<body>
-
-<div layout:fragment="content">
-	<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100 p-t-90 p-b-30">
-				<form class="login100-form validate-form" action="/member/create" id="frm" method="POST">
-					 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-					<span class="login100-form-title p-b-40">
-						:: 회원가입 ::
-					</span>
-	<div class="text-center p-t-55 p-b-30">
-						<span class="txt1" th:if="${host}">
-							호스트 회원가입
-						</span>
-						<span class="txt1" th:unless="${host}">
-							일반 회원가입
-						</span>
-					</div>
-					
-
-					<div class="wrap-input100 validate-input m-b-16">
-						<input class="input100" type="text" name="memberName" placeholder="이름">
-						<span class="focus-input100"></span>
-					</div>
-					
-					<div class="wrap-input100 validate-input m-b-16">
-						<input class="input100" type="text" name="id" id="id" placeholder="Email">
-						<span class="focus-input100"></span>
-					</div>
-					<div class="custom">
-<input type="button" class="btn btn-info btn-sm" id="idck" value="중복확인">
-
-</div>
-<div id="divInputId"><p id="idError"/></div>
-					<div class="wrap-input100 validate-input m-b-20">
-			
-						<input class="input100" type="password" name="password" id="password" placeholder="비밀번호">
-						<span class="focus-input100"></span>
-					</div>
-					<div class="wrap-input100 validate-input m-b-20" data-validate = "Please enter password">
-			
-						<input class="input100" type="password" id="passwordCheck" placeholder="비밀번호 확인">
-						<span class="focus-input100"></span>
-					</div>
-					
-					<div id="divInputPw"><p id="pwError"/></div>
-					
-					<div class="wrap-input100 validate-input m-b-16" th:if="${host}">
-						<input class="input100" type="text" name="businessLicense" id="license" placeholder="사업자번호">
-						<span class="focus-input100"></span>
-					</div>
-						<div class="gendT" id="divInputG"><p id="gError"/></div>
-					<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						<label class="btn btn-info btn-lg">
-						
-							남자 <input type="radio" name="gender" value="M">
-							</label>
-							<label class="btn btn-info btn-lg">
-							여자 <input type="radio" name="gender" value="F"><br/>
-					</label>
-					
-					</div>
-					
-				
-					<div class="container-login100-form-btn">
-						<button type="button" class="login100-form-btn" onclick="confirm()">
-							회원가입
-						</button>
-					</div>
-					
-					</form>
-					
-			</div>
+		
+		
+		
 		</div>
-	</div>
 	
 	
 	</div>
@@ -261,22 +261,6 @@ text-align: center;
 	
 	
 	
-	<!--===============================================================================================-->
-	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/bootstrap/js/popper.js"></script>
-	<script src="/vendor/bootstrap/js/bootstrap.min2.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/daterangepicker/moment.min.js"></script>
-	<script src="/vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-	<script src="/vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
-	<script src="/js/main.js"></script>
-	   <script src="/js/creative.min.js"></script>
+	
 </body>
 </html>

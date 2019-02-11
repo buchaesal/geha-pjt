@@ -18,11 +18,30 @@ where id = #{id}
 select r.*, v.guestHouseName, v.roomName, o.guestHouseCode 
 from booking_tb b, review_tb r,bkrmghmatching_view v, room_tb o 
 where b.memberCode = #{memberCode} and b.bookingCode = r.bookingCode 
-and r.bookingCode = v.bookingCode and v.roomCode = o.roomCode;
+and r.bookingCode = v.bookingCode and v.roomCode = o.roomCode
 </select>
 
 <update id="modifyReview" parameterType="ReviewDto">
 update review_tb set title = #{title}, content = #{content}, rating = #{rating}
 where reviewNo = #{reviewNo}
 </update>
+
+<delete id="deleteReview">
+delete from review_tb where reviewNo = #{reviewNo}
+</delete>
+
+<select id="myLike" resultType="LikeDto">
+select g.guestHouseName, g.guestHouseCode, r.roomName, r.charge, r.roomCode, g.avgRating 
+from guestHouse_tb g, room_tb r, like_tb l 
+where l.roomCode = r.roomCode and r.guestHouseCode = g.guestHouseCode 
+and l.memberCode = #{memberCode}
+</select>
+
+<delete id="deleteLike">
+delete from like_tb where 
+<foreach item="list" index="index" collection="deleteLikeList"
+        open="(" separator="or" close=")">
+         memberCode = #{memberCode} and roomCode = #{list}
+    </foreach>
+</delete>
 </mapper>
