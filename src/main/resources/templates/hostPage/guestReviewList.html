@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/hostPage_layout">
+	<head>
+		<title>회원리뷰관리</title>
+		<style>
+			#notifyContent {
+				color: black;
+			}
+			
+			#notifyContent:hover {
+				color: blue;
+				text-decoration: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div layout:fragment="hostPage_content">
+			<table border="2">
+				<tr>
+					<th>NO</th>
+					<th>리뷰번호</th>
+					<th>알림 내용</th>
+					<th>작성일</th>
+				</tr>
+				<tr th:each="reviewDto, iterState : ${guestReviewList}">
+					<td th:text="${iterState.count}"></td>
+					<td th:text="${reviewDto.reviewNo}"></td>
+					<td><a id="notifyContent">[[${reviewDto.guestHouseName}]]에서 [[${reviewDto.writer}]]님이 리뷰를 작성하였습니다.</a></td>
+					<td th:text="${#dates.format(reviewDto.writingDate, 'yy.MM.dd HH:mm')}"></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

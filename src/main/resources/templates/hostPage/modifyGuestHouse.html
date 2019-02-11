@@ -5,7 +5,7 @@
 
    <head>
    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-      <title>게스트하우스 등록</title>
+      <title>게스트하우스 수정</title>
       <style>
          .hostPage_label {
             padding: 18px 15px;
@@ -76,50 +76,54 @@
    <body>
       <div layout:fragment="hostPage_content">
          <form id="registerGuestHouseForm" th:action="@{registerGuestHouseComplete}" method="POST" enctype="multipart/form-data">
-            <h2>내 게스트하우스 등록하기</h2>
+            <h2>내 게스트하우스 수정하기</h2>
+            <input type="hidden" name="guestHouseCode" th:value="${guestHouseCode}">
+
             <label class="hostPage_label">게스트하우스 사진(최대 10장)</label><br>
             
              <div>
                <input type="file" id="input_imgs" name="files" multiple>
                <input type="button" value="삭제" onclick="deleteImgs(this)">
             </div>
-            <div class="imgs_wrap" name="guestHouseImg"></div>
+            <div class="imgs_wrap" name="guestHouseImg" th:each="img : ${imgs}">
+            	<input type="radio" name="isMainImage" th:selected="${isMainImage}"><img src="" data-file='"+f.name
+                        +"' class='selProductFile' title='Click to remove'>
+            </div>
             <input type="hidden" name="guestHouse_imglength">
             
-            <input type="hidden" name="memberCode" th:value="${memberCode}">
             <table>
                <tr>
                   <th><label class="hostPage_label">게스트하우스 이름<br>(상호명)</label></th>
-                  <td><input type="text" name="guestHouseName" size="25" style="font-size: 23px;"></td>
+                  <td><input type="text" name="guestHouseName" th:value="${guestHouseDto.guestHouseName}" size="25" style="font-size: 23px;"></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">태그<br>(복수 선택 가능)</label></th>
                   <td>
-                     <label><input type="checkbox" name="gourmet" value="1">#맛집</label>
-                     <label><input type="checkbox" name="trip" value="1">#관광</label>
-                     <label><input type="checkbox" name="shopping" value="1">#쇼핑</label>
-                     <label><input type="checkbox" name="businessTrip" value="1">#출장</label>
+                     <label><input type="checkbox" name="gourmet" value="1" th:checked="${guestHouseDto.gourmet}">#맛집</label>
+                     <label><input type="checkbox" name="trip" value="1" th:checked="${guestHouseDto.trip}">#관광</label>
+                     <label><input type="checkbox" name="shopping" value="1" th:checked="${guestHouseDto.shopping}">#쇼핑</label>
+                     <label><input type="checkbox" name="businessTrip" value="1" th:checked="${guestHouseDto.businessTrip}">#출장</label>
                   </td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">설명</label></th>
-                  <td><textarea name="guestHouseInfo" rows="7" cols="50" maxlength="500"></textarea></td>
+                  <td><textarea name="guestHouseInfo" rows="7" cols="50" maxlength="500">[[${guestHouseDto.guestHouseInfo}]]</textarea></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">편의시설</label></th>
                   <td>
-                     <label><input type="checkbox" name="facilityCode" value="1">세탁기</label>
-                     <label><input type="checkbox" name="facilityCode" value="2">주차장</label>
-                     <label><input type="checkbox" name="facilityCode" value="3">와이파이</label>
-                     <label><input type="checkbox" name="facilityCode" value="4">에어컨</label>
-                     <label><input type="checkbox" name="facilityCode" value="5">주방/식당</label>
-                     <label><input type="checkbox" name="facilityCode" value="6">엘리베이터</label><br>
-                     <label><input type="checkbox" name="facilityCode" value="7">냉장고</label>
-                     <label><input type="checkbox" name="facilityCode" value="8">욕조</label>
-                     <label><input type="checkbox" name="facilityCode" value="9">취사가능</label>
-                     <label><input type="checkbox" name="facilityCode" value="10">전자레인지</label>
-                     <label><input type="checkbox" name="facilityCode" value="11">드라이기</label>
-                     <label><input type="checkbox" name="facilityCode" value="12">TV</label>
+                     <label><input type="checkbox" name="facilityCode" value="1" th:checked="${#lists.contains(facilities, 1)}">세탁기</label>
+                     <label><input type="checkbox" name="facilityCode" value="2" th:checked="${#lists.contains(facilities, 2)}">주차장</label>
+                     <label><input type="checkbox" name="facilityCode" value="3" th:checked="${#lists.contains(facilities, 3)}">와이파이</label>
+                     <label><input type="checkbox" name="facilityCode" value="4" th:checked="${#lists.contains(facilities, 4)}">에어컨</label>
+                     <label><input type="checkbox" name="facilityCode" value="5" th:checked="${#lists.contains(facilities, 5)}">주방/식당</label>
+                     <label><input type="checkbox" name="facilityCode" value="6" th:checked="${#lists.contains(facilities, 6)}">엘리베이터</label><br>
+                     <label><input type="checkbox" name="facilityCode" value="7" th:checked="${#lists.contains(facilities, 7)}">냉장고</label>
+                     <label><input type="checkbox" name="facilityCode" value="8" th:checked="${#lists.contains(facilities, 8)}">욕조</label>
+                     <label><input type="checkbox" name="facilityCode" value="9" th:checked="${#lists.contains(facilities, 9)}">취사가능</label>
+                     <label><input type="checkbox" name="facilityCode" value="10" th:checked="${#lists.contains(facilities, 10)}">전자레인지</label>
+                     <label><input type="checkbox" name="facilityCode" value="11" th:checked="${#lists.contains(facilities, 11)}">드라이기</label>
+                     <label><input type="checkbox" name="facilityCode" value="12" th:checked="${#lists.contains(facilities, 12)}">TV</label>
                   </td>
                </tr>
                <tr>
@@ -134,9 +138,9 @@
                   <th><label class="hostPage_label">숙소 정보</label></th>
                   <td>
                      <label>숙소이용규칙</label><br>
-                     <textarea name="rules" rows="10" cols="50" maxlength="1000"></textarea><br>
+                     <textarea name="rules" rows="10" cols="50" maxlength="1000">[[${guestHouseDto.rules}]]</textarea><br>
                      <label>주차장 정보</label><br>
-                     <textarea name="parkingInfo" rows="5" cols="50" maxlength="100"></textarea>
+                     <textarea name="parkingInfo" rows="5" cols="50" maxlength="100">[[${guestHouseDto.parkingInfo}]]</textarea>
                   </td>
                </tr>
                <tr>
@@ -144,27 +148,27 @@
                   <td>
                      <!-- 주소와 우편번호를 입력할 <input>들을 생성하고 적당한 name과 class를 부여한다 -->
 					<input type="button" id="postcodify_search_button" value="주소 검색하기"><br />
-					<input type="text" name="address" class="postcodify_address" value="" size="45"/><br />
+					<input type="text" name="address" class="postcodify_address" th:value="${guestHouseDto.address}" size="45"/><br />
                   </td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">오시는 길</label></th>
-                  <td><textarea name="directions" rows="5" cols="50" maxlength="100"></textarea></td>
+                  <td><textarea name="directions" rows="5" cols="50" maxlength="100">[[${guestHouseDto.directions}]]</textarea></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">정산계좌 입력</label></th>
                   <td>
                      <label>거래은행</label>
                      <select name="bankName">
-                        <option value="국민은행">국민은행</option>
-                        <option value="농협">농협</option>
-                        <option value="기업은행">기업은행</option>
-                        <option value="우리은행">우리은행</option>
-                        <option value="신한은행">신한은행</option>
+                        <option value="국민" th:selected="${guestHouseDto.bankName}=='국민'">국민</option>
+                        <option value="농협" th:selected="${guestHouseDto.bankName}=='농협'">농협</option>
+                        <option value="기업" th:selected="${guestHouseDto.bankName}=='기업'">기업</option>
+                        <option value="우리" th:selected="${guestHouseDto.bankName}=='우리'">우리</option>
+                        <option value="신한" th:selected="${guestHouseDto.bankName}=='신한'">신한</option>
                      </select><br>
                      
                      <label>계좌번호</label>
-                     <input type="text" name="accountNumber">
+                     <input type="text" name="accountNumber" th:value="${guestHouseDto.accountNumber}">
                   </td>
                </tr>
             </table>
@@ -174,7 +178,6 @@
          </form>
 
          <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
-         	<input type="hidden" name="roomIndex">
             <div>
                <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
                <input type="button" value="삭제" onclick="deleteImgs(this)">
@@ -224,7 +227,6 @@
                document.getElementById('roomInfoList').appendChild(div);
                
                var cloneRoom = $('#defaultRoomInfo').children().clone();
-               cloneRoom.find('input[name=roomIndex]').val(roomIndex);
                cloneRoom.find('input[type=radio]').attr('name', 'gender'+roomIndex);
                cloneRoom.find('input[name=gender]').attr('id', 'gender'+roomIndex++);
                cloneRoom.appendTo(div);
