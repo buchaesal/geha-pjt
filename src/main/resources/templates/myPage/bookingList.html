@@ -64,7 +64,7 @@
 				<th>가격</th>
 				<th>상태</th>
 			</tr>
-			<tr th:each="bookingDto : ${bookingList}">
+			<tr th:each="bookingDto, iterState : ${bookingList}">
 				<td th:text="${bookingDto.bookingCode}"></td>
 				<td>
 					[[${bookingDto.guestHouseName}]]([[${bookingDto.roomName}]]) <br>
@@ -75,16 +75,16 @@
 				<td>
 					[[${bookingDto.bookingStatus}]] <br>
 					<div th:if="${bookingDto.bookingStatus}=='예약완료'">
-						<button class="cancelBtn">취소 요청하기</button>
+						<button class="cancelBtn" th:onclick="|javascript:cancelBtnClick('${iterState.count}')|">취소 요청하기</button>
 								
-						<!-- cancelConfirmModal Modal -->
-						<div id="cancelConfirmModal" class="modal">
+						<!-- cancelConfirm Modal -->
+						<div th:id="cancelConfirmModal+${iterState.count}" class="modal cancelConfirmModal">
 						
 							<!-- Modal content -->
 							<div class="modal-content">
 								<p>예약을 취소하시겠습니까?</p>
-								<button th:onclick="|javascript:onClick('${bookingDto.bookingCode}','${bookingDto.memberCode}')|">YES</button>
-								<button id="cancelConfirmModalClose">NO</button>
+								<button th:onclick="|javascript:onClick('${bookingDto.bookingCode}')|">YES</button>
+								<button class="cancelConfirmModalClose">NO</button>
 							</div>
 						</div>
 					</div>
@@ -155,16 +155,13 @@
 			var writeReviewModal = document.getElementById('writeReviewModal');
 			
 			
-
-			$(function() {
-				$(".cancelBtn").click(function() {
-					cancelConfirmModal.style.display = "block";
-				})
-			})
+			function cancelBtnClick(cancelCount) {
+				$("#cancelConfirmModal"+cancelCount).css("display", "block");
+			}
 			
 			$(function() {
-				$("#cancelConfirmModalClose").click(function() {
-					cancelConfirmModal.style.display = "none";
+				$(".cancelConfirmModalClose").click(function() {
+					$(".cancelConfirmModal").css("display", "none");
 				})
 			})
 			
@@ -187,13 +184,13 @@
 			})
 			
 		
-			function onClick(bookingCode, memberCode) {
+			function onClick(bookingCode) {
 				$.ajax({
 					type: "GET",
 					url: "requestBookingCancel",
-					data: {"bookingCode": bookingCode, "memberCode": memberCode},
-						success: function() {
-						location.replace('bookingList?memberCode='+memberCode);
+					data: {"bookingCode": bookingCode},
+					success: function() {
+						location.reload();
 					}
 				})
 			}

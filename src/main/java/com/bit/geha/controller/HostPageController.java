@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.geha.dao.HostPageDao;
 import com.bit.geha.dao.MemberDao;
+import com.bit.geha.dao.MyPageDao;
+import com.bit.geha.dto.BoardCriteria;
 import com.bit.geha.dto.FileDto;
 import com.bit.geha.dto.GuestHouseDto;
+import com.bit.geha.dto.PageMaker;
 import com.bit.geha.dto.RejectDto;
 import com.bit.geha.dto.RoomDto;
 import com.bit.geha.dto.RoomDtos;
@@ -33,6 +37,9 @@ import lombok.extern.java.Log;
 public class HostPageController {
 	@Autowired
 	HostPageDao hostPageDao;
+	
+	@Autowired
+	MyPageDao myPageDao;
 	
 	@Autowired
 	MemberService memberService;
@@ -50,8 +57,6 @@ public class HostPageController {
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
 		
 		List<Integer> isRejectList = hostPageDao.getIsRejectList(memberCode);
-		System.out.println("rejectList.size() : " + isRejectList.size());
-		System.out.println(isRejectList);
 		
 		List<GuestHouseDto> guestHouseList = hostPageDao.getGuestHouseList(memberCode);
 		
@@ -106,24 +111,54 @@ public class HostPageController {
 		return "redirect:/hostPage/myGuestHouseList";
 	}
 	
-	@RequestMapping(value = "/jusoPopup", method = RequestMethod.GET)
-	public void jusoPopup() {
-		System.out.println("method.GET");
+	@RequestMapping("modifyGuestHouse")
+	public void modifyGuestHouse(@ModelAttribute("guestHouseCode") int guestHouseCode, Model model) {
+		log.info("modifyGuestHouse()");
+		
+		model.addAttribute("guestHouseDto", hostPageDao.getGuestHouse(guestHouseCode));
+		model.addAttribute("rooms", hostPageDao.getRooms(guestHouseCode));
+		model.addAttribute("facilities", hostPageDao.getFacilities(guestHouseCode));
+		model.addAttribute("imgs", hostPageDao.getFiles(guestHouseCode));
 	}
 	
-	@RequestMapping(value = "/jusoPopup", method = RequestMethod.POST)
-	public void jusoPopup(Model model) {
-		System.out.println("method.POST");
+	@RequestMapping(value="guestBookingList")
+	public void guestBookingList(@ModelAttribute("cri") BoardCriteria cri, HttpSession session, Authentication auth, Model model) {
+		log.info("guestBookingList()");
+		
+		//로그인계정 가져오기
+		memberService.getSession(auth,session);
+		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
+		
+		model.addAttribute("guestBookingList", hostPageDao.getGuestBookingList(memberCode, cri));
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(hostPageDao.getGuestBookingListCount(memberCode)); //파라미터 추가로 boardSearchCriteria 추가해야됨
+		
+		model.addAttribute("pageMaker", pageMaker);
 	}
 	
-	@RequestMapping(value="/testPost")
-	public void testPost() {
-		System.out.println("GET()");
+	@RequestMapping("doBookingCancel")
+	@ResponseBody
+	public void doBookingCancel(int bookingCode) {
+		log.info("doBookingCancel()");
+		myPageDao.modifyBookingStatus(bookingCode, "취소완료");
 	}
 	
-	@RequestMapping(value="testPost2", method=RequestMethod.POST)
-	public String testPost2(String hello) {
-		System.out.println("POST()");
-		return "redirect:testPost";
+	@RequestMapping("doEarlyCheckout")
+	@ResponseBody
+	public void doEarlyCheckout(int bookingCode) {
+		log.info("doEarlyCheckout()");
+		hostPageDao.modifyBookingStatusToCheckout(bookingCode);
+	}
+	
+	@RequestMapping(value="guestReviewList")
+	public void guestReviewList(HttpSession session, Authentication auth, Model model) {
+		log.info("guestReviewList()");
+		
+		//로그인계정 가져오기
+		memberService.getSession(auth,session);
+		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
+		
+		model.addAttribute("guestReviewList", hostPageDao.getGuestReviewList(memberCode));
 	}
 }

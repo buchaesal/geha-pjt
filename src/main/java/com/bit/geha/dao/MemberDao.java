@@ -1,5 +1,7 @@
 package com.bit.geha.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,4 +23,6 @@ public interface MemberDao {
 	public void userAuth(String id);
 	
 	public void changePw(String id,String password);
+	
+	public List<MemberDto> findByMemberCode(int memberCode);
 }

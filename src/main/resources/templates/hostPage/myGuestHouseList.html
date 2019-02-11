@@ -55,9 +55,15 @@
 							등록완료<br><a>보기</a>
 						</div>
 						<div th:unless="${guestHouseDto.approvalDate}">
-							<label th:if="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">반려<button th:onclick="|javascript:getRejectList('${guestHouseDto.guestHouseCode}')|">이력</button>
-								<br><a>보기/수정</a></label>
-							<label th:unless="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">등록신청<br><a>보기/수정</a></label>
+							<label th:if="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
+								반려
+								<button th:onclick="|javascript:getRejectList('${guestHouseDto.guestHouseCode}')|">이력</button><br>
+								<a th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode})}">수정/삭제</a>
+							</label>
+							<label th:unless="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
+								등록신청<br>
+								<a th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode})}">수정/삭제</a>
+							</label>
 						</div>
 					</td>
 				</tr>

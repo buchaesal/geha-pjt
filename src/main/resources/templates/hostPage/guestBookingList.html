@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/hostPage_layout">
+	<head>
+		<title>회원예약내역</title>
+		
+		<style>
+			/* The Modal (background) */
+			.modal {
+	            display: none; /* Hidden by default */
+	            position: fixed; /* Stay in place */
+	            z-index: 1; /* Sit on top */
+	            left: 0;
+	            top: 0;
+	            width: 100%; /* Full width */
+	            height: 100%; /* Full height */
+	            overflow: auto; /* Enable scroll if needed */
+	            background-color: rgb(0,0,0); /* Fallback color */
+	            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	        }
+	    
+	        /* Modal Content/Box */
+	        .modal-content {
+	            background-color: #fefefe;
+	            margin: 15% auto; /* 15% from the top and centered */
+	            padding: 20px;
+	            border: 1px solid #888;
+	            width: 50%; /* Could be more or less, depending on screen size */                          
+	        }
+	        p {
+				font-weight: bold;
+			}
+			
+			/* Paging */
+			.paging ul {
+			    list-style:none;
+			    margin:0;
+			    padding:0;
+			}
+			
+			.paging li {
+			    margin: 0 0 0 0;
+			    padding: 0 0 0 0;
+			    border : 0;
+			    float: left;
+			}
+		</style>
+	</head>
+	<body>
+		<div layout:fragment="hostPage_content">
+			<table border="2">
+				<tr>
+	               <th>NO</th>
+	               <th>예약번호</th>
+	               <th>예약 정보</th>
+	               <th>결제금액</th>
+	               <th>상태</th>
+	               <th></th>
+	            </tr>
+	            <tr th:each="bookingDto, iterState : ${guestBookingList}">
+	            	<td>[[${iterState.count}]]</td>
+	            	<td th:text="${bookingDto.bookingCode}"></td>
+	            	<td>
+	            		[[${bookingDto.guestHouseName}]]([[${bookingDto.roomName}]]) <br>
+						[[${#dates.format(bookingDto.bookingStart, 'yy.MM.dd')}]] ~ [[${#dates.format(bookingDto.bookingEnd, 'yy.MM.dd')}]]
+						<a th:href="@{/booking/bookingDetail(bookingCode=${bookingDto.bookingCode})}">상세내역</a>
+	            	</td>
+	            	<td th:text="${#numbers.formatInteger(bookingDto.paymentAmount, 3, 'COMMA')}"></td>
+	            	<td th:text="${bookingDto.bookingStatus}"></td>
+	            	<td>
+	            		<div th:if="${bookingDto.bookingStatus}=='취소요청'">
+		            		<button class="cancelApprovalBtn" th:onclick="|javascript:cancelApprovalBtnClick('${iterState.count}')|">승인하기</button>
+	            			
+	            			<!-- cancelApproval Modal -->
+							<div th:id="cancelApprovalModal+${iterState.count}" class="modal cancelApprovalModal">
+							
+								<!-- Modal content -->
+								<div class="modal-content">
+									<p>해당 예약내역의 취소 및 환불처리하시겠습니까?</p>
+									<button th:onclick="|javascript:doBookingCancel('${bookingDto.bookingCode}')|">YES</button>
+									<button class="cancelApprovalModalClose">NO</button>
+								</div>
+							</div>
+	            		</div>
+	            		
+	            		<div th:if="${bookingDto.bookingStatus}=='숙박 중'">
+		            		<button class="earlyCheckoutBtn" th:onclick="|javascript:earlyCheckoutBtnClick('${iterState.count}')|">퇴실처리</button>
+		            		
+		            		<!-- earlyCheckout Modal -->
+							<div th:id="earlyCheckoutModal+${iterState.count}" class="modal earlyCheckoutModal">
+							
+								<!-- Modal content -->
+								<div class="modal-content">
+									<p>퇴실처리하시겠습니까?</p>
+									<button th:onclick="|javascript:doEarlyCheckout('${bookingDto.bookingCode}')|">YES</button>
+									<button class="earlyCheckoutModalClose">NO</button>
+								</div>
+							</div>
+	            		</div>
+	            	</td>
+	            </tr>
+			</table>
+			
+			<footer class="hostPage_footer">
+				<!-- 페이징 버튼 -->
+				<div class="paging">
+					<ul>
+						<li th:if="${pageMaker.prev} == true">
+							<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+						</li>
+						
+						<li th:each="idx,iterState : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx}+1 ? active : null">
+							<a th:href="@{/hostPage/guestBookingList(page=${idx}+1,perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}+1"></a>
+						</li>
+						
+						<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+							<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+						</li>
+					</ul>
+				</div>
+			</footer>
+		</div>
+		<div layout:fragment="hostPage_script">
+			<script type="text/javascript">
+				function cancelApprovalBtnClick(cancelApprovalCount) {
+					$("#cancelApprovalModal"+cancelApprovalCount).css("display", "block");
+				}
+				
+				$(function() {
+					$(".cancelApprovalModalClose").click(function() {
+						$(".cancelApprovalModal").css("display", "none");
+					})
+				})
+				
+				function doBookingCancel(bookingCode) {
+					$.ajax({
+						type: "GET",
+						url: "doBookingCancel",
+						data: {"bookingCode" : bookingCode},
+						success: function() {
+							$(".cancelApprovalModal").css("display", "none");
+							location.reload();
+						}
+					})
+				}
+				
+				function earlyCheckoutBtnClick(earlyCheckoutCount) {
+					$("#earlyCheckoutModal"+earlyCheckoutCount).css("display", "block");
+				}
+				
+				$(function() {
+					$(".earlyCheckoutModalClose").click(function() {
+						$(".earlyCheckoutModal").css("display", "none");
+					})
+				})
+				
+				function doEarlyCheckout(bookingCode) {
+					$.ajax({
+						type: "GET",
+						url: "doEarlyCheckout",
+						data: {"bookingCode" : bookingCode},
+						success: function() {
+							$(".earlyCheckoutModal").css("display", "none");
+							location.reload();
+						}
+					})
+				}
+				
+			</script>
+		</div>
+	</body>
+</html>

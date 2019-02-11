@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bit.geha.dao.MemberDao;
@@ -54,14 +55,12 @@ public class MyPageController {
 	
 	//취소요청
 	@RequestMapping(value="/requestBookingCancel")
-	public String requestBookingCancel(int bookingCode, int memberCode) {
+	@ResponseBody
+	public void requestBookingCancel(int bookingCode) {
 		log.info("cancelRequest()");
 		log.info("bookingCode: " + bookingCode);
 		
 		myPageDao.modifyBookingStatus(bookingCode, "취소요청");
-		
-		return "redirect:/myPage/bookingList?memberCode="+memberCode;//멤버코드는 임시
-
 	}
 	
 	//리뷰작성
@@ -72,9 +71,9 @@ public class MyPageController {
 		System.out.println("reviewDto: " + reviewDto);
 		myPageDao.addReview(reviewDto);
 		
-		//평점평점 구하기
+		//평균평점 구하기
 		
-		return "redirect:/myPage/bookingList?memberCode="+memberCode;
+		return "redirect:bookingList";
 	}
 	
 	//리뷰관리

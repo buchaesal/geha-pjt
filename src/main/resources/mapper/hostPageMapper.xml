@@ -34,4 +34,17 @@
 			(#{fileDto.savedName}, #{fileDto.originalName}, #{fileDto.guestHouseCode}, #{fileDto.roomCode}, #{fileDto.isMainImage})
 		</foreach>
 	</insert>
+	
+	<select id="getGuestBookingList" parameterType="map" resultType="BookingDto">
+		SELECT b.*, v.guestHouseName, v.roomName FROM booking_tb b,  bkrmghmatching_view v 
+		WHERE b.bookingCode=v.bookingCode AND v.hostCode=#{hostCode} 
+		ORDER BY b.bookingCode desc
+		LIMIT #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<select id="getGuestBookingListCount" parameterType="int" resultType="int">
+		SELECT count(*) FROM booking_tb b,  bkrmghmatching_view v 
+		WHERE b.bookingCode=v.bookingCode AND v.hostCode=#{hostCode} 
+		ORDER BY b.bookingCode desc
+	</select>
 </mapper>

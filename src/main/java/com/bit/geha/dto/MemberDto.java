@@ -13,4 +13,8 @@ public class MemberDto {
 	private String businessLicense;
 	private String authCode;
 	private String authStatus;
+	
+	//추가(호스트 정보가져올때)
+	private String guestHouseName;
+	private String status;
 }
