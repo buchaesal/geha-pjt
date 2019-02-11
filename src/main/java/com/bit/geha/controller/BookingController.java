@@ -2,8 +2,11 @@ package com.bit.geha.controller;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.bit.geha.dao.BookingDao;
 import com.bit.geha.dto.BookingDto;
 import com.bit.geha.dto.RoomDto;
+import com.bit.geha.service.MemberService;
 
 import lombok.extern.java.Log;
 
@@ -24,10 +28,14 @@ public class BookingController {
 	@Autowired
 	BookingDao bookingDao;
 	
+	@Autowired
+	MemberService memberService;
+	
 	@RequestMapping("/bookingPage")
 	public void loadBookingPage(Model model, int roomCode
 			, @RequestParam(value="bookingStart") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date bookingStart
-			, @RequestParam(value="bookingEnd") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date bookingEnd) {
+			, @RequestParam(value="bookingEnd") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date bookingEnd,
+			 HttpSession session, Authentication auth) {
 		log.info("loadBookingPage()");
 		RoomDto roomDto = bookingDao.getRoom(roomCode);
 		log.info("roomDto: " + roomDto);
@@ -39,6 +47,12 @@ public class BookingController {
 		model.addAttribute("checkout", bookingEnd);
 		model.addAttribute("roomDto", roomDto);
 		model.addAttribute("guestHouseName", guestHouseName);
+		
+		//로그인 계정 가져오기
+		memberService.getSession(auth,session);
+		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
+		model.addAttribute("memberCode", memberCode);
+		
 	}
 	
 	@RequestMapping(value="/bookingComplete", method=RequestMethod.POST)
