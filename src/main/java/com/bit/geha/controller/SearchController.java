@@ -1,6 +1,8 @@
 package com.bit.geha.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,17 +37,23 @@ public class SearchController {
 		return "search";
 	}
 	
-	@GetMapping("/allgehainfo")
-	@ResponseBody
-	public List<SearchDto> searchapi(SearchCriteria sc){
-		logger.info("/allgehainfo()");
-		return dao.listGeha();
-	}
-	
 	@PostMapping(path = "/searchgehainfo", consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public List<SearchDto> searchGehaInfo(@RequestBody SearchCriteria sc){
 		logger.info("/searchGehaInfo()");
+		
+		// 검색 기본 날짜 설정 (맨 처음 로딩시 빈문자열 처리)
+		if(sc.getBookingStart().isEmpty() || sc.getBookingEnd().isEmpty()) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar cal = Calendar.getInstance();
+			String strToday = sdf.format(cal.getTime());
+
+			cal.add(Calendar.DATE, 1);
+			String strTomorrow = sdf.format(cal.getTime());
+
+			sc.setBookingStart(strToday);
+			sc.setBookingStart(strTomorrow);
+		}
 		
 		// null exception for gender and facilities
 		if(sc.getGender() == null) {
@@ -58,11 +65,7 @@ public class SearchController {
 			sc.setFacilities(facilities);
 		}
 		
-		System.out.println(sc.getKeyword());
-		System.out.println(sc.getGender());
-		System.out.println(sc.getFacilities());
-		System.out.println(sc.getMinprice());
-		System.out.println(sc.getMaxprice());
+		logger.info(sc.getSort());
 		
 		return dao.searchGeha(sc);
 	}

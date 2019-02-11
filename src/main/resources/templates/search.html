@@ -43,7 +43,7 @@
 	}
 	
 	.container{
-		margin-top: 3rem;
+		margin-top: 4rem;
 	}
 	
  	.searcharea{ 
@@ -53,7 +53,7 @@
    		margin-bottom:3rem;
  	}
  	
- 	.form-control[readonly]{
+ 	.form-control.datepicker-here{
  		background-color: #fff;
  	}
  	
@@ -87,6 +87,22 @@
 		opacity: 0.2;
 	}
  	
+ 	#btn-search {
+ 		margin-top:180px;
+ 		margin-bottom:30px;
+ 	}
+
+	#btn-search.btn {
+		border: 1px solid #f6931f;
+		outline: none;
+	}
+	#btn-search.btn:focus {
+		background-color: rgba(255,255,255,0);
+	}
+	#btn-search.btn:hover {
+		background-color: #f6931f;
+	}
+ 	
  	.maparea{ 
  		margin-bottom:3rem;	
  	}
@@ -96,22 +112,88 @@
  		height:450px;
  	}
  	
+ 	@media (min-width: 768px){
+		.nav-tabs.nav-justified>li>a {
+		    border-bottom: 1px solid #ddd;
+		    border-radius: 4px;
+	        margin-bottom: 0;
+	        margin-left: 1.5rem;
+	        margin-right: 1.5rem;
+		}
+		.nav-tabs.nav-justified>li.active>a {
+			border-bottom: 1px solid rgba(255,255,255,0);
+		}
+ 	}
+ 	.nav-tabs.nav-justified>li {
+	    word-break: keep-all;
+	}
+ 	.nav-tabs.nav-justified>li>a {
+		color: black;
+		
+	}
+	.nav-tabs.nav-justified>.active>a,
+	.nav-tabs.nav-justified>.active>a:focus,
+	.nav-tabs.nav-justified>.active>a:hover {
+	    border: 1px solid #f6931f;
+	}
+ 	.nav-tabs.nav-justified>li>a:hover {
+		cursor: pointer;
+	}
+	.nav-tabs.nav-justified>li.active>a {
+		border: 1px solid #f6931f;
+	}
+ 	
  	.house {
  		margin: 1rem 0;
  	}
 	
 	.housewrapper{
-		margin-top: 1rem;
+		margin-bottom: 2rem;
 	}
 	
 	.houseborder{
-		border:2px solid #FFB0AE;
+		/* border:2px solid #FFB0AE; */
+		border:1.2px solid #f6931f;
 	}
 	
 	#searchresult{
 		min-height:300px;
 	}
 	
+	.loader {
+	  margin: 5% auto;
+	  height: 100px;
+	  width: 100px;
+	  border: 6px solid #fff;
+	  border-right-color: #f6931f;
+	  border-top-color: #f6931f;
+	  border-radius: 100%;
+	  -webkit-animation: spin 800ms infinite linear;
+	          animation: spin 800ms infinite linear;
+	}
+	
+	@-webkit-keyframes "spin" {
+	  from {
+	    -webkit-transform: rotate(0deg);
+	            transform: rotate(0deg);
+	  }
+	  to {
+	    -webkit-transform: rotate(359deg);
+	            transform: rotate(359deg);
+	  }
+	}
+	
+	@keyframes "spin" {
+	  from {
+	    -webkit-transform: rotate(0deg);
+	            transform: rotate(0deg);
+	  }
+	  to {
+	    -webkit-transform: rotate(359deg);
+	            transform: rotate(359deg);
+	  }
+	}
+
 	.houseimage{
 		width:100%;
 		height:200px;
@@ -130,9 +212,6 @@
 		text-align:left;
         word-break: keep-all;
         word-wrap: break-word;
-	}
-	.content span.gehaname{
-		vertical-align: center;
 	}
 	.content.yellowline{
 		color:rgba(255,167,38,1);
@@ -180,8 +259,8 @@
 					
 					<div class="form-group">
 						<label for="keywordsearch">키워드 검색</label>
-						<small>(이름, 주소)</small>
-						<input type="text" id="keywordsearch" name="keyword" class="form-control"/>				
+						<small>(지역, 이름)</small>
+						<input type="text" id="keywordsearch" name="keyword" class="form-control" placeholder="ex) 강남, 월드하우스"/>				
 					</div>
 					
 					<hr />
@@ -283,7 +362,9 @@
 						</label>
 					</div>
 					
-					<button id="btn-search" type="button" class="btn btn-default btn-block btn-danger" style="margin-top:180px;margin-bottom:30px;">검색</button>
+					<input type="hidden" id="sortInput" name="sort" value="rating"/>
+					
+					<button id="btn-search" type="button" class="btn btn-default btn-block btn-danger">검색</button>
 				</form>
 			</div>
 			
@@ -293,10 +374,18 @@
 				
 				<hr />
 				
+				<ul id="sortBy" class="nav nav-tabs nav-justified">
+				  <li id="rating" role="presentation" class="active"><a>평점 높은 순</a></li>
+				  <li id="review" role="presentation"><a>리뷰 많은 순</a></li>
+				  <li id="lowprice" role="presentation"><a>낮은 가격 순</a></li>
+				  <li id="highprice" role="presentation"><a>높은 가격 순</a></li>
+				</ul>
+				
+				<hr />
+				
 				<div id="searchresult"> <!-- handlebars template target -->
-				
+					<div class="wrap-loading"></div>				
 				</div> <!-- searchresult end -->
-				
 			</div> <!-- end maparea -->
 		</div> <!-- end row -->
 	</div> <!-- end container -->
@@ -321,18 +410,16 @@
 	
 	<!-- daum map -->
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e82dcfc69e95758ed76053beed11845a&libraries=services,clusterer"></script>
-	
+
 	<script>
 	$(function(){
 		
 		/* 시큐리티 + 에이젝스 에러 방지 설정 */
-	    var token = $("meta[name='_csrf']").attr("content");
-	    var header = $("meta[name='_csrf_header']").attr("content");
-	    $(function() {
-	       $(document).ajaxSend(function(e, xhr, options) {
-	          xhr.setRequestHeader(header, token);
-	       });
-	    });
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
 		
 		/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 / 세미콜론(;)넣지 않음 주의 */
 		$(".datepicker-here").datepicker({
@@ -366,24 +453,21 @@
 		$("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
 	    
 		/* 인원수 버튼 구현 */
-		var personCnt = 1;
 		var spanPerson = $("span#person");
 		var inputPerson = $("input.person");
 		var buttonUp = $("button#up");
 		var buttonDown = $("button#down");
+
+		var personCnt = 1;
 	    
 		buttonUp.click(function(){
 			plusCnt();
-			validCnt();
-			spanPerson.html(personCnt);
-			inputPerson.val(personCnt);
+			validCntAndPut();
 		});
 	    
 		buttonDown.click(function(){
 			minusCnt();
-			validCnt();
-			spanPerson.html(personCnt);
-			inputPerson.val(personCnt);
+			validCntAndPut();
 		});
 	    
 		function plusCnt(){
@@ -392,7 +476,9 @@
 		function minusCnt(){
 			personCnt--;
 		}
-		function validCnt(){
+		
+		function validCntAndPut(){
+			
 			if (personCnt >= 10){
 			 personCnt = 10;
 			 buttonUp.attr("disabled", true);
@@ -406,6 +492,9 @@
 			} else {
 			 buttonDown.attr("disabled", false);
 			}
+			
+			spanPerson.html(personCnt);
+			inputPerson.val(personCnt);
 		}
 	});
 	</script>
@@ -449,137 +538,73 @@
 		{{/each}}
 	</script>
 	<script> /* handlebars and daum maps api */
-	$(function(){
-		
- 		var gehaArr = [];
-		var gehaObj = {};
-		
- 		$("#btn-search").click(function(){
-			getData();
-		});
- 		
-		function getData(){
-			var formData = $("form").serializeObject();
-			delete formData["_csrf"];
-			
-			/* 성별, 편의시설 하나만 선택할때 스트링으로 들어가는 것을 배열로 변경 */
-			if(typeof formData.gender =="string"){
-				formData.gender = [formData.gender];
-			}
-			if(typeof formData.facilities == "string"){
-				formData.facilities = [formData.facilities];
-			}
-			
-			$.ajax({
-			  url: "/searchgehainfo",
-			  type: "post",
-			  contentType: "application/json; charset=utf8",
-			  data: JSON.stringify(formData),
-			  dataType: "json"
-			})
-			.done(function(data){
-				var source = $("#template").html();
-				var template = Handlebars.compile(source);
-				$("#searchresult").html(template(data));
-			})
-			.done(function(data){
-				var geocoder = new daum.maps.services.Geocoder();
-				
-				for(var i=0, len=data.length; i<len ; i++){
-					console.log(data[i].address);
-					
-					geocoder.addressSearch(data[i].address, function(result, status) {
-					     if (status === daum.maps.services.Status.OK) {
-							
-					    	var coords = new daum.maps.LatLng(result[0].y, result[0].x);
-					        var marker = new daum.maps.Marker({
-					            map: map,
-					            position: coords
-					        });
-					    }
-					});
-				}
-			})
-			.fail(function(){
-				alert("failed");
-			});
-		}
-		
-		/* handlebars ifOne helper for tags */
-		Handlebars.registerHelper('ifOne', function(a, opts) {
-		    if(a == 1)
-		        return opts.fn(this);
-		    else
-		        return opts.inverse(this);
-		});
-		
-		/* daum map */
-		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	    mapOption = { 
-	        center: new daum.maps.LatLng(37.54477858829654, 127.00561259855127), // 지도의 중심좌표
-	        level: 8 // 지도의 확대 레벨
-	    };
-		var map = new daum.maps.Map(mapContainer, mapOption);
-		// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
-		var zoomControl = new daum.maps.ZoomControl();
-		map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
-		
-		function setZoomable(zoomable){
-			map.setZoomable(zoomable);
-		}
-		
-		/* map을 클릭하면 휠로 줌 가능 */
-		daum.maps.event.addListener(map, 'click', function(){
-			console.log("map clicked");
-			setZoomable(true);
-		});
-		/* map을 드래그하기 시작하면 휠로 줌 가능*/
-		daum.maps.event.addListener(map, 'dragstart', function(){
-			console.log("map dragstarted");
-			setZoomable(true);
-			getInfo();
-		});
-		
-		/* default */
+
+	var gehaArr = [];
+	var gehaObj = {};
+	
+	/* daum map */
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new daum.maps.LatLng(37.54477858829654, 127.00561259855127), // 지도의 중심좌표
+        level: 8 // 지도의 확대 레벨
+    };
+	var map = new daum.maps.Map(mapContainer, mapOption);
+	// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+	var zoomControl = new daum.maps.ZoomControl();
+	map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
+	
+	function setZoomable(zoomable){
+		map.setZoomable(zoomable);
+	}
+	
+	/* map을 클릭하면 휠로 줌 가능 */
+	daum.maps.event.addListener(map, 'click', function(){
+		console.log("map clicked");
+		setZoomable(true);
+	});
+	/* map을 드래그하기 시작하면 휠로 줌 가능*/
+	daum.maps.event.addListener(map, 'dragstart', function(){
+		console.log("map dragstarted");
+		setZoomable(true);
+		getMapInfo();
+	});
+	
+	/* default */
+	setZoomable(false);
+	
+	/* mouse가 map을 벗어나면 휠로 줌 불가능 */
+	daum.maps.event.addListener(map, 'mouseout', function(){
+		console.log("map mouseouted");
 		setZoomable(false);
+	});
+	
+	function getMapInfo() {
+	    // 지도의 현재 중심좌표를 얻어옵니다 
+	    var center = map.getCenter(); 
+	    
+	    // 지도의 현재 레벨을 얻어옵니다
+	    var level = map.getLevel();
+	    
+	    // 지도의 현재 영역을 얻어옵니다 
+	    var bounds = map.getBounds();
+	    
+	    // 영역의 남서쪽 좌표를 얻어옵니다 
+	    var swLatLng = bounds.getSouthWest(); 
+	    
+	    // 영역의 북동쪽 좌표를 얻어옵니다 
+	    var neLatLng = bounds.getNorthEast(); 
 		
-		/* mouse가 map을 벗어나면 휠로 줌 불가능 */
-		daum.maps.event.addListener(map, 'mouseout', function(){
-			console.log("map mouseouted");
-			setZoomable(false);
-		});
-		
-		/* xxx */
-		function getInfo() {
-		    // 지도의 현재 중심좌표를 얻어옵니다 
-		    var center = map.getCenter(); 
-		    
-		    // 지도의 현재 레벨을 얻어옵니다
-		    var level = map.getLevel();
-		    
-		    // 지도의 현재 영역을 얻어옵니다 
-		    var bounds = map.getBounds();
-		    
-		    // 영역의 남서쪽 좌표를 얻어옵니다 
-		    var swLatLng = bounds.getSouthWest(); 
-		    
-		    // 영역의 북동쪽 좌표를 얻어옵니다 
-		    var neLatLng = bounds.getNorthEast(); 
-			
-		    var message = '지도 중심좌표는 위도 ' + center.getLat() + ', <br>';
-		    message += '경도 ' + center.getLng() + ' 이고 <br>';
-		    message += '지도 레벨은 ' + level + ' 입니다 <br> <br>';
-		    message += '지도의 남서쪽 좌표는 ' + swLatLng.getLat() + ', ' + swLatLng.getLng() + ' 이고 <br>';
-		    message += '북동쪽 좌표는 ' + neLatLng.getLat() + ', ' + neLatLng.getLng() + ' 입니다';
-		    
-		    console.log(message);
-		}
-		/* xxx */
-		
-	}); /* document onload function end */
-	</script>
-	<script>
-	$(function(){
+	    var message = '지도 중심좌표 \n위도 : ' + center.getLat() + '\n';
+	    message += '경도 : ' + center.getLng() + '\n';
+	    message += '지도 레벨 : ' + level + '\n';
+	    message += '지도의 남서쪽 좌표 : ' + swLatLng.getLat() + ', ' + swLatLng.getLng() + '\n';
+	    message += '북동쪽 좌표 : ' + neLatLng.getLat() + ', ' + neLatLng.getLng();
+	    
+	    console.log(message);
+	}
+	
+	$(function(){ // Virtual DOM => after document has been loaded
+ 		
 		/* 검색 기본 날짜 설정 */
 		var getToday = new Date();
 		var getTomorrow = new Date();
@@ -599,6 +624,104 @@
 				return d;
 			}
 		}
+		
+		/* handlebars ifOne helper for tags */
+		Handlebars.registerHelper('ifOne', function(a, opts) {
+		    if(a == 1)
+		        return opts.fn(this);
+		    else
+		        return opts.inverse(this);
+		});
+		
+		
+		function getData(){
+			
+			var formData = $("form").serializeObject();
+			delete formData["_csrf"];
+			
+			/* 성별, 편의시설 하나만 선택할때 스트링으로 들어가는 것을 배열로 변경 */
+			if(typeof formData.gender =="string"){
+				formData.gender = [formData.gender];
+			}
+			if(typeof formData.facilities == "string"){
+				formData.facilities = [formData.facilities];
+			}
+			
+			$.ajax({
+			  url: "/searchgehainfo",
+			  type: "post",
+			  contentType: "application/json; charset=utf8",
+			  data: JSON.stringify(formData),
+			  dataType: "json",
+			  beforeSend: function(){
+				  $('.wrap-loading').addClass('loader');
+		      },
+		      complete: function(){
+		    	  $('.wrap-loading').removeClass('loader');
+		      }
+			})
+			.done(function(data){
+				var source = $("#template").html();
+				var template = Handlebars.compile(source);
+				$("#searchresult").html(template(data));
+			})
+			.done(function(data){
+				
+				var geocoder = new daum.maps.services.Geocoder();
+				
+				for(var i=0, len=data.length; i<len ; i++){
+					console.log(data[i].address);
+					
+					geocoder.addressSearch(data[i].address, function(result, status) {
+					     if (status === daum.maps.services.Status.OK) {
+							
+					    	var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+							gehaArr.push(coords);
+							
+							console.log(gehaArr);
+							
+					    	gehaObj = {
+					    		ccc : gehaArr	
+					    	}
+					    	
+					    	console.log(gehaObj);
+					    	
+					    	var marker = new daum.maps.Marker({
+					            map: map,
+					            position: coords
+					        });
+					    }
+					});
+				}
+				
+				console.log(gehaArr);
+				
+			})
+			.fail(function(){
+				alert("failed");
+			});
+		}
+		
+ 		$("#btn-search").click(function(){
+			getData();
+		});
+ 		$("#keywordsearch").keyup(function(e){
+ 			if(e.keyCode == 13){
+	 			getData(); 				
+ 			}
+ 		});
+		
+ 		getData();
+ 		
+		$("#sortBy").delegate("li", "click", function(){
+			if($(this).attr("class") != 'active'){
+				$("#sortBy .active").removeClass();
+				$(this).addClass("active")
+				$("#sortInput").val($(this).attr("id"));
+				console.log($("#sortInput").val());
+				getData();
+			}
+		});
 	});
 	</script>
 	<!-- script end -->
