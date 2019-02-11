@@ -280,6 +280,78 @@ display: inline-block;
 position: absolute;
 }
 
+/* 별점 */
+.star-input>.input {
+	display: inline-block;
+	vertical-align: middle;
+	background: url('/img/grade_img.png');
+
+
+}
+
+.star-input {
+	display: inline-block;
+	white-space: nowrap;
+	width:100%;
+	height: 40px;
+	line-height: 30px;
+}
+
+.star-input>.input {
+	display: inline-block;
+	width: 150px;
+	background-size: 150px;
+	height: 28px;
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+}
+
+.star-input>.input>input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 1;
+}
+
+
+.star-input>.input>label {
+	width: 30px;
+	height: 0;
+	padding: 28px 0 0 0;
+	overflow: hidden;
+	float: left;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.star-input>.input>label[for="p1"] {
+	width: 30px;
+	z-index: 5;
+}
+
+.star-input>.input>label[for="p2"] {
+	width: 60px;
+	z-index: 4;
+}
+
+.star-input>.input>label[for="p3"] {
+	width: 90px;
+	z-index: 3;
+}
+
+.star-input>.input>label[for="p4"] {
+	width: 120px;
+	z-index: 2;
+}
+
+.star-input>.input>label[for="p5"] {
+	width: 150px;
+	z-index: 1;
+}
+
+
 </style>
 
 </head>
@@ -394,7 +466,7 @@ position: absolute;
 							<h1 th:text=*{roomName}></h1>
 							<div class="flexbox">
 								<div class="fav-btn">
-									<input type="text" id="favmecode" name="favmecode" th:value="*{roomCode}">
+									<input type="hidden" id="favmecode" name="favmecode" th:value="*{roomCode}">
 									<span class="favme dashicons dashicons-heart" th:name=|favme*{roomCode}| th:onclick=|like(*{roomCode})|></span>
 								</div>
 							</div>
@@ -410,18 +482,18 @@ position: absolute;
 				
 							  <!-- panel with buttons -->
 				            <div class="panel">
-				                <a href="#login_form" cl id="login_pop">객실 이용 안내</a>
+				                <a th:href=|#login_form*{roomCode}|  id="login_pop">객실 이용 안내</a>
 				            </div>
 			            
 			        		<!-- popup form #1 -->
-			        		<a href="#x" class="overlay" id="login_form"></a>
+			        		<a href="#x" class="overlay" th:id=|login_form*{roomCode}|></a>
 			        		<div class="popup">
 			           			<h2>객실 이용 안내</h2>
 								<p th:utext="*{roomInfo}"></p>
 			            		<a class="close" href="#close"></a>
 			       			</div>
 						</div>
-						<form action="/booking/bookingPage" >
+						<form action="/booking/bookingPage" onsubmit="return check()" >
 							<input type="hidden" id="startdate" name="bookingStart" />
 							<input type="hidden" id="enddate" name="bookingEnd" />
 							<input type="hidden" name="roomCode" th:value="*{roomCode}">
@@ -479,7 +551,17 @@ position: absolute;
 					<!-- 리뷰 탭 -->
     				<div id="menu2" class="tab-pane "><br>
     				<p th:text="${rating.recommendRating}" ></p>
-    				<p th:text="${rating.avgRating}" ></p>
+    				<p th:text="${rating.avgRating}"></p>
+    				<br>
+    				<p class="star-input"> 
+    					<span class="input"> 
+		    				<input type="hidden" name="rating" value="1" id="p1"> <label for="p1">1</label>
+		    				<input type="hidden" name="rating" value="2" id="p2"> <label for="p2">2</label> 
+		    				<input type="hidden" name="rating" value="3" id="p3"> <label for="p3">3</label>
+							<input type="hidden" name="rating" value="4" id="p4"> <label for="p4">4</label>
+							<input type="hidden" name="rating" value="5" id="p5"> <label for="p5">5</label>
+						</span>
+					</p>
 					<p th:text=|전체리뷰:${rating.reviewCnt}| ></p>
 					
    						<ul >
@@ -520,7 +602,18 @@ position: absolute;
 			xhr.setRequestHeader(header, token);
 		});
 	});
-
+	
+	function check() {
+		if([[${session.memberCode}]] == null){
+			alert("로그인이 필요합니다.")
+			return false;
+		}else {
+			return true;
+		}
+	};
+	
+	
+	
 	var guestHouseCode = [[${geha.guestHouseCode}]];
 		//리뷰리스트 
  	 	function commentList(){
@@ -628,7 +721,11 @@ position: absolute;
 
 		//좋아요 유지
 		function likeList(memberCode){
+			if([[${session.memberCode}]] != null){
 			var memberCode = [[${session.memberCode}]];
+			}else{
+				memberCode=0
+			}
 			var roomCode = new Array();
 			var size = $("input[name='favmecode']").length;
 
@@ -662,7 +759,7 @@ position: absolute;
 					        type : 'post',
 					        data : {"roomCode" : roomCode, "memberCode" : memberCode}, 
 					        success : function(){
-								alert(roomCode+"좋아요취소");
+								alert("좋아요취소");
 					        }
 					    }); 
 					
@@ -684,10 +781,46 @@ position: absolute;
 	 	$(document).ready(function(){
 	 		commentList();
 	 		if([[${session.memberCode}]] != 'null'){
-	 		likeList();
-	 			
+	 			likeList();
+	 		};
+	 	
+	 		 var rating = [[${rating.avgRating}]]
+	 		if(rating >= 10){
+	 			$("label[for='p5']")
+	 			.css('display','inline-block')
+	 			.css('vertical-align','middle')
+	 			.css('background',"url('/img/grade_img.png')")
+	 			.css('background-size','150px')
+	 			.css('background-position','0 bottom')
+	 		}else if (rating >= 8){
+	 			$("label[for='p4']")
+	 			.css('display','inline-block')
+	 			.css('vertical-align','middle')
+	 			.css('background',"url('/img/grade_img.png')")
+	 			.css('background-size','150px')
+	 			.css('background-position','0 bottom')
+	 		}else if (rating >= 6){
+	 			$("label[for='p3']")
+	 			.css('display','inline-block')
+	 			.css('vertical-align','middle')
+	 			.css('background',"url('/img/grade_img.png')")
+	 			.css('background-size','150px')
+	 			.css('background-position','0 bottom')
+	 		}else if (rating >= 4){
+	 			$("label[for='p2']")
+	 			.css('display','inline-block')
+	 			.css('vertical-align','middle')
+	 			.css('background',"url('/img/grade_img.png')")
+	 			.css('background-size','150px')
+	 			.css('background-position','0 bottom')
+	 		}else if (rating >= 2){
+	 			$("label[for='p1']")
+	 			.css('display','inline-block')
+	 			.css('vertical-align','middle')
+	 			.css('background',"url('/img/grade_img.png')")
+	 			.css('background-size','150px')
+	 			.css('background-position','0 bottom')
 	 		}
-
 	 	});
 
  		/* when a user clicks, toggle the 'is-animating' class */
