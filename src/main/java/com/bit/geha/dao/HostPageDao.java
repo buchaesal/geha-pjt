@@ -45,8 +45,8 @@ public interface HostPageDao {
 	@Select("SELECT facilityCode FROM guestHouse_has_facility_tb WHERE guestHouseCode=#{guestHouseCode}")
 	public List<Integer> getFacilities(int guestHouseCode);
 	
-	@Select("SELECT * FROM file_tb WHERE guestHouseCode=#{guestHouseCode}")
-	public List<FileDto> getFiles(int guestHouseCode);
+	@Select("SELECT * FROM file_tb WHERE guestHouseCode=#{guestHouseCode} and roomCode=0")
+	public List<FileDto> getGuestHouseImgs(int guestHouseCode);
 	
 	//회원예약내역
 	public List<BookingDto> getGuestBookingList(@Param("hostCode") int hostCode, @Param("cri") BoardCriteria cri);

@@ -15,7 +15,7 @@ import lombok.extern.java.Log;
 
 @Log
 public class UploadFileUtils {
-	public static final String UPLOAD_PATH = "C:\\geha_pjt\\";
+	public static final String UPLOAD_PATH = "C:\\Users\\tmfrl\\git\\geha-pjt\\src\\main\\resources\\static\\gehaImg\\";
 	
 	private static void makeDir(String uploadPath, String ...paths) {
 		if(new File(uploadPath + paths[paths.length-1]).exists())
