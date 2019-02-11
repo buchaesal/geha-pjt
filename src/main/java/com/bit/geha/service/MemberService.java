@@ -1,5 +1,7 @@
 package com.bit.geha.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
@@ -16,5 +18,6 @@ public interface MemberService {
 	
 	public void sendMail(String id) throws Exception;
 	
+	public List<MemberDto> findByMemberCode(int memberCode);
 
 }

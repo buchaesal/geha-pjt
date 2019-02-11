@@ -1,5 +1,7 @@
 package com.bit.geha.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +111,10 @@ public class MemberServiceImpl implements MemberService {
 			
 		}
 		
+	}
+	
+	public List<MemberDto> findByMemberCode(int memberCode) {
+		return memberDao.findByMemberCode(memberCode);
 	}
 
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.bit.geha.criteria.AdminPageCriteria;
+import com.bit.geha.dto.GuestHouseDto;
 import com.bit.geha.dto.MemberDto;
 
 @Mapper
@@ -19,4 +20,6 @@ public interface AdminPageDao {
 	public void changeUser(@Param("id")List<String> id);
 	
 	public int getTotal(AdminPageCriteria cri,String auth);
+	
+	public List<GuestHouseDto> getApprovalHouseList();
 }
