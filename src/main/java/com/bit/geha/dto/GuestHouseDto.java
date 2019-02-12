@@ -26,7 +26,9 @@ public class GuestHouseDto {
 	private boolean shopping;
 	private String bankName;
 	private String accountNumber;
+	private String status;
 	
 	private int isMainImage;
 	private List<MultipartFile> files;
+	private String memberName;
 }

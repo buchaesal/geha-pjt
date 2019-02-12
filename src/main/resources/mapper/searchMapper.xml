@@ -16,6 +16,7 @@ from guestHouse_tb gh
 	left join file_tb fi
 	on fi.guestHouseCode = gh.guestHouseCode
 	and fi.isMainImage = 1
+	and fi.roomCode = 0
 	join grade_tb gr
 	on gh.avgRating between gr.minRating and gr.maxRating
 	join
@@ -87,7 +88,8 @@ from guestHouse_tb gh
 		having count(t.d) = TIMESTAMPDIFF(DAY, #{bookingStart}, #{bookingEnd}) + 1
 		) dp
 	on rm.roomCode = dp.roomCode
-where ghmin.minprice between #{minprice} and #{maxprice}
+where gh.approvalDate is not NULL
+	and ghmin.minprice between #{minprice} and #{maxprice}
 <if test='keyword != null and keyword != "" '>
 	and (gh.guestHouseName like CONCAT('%',#{keyword},'%') or gh.address like CONCAT('%',#{keyword},'%'))
 </if>
@@ -103,6 +105,19 @@ where ghmin.minprice between #{minprice} and #{maxprice}
 <if test="business == 1">
 	and gh.businessTrip = 1
 </if>
-order by gh.guestHouseCode
+
+<if test='sort == "rating"'>
+	order by gh.avgRating desc
+</if>
+<if test='sort == "review"'>
+	order by rvc.reviewCnt desc
+</if>
+<if test='sort == "lowprice"'>
+	order by ghmin.minprice asc
+</if>
+<if test='sort == "highprice"'>
+	order by ghmin.minprice desc
+</if>
+
 </select>
 </mapper>

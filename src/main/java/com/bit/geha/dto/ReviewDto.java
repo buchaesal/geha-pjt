@@ -19,4 +19,5 @@ public class ReviewDto {
 	private String guestHouseName;
 	private String roomName;
 	private int guestHouseCode;
+	private String writer;
 }

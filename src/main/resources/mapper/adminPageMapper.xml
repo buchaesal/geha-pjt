@@ -2,19 +2,60 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bit.geha.dao.AdminPageDao">
-<select id="getMemberList" resultType="MemberDto">
-select * from member_tb;
+	<select id="getMemberList" resultType="MemberDto">
+
+		<!-- criteria 를 적용한 게시판 페이징 조회 -->
+
+<![CDATA[
+select
+    *
+from
+    member_tb
+where memberCode > 0]]>
+
+		<if test="auth!=''">
+			and authority like #{auth}
+		</if>
+
+
+<![CDATA[
+order by memberCode desc
+limit #{cri.pageStart}, #{cri.perPageNum}]]>
+
+
+
+	</select>
+
+	<update id="changeAdmin">
+		update member_tb set authority = 'ADMIN' where
+		<foreach item="list" index="index" collection="id" open="("
+			separator="or" close=")">
+			id = #{list}
+		</foreach>
+	</update>
+
+	<update id="changeUser">
+		update member_tb set authority = 'USER' where
+		<foreach item="list" index="index" collection="id" open="("
+			separator="or" close=")">
+			id = #{list}
+		</foreach>
+	</update>
+
+
+
+	<select id="getTotal" resultType="int">
+		select count(*) from
+		member_tb
+		<if test="auth!=''">
+			where authority like #{auth}
+		</if>
+
+	</select>
+
+<select id="getApprovalHouseList" resultType="GuestHouseDto">
+select g.*,m.memberName from guestHouse_tb g, member_tb m 
+where approvalDate = 0 and g.memberCode = m.memberCode;
 </select>
-
-<update id="changeAdmin">
-update member_tb set authority = 'ADMIN'
-where id = #{id}
-</update>
-
-<update id="changeUser">
-update member_tb set authority = 'USER'
-where id = #{id}
-</update>
-
 
 </mapper>

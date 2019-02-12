@@ -47,7 +47,7 @@
            /* Modal Content/Box */
            .modal-content {
                background-color: #fefefe;
-               margin: 15% auto; /* 15% from the top and centered */
+               margin: 15% auto; /* 15% from the top a nd centered */
                padding: 20px;
                border: 1px solid #888;
                width: 50%; /* Could be more or less, depending on screen size */                          
@@ -142,8 +142,9 @@
                <tr>
                   <th><label class="hostPage_label">주소</label></th>
                   <td>
-                     <input type="button" name="callAddressApi" value="주소 검색하기"><br>
-                     <input type="text" name="address" size="45">
+                     <!-- 주소와 우편번호를 입력할 <input>들을 생성하고 적당한 name과 class를 부여한다 -->
+					<input type="button" id="postcodify_search_button" value="주소 검색하기"><br />
+					<input type="text" name="address" class="postcodify_address" value="" size="45"/><br />
                   </td>
                </tr>
                <tr>
@@ -168,11 +169,12 @@
                </tr>
             </table>
             <br><br>
-            <input type="button" value="취소">
+            <input type="button" value="취소" onclick="history.back()">
             <input id="regiestGuestHouseBtn" type="button" value="등록신청">
          </form>
 
          <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
+         	<input type="hidden" name="roomIndex">
             <div>
                <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
                <input type="button" value="삭제" onclick="deleteImgs(this)">
@@ -213,7 +215,7 @@
       </div>
       
       <div layout:fragment="hostPage_script">
-         <script type="text/javascript" th:inline="javascript">
+		<script type="text/javascript" th:inline="javascript">
             var roomIndex=1;
             $("#addRoomInfoBtn").click(function() {
                var div = document.createElement('div');
@@ -222,6 +224,7 @@
                document.getElementById('roomInfoList').appendChild(div);
                
                var cloneRoom = $('#defaultRoomInfo').children().clone();
+               cloneRoom.find('input[name=roomIndex]').val(roomIndex);
                cloneRoom.find('input[type=radio]').attr('name', 'gender'+roomIndex);
                cloneRoom.find('input[name=gender]').attr('id', 'gender'+roomIndex++);
                cloneRoom.appendTo(div);
@@ -296,10 +299,15 @@
             }
             
             function clickMainRoomImg(obj, chkValue) {
-               alert("clickMainRoomImg");
                $(obj).val(chkValue);
             }
          </script>
+         
+         <!-- Postcodify를 로딩한다 -->
+		 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+		
+		 <!-- "검색" 단추를 누르면 팝업 레이어가 열리도록 설정한다 -->
+		 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
       </div>
    </body>
 </html>

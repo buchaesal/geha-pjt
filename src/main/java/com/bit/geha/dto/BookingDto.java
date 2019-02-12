@@ -30,13 +30,13 @@ public class BookingDto {
 	public BookingDto() {
 		this.paymentDate = new Date(System.currentTimeMillis());
 	}
-	
+/*	
 	public void setBookingStart(String bookingStart) {
 		this.bookingStart = Date.valueOf(bookingStart);
 	}
 	
 	public void setBookingEnd(String bookingEnd) {
 		this.bookingEnd = Date.valueOf(bookingEnd);
-	}
+	}*/
 	
 }

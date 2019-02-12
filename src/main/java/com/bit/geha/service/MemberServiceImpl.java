@@ -1,5 +1,7 @@
 package com.bit.geha.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +95,8 @@ public class MemberServiceImpl implements MemberService {
 		
 		return text;
 	}
-
+	
+	//사용자의 정보를 세션에 넣어줌.(로그인 후 접근 할 가능성이 있는 페이지에 전부 넣어준다.)
 	public void getSession(Authentication auth,HttpSession session) {
 		
 		
@@ -104,8 +107,14 @@ public class MemberServiceImpl implements MemberService {
 			session.setAttribute("name", member.getMemberName());
 			session.setAttribute("auth", member.getAuthority());
 			session.setAttribute("memberCode", member.getMemberCode());
+			
+			
 		}
 		
+	}
+	
+	public List<MemberDto> findByMemberCode(int memberCode) {
+		return memberDao.findByMemberCode(memberCode);
 	}
 
 }
