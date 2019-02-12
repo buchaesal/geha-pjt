@@ -11,6 +11,7 @@
 .error{
 color:tomato;
 padding-bottom:20px;
+padding-left: 51px;
 }
 .mailAuth{
     position: absolute;
@@ -68,7 +69,8 @@ padding-bottom:20px;
 
 					<div class="wrap-input100 validate-input m-b-20" data-validate = "Please enter password">
 			
-						<input class="input100" type="password" name="password" id="passsword" placeholder="Password">
+						<input class="input100" type="password" name="password" 
+						id="passsword" placeholder="Password" onkeyup="enterkey()">
 						<span class="focus-input100"></span>
 					</div>
 					<!-- <div class="flex-col-c" th:if="${param.error}">-->
@@ -78,7 +80,7 @@ padding-bottom:20px;
 				id="mailAuth" data-toggle="modal" data-target="#idAuth">메일인증</button>
 
 					<div class="container-login100-form-btn">
-						<button type="button" class="login100-form-btn" id="loginCk">
+						<button type="button" class="login100-form-btn" onclick="loginCk()">
 							로그인
 						</button>
 					</div>
@@ -118,7 +120,7 @@ padding-bottom:20px;
     <div class="modal-content text-center">
       <!--Header-->
       <div class="modal-header d-flex justify-content-center">
-        <br/><br/><p class="heading">어떤 회원가입을 하시겠어요?</p>
+        <br/><br/><p class="heading">어떤 회원가입을 하시겠습니까?</p>
       </div>
 
       <!--Body-->
@@ -158,7 +160,7 @@ padding-bottom:20px;
       <div class="modal-body">
 
         <i class="glyphicon glyphicon-envelope"></i><br/><br/><br/>
-		<span>인증 링크가 포함된 메일을 발송했어요. <br/>링크를 클릭해서 인증을 완료하세요.</span>
+		<span>인증 링크가 포함된 메일을 발송했습니다. <br/>링크를 클릭해서 인증을 완료하세요.</span>
       </div>
 
       <!--Footer-->
@@ -195,45 +197,16 @@ $(function() {
 	
 });
 
+
+
 $(function() {
 	
 	
 	$("#mailAuth").hide();
 	
-	$("#loginCk").click(function() {
-		var frm = $("#frm").serialize();
-		
-		
-		   $.ajax({
-	            async: true,
-	            type : "POST",
-	            data : frm,
-	            url : "loginCk",
-	            /* dataType : "json", */
-	            /* contentType: "application/json; charset=UTF-8", */
-	            success : function(data) {
-	            	if(data===""){
-	            		$("#frm").submit();
-	            	}else if(data=='노인증'){
-	            		$("#error").text('로그인을 위해서는 메일 인증이 필요해요.');
-	            		$("#mailAuth").show();
-	            		return;
-	            	}else{
-	            		$("#error").text(data);
-	            		return;
-	            	}
-	               
-	              
-	            },
-	            error : function(error) {
-	            	alert(error);
-	            }
-	        });
-		
-		
-	});
 	
-	$("#loginCk").click(function() {
+	
+	$("#mailAuth").click(function() {
 		var frm = $("#frm").serialize();
 		
 		$.ajax({
@@ -249,6 +222,48 @@ $(function() {
 	});
 	
 });
+
+function loginCk() {
+	var frm = $("#frm").serialize();
+	
+	
+	   $.ajax({
+            async: true,
+            type : "POST",
+            data : frm,
+            url : "loginCk",
+            /* dataType : "json", */
+            /* contentType: "application/json; charset=UTF-8", */
+            success : function(data) {
+            	if(data===""){
+            		$("#frm").submit();
+            	}else if(data=='노인증'){
+            		$("#error").text('로그인을 위해서는 메일 인증이 필요합니다.');
+            		$("#mailAuth").show();
+            		return;
+            	}else{
+            		$("#error").text(data);
+            		return;
+            	}
+               
+              
+            },
+            error : function(error) {
+            	alert(error);
+            }
+        });
+	
+	
+}
+
+function enterkey() {
+    if (window.event.keyCode == 13) {
+    	loginCk();
+         // 엔터키가 눌렸을 때 실행할 내용
+        
+    }
+}
+
 
 </script>
 

@@ -12,12 +12,12 @@
 	white-space: nowrap;
 	overflow: hidden;
 	width: 300px;
+	padding: 28px;
 }
 
 .glyphicon-bell:before {
-    font-size: 17px;
+    font-size: 26px;
     color: #f3ab04;
-    text-shadow: 0 0 1px #170b0b;
 }
 
 .modal-content {
@@ -29,14 +29,24 @@
 }
 
 p{
-    font-size: 20px;
-        width: 413px;
+    font-size: 28px;
 }
 
 th {
     text-align: center;
 }
+.test {
+    padding: 27px;
+}
 
+.modal-header {
+    background: #b6e3f5;
+        border-bottom: 6px solid lightgray;
+}
+
+label{
+font-size: 18px;
+}
 /* 별점 */
 .star-input>.input, .star-input>.input>label:hover, .star-input>.input>input:focus+label,
 	.star-input>.input>input:checked+label {
@@ -233,21 +243,21 @@ th {
 </head>
 <body>
 	<div layout:fragment="myPage_content">
-	<div th:if="${#lists.size(reviewList)==0}">
-		<p class="heading">작성한 리뷰가 없습니다.</p>
+	<div th:if="${#lists.size(reviewList)==0}" class="test">
+		<p style="font-size:20px;">작성한 리뷰가 없습니다.</p>
 		<a href="/myPage/bookingList" class="btn btn-info waves-effect">리뷰쓰러가기</a>
 		</div>
 	<div th:if="${#lists.size(reviewList)>0}">
-		<table border="2">
-			<tr>
+		<table>
+			<tr height="80px" style="border-bottom:2.2px solid lightgray">
 				<th>게스트하우스</th>
 				<th>작성내용</th>
 				<th>작성일</th>
-				<th>나의  평점</th>
+				<th style="padding:20px;">나의  평점</th>
 				<th>답변</th>
 				<th></th>
 			</tr>
-			<tr th:each="reviewDto : ${reviewList}" align="center">
+			<tr th:each="reviewDto : ${reviewList}" height="80px" align="center">
 				<td><a th:href="@{'/room/roomInfo?guestHouseCode='+${reviewDto.guestHouseCode}}">
 				[[${reviewDto.guestHouseName}]]</a><br>
 					([[${reviewDto.roomName}]])
@@ -262,11 +272,11 @@ th {
 				class="glyphicon glyphicon-bell" 
 				style="text-decoration:none" onclick="showReply()"></a></td>
 				
-				<td>
-					<button type="button" class="btn btn-info waves-effect" 
+				<td style="padding:35px">
+					<button type="button" class="btn-primary" 
 					th:name="${reviewDto.title}" th:id="${reviewDto.reviewNo}" 
 					th:value="${reviewDto.content}" onclick="modifyFrm()">수정</button>
-					<button type="button" class="btn btn-info waves-effect" 
+					<button type="button" class="btn-primary" 
 					th:id="${reviewDto.reviewNo}" onClick="showDeleteModal()">삭제</button>
 					
 				</td>
@@ -276,7 +286,25 @@ th {
 			</tr>
 
 		</table>
-
+ <!-- 게시판 하단의 페이징 버튼 -->
+            <div class="box-footer clearfix" style="padding-left:200px">
+              <ul class="pagination pagination-sm no-margin pull-center">
+              
+              <li th:if="${pageMaker.prev} == true">
+              	<a th:href="@{/myPage/myReview(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+              </li>
+              
+              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+                <a th:href="@{/myPage/myReview(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+              </li>
+                
+              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+              	<a th:href="@{/myPage/myReview(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+              </li>
+              
+              </ul>
+              
+            </div>
 </div>
 
 		<!--Modal: idAuth-->

@@ -23,11 +23,12 @@ tr {
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
+<script th:inline="javascript">
 <!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
 
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
+
 $(function() {
 	$(document).ajaxSend(function(e, xhr, options) {
 		xhr.setRequestHeader(header, token);
@@ -50,22 +51,56 @@ function showHostInfo(){
 			console.log(error);
 		},
 		success : function(data) {
-			
-		console.log(data[0].id);
+			var result="";
 		$(data).each(function(){
-			console.log(this.guestHouseName);
-			$("#guestHouseList").append("<tr>"+"<td>"+this.guestHouseName+"</td>"
-					+"<td>"+this.approvalDate+"</td>"+"</tr>");
-			
+			if(this.status=='승인완료'){
+				$("#noNow").hide();
+			result+="<tr><td><a  target='_blank' href='/room/roomInfo?guestHouseCode="
+					+this.guestHouseCode+"'>"
+					+this.guestHouseName+"</a></td><td>"
+					+this.approvalDate+"</td></tr>";
+			}
 		});
-		
+		$("#guestHouseList").html(result);
 	 	$("#hostName").text(data[0].memberName);
 		$("#hostId").text(data[0].id);
 		$("#businessLicense").text(data[0].businessLicense);
 		$("#infoModal").modal(); 
+		
+		
 		}
 	});
 	
+	
+}
+
+function showRejectModal(){
+	var guestHouseCode = event.srcElement.name;
+	
+	$.ajax({
+		type : "POST",
+		url : "getRejectList.do",
+		data : guestHouseCode,
+		contentType : "application/json; charset=utf-8",
+		dataType : "json",
+		error : function(error) {
+			console.log(error);
+		},
+		success : function(data) {
+			var result="";
+		$(data).each(function(){
+			
+				$("#noNow").hide();
+			result+="<tr><td>"+this.rejectDate+"</td><td>"
+					+this.rejectMsg+"</td></tr>";
+			
+		});
+		$("#rejectList").html(result);
+		$("#rejectModal").modal(); 
+		
+		
+		}
+	});
 	
 }
 </script>
@@ -88,8 +123,11 @@ function showHostInfo(){
 				[[${list.memberName}]]</a></td>
 				<td th:text="${list.guestHouseName}"></td>
 				<td th:text="${#dates.format(list.registerDate, 'yy.MM.dd')}"></td>
-				<td><a href="#">보기</a></td>
-				<td th:text="${list.status}"></td>
+				<td><a th:href="@{'/adminPage/waitApproval?guestHouseCode='+${list.guestHouseCode}}" 
+				target="_blank">보기</a></td>
+				<td th:if="${list.status.equals('반려')}"><a href="#" onclick="showRejectModal()" 
+				th:name="${list.guestHouseCode}">[[${list.status}]]</a></td>
+				<td th:unless="${list.status.equals('반려')}">[[${list.status}]]</td>
 			
 			</tr>
 				</table>
@@ -103,7 +141,7 @@ function showHostInfo(){
       <!--Header-->
       <div class="d-flex justify-content-center">
         <br/><br/>
-        호스트 정보 
+        <p class="test">호스트 정보</p> 
 
       </div>
 
@@ -123,12 +161,11 @@ function showHostInfo(){
 		<th id="businessLicense"></th>
 		</tr>
 		</table>
-		<p class="test">현재 운영중인 게스트하우스</p>
-		<table id="guestHouseList">
+		<p class="test">운영 현황</p>
+		<table id="guestHouseList" width="260px">
 		
-			
-			
         </table>
+        <p id="noNow">현재 운영중인 게스트하우스가 없습니다.</p>
         
       </div>
 <br/>
@@ -142,7 +179,38 @@ function showHostInfo(){
 </div>
 <!--Modal-->
 				
-				
+	<!--Reject Modal-->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="d-flex justify-content-center">
+        <br/><br/>
+        <p class="test">반려 이력</p> 
+		
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+		
+		
+		<table id="rejectList" width="270px">
+		
+        </table>
+        
+      </div>
+<br/>
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+       <a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal-->			
 				
 				</div>
 </body>

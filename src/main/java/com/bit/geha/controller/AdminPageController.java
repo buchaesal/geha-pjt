@@ -18,7 +18,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bit.geha.criteria.AdminPageCriteria;
 import com.bit.geha.dao.AdminPageDao;
+import com.bit.geha.dao.RoomDao;
+import com.bit.geha.dto.FacilityDto;
+import com.bit.geha.dto.GuestHouseDto;
 import com.bit.geha.dto.MemberDto;
+import com.bit.geha.dto.RejectDto;
+import com.bit.geha.dto.RoomDto;
 import com.bit.geha.service.MemberService;
 import com.bit.geha.util.PageMaker;
 
@@ -32,13 +37,14 @@ public class AdminPageController {
 	@Autowired
 	MemberService memberService;
 	
-	@RequestMapping("/adminPage")
-	public void adminPage() {
-	}
+	@Autowired
+	RoomDao roomDao;
 	
+
 	@GetMapping("/adminPage")
-	public void select(@ModelAttribute("cri") AdminPageCriteria cri,String auth,
+	public void adminPage(@ModelAttribute("cri") AdminPageCriteria cri,String auth,
 			Model model) {
+		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		
@@ -57,35 +63,21 @@ public class AdminPageController {
 		
 	}
 	
-	@GetMapping("/memberList")
-	public String memberList(@ModelAttribute("cri") AdminPageCriteria cri,Model model,Authentication auth,HttpSession session) {
-		memberService.getSession(auth, session);
-		
-		model.addAttribute("list",adminPageDao.getMemberList(cri,""));
-		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(adminPageDao.getTotal(cri,""));
-		
-		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("auth","");
-		return "/adminPage/adminPage";
-	}
-	
+
 	@RequestMapping("/changeAdmin")
 	public String changeAdmin(@RequestParam("id") List<String> id,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes,@RequestParam("auth") String auth) {
 		adminPageDao.changeAdmin(id);
 		redirectAttributes.addFlashAttribute("changeAdmin","선택한 회원을 관리자로 임명하였습니다");
-		return "redirect:/adminPage/memberList";
+		return "redirect:/adminPage/adminPage?auth="+auth;
 	}
 	
 	@RequestMapping("/changeUser")
 	public String changeUser(@RequestParam("id") List<String> id,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes,@RequestParam("auth") String auth) {
 		adminPageDao.changeUser(id);
 		redirectAttributes.addFlashAttribute("changeUser","선택한 관리자를 일반회원으로 강등하였습니다.");
-		return "redirect:/adminPage/memberList";
+		return "redirect:/adminPage/adminPage?auth="+auth;
 	}
 
 	
@@ -98,7 +90,49 @@ public class AdminPageController {
 	@ResponseBody
 	public List<MemberDto> getMemberInfo(@RequestBody int memberCode) {
 		
-		
 		return memberService.findByMemberCode(memberCode);
 	}
+	
+	//승인,반려 할수있는 뷰 페이지
+	 @RequestMapping("/waitApproval")
+	    public void waitApproval(@RequestParam("guestHouseCode") int guestHouseCode, 
+	    		Model model) throws Exception {
+	    	List<RoomDto> rooms = roomDao.roomInfo(guestHouseCode);
+	    	List<FacilityDto> facility = roomDao.facilityInfo(guestHouseCode);
+	    	
+	    	GuestHouseDto guestHouseDto = roomDao.gehaInfo(guestHouseCode);
+	    	model.addAttribute("guestHouseCode",guestHouseCode);
+	    	model.addAttribute("memberCode",guestHouseDto.getMemberCode());
+	    	model.addAttribute("geha", guestHouseDto);
+	    	model.addAttribute("room", rooms);
+	    	model.addAttribute("facility", facility );
+
+	    	
+	    	
+	    }
+	 
+	 @RequestMapping("/approveGuestHouse")
+	 public String approveGuestHouse(@RequestParam("guestHouseCode") int guestHouseCode,
+			 RedirectAttributes redirectAttributes) {
+		adminPageDao.approveNewGuestHouse(guestHouseCode);
+		redirectAttributes.addFlashAttribute("approveOk","승인이 성공적으로 완료되었습니다.");
+	 return "redirect:/adminPage/waitApproval?guestHouseCode="+guestHouseCode;
+}
+	 
+	 @RequestMapping("/rejectGuestHouse")
+	 public String rejectGuestHouse(RejectDto rejectDto,RedirectAttributes redirectAttributes) {
+		 
+	
+		 adminPageDao.rejectNewGuestHouse(rejectDto.getGuestHouseCode());
+		 adminPageDao.insertReject(rejectDto);
+		 redirectAttributes.addFlashAttribute("approveOk","반려가 처리되었습니다.");
+		 return "redirect:/adminPage/waitApproval?guestHouseCode="+rejectDto.getMemberCode();
+	 }
+	 
+	 	@RequestMapping("getRejectList.do")
+		@ResponseBody
+		public List<RejectDto> getRejectList(@RequestBody int guestHouseCode) {
+			
+			return adminPageDao.getRejectListByGuestHouseCode(guestHouseCode);
+		}
 }

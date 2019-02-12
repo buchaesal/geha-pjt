@@ -8,6 +8,5 @@ public class RejectDto {
 	private int guestHouseCode;
 	private int memberCode;
 	private Date rejectDate;
-	private int rejectCnt;
 	private String rejectMsg;
 }

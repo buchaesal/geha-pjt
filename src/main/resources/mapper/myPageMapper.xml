@@ -19,6 +19,8 @@ select r.*, v.guestHouseName, v.roomName, o.guestHouseCode
 from booking_tb b, review_tb r,bkrmghmatching_view v, room_tb o 
 where b.memberCode = #{memberCode} and b.bookingCode = r.bookingCode 
 and r.bookingCode = v.bookingCode and v.roomCode = o.roomCode
+order by r.writingDate desc
+limit #{cri.pageStart}, #{cri.perPageNum}
 </select>
 
 <update id="modifyReview" parameterType="ReviewDto">
@@ -35,6 +37,7 @@ select g.guestHouseName, g.guestHouseCode, r.roomName, r.charge, r.roomCode, g.a
 from guestHouse_tb g, room_tb r, like_tb l 
 where l.roomCode = r.roomCode and r.guestHouseCode = g.guestHouseCode 
 and l.memberCode = #{memberCode}
+limit #{cri.pageStart}, #{cri.perPageNum}
 </select>
 
 <delete id="deleteLike">
@@ -44,4 +47,14 @@ delete from like_tb where
          memberCode = #{memberCode} and roomCode = #{list}
     </foreach>
 </delete>
+
+<select id="getLikeTotal" resultType="int">
+select count(*) from
+		like_tb where memberCode = #{memberCode}
+</select>
+
+<select id="getReviewTotal" resultType="int">
+select count(*) from review_tb r, booking_tb b
+where b.memberCode = #{memberCode} and b.bookingCode = r.bookingCode 
+</select>
 </mapper>
