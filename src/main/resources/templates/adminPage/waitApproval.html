@@ -1,0 +1,119 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/fragments/main_layout">
+<head>
+<meta charset="UTF-8">
+ 
+ 
+<title>신규 승인/반려</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script th:inline="javascript">
+
+var guestHouseCode = [[${guestHouseCode}]];
+var memberCode = [[${memberCode}]];
+var approveOk = [[${approveOk}]];
+$(function() {
+	$("#secret").hide();
+	$("#secret2").hide();
+	$("#realClose").hide();
+	$("#textAr").hide();
+
+	if(approveOk!==null){
+		$("#modalName").text(approveOk);
+		$("#normalClose").hide();
+		$("#realClose").show();
+		$("#confirmModal").modal({backdrop: 'static', keyboard: false});
+		
+		
+	}
+});
+
+function showModal(){
+	$("#modalName").text('정말 승인하시겠습니까?');
+	$("#hiddenInput").val(guestHouseCode);
+	$("#secret").show();
+	$("#confirmModal").modal();
+	
+}
+
+function frmSubmit(){
+	$("#approve").submit();
+
+	
+}
+
+function wClose(){
+	opener.parent.location.reload();
+	window.close();
+	
+}
+
+function showRejectModal(){
+	
+	$("#modalName").text('반려하기');
+	$("#rejectInput").val(guestHouseCode);
+	$("#rejectInput2").val(memberCode);
+	$("#textAr").show();
+	$("#secret2").show();
+	$("#confirmModal").modal();
+}
+
+function rejectSubmit(){
+	$("#reject").submit();
+}
+</script>
+
+
+</head>
+
+<body>
+
+<div class="jcontent" layout:fragment="content"  style="font-family: 'yg-jalnan';">
+<!-- 고정 버튼 -->
+<div style="position: fixed; bottom:5px; right:5px;">
+<a href="#" class="btn btn-primary btn-lg" onclick="showModal()">승인</a>
+<a href="#" class="btn btn-primary btn-lg" onclick="showRejectModal()">반려</a>
+</div>
+	
+<!--Modal: confirmModal-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="modal-header d-flex justify-content-center">
+        <br/><br/><p id="modalName" class="heading"></p>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+<form id="approve" action="/adminPage/approveGuestHouse">
+<input type="hidden" id="hiddenInput" name="guestHouseCode">
+</form>
+<form id="reject" action="/adminPage/rejectGuestHouse">
+<input type="hidden" id="rejectInput" name="guestHouseCode">
+<input type="hidden" id="rejectInput2" name="memberCode">
+	<textarea id="textAr" name="rejectMsg" placeholder="반려사유를 적어주세요."></textarea>
+        </form>
+      </div>
+<br/>
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+      <a href="#" class="btn btn-primary btn-lg" id="secret" onclick="frmSubmit()">확인</a>
+      <a href="#" class="btn btn-primary btn-lg" id="secret2" onclick="rejectSubmit()">확인</a>
+        <a href="#" id="normalClose" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
+        <a href="#" id="realClose" class="btn btn-primary btn-lg" onclick="wClose()">닫기</a>
+        
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: confirmModal-->
+
+	</div>
+</body>
+</html>

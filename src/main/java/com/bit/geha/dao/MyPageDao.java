@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.bit.geha.criteria.AdminPageCriteria;
 import com.bit.geha.dto.BookingDto;
 import com.bit.geha.dto.LikeDto;
 import com.bit.geha.dto.ReviewDto;
@@ -35,13 +37,17 @@ public interface MyPageDao {
 	
 	public void modifyInfo(String id,String memberName, String password, String businessLicense,String gender);
 	
-	public List<ReviewDto> getReviewList(int memberCode);
+	public List<ReviewDto> getReviewList(@Param("cri")AdminPageCriteria cri, int memberCode);
 	
 	public void modifyReview(ReviewDto reviewDto);
 	
 	public void deleteReview(int reviewNo);
 	
-	public List<LikeDto> myLike(int memberCode);
+	public List<LikeDto> myLike(@Param("cri")AdminPageCriteria cri,int memberCode);
 	
 	public void deleteLike(int memberCode,List<Integer> deleteLikeList);
+	
+	public int getLikeTotal(int memberCode);
+	
+	public int getReviewTotal(int memberCode);
 }

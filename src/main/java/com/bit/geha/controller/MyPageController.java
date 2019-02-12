@@ -12,17 +12,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.bit.geha.criteria.AdminPageCriteria;
 import com.bit.geha.dao.MemberDao;
 import com.bit.geha.dao.MyPageDao;
 import com.bit.geha.dto.ReviewDto;
 import com.bit.geha.security.SecurityMember;
 import com.bit.geha.service.MemberService;
+import com.bit.geha.util.PageMaker;
 
 import lombok.extern.java.Log;
 
@@ -78,9 +82,16 @@ public class MyPageController {
 	
 	//리뷰관리
 	@RequestMapping("/myReview")
-	public void myReview(Model model,HttpSession session) {
+	public void myReview(Model model,HttpSession session,@ModelAttribute("cri") AdminPageCriteria cri) {
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
-		model.addAttribute("reviewList",myPageDao.getReviewList(memberCode));
+		cri.setPerPageNum(5);				
+		model.addAttribute("reviewList",myPageDao.getReviewList(cri,memberCode));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(myPageDao.getReviewTotal(memberCode));
+		
+		model.addAttribute("pageMaker", pageMaker);
 	}
 	
 	//내정보관리
@@ -94,7 +105,7 @@ public class MyPageController {
 	@RequestMapping("/updateInfo")
 	public String updateInfo(@RequestParam String id,@RequestParam String memberName,@RequestParam String password,
 			@RequestParam(required=false) String businessLicense, 
-			@RequestParam String gender,RedirectAttributes redirectAttributes) {
+			@RequestParam String gender,RedirectAttributes redirectAttributes,HttpSession session) {
 			if(password=="") {
 				
 			myPageDao.modifyNameEtc(id, memberName, businessLicense,gender);
@@ -105,6 +116,10 @@ public class MyPageController {
 						passwordEncoder.encode(password), 
 						businessLicense,gender);
 			}
+			
+			session.removeAttribute("name");
+			session.setAttribute("name", memberName);
+			
 			redirectAttributes.addFlashAttribute("updateInfo","정보가 수정되었습니다!");
 			return "redirect:/myPage/myInfo";
 			
@@ -127,10 +142,18 @@ public class MyPageController {
 	}
 	
 	//찜한숙소
-	@RequestMapping("/myLike")
-	public void myLike(Model model,HttpSession session) {
+	@GetMapping("/myLike")
+	public void myLike(Model model,HttpSession session,
+			@ModelAttribute("cri") AdminPageCriteria cri) {
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
-		model.addAttribute("likeList",myPageDao.myLike(memberCode));
+		cri.setPerPageNum(5);				
+		model.addAttribute("likeList",myPageDao.myLike(cri,memberCode));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(myPageDao.getLikeTotal(memberCode));
+		
+		model.addAttribute("pageMaker", pageMaker);
 		
 	}
 	

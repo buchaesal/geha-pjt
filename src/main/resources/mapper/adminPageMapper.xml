@@ -16,7 +16,14 @@ where memberCode > 0]]>
 		<if test="auth!=''">
 			and authority like #{auth}
 		</if>
-
+		<choose>
+			<when test="cri.type == 'name'.toString()">
+				and memberName like CONCAT('%',#{cri.keyword},'%')
+			</when>
+			<when test="cri.type == 'email'.toString()">
+				and id like CONCAT('%',#{cri.keyword},'%')
+			</when>
+		</choose>
 
 <![CDATA[
 order by memberCode desc
@@ -45,17 +52,46 @@ limit #{cri.pageStart}, #{cri.perPageNum}]]>
 
 
 	<select id="getTotal" resultType="int">
-		select count(*) from
-		member_tb
-		<if test="auth!=''">
-			where authority like #{auth}
+		<![CDATA[select count(*) from
+		member_tb 
+		where memberCode > 0]]>
+	
+			<choose>
+			<when test="cri.type == 'name'">
+				and memberName like CONCAT('%',#{cri.keyword},'%')
+				
+			</when>
+			<when test="cri.type == 'email'">
+				and id like CONCAT('%',#{cri.keyword},'%')
+			</when>
+		</choose>
+	<if test="auth!=''">
+			and authority like #{auth}
 		</if>
-
 	</select>
 
-<select id="getApprovalHouseList" resultType="GuestHouseDto">
-select g.*,m.memberName from guestHouse_tb g, member_tb m 
-where approvalDate = 0 and g.memberCode = m.memberCode;
-</select>
+	<select id="getApprovalHouseList" resultType="GuestHouseDto">
+		select g.*,m.memberName from guestHouse_tb g, member_tb m
+		where g.approvalDate is null and g.memberCode = m.memberCode;
+	</select>
 
+	<update id="approveNewGuestHouse">
+		update guestHouse_tb set approvalDate = now(),status = '승인완료'
+		where guestHouseCode = #{guestHouseCode}
+	</update>
+
+	<update id="rejectNewGuestHouse">
+		update guestHouse_tb set status = '반려' where guestHouseCode =
+		#{guestHouseCode}
+	</update>
+
+	<insert id="insertReject" parameterType="RejectDto">
+		insert into reject_tb values (#{dto.guestHouseCode}, #{dto.memberCode},
+		now(), #{dto.rejectMsg})
+	</insert>
+
+	<select id="getRejectListByGuestHouseCode"
+		resultType="RejectDto">
+		select * from reject_tb where guestHouseCode = #{guestHouseCode}
+	</select>
 </mapper>
