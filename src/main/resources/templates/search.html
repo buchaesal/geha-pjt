@@ -598,6 +598,9 @@
 				console.log(message);
 			}
 
+			var markers = [];
+			var overlays = [];
+
 			function getData() {
 
 				var formData = $('form').serializeObject();
@@ -633,11 +636,13 @@
 				})
 				.done(function (data) {
 					// 마커 & 오버레이
+					markers.forEach(function (marker) { marker.setMap(null); });
+					markers.length = 0 // 마커 배열 초기화
+					overlays.forEach(function (overlay) { overlay.setMap(null); });
+					overlays.length = 0 // 오버레이 배열 초기화
+
 					var geocoder = new daum.maps.services.Geocoder();
 					
-					var markers = [];
-
-					// console.log(mapContainer);
 					data.forEach(function (x, i) {
 						geocoder.addressSearch(data[i].address, function (result, status) {
 							if (status === daum.maps.services.Status.OK) {
@@ -646,20 +651,12 @@
 
 								var coords = new daum.maps.LatLng(result[0].y, result[0].x);
 
-								// 마커를 생성하고 배열에 삽입 (지도위에 표시 x)
+								// 마커를 생성하고 배열에 삽입
 								var marker = new daum.maps.Marker({
+									map: map,
 									position: coords
 								});
 								markers.push(marker);
-
-								// 배열에 추가된 마커들을 지도에 표시하거나 삭제하는 함수
-								function showMarkers() {
-									for (var i = 0, len = markers.length ; i < len; i++) {
-										markers[i].setMap(map);
-									}            
-								}
-
-								showMarkers();
 
 								var customContent = document.createElement('div');
 								customContent.className = 'wrap';
@@ -686,7 +683,7 @@
 								imgDiv.className = 'img';
 
 								var imgTag = document.createElement('img');
-								imgTag.src = data[i].originalName;
+								imgTag.src = '/gehaImg/'+data[i].guestHouseCode+'/'+data[i].savedName;
 								imgTag.width = 73;
 								imgTag.height = 70;
 
@@ -699,10 +696,10 @@
 
 								var aDiv = document.createElement('div');
 								var aTag = document.createElement('a');
-								aTag.href = 'http://www.kakaocorp.com/main';
+								aTag.href = '/room/roomInfo?guestHouseCode='+data[i].guestHouseCode;
 								aTag.target = '_blank';
 								aTag.className = 'link';
-								aTag.textContent = '홈페이지';
+								aTag.textContent = '게스트하우스 정보 보기';
 
 								customContent.appendChild(info);
 									info.appendChild(contentTitle);
@@ -715,7 +712,7 @@
 											contentDesc.appendChild(ellipsis);
 											contentDesc.appendChild(aDiv);
 												aDiv.appendChild(aTag);
-									
+								
 								var CustomOverlay = new daum.maps.CustomOverlay({
 									map: map,
 									zIndex: 3,
@@ -726,22 +723,15 @@
 									CustomOverlay.setMap(map);
 									CustomOverlay.setContent(customContent);
 								});
-
-								function closeOverlay() {
-									CustomOverlay.setMap(null);
-									CustomOverlay.setContent(null);
-								}
+								overlays.push(customOverlay);
 
 							} // if status ok end
 						}); // geocoder address search end
-
 					}); // forEach end
-
 				})
 				.fail(function () {
 					alert('failed');
 				}); // ajax end
-
 			} // function getData end
 
 			$(function () { // document onload
