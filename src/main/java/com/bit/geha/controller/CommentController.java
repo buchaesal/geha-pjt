@@ -7,15 +7,18 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bit.geha.criteria.Criteria;
 import com.bit.geha.dao.CommentDao;
 import com.bit.geha.dto.LikeDto;
 import com.bit.geha.dto.ReplyReviewDto;
 import com.bit.geha.service.CommentService;
+import com.bit.geha.util.RoomPageMaker;
 
 @Controller
 @RequestMapping("/comment")
@@ -26,21 +29,30 @@ public class CommentController {
 	 
 	    @Autowired
 	    CommentDao commentDao;
-	    
+	    @Autowired
+	    RoomPageMaker pageMaker;
 
 	    
 	    @RequestMapping("/list") //댓글 리스트
 	    @ResponseBody
-	    public List<ReplyReviewDto> mCommentServiceList(@RequestParam("guestHouseCode") int guestHouseCode, Model model) throws Exception{
+	    public List<ReplyReviewDto> mCommentServiceList(@ModelAttribute("cri") Criteria cri,@RequestParam("page") int page,@RequestParam("perPageNum") int perPageNum,@RequestParam("guestHouseCode") int guestHouseCode, Model model) throws Exception{
 
-	    	List<ReplyReviewDto> comment = commentDao.commentList(guestHouseCode);
-	    	
-	    	model.addAttribute("comment",comment);
-	    	
-	        return mCommentService.commentListService(guestHouseCode);
+	    	cri.setPage(page);
+	    	cri.setPerPageNum(perPageNum);
+	    	pageMaker.setCri(cri);
+	    	pageMaker.setTotalCount(commentDao.commentCnt1(cri, guestHouseCode));
+
+	        return mCommentService.commentListService(pageMaker,cri,guestHouseCode);
+
 	    }
 	    
+	    @RequestMapping("/paging")
+	    @ResponseBody
+	    public RoomPageMaker mCommentServicePaging(@ModelAttribute("cri") Criteria cri,  @RequestParam("guestHouseCode") int guestHouseCode, Model model) throws Exception{   
+	    	pageMaker.setTotalCount(commentDao.commentCnt1(cri, guestHouseCode));
+	    	return pageMaker;
 	    
+	    }
 
 	    @RequestMapping("/addlike") //좋아요
 	    @ResponseBody
@@ -74,10 +86,6 @@ public class CommentController {
 	    @ResponseBody
 	    public List<LikeDto> deletelikeService(@RequestParam("memberCode") int memberCode, Model model) throws Exception{
 
-	    	List<LikeDto> like = commentDao.selectlike(memberCode);
-	    	
-	    	model.addAttribute("like",like);
-	    	
 	        return mCommentService.selectlikeService(memberCode);
 	    }
 	    

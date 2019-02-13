@@ -5,14 +5,18 @@
 <mapper namespace="com.bit.geha.dao.CommentDao">
 
     	<select id="commentList" resultType="ReplyReviewDto">
+			<![CDATA[
 		select
 			a.reviewNo,a.title,a.rating,a.content,c.roomName,b.booker,a.writingDate,a.replyContent,a.replyDate 
 		from review_tb a , booking_tb b ,room_tb c, guestHouse_tb d
 			where d.guestHouseCode =#{guestHouseCode}
+			and d.guestHouseCode > 0
 			and a.bookingCode = b.bookingCode
 			and b.roomCode = c.roomCode
 			and c.guestHouseCode = d.guestHouseCode
-		ORDER by a.reviewNo DESC ;
+		ORDER by a.reviewNo DESC 
+		limit #{cri.pageStart}, #{cri.perPageNum}]]>
+
 	</select>
     
     <update id="commentUpdate">
@@ -23,12 +27,20 @@
         WHERE reviewNo = #{reviewNo}
     </update>
     
-    <select id="commentCnt" resultType="SearchDto">
-	select sv.guestHouseCode, sv.avgRating , sv.recommendRating, sv.reviewCnt
+
+    
+    <select id="commentCnt1" resultType="int">
+	select sv.reviewCnt
 	from searchview sv
 	where sv.guestHouseCode = #{guestHouseCode}
     </select>
     
+    <select id="commentCnt" resultType="SearchDto">
+    	select sv.guestHouseCode, sv.avgRating , sv.recommendRating, sv.reviewCnt
+	from searchview sv
+	where sv.guestHouseCode =#{guestHouseCode};
+    
+    </select>
     
     <update id="commentDelete">
         UPDATE review_tb
@@ -58,6 +70,8 @@
 	from like_tb 
 	where memberCode = #{memberCode};
 	</select>
+
+
 
 
 </mapper>

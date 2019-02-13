@@ -15,4 +15,6 @@ public class ReplyReviewDto {
 	private Timestamp writingDate;
 	private String replyContent;
 	private Timestamp replyDate;
+	
+	
 }
