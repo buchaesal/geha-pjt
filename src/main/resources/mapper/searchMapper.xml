@@ -107,16 +107,16 @@ where gh.approvalDate is not NULL
 </if>
 
 <if test='sort == "rating"'>
-	order by gh.avgRating desc
+	order by gh.avgRating desc, ghmin.minprice asc
 </if>
 <if test='sort == "review"'>
-	order by rvc.reviewCnt desc
+	order by rvc.reviewCnt desc, ghmin.minprice asc
 </if>
 <if test='sort == "lowprice"'>
-	order by ghmin.minprice asc
+	order by ghmin.minprice asc, gh.avgRating desc
 </if>
 <if test='sort == "highprice"'>
-	order by ghmin.minprice desc
+	order by ghmin.minprice desc, gh.avgRating desc
 </if>
 
 </select>
