@@ -87,9 +87,9 @@
             </div>
            	
             <div class="imgs_wrap" name="guestHouseImg">
-	           	<div th:each="img : ${guestHouseImgs}">
-		           	<input type="radio" name="isMainImage" th:selected="${isMainImage}"><img th:src="@{'/gehaImg/'+${img.guestHouseCode}+'/'+${img.savedName}}" data-file="" class="selProductFile" title="Click to remove">
-	           	</div>
+	           	<span th:each="img, iterState : ${guestHouseImgs}">
+		           	<input type="radio" name="mainImage" th:value="${iterState.index}" th:checked="${img.mainImage}"><img th:src="@{'/gehaImg/'+${img.guestHouseCode}+'/'+${img.savedName}}" data-file="" class="selProductFile" title="Click to remove">
+	           	</span>
             </div>
             <input type="hidden" name="guestHouse_imglength">
             
@@ -133,6 +133,53 @@
                   <td id="roomInfoList">
                      <label class="hostPage_label">방 등록하기</label>
                      <input id="addRoomInfoBtn" type="button" value="추가">
+                     
+                     <div th:each="room, iterState : ${rooms}">
+	                     <div class="roomInfoDiv">
+	                     	<input type="hidden" name="roomCode" th:value="${room.roomCode}">
+				            <div>
+				               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
+				               <input type="button" value="삭제" onclick="deleteImgs(this)">
+				            </div>
+				            <div class="imgs_wrap" name="roomsImg">
+				            	<span th:each="img, iterState : ${room.roomImgs}">
+					         		<input type="radio" th:name="'mainRoomImage'+${room.roomCode}" th:value="${iterState.index}" th:checked="${img.mainImage}" th:onchange="|javascript:mainImgChange(${room.roomCode}, this.value)|">
+					         		<img th:src="@{'/gehaImg/'+${img.guestHouseCode}+'/'+${img.roomCode}+'/'+${img.savedName}}" data-file="" class="selProductFile" title="Click to remove">
+				            	</span>
+				            </div>
+				            <input type="hidden" name="room_imglength">
+				            <input type="hidden" name="mainRoomImage" th:id="'mainRoomImage'+${room.roomCode}" th:value="-1">
+				            <table>
+				            	<input type="hidden" name="roomIndex" th:value="${iterState.count}">
+				               <tr>
+				                  <th>이름</th>
+				                  <td><input type="text" name="roomName" th:value="${room.roomName}"></td>
+				               </tr>
+				               <tr>
+				                  <th>가격</th>
+				                  <td><input type="text" name="charge" th:value="${room.charge}"></td>
+				               </tr>
+				               <tr>
+				                  <th>전용</th>
+				                  <td>
+				                     <input type="hidden" th:id="'gender'+${room.roomCode}" name="gender" th:value="${room.gender}">
+				                     <label><input type="radio" th:name="'gender'+${room.roomCode}" value="N" th:checked="${room.gender}=='N'" onclick="choiceGender(this)">혼성</label>
+				                     <label><input type="radio" th:name="'gender'+${room.roomCode}" value="F" th:checked="${room.gender}=='F'" onclick="choiceGender(this)">여성</label>
+				                     <label><input type="radio" th:name="'gender'+${room.roomCode}" value="M" th:checked="${room.gender}=='M'" onclick="choiceGender(this)">남성</label>
+				                  </td>
+				               </tr>
+				               <tr>
+				                  <th>수용인원 수</th>
+				                  <td><input type="number" name="capacity" th:value="${room.capacity}">명</td>
+				               </tr>
+				               <tr>
+				                  <th>객실 이용안내</th>
+				                  <td><textarea name="roomInfo" rows="5" cols="30">[[${room.roomInfo}]]</textarea></td>
+				               </tr>
+				            </table>
+				            <input type="button" class="removeRoomBtn" value="삭제" onclick="removeRoom(this)">
+				         </div>
+				      </div>
                      
                   </td>
                </tr>
@@ -189,8 +236,10 @@
          
             </div>
             <input type="hidden" name="room_imglength">
-            <input type="hidden" name="isMainRoomImage">
+            <input type="hidden" name="mainRoomImage">
             <table>
+            	<input type="hidden" name="roomIndex">
+            	<input type="hidden" name="roomCode" value="0">
                <tr>
                   <th>이름</th>
                   <td><input type="text" name="roomName"></td>
@@ -203,9 +252,9 @@
                   <th>전용</th>
                   <td>
                      <input type="hidden" name="gender">
-                     <label><input type="radio" value="혼성" checked="checked" onclick="choiceGender(this)">혼성</label>
-                     <label><input type="radio" value="여성" onclick="choiceGender(this)">여성</label>
-                     <label><input type="radio" value="남성" onclick="choiceGender(this)">남성</label>
+                     <label><input type="radio" value="N" checked="checked" onclick="choiceGender(this)">혼성</label>
+                     <label><input type="radio" value="F" onclick="choiceGender(this)">여성</label>
+                     <label><input type="radio" value="M" onclick="choiceGender(this)">남성</label>
                   </td>
                </tr>
                <tr>
@@ -217,23 +266,31 @@
                   <td><textarea name="roomInfo" rows="5" cols="30"></textarea></td>
                </tr>
             </table>
+            <input type="button" class="removeRoomBtn" value="삭제" onclick="removeRoom(this)">
          </div>
       </div>
       
       <div layout:fragment="hostPage_script">
 		<script type="text/javascript" th:inline="javascript">
-            var roomIndex=1;
+            var roomIndex=[[${#lists.size(rooms)}]]+1;
             $("#addRoomInfoBtn").click(function() {
-               var div = document.createElement('div');
-               div.setAttribute('class', 'roomInfoDiv');
-               
-               document.getElementById('roomInfoList').appendChild(div);
-               
-               var cloneRoom = $('#defaultRoomInfo').children().clone();
-               cloneRoom.find('input[type=radio]').attr('name', 'gender'+roomIndex);
-               cloneRoom.find('input[name=gender]').attr('id', 'gender'+roomIndex++);
-               cloneRoom.appendTo(div);
+            	var div = document.createElement('div');
+                div.setAttribute('class', 'roomInfoDiv');
+                
+                document.getElementById('roomInfoList').appendChild(div);
+                
+                var cloneRoom = $('#defaultRoomInfo').children().clone();
+                cloneRoom.find('input[name=roomIndex]').val(roomIndex);
+                cloneRoom.find('input[type=radio]').attr('name', 'gender'+roomIndex);
+                cloneRoom.find('input[name=gender]').attr('id', 'gender'+roomIndex);
+                cloneRoom.find('input[name=gender]').val('N');
+                cloneRoom.appendTo(div);
+                roomIndex++;
             })
+            
+            function removeRoom(removeRoomBtn) {
+            	$(removeRoomBtn).parent().remove();
+            }
             
             function choiceGender(obj) {
                var genderName = obj.name;
@@ -256,6 +313,7 @@
                //이미지 정보들을 초기화
                sel_files = [];
                var prtDiv = e.target.parentNode.nextElementSibling; // div imgs_wrap
+               var roomInfoTable = $(prtDiv).parent().find('table');
                
                $(prtDiv).empty();
                
@@ -276,11 +334,11 @@
                      
                      if($(prtDiv).attr("name")=='roomsImg') { //방일 경우
                         var html = 
-                           "<input type='radio' name='isMainRoomImage"+roomIndex+"' value='"+index
+                           "<input type='radio' name='mainRoomImage"+$(roomInfoTable).find("input[name='roomIndex']").val()+"' value='"+index
                            +"' onclick='clickMainRoomImg($(this).parent().next().next(), this.value)'><img src=\""+e.target.result+"\" data-file='"+f.name
                            +"' class='selProductFile' title='Click to remove'>";
                      } else { //게스트하우스일 경우
-                        var html = "<input type='radio' name='isMainImage' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
+                        var html = "<input type='radio' name='mainImage' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
                         +"' class='selProductFile' title='Click to remove'>";
                      }
                      $(prtDiv).append(html);
@@ -306,6 +364,11 @@
             function clickMainRoomImg(obj, chkValue) {
                $(obj).val(chkValue);
             }
+            
+            function mainImgChange(roomCode, value) {
+            	$('#mainRoomImage'+roomCode).val(value);
+            }
+            
          </script>
          
          <!-- Postcodify를 로딩한다 -->
