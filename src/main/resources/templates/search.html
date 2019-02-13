@@ -600,6 +600,7 @@
 
 			var markers = [];
 			var overlays = [];
+			var clickedOverlay = null;
 
 			function getData() {
 
@@ -721,10 +722,14 @@
 								});
 								
 								daum.maps.event.addListener(marker, 'click', function() {
+									if (clickedOverlay){
+										clickedOverlay.setMap(null);
+									}
 									CustomOverlay.setMap(map);
 									CustomOverlay.setContent(customContent);
+									
+									clickedOverlay = CustomOverlay;
 								});
-
 								overlays.push(CustomOverlay);
 								
 								bounds.extend(coords);
