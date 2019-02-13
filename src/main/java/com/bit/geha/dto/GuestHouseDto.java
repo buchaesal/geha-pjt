@@ -28,7 +28,7 @@ public class GuestHouseDto {
 	private String accountNumber;
 	private String status;
 	
-	private int isMainImage;
+	private int mainImage;
 	private List<MultipartFile> files;
 	private String memberName;
 }

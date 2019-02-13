@@ -3,6 +3,7 @@ package com.bit.geha.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -42,11 +43,26 @@ public interface HostPageDao {
 	@Select("SELECT * FROM room_tb WHERE guestHouseCode=#{guestHouseCode}")
 	public List<RoomDto> getRooms(int guestHouseCode);
 	
+	@Select("SELECT roomCode FROM room_tb WHERE guestHouseCode=#{guestHouseCode}")
+	public List<Integer> getRoomCodes(int guestHouseCode);
+	
 	@Select("SELECT facilityCode FROM guestHouse_has_facility_tb WHERE guestHouseCode=#{guestHouseCode}")
 	public List<Integer> getFacilities(int guestHouseCode);
 	
-	@Select("SELECT * FROM file_tb WHERE guestHouseCode=#{guestHouseCode} and roomCode=0")
-	public List<FileDto> getGuestHouseImgs(int guestHouseCode);
+	@Select("SELECT * FROM file_tb WHERE guestHouseCode=#{guestHouseCode} AND roomCode=#{roomCode}")
+	public List<FileDto> getImgs(int guestHouseCode, int roomCode);
+	
+	public void modifyGuestHouse(GuestHouseDto guestHouseDto);
+	public void modifyMainImage(FileDto img);
+	public void modifyRoom(RoomDto roomDto);
+	
+	@Delete("DELETE FROM file_tb WHERE guestHouseCode=#{guestHouseCode} AND roomCode=#{roomCode}")
+	public void deleteImgs(int guestHouseCode, int roomCode);
+	@Delete("DELETE FROM guestHouse_has_facility_tb WHERE guestHouseCode=#{guestHouseCode}")
+	public void deleteFacilities(int guestHouseCode);
+	public void deleteRooms(List<Integer> roomCodeList);
+	
+	
 	
 	//회원예약내역
 	public List<BookingDto> getGuestBookingList(@Param("hostCode") int hostCode, @Param("cri") BoardCriteria cri);

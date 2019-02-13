@@ -18,5 +18,5 @@ public class FileDto {
 	private int roomCode;
 	
 	@NonNull
-	private boolean isMainImage;
+	private boolean mainImage;
 }
