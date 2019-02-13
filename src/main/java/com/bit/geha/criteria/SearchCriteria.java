@@ -22,4 +22,6 @@ public class SearchCriteria {
 	private int business;
 	
 	private List<Integer> facilities;
+	
+	private String sort;
 }

@@ -75,7 +75,7 @@
    </head>
    <body>
       <div layout:fragment="hostPage_content">
-         <form id="registerGuestHouseForm" th:action="@{registerGuestHouseComplete}" method="POST" enctype="multipart/form-data">
+         <form id="modifyGuestHouseForm" th:action="@{modifyGuestHouseComplete}" method="POST" enctype="multipart/form-data">
             <h2>내 게스트하우스 수정하기</h2>
             <input type="hidden" name="guestHouseCode" th:value="${guestHouseCode}">
 
@@ -85,9 +85,11 @@
                <input type="file" id="input_imgs" name="files" multiple>
                <input type="button" value="삭제" onclick="deleteImgs(this)">
             </div>
-            <div class="imgs_wrap" name="guestHouseImg" th:each="img : ${imgs}">
-            	<input type="radio" name="isMainImage" th:selected="${isMainImage}"><img src="" data-file='"+f.name
-                        +"' class='selProductFile' title='Click to remove'>
+           	
+            <div class="imgs_wrap" name="guestHouseImg">
+	           	<div th:each="img : ${guestHouseImgs}">
+		           	<input type="radio" name="isMainImage" th:selected="${isMainImage}"><img th:src="@{'/gehaImg/'+${img.guestHouseCode}+'/'+${img.savedName}}" data-file="" class="selProductFile" title="Click to remove">
+	           	</div>
             </div>
             <input type="hidden" name="guestHouse_imglength">
             
@@ -174,7 +176,8 @@
             </table>
             <br><br>
             <input type="button" value="취소" onclick="history.back()">
-            <input id="regiestGuestHouseBtn" type="button" value="등록신청">
+            <input type="button" value="삭제">
+            <input id="modifyGuestHouseBtn" type="button" value="수정하기">
          </form>
 
          <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
@@ -237,9 +240,9 @@
                $('#'+genderName).val(obj.value);
             }
             
-            //게스트하우스 등록완료
-            $("#regiestGuestHouseBtn").click(function() {
-               $("#registerGuestHouseForm").submit();
+            //게스트하우스 수정하기
+            $("#modifyGuestHouseBtn").click(function() {
+               $("#modifyGuestHouseForm").submit();
             })
             
             //파일업로드

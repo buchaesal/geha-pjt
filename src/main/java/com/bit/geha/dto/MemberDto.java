@@ -17,4 +17,5 @@ public class MemberDto {
 	//추가(호스트 정보가져올때)
 	private String guestHouseName;
 	private String status;
+	private int guestHouseCode;
 }

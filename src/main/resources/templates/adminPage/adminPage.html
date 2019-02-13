@@ -24,12 +24,7 @@ $(function() {
 	});
 	
 	$("#secret").hide();
-	var auth = [[${auth}]];
-	
-	if(auth!==""){
-	$("#"+auth).attr("selected","selected");
-	}
-	
+
 	//임명하면 임명되었다고 띄움.
 	var changeAdmin = [[${changeAdmin}]];
 	var changeUser = [[${changeUser}]];
@@ -54,12 +49,15 @@ $(function() {
         }
     });
     
+    
+    
 });
 
 
 var id = "";
 var check = "";
 var arr=[];
+var auth="";
 
 /* 권한을 관리자로 바꾸는 메소드 */
 function changeAdmin(){
@@ -131,7 +129,11 @@ function changeUser(){
 
 function frmSubmit(){
 	
+	
+	auth = [[${auth}]];
 	$("#id").val(arr);
+	$("#auth").val(auth);
+	
 	
 	
 	  if(check==""){  /*관리자승급 */
@@ -145,10 +147,33 @@ function frmSubmit(){
 	
 }
 
+function search(){
+	
+
+				var searchForm = $("#searchForm");
+				if (!searchForm.find("option:selected")
+						.val()) {
+					alert("검색종류를 선택하세요");
+					return false;
+				}
+
+				else if (!searchForm.find(
+						"input[name='keyword']").val()) {
+					alert("키워드를 입력하세요");
+					return false;
+				} else{
+					 searchForm.submit();
+				}
+
+
+				 
+
+			
+}
 function authSelect(auth){
 	window.location.href="/adminPage/adminPage?auth="+auth;
-
 }
+
 </script>
 <style>
 .modal-content{
@@ -161,39 +186,44 @@ p{
 th {
     text-align: center;
 }
-table{
-width:600px;
-}
 
-button, select {
+
+select {
     margin-bottom: 19px;
+    width:80px;
+    height:27px;
 }
 
 
 .btns {
-    border-bottom: 1px solid darkgray;
-    padding-bottom: 15px;
+    border-top: 2px solid lightgray;
+    padding-top: 15px;
+        text-align: right;
 }
 
-tr{
-
+tr {
+    height: 40px;
 }
-
+.test{
+border-bottom: 2px solid lightgray;
+}
 
 </style>
 </head>
 <body>
 <div layout:fragment="adminPage_content">
 
+<div style="width:700px;">
 <select class="selectpicker" onchange="authSelect(this.value)" style="width:80px;height:30px;">
 	<option value=''>전체보기</option>
-  <option value='user' id="user">USER</option>
-  <option value='host' id="host">HOST</option>
-  <option value='admin' id="admin">ADMIN</option>
+  <option value='user' th:selected="${auth.equals('user')}">USER</option>
+  <option value='host' th:selected="${auth.equals('host')}">HOST</option>
+  <option value='admin' th:selected="${auth.equals('admin')}">ADMIN</option>
 </select>
 <br>
-<table border="2"  frame=void>
-			<tr align="center" bgcolor="#fffc7d">
+
+<table width="700px">
+			<tr align="center" class="test">
 				
 				<th>이름</th>
 				<th>이메일</th>
@@ -218,30 +248,55 @@ tr{
 				<br>
 				
 				<div class="btns">
+						     <!-- 검색 -->
+            
+			<form id='searchForm' action="/adminPage/adminPage" method='get'  style="float:left;">
+				<select name='type'>
+					<option value=""
+					th:selected="${pageMaker.cri.type == null}">--</option>
+					<option value="name"
+					th:selected="${pageMaker.cri.type eq 'name'}">이름</option>
+					<option value="email"
+					th:selected="${pageMaker.cri.type eq 'email'}">이메일</option>
+				</select> 
+				<input type="hidden" name="auth" th:value="${auth}">
+				<input type='text' name='keyword' th:value="${pageMaker.cri.keyword}"> 
+						<button type="button" class='btn-primary' onclick="search()">Search</button>
+						</form>
+						
+						
 				<button class="btn btn-info waves-effect" onclick="changeAdmin()">관리자 임명</button>
 				<button class="btn btn-info waves-effect" onclick="changeUser()">강등</button>
+				<button class="btn btn-info waves-effect" onclick="location.href='/adminPage/adminPage?auth='">목록</button>
 				</div>
+				
 				 <!-- 게시판 하단의 페이징 버튼 -->
             <div class="box-footer clearfix">
+            
+            
               <ul class="pagination pagination-sm no-margin pull-center">
               
               <li th:if="${pageMaker.prev} == true">
-              	<a th:href="@{/adminPage/memberList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+              	<a th:href="@{/adminPage/adminPage(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum},auth=${auth})}">&laquo;</a>
               </li>
               
               <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-                <a th:href="@{/adminPage/memberList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+                <a th:href="@{/adminPage/adminPage(page=${idx},perPageNum=${pageMaker.cri.perPageNum},auth=${auth})}" th:text="${idx}"></a>
               </li>
                 
               <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-              	<a th:href="@{/adminPage/memberList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+              	<a th:href="@{/adminPage/adminPage(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum},auth=${auth})}">&raquo;</a>
               </li>
               
               </ul>
               
             </div>
+           	
+				
+				<!-- 몰래 값전송하는 폼 -->
 				<form id="frm">
 				<input type="hidden" id="id" name="id">
+				<input type="hidden" id="auth" name="auth">
 				</form>
 				
 		
@@ -274,8 +329,9 @@ tr{
   </div>
 </div>
 <!--Modal: confirmModal-->
-
+</div>
 				
 			</div>	
+			
 </body>
 </html>
