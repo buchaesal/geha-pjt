@@ -35,10 +35,10 @@ public class CommentController {
 	    
 	    @RequestMapping("/list") //댓글 리스트
 	    @ResponseBody
-	    public List<ReplyReviewDto> mCommentServiceList(@ModelAttribute("cri") Criteria cri,@RequestParam("page") int page,@RequestParam("perPageNum") int perPageNum,@RequestParam("guestHouseCode") int guestHouseCode, Model model) throws Exception{
+	    public List<ReplyReviewDto> mCommentServiceList(@ModelAttribute("cri") Criteria cri,@RequestParam("page") int page,@RequestParam("guestHouseCode") int guestHouseCode, Model model) throws Exception{
 
 	    	cri.setPage(page);
-	    	cri.setPerPageNum(perPageNum);
+
 	    	pageMaker.setCri(cri);
 	    	pageMaker.setTotalCount(commentDao.commentCnt1(cri, guestHouseCode));
 

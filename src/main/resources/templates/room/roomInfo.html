@@ -392,6 +392,11 @@ th, td {
     margin: 20px 0;
     border-radius: 4px;
 }
+.dashicons-heart:before {
+    content: "\f487";
+    display: block;
+    transform: scale(2.5);
+}
 </style>
 
 </head>
@@ -631,6 +636,7 @@ th, td {
 		<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="	crossorigin="anonymous"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<script src="/js/datepicker.js"></script>
 		<script src="/js/i18n/datepicker.en.js"></script>
 		<!-- bootstrap -->
@@ -649,9 +655,14 @@ th, td {
 		});
 	});
 	
+
 	function check() {
 		if([[${session.memberCode}]] == null){
-			alert("로그인이 필요합니다.")
+			swal({
+				  title: "로그인이 필요합니다.",
+				  text: "You clicked the button!",
+				  icon: "error",
+				});
 			return false;
 		}else {
 			return true;
@@ -660,14 +671,14 @@ th, td {
 	
 	var guestHouseCode = [[${geha.guestHouseCode}]];
 		//리뷰리스트 
- 	 	function commentList(page,perPageNum){
+ 	 	function commentList(page){
 		    $.ajax({
 		        url : '/comment/list',
 		        type : 'get',
-		        data : {'page':page,'perPageNum':perPageNum,'guestHouseCode':guestHouseCode},
+		        data : {'page':page,'guestHouseCode':guestHouseCode},
 		        success : function(data){
 		       		var a ='';
-		       		console.log(data);
+
 		             $.each(data, function(key, value){ 
 
 		           		a+= '<div id="comment'+guestHouseCode+'" style="border: 1px solid gray; margin : 30px 0px;">'
@@ -718,15 +729,15 @@ th, td {
 		       		console.log(data)
   					if(data.prev == true){
 						b += '<li id="prev">'
-						b += '<a href="#menu2" onclick="commentList('+data.startPage+'-10,'+data.cri.perPageNum+'); paging('+data.startPage+'-1); " >&laquo;</a></li>'
+						b += '<a href="#menu2" onclick="commentList('+data.startPage+'-10); paging('+data.startPage+'-1); " >&laquo;</a></li>'
 					}
 		       		for(var i = data.startPage; i <= data.endPage; i++ ){
 		       			b += '<li class="page-item" id="p">'
-						b += '<a class="page-link" id="pa"href="#menu2" onclick="commentList('+i+','+data.cri.perPageNum+')" >'+i+'</a></li>'
+						b += '<a class="page-link" id="pa"href="#menu2" onclick="commentList('+i+')" >'+i+'</a></li>'
 		       		}	      
 		 			if(data.next == true && data.endPage > 0 ) {
 						b += '<li id="next">'
-			 			b += '<a href="#menu2" onclick="commentList('+data.endPage+'+1,'+data.cri.perPageNum+'); paging('+data.endPage+'+1); " >&raquo;</a></li>' 
+			 			b += '<a href="#menu2" onclick="commentList('+data.endPage+'+1); paging('+data.endPage+'+1); " >&raquo;</a></li>' 
 					} 
 					$("#paging").html(b);
 	 				$("#paging>li#p:first").addClass('active'); 
@@ -832,7 +843,12 @@ th, td {
 			var memberCode = [[${session.memberCode}]]
 		
 			if(memberCode == null){
-				alert("login해주세요");
+				swal({
+					  title: "로그인이 필요합니다.",
+					  text: "You clicked the button!",
+					  icon: "error",
+					});
+				
 			}else{
 				if($('[name=favme'+roomCode+']').hasClass('active')){
 					 $.ajax({
@@ -860,7 +876,7 @@ th, td {
 		};
 
 	 	$(document).ready(function(){
-	 		commentList(1,10);
+	 		commentList(1);
 	 		paging(10);
 	 		
 	 		if([[${session.memberCode}]] != 'null'){
