@@ -26,6 +26,17 @@ public class CommonController {
 		return "home";
 	}
 	
+	@RequestMapping("/faq")
+	public void faq(Authentication auth,HttpSession session) {
+		memberService.getSession(auth, session);
+	}
+	
+	@RequestMapping("/kakaoTest")
+	public void kakaoTest() {
+		
+	}
+	
+	
 	
 	
 	
