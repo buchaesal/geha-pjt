@@ -642,6 +642,7 @@
 					overlays.length = 0 // 오버레이 배열 초기화
 
 					var geocoder = new daum.maps.services.Geocoder();
+					var bounds = new daum.maps.LatLngBounds();
 					
 					data.forEach(function (x, i) {
 						geocoder.addressSearch(data[i].address, function (result, status) {
@@ -723,10 +724,14 @@
 									CustomOverlay.setMap(map);
 									CustomOverlay.setContent(customContent);
 								});
-								overlays.push(customOverlay);
 
+								overlays.push(CustomOverlay);
+								
+								bounds.extend(coords);
+								map.setBounds(bounds);
 							} // if status ok end
 						}); // geocoder address search end
+
 					}); // forEach end
 				})
 				.fail(function () {
