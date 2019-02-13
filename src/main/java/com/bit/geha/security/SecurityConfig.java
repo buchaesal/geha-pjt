@@ -102,7 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public AuthenticationSuccessHandler successHandler() {
-	    return new CustomLoginSuccessHandler("/yourdefaultsuccessurl");
+	    return new CustomLoginSuccessHandler("/");
 	}
 	
 	 private Filter ssoFilter() {

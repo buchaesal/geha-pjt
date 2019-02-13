@@ -31,9 +31,37 @@
 		INSERT INTO file_tb
 		VALUES
 		<foreach collection="list" item="fileDto" separator=", ">
-			(#{fileDto.savedName}, #{fileDto.originalName}, #{fileDto.guestHouseCode}, #{fileDto.roomCode}, #{fileDto.isMainImage})
+			(#{fileDto.savedName}, #{fileDto.originalName}, #{fileDto.guestHouseCode}, #{fileDto.roomCode}, #{fileDto.mainImage})
 		</foreach>
 	</insert>
+	
+	<update id="modifyGuestHouse" parameterType="GuestHouseDto">
+		UPDATE guestHouse_tb
+		SET guestHouseName=#{guestHouseName}, guestHouseInfo=#{guestHouseInfo}, rules=#{rules}
+			, parkingInfo=#{parkingInfo}, address=#{address}, directions=#{directions}, businessTrip=#{businessTrip}
+			, gourmet=#{gourmet}, trip=#{trip}, shopping=#{shopping}, bankName=#{bankName}
+			, accountNumber=#{accountNumber}
+		WHERE guestHouseCode=#{guestHouseCode}
+	</update>
+	
+	<update id="modifyMainImage" parameterType="FileDto">
+		UPDATE file_tb SET isMainImage=#{mainImage} WHERE savedName=#{savedName}
+	</update>
+	
+	<update id="modifyRoom" parameterType="RoomDto">
+		UPDATE room_tb
+		SET roomName=#{roomName}, capacity=#{capacity}, charge=#{charge}, gender=#{gender}, roomInfo=#{roomInfo}
+		WHERE roomCode=#{roomCode}
+	</update>
+	
+	<delete id="deleteRooms" parameterType="java.util.List">
+		DELETE FROM room_tb 
+		WHERE roomCode=
+		<foreach collection="list" item="roomCode" separator=", ">
+			#{roomCode}
+		</foreach>
+	</delete>
+	
 	
 	<select id="getGuestBookingList" parameterType="map" resultType="BookingDto">
 		SELECT b.*, v.guestHouseName, v.roomName FROM booking_tb b,  bkrmghmatching_view v 

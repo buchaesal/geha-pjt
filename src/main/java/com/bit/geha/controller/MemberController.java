@@ -38,6 +38,12 @@ public class MemberController {
 		request.getSession().setAttribute("prevPage", referrer);
 	}
 	
+	@RequestMapping("/goLogin")
+	public String goLogin() {
+		return "/member/login";
+		
+	}
+	
 	@PostMapping(value="/loginCk")
 	@ResponseBody
 	public String loginCk(@RequestParam("id") String id,
@@ -56,10 +62,10 @@ public class MemberController {
 				return "노인증";
 				}
 			}else {//일치하지 않는다면
-				return "비밀번호가 일치하지 않아요.";
+				return "비밀번호가 일치하지 않습니다.";
 			}
 		}else {//아이디가 존재하지 않는다면
-			return "아이디가 존재하지 않아요.";
+			return "아이디가 존재하지 않습니다.";
 		}
 		
 		

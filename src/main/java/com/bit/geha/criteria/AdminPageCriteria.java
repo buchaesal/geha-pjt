@@ -1,21 +1,30 @@
 package com.bit.geha.criteria;
 
+import lombok.Data;
 import lombok.ToString;
 
 //페이징에 필요한 데이터들을 하나의 객체로 묶기위한 클래스
 
 @ToString
+@Data
 public class AdminPageCriteria {
 
 	private int page; // 보여줄 페이지 번호
 	private int perPageNum; // 페이지당 보여줄 게시글의 개수
 
+	private String type; //검색할 타입
+	private String keyword; //검색 키워드
+	
 	public AdminPageCriteria() {
 		//최초 게시판에 진입할 때를 위해서 기본 값을 설정 해야 한다.
 		this.page = 1;
 		this.perPageNum = 10;
 	}
 
+	public AdminPageCriteria(int page,int perPageNum) {
+		this.page=page;
+		this.perPageNum=perPageNum;
+	}
 	public int getPage() {
 		return page;
 	}

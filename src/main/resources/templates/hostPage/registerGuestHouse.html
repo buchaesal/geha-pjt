@@ -174,17 +174,18 @@
          </form>
 
          <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
-         	<input type="hidden" name="roomIndex">
             <div>
                <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
                <input type="button" value="삭제" onclick="deleteImgs(this)">
             </div>
             <div class="imgs_wrap" name="roomsImg">
-         
+         		
             </div>
             <input type="hidden" name="room_imglength">
-            <input type="hidden" name="isMainRoomImage">
+            <input type="hidden" name="mainRoomImage">
             <table>
+	         	<input type="hidden" name="roomIndex">
+	         	<input type="hidden" name="roomCode" value="0">
                <tr>
                   <th>이름</th>
                   <td><input type="text" name="roomName"></td>
@@ -211,6 +212,7 @@
                   <td><textarea name="roomInfo" rows="5" cols="30"></textarea></td>
                </tr>
             </table>
+            <input type="button" class="removeRoomBtn" value="삭제" onclick="removeRoom(this)">
          </div>
       </div>
       
@@ -226,9 +228,14 @@
                var cloneRoom = $('#defaultRoomInfo').children().clone();
                cloneRoom.find('input[name=roomIndex]').val(roomIndex);
                cloneRoom.find('input[type=radio]').attr('name', 'gender'+roomIndex);
-               cloneRoom.find('input[name=gender]').attr('id', 'gender'+roomIndex++);
+               cloneRoom.find('input[name=gender]').attr('id', 'gender'+roomIndex);
                cloneRoom.appendTo(div);
-            })
+               roomIndex++;
+            });
+            
+            function removeRoom(removeRoomBtn) {
+            	$(removeRoomBtn).parent().remove();
+            }
             
             function choiceGender(obj) {
                var genderName = obj.name;
@@ -251,6 +258,8 @@
                //이미지 정보들을 초기화
                sel_files = [];
                var prtDiv = e.target.parentNode.nextElementSibling; // div imgs_wrap
+               var roomInfoTable = $(prtDiv).parent().find('table');
+               alert($(roomInfoTable).find("input[name='roomIndex']").val());
                
                $(prtDiv).empty();
                
@@ -271,11 +280,11 @@
                      
                      if($(prtDiv).attr("name")=='roomsImg') { //방일 경우
                         var html = 
-                           "<input type='radio' name='isMainRoomImage"+roomIndex+"' value='"+index
+                           "<input type='radio' name='mainRoomImage"+$(roomInfoTable).find("input[name='roomIndex']").val()+"' value='"+index
                            +"' onclick='clickMainRoomImg($(this).parent().next().next(), this.value)'><img src=\""+e.target.result+"\" data-file='"+f.name
                            +"' class='selProductFile' title='Click to remove'>";
                      } else { //게스트하우스일 경우
-                        var html = "<input type='radio' name='isMainImage' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
+                        var html = "<input type='radio' name='mainImage' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
                         +"' class='selProductFile' title='Click to remove'>";
                      }
                      $(prtDiv).append(html);
@@ -301,6 +310,7 @@
             function clickMainRoomImg(obj, chkValue) {
                $(obj).val(chkValue);
             }
+
          </script>
          
          <!-- Postcodify를 로딩한다 -->

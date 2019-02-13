@@ -100,6 +100,7 @@
 
 	.container{
 	margin-left: 78px;
+	margin-bottom: 150px;
 	
 	}
 	
@@ -280,6 +281,117 @@ display: inline-block;
 position: absolute;
 }
 
+/* 별점 */
+.star-input>.input {
+	display: inline-block;
+	vertical-align: middle;
+	background: url('/img/grade_img.png');
+
+
+}
+
+.star-input {
+	display: inline-block;
+	white-space: nowrap;
+	width:100%;
+	height: 40px;
+	line-height: 30px;
+}
+
+.star-input>.input {
+	display: inline-block;
+	width: 150px;
+	background-size: 150px;
+	height: 28px;
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+}
+
+.star-input>.input>input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 1;
+}
+
+
+.star-input>.input>label {
+	width: 30px;
+	height: 0;
+	padding: 28px 0 0 0;
+	overflow: hidden;
+	float: left;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.star-input>.input>label[for="p1"] {
+	width: 30px;
+	z-index: 5;
+}
+
+.star-input>.input>label[for="p2"] {
+	width: 60px;
+	z-index: 4;
+}
+
+.star-input>.input>label[for="p3"] {
+	width: 90px;
+	z-index: 3;
+}
+
+.star-input>.input>label[for="p4"] {
+	width: 120px;
+	z-index: 2;
+}
+
+.star-input>.input>label[for="p5"] {
+	width: 150px;
+	z-index: 1;
+}
+
+.off-screen {
+    display: none;
+}
+form {
+    width: 500px;
+}
+table {
+    border-collapse:collapse;
+    margin-bottom: 10px;
+}
+th, td {
+    padding: 3px 10px;
+}
+.off-screen {
+    display: none;
+}
+#nav {
+    width: 500px;
+    text-align: center;
+}
+#nav a {
+    display: inline-block;
+    padding: 3px 5px;
+    margin-right: 10px;
+    font-family:Tahoma;
+    background: #ccc;
+    color: #000;
+    text-decoration: none;
+}
+#nav a.active {
+    background: #333;
+    color: #fff;
+}
+.pagination {
+    display: inline-block;
+    width: 100%;
+    padding-left: 40%;
+    margin: 20px 0;
+    border-radius: 4px;
+}
 </style>
 
 </head>
@@ -364,8 +476,14 @@ position: absolute;
 			  	<!-- 객실안내/예약탭  -->
 			    <div id="home" class="tab-pane active">
 			      	<div class="picker">
-						<input type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en"	id= "date" class="datepicker-here"     />
+						<label>날짜 :</label> <input type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en"	id= "date" class="datepicker-here"     />
+ 						<label>인원수 : </label> <button type="button" id="down" class="resetStyle" disabled>-</button>
+							<span id="person">1</span>
+								<input type="hidden" name="bookingNumber" class="person" value="1" />
+							<button type="button" id="up" class="resetStyle">+</button>
+							<button id="btn-search" type="button" class="btn btn-default btn-danger" >검색</button>
 					</div>
+
 					<br><br>
 					
 					
@@ -394,7 +512,7 @@ position: absolute;
 							<h1 th:text=*{roomName}></h1>
 							<div class="flexbox">
 								<div class="fav-btn">
-									<input type="text" id="favmecode" name="favmecode" th:value="*{roomCode}">
+									<input type="hidden" id="favmecode" name="favmecode" th:value="*{roomCode}">
 									<span class="favme dashicons dashicons-heart" th:name=|favme*{roomCode}| th:onclick=|like(*{roomCode})|></span>
 								</div>
 							</div>
@@ -410,18 +528,18 @@ position: absolute;
 				
 							  <!-- panel with buttons -->
 				            <div class="panel">
-				                <a href="#login_form" cl id="login_pop">객실 이용 안내</a>
+				                <a th:href=|#login_form*{roomCode}|  id="login_pop">객실 이용 안내</a>
 				            </div>
 			            
 			        		<!-- popup form #1 -->
-			        		<a href="#x" class="overlay" id="login_form"></a>
+			        		<a href="#x" class="overlay" th:id=|login_form*{roomCode}|></a>
 			        		<div class="popup">
 			           			<h2>객실 이용 안내</h2>
 								<p th:utext="*{roomInfo}"></p>
 			            		<a class="close" href="#close"></a>
 			       			</div>
 						</div>
-						<form action="/booking/bookingPage" >
+						<form action="/booking/bookingPage" onsubmit="return check()" >
 							<input type="hidden" id="startdate" name="bookingStart" />
 							<input type="hidden" id="enddate" name="bookingEnd" />
 							<input type="hidden" name="roomCode" th:value="*{roomCode}">
@@ -478,15 +596,25 @@ position: absolute;
 		
 					<!-- 리뷰 탭 -->
     				<div id="menu2" class="tab-pane "><br>
-    				<p th:text="${rating.recommendRating}" ></p>
-    				<p th:text="${rating.avgRating}" ></p>
-					<p th:text=|전체리뷰:${rating.reviewCnt}| ></p>
-					
-   						<ul >
-   							<li >
+						<p th:text="${rating.recommendRating}" ></p>
+	    				<p th:text="${rating.avgRating}"></p>
+	    				<br>
+	    				<p class="star-input"> 
+	    					<span class="input"> 
+			    				<input type="hidden" name="rating" value="1" id="p1"> <label for="p1">1</label>
+			    				<input type="hidden" name="rating" value="2" id="p2"> <label for="p2">2</label> 
+			    				<input type="hidden" name="rating" value="3" id="p3"> <label for="p3">3</label>
+								<input type="hidden" name="rating" value="4" id="p4"> <label for="p4">4</label>
+								<input type="hidden" name="rating" value="5" id="p5"> <label for="p5">5</label>
+							</span>
+						</p>
+						<p th:text=|전체리뷰:${rating.reviewCnt}| ></p>
    								<div class="guest" ></div> 
-   							</li>
-   						</ul>
+
+   						<!-- 게시판 하단의 페이징 버튼 -->
+	           			 <div class="box-footer clearfix">
+				              <ul class="pagination pagination-lg justify-content-center " id="paging"> </ul>
+			             </div>
 					</div>
   
 				  	<!--  #태그 탭 -->
@@ -520,22 +648,33 @@ position: absolute;
 			xhr.setRequestHeader(header, token);
 		});
 	});
-
+	
+	function check() {
+		if([[${session.memberCode}]] == null){
+			alert("로그인이 필요합니다.")
+			return false;
+		}else {
+			return true;
+		}
+	};
+	
 	var guestHouseCode = [[${geha.guestHouseCode}]];
 		//리뷰리스트 
- 	 	function commentList(){
+ 	 	function commentList(page,perPageNum){
 		    $.ajax({
 		        url : '/comment/list',
 		        type : 'get',
-		        data : {'guestHouseCode':guestHouseCode},
+		        data : {'page':page,'perPageNum':perPageNum,'guestHouseCode':guestHouseCode},
 		        success : function(data){
 		       		var a ='';
-		            $.each(data, function(key, value){ 
+		       		console.log(data);
+		             $.each(data, function(key, value){ 
 
-		           		a+= '<div style="border: 1px solid gray; margin : 30px 0px;"'
-		              	a += '<h1>'+ value.title +'</h1>';
+		           		a+= '<div id="comment'+guestHouseCode+'" style="border: 1px solid gray; margin : 30px 0px;">'
+		              	a += '<h4>'+ value.title +'</h4>';
+		              	a += '<p>'+value.reviewNo+'</p>';
 		                a += '<p>'+value.rating+'</p>';
-		                a += '<p>'+value.content+'</p>';
+		                a += '<p id="con">'+value.content+'</p>';
 		                a += '<p>'+value.roomName+'</p>';
 		                a += '<p>'+value.booker+'</p>';		                
 		                a += '<p>'+jQuery.timeago(new Date(value.writingDate))+'</p>';
@@ -548,7 +687,7 @@ position: absolute;
 		              		a += '</form>'
 		              	};
 		              	if (value.replyContent != null){
-		              		a += '<div class="host" style="border: 1px solid red " >'
+		              		a += '<div class="host" id="comment2" style="border: 1px solid red " >'
 		              		a += '<div class="commentList"'
 		              		a += '<h1>관리자 답변</h1>'
 		              		a += '<p class="replyContent'+value.reviewNo+'">' + value.replyContent + '</p>'
@@ -559,18 +698,53 @@ position: absolute;
 			              		}	
 		              		a += '</div></div>'
 		              	}
-		            });	
+		            }); 
+		            
 		        
 		            $(".guest").html(a);
+		           
 		        	}
 
 		    });
 		} ;
+		//리뷰리스트 페이징
+ 	 	function paging(endPage){
+		    $.ajax({
+		        url : '/comment/paging',
+		        type : 'get',
+		        data : {'endPage':endPage,'guestHouseCode':guestHouseCode},
+		        success : function(data){
+		       		var b =''
+		       		console.log(data)
+  					if(data.prev == true){
+						b += '<li id="prev">'
+						b += '<a href="#menu2" onclick="commentList('+data.startPage+'-10,'+data.cri.perPageNum+'); paging('+data.startPage+'-1); " >&laquo;</a></li>'
+					}
+		       		for(var i = data.startPage; i <= data.endPage; i++ ){
+		       			b += '<li class="page-item" id="p">'
+						b += '<a class="page-link" id="pa"href="#menu2" onclick="commentList('+i+','+data.cri.perPageNum+')" >'+i+'</a></li>'
+		       		}	      
+		 			if(data.next == true && data.endPage > 0 ) {
+						b += '<li id="next">'
+			 			b += '<a href="#menu2" onclick="commentList('+data.endPage+'+1,'+data.cri.perPageNum+'); paging('+data.endPage+'+1); " >&raquo;</a></li>' 
+					} 
+					$("#paging").html(b);
+	 				$("#paging>li#p:first").addClass('active'); 
+			 
+					$('li#p').on('click', function(){
+						$('li#p').removeClass('active');
+						  $(this).toggleClass('active');
+					}); 
+ 		        }
+		    });
+		} ;
+
 		//호스트답글 유효성
 		function commentCheck(reviewNo) {
-			  if($.trim($('#replyContent').val()) == ''){
+			
+			  if($.trim($('[name=content_'+reviewNo+']').val()) == ''){
 				   alert("내용을 입력하십시오.");
-				   $('#replyContent').focus();
+				   $('[name=content_'+reviewNo+']').focus();
 				   return false;
 			}else {
 				commentUpdate(reviewNo);
@@ -584,7 +758,7 @@ position: absolute;
 		    $('#up').hide();
 		    $('#del').hide();
 		    
-		  	a += '<input type="text" class="replyContentUpdate" name="content_'+reviewNo+'" value="'+replyContent+'"/>';
+		  	a += '<input type="text" class="replyContentUpdate" name="contentUp_'+reviewNo+'" value="'+replyContent+'"/>';
 		    a += '<button class="btn btn-primary" type="button" onclick="commentUpCheck('+reviewNo+');">수정</button>';
 
 		    $('.replyContent'+reviewNo).html(a);
@@ -592,7 +766,7 @@ position: absolute;
 		}
 		//댓글수정시 유효성
 		function commentUpCheck(reviewNo) {
-			  if($.trim($('.replyContentUpdate').val()) == ''){
+			  if($.trim($('[name=contentUp_'+reviewNo+']').val()) == ''){
 				   alert("내용을 입력하십시오.");
 				   $('.replyContentUpdate').focus();
 				   return false;
@@ -603,7 +777,7 @@ position: absolute;
 		
 		//댓글 수정
 		function commentUpdate(reviewNo){
-  			var replyContent = $('[name=content_'+reviewNo+']').val();
+  			var replyContent = $('[name=contentUp_'+reviewNo+']').val();
   			var reno = $('[name=reviewno_'+reviewNo+']').val();
   			reno = reviewNo;
 	 	    $.ajax({
@@ -628,7 +802,11 @@ position: absolute;
 
 		//좋아요 유지
 		function likeList(memberCode){
-			var memberCode = [[${session.memberCode}]];
+			if([[${session.memberCode}]] != null){
+				var memberCode = [[${session.memberCode}]];
+			}else{
+				memberCode=0
+			}
 			var roomCode = new Array();
 			var size = $("input[name='favmecode']").length;
 
@@ -662,7 +840,7 @@ position: absolute;
 					        type : 'post',
 					        data : {"roomCode" : roomCode, "memberCode" : memberCode}, 
 					        success : function(){
-								alert(roomCode+"좋아요취소");
+								alert("좋아요취소");
 					        }
 					    }); 
 					
@@ -680,16 +858,55 @@ position: absolute;
 				$('[name=favme'+roomCode+']').toggleClass('active');
 			}
 		};
-		
+
 	 	$(document).ready(function(){
-	 		commentList();
+	 		commentList(1,10);
+	 		paging(10);
+	 		
 	 		if([[${session.memberCode}]] != 'null'){
-	 		likeList();
-	 			
-	 		}
+	 			likeList();
+	 		};
 
+	 		  var rating = [[${rating.avgRating}]]
+		 		if(rating >= 10){
+		 			$("label[for='p5']")
+		 			.css('display','inline-block')
+		 			.css('vertical-align','middle')
+		 			.css('background',"url('/img/grade_img.png')")
+		 			.css('background-size','150px')
+		 			.css('background-position','0 bottom')
+		 		}else if (rating >= 8){
+		 			$("label[for='p4']")
+		 			.css('display','inline-block')
+		 			.css('vertical-align','middle')
+		 			.css('background',"url('/img/grade_img.png')")
+		 			.css('background-size','150px')
+		 			.css('background-position','0 bottom')
+		 		}else if (rating >= 6){
+		 			$("label[for='p3']")
+		 			.css('display','inline-block')
+		 			.css('vertical-align','middle')
+		 			.css('background',"url('/img/grade_img.png')")
+		 			.css('background-size','150px')
+		 			.css('background-position','0 bottom')
+		 		}else if (rating >= 4){
+		 			$("label[for='p2']")
+		 			.css('display','inline-block')
+		 			.css('vertical-align','middle')
+		 			.css('background',"url('/img/grade_img.png')")
+		 			.css('background-size','150px')
+		 			.css('background-position','0 bottom')
+		 		}else if (rating >= 2){
+		 			$("label[for='p1']")
+		 			.css('display','inline-block')
+		 			.css('vertical-align','middle')
+		 			.css('background',"url('/img/grade_img.png')")
+		 			.css('background-size','150px')
+		 			.css('background-position','0 bottom')
+		 		}
+	 		
 	 	});
-
+		
  		/* when a user clicks, toggle the 'is-animating' class */
   		$(".favme").on('click touchstart', function(){
   		$(this).toggleClass('is_animating');
@@ -699,7 +916,7 @@ position: absolute;
   		$(".favme").on('animationend', function(){
   		$(this).toggleClass('is_animating');
   		});
-  		
+
 	 	
 	 	
  	$(function() {
@@ -764,6 +981,48 @@ position: absolute;
   		$('.nav-tabs a[href="#home"]').tab('show')
   		/*  tab end */
   		
+  		/* 인원수 버튼 구현 */
+		var personCnt = 1;
+		var spanPerson = $("span#person");
+		var inputPerson = $("input.person");
+		var buttonUp = $("button#up");
+		var buttonDown = $("button#down");
+	    
+		buttonUp.click(function(){
+			plusCnt();
+			validCnt();
+			spanPerson.html(personCnt);
+			inputPerson.val(personCnt);
+		});
+	    
+		buttonDown.click(function(){
+			minusCnt();
+			validCnt();
+			spanPerson.html(personCnt);
+			inputPerson.val(personCnt);
+		});
+	    
+		function plusCnt(){
+			personCnt++;
+		}
+		function minusCnt(){
+			personCnt--;
+		}
+		function validCnt(){
+			if (personCnt >= 10){
+			 personCnt = 10;
+			 buttonUp.attr("disabled", true);
+			} else {
+			 buttonUp.attr("disabled", false);
+			}
+		
+			if (personCnt <= 1){
+			 personCnt = 1;
+			 buttonDown.attr("disabled", true);
+			} else {
+			 buttonDown.attr("disabled", false);
+			}
+		}
 
 
  	});
@@ -824,10 +1083,7 @@ $(function(){
 			return d;
 		}
 	}
-	
-	
 
-	
 });
 </script>
 	</div>

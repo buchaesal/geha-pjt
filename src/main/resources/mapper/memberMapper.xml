@@ -45,7 +45,7 @@
 	</update>
 	
 	<select id="findByMemberCode" resultType="MemberDto">
-		select m.memberName, m.id, m.businessLicense,g.status, g.guestHouseName 
+		select m.memberName, m.id, m.businessLicense,g.status, g.guestHouseName, g.guestHouseCode
 		from member_tb m, guestHouse_tb g where m.memberCode = g.memberCode 
 		and m.memberCode = #{memberCode}
 	</select>

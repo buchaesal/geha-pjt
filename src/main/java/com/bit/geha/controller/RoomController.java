@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bit.geha.criteria.Criteria;
 import com.bit.geha.dao.CommentDao;
 import com.bit.geha.dao.RoomDao;
 import com.bit.geha.dto.FacilityDto;
@@ -47,7 +49,6 @@ public class RoomController {
     }
     
     
-    
     @RequestMapping("/roomInfo")
     public String guestHouseInfo(@RequestParam("guestHouseCode") int guestHouseCode, Authentication auth,HttpSession session,Model model) throws Exception {
     	memberService.getSession(auth, session);
@@ -62,7 +63,5 @@ public class RoomController {
     	return "/room/roomInfo";
     	
     }
-    
 
-    
 }

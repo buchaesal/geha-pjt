@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bit.geha.criteria.AdminPageCriteria;
 import com.bit.geha.dto.GuestHouseDto;
 import com.bit.geha.dto.MemberDto;
+import com.bit.geha.dto.RejectDto;
 
 @Mapper
 public interface AdminPageDao {
@@ -22,4 +23,13 @@ public interface AdminPageDao {
 	public int getTotal(AdminPageCriteria cri,String auth);
 	
 	public List<GuestHouseDto> getApprovalHouseList();
+	
+	public void approveNewGuestHouse(int guestHouseCode);
+	
+	public void rejectNewGuestHouse(int guestHouseCode);
+	
+	public void insertReject(@Param("dto")RejectDto rejectDto);
+	
+	public List<RejectDto> getRejectListByGuestHouseCode(int guestHouseCode);
+	
 }

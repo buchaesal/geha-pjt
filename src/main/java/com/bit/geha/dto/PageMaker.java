@@ -2,6 +2,7 @@ package com.bit.geha.dto;
 
 import lombok.Data;
 
+
 //게시판 페이징 하단 부문 담당
 @Data
 public class PageMaker {
