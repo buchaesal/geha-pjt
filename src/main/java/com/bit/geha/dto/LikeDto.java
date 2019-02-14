@@ -13,5 +13,6 @@ public class LikeDto {
 	private String roomName;
 	private int charge;
 	private long avgRating;
+	private String savedName;
 	
 }

@@ -17,8 +17,9 @@ import com.bit.geha.dto.ReviewDto;
 public interface MyPageDao {
 	
 	@Select("SELECT b.*, v.guestHouseName, v.roomName FROM booking_tb b, bkrmghmatching_view v "
-			+ "WHERE b.memberCode = #{memberCode} AND b.bookingCode=v.bookingCode")
-	public List<BookingDto> getBookingListByMemberCode(int memberCode);
+			+ "WHERE b.memberCode = #{memberCode} AND b.bookingCode=v.bookingCode "
+			+ "order by b.bookingCode desc limit #{cri.pageStart}, #{cri.perPageNum}")
+	public List<BookingDto> getBookingListByMemberCode(@Param("cri")AdminPageCriteria cri,int memberCode);
 	
 	@Update("UPDATE booking_tb SET bookingStatus=#{bookingStatus} WHERE bookingCode=#{bookingCode}")
 	public void modifyBookingStatus(int bookingCode, String bookingStatus);
@@ -50,4 +51,6 @@ public interface MyPageDao {
 	public int getLikeTotal(int memberCode);
 	
 	public int getReviewTotal(int memberCode);
+	
+	public int getBookingListTotal(int memberCode);
 }
