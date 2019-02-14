@@ -43,8 +43,8 @@ public class AdminPageController {
 
 	@GetMapping("/adminPage")
 	public void adminPage(@ModelAttribute("cri") AdminPageCriteria cri,String auth,
-			Model model) {
-		
+			HttpSession session, Authentication authority,Model model) {
+		memberService.getSession(authority, session);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		

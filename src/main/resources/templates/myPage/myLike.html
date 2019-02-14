@@ -98,7 +98,9 @@ img {
 						<td>[[${likeDto.charge}]]</td>
 						<td>[[${likeDto.avgRating}]]</td>
 						<td><a
-							th:href="@{'/room/roomInfo?guestHouseCode='+${likeDto.guestHouseCode}}">
+							target="_blank" th:href="@{'/room/roomInfo?guestHouseCode='+${likeDto.guestHouseCode}+
+				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
+				'&bookingEnd='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+'&bookingNumber=1'}">
 								예약하러가기</a></td>
 						<td><input type="checkbox" name="chk"
 							th:value="${likeDto.roomCode}"></td>
