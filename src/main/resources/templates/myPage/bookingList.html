@@ -99,12 +99,9 @@
 						</div>
 					</div>
 					<div th:if="${bookingDto.bookingStatus}=='숙박완료'">
-						<div th:each="bookingCodeWithReview : ${reviewList}">
-							<button th:if="${bookingDto.bookingCode}==${bookingCodeWithReview}">작성한 후기 보러가기</button>
-							<!-- <button th:unless="${bookingDto.bookingCode}==${bookingCodeWithReview}" name="writeReviewBtn">후기 작성하기</button> -->
-						</div>
+						<button th:if="${#lists.contains(reviewList, bookingDto.bookingCode)}">작성한 후기 보러가기</button>
+						<button th:unless="${#lists.contains(reviewList, bookingDto.bookingCode)}" name="writeReviewBtn">후기 작성하기</button>
 						<button th:if="${#lists.size(reviewList)<=0}" name="writeReviewBtn">후기 작성하기</button>
-					
 						
 						<!-- writeReivew Modal -->
 						<div id="writeReviewModal" class="modal">
