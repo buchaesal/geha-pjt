@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.bit.geha.criteria.AdminPageCriteria;
 import com.bit.geha.dto.BookingDto;
+import com.bit.geha.dto.FileDto;
 import com.bit.geha.dto.LikeDto;
 import com.bit.geha.dto.ReviewDto;
 
@@ -53,4 +54,6 @@ public interface MyPageDao {
 	public int getReviewTotal(int memberCode);
 	
 	public int getBookingListTotal(int memberCode);
+	
+	public List<FileDto> getFileList(int guestHouseCode);
 }

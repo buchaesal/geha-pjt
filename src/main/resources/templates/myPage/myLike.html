@@ -36,8 +36,31 @@ p {
 }
 
 .buttonBox {
-    padding-top: 12px;
-    }
+	padding-top: 12px;
+}
+
+img {
+	margin: 9px;
+}
+
+.modal {
+	text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+	.modal:before {
+		display: inline-block;
+		vertical-align: middle;
+		content: " ";
+		height: 100%;
+	}
+}
+
+.modal-dialog {
+	display: inline-block;
+	text-align: left;
+	vertical-align: middle;
+}
 </style>
 </head>
 <body>
@@ -46,10 +69,12 @@ p {
 			<p class="heading">찜 한 숙소가 없습니다.</p>
 			<a href="/search" class="btn btn-info waves-effect">숙소 둘러보기</a>
 		</div>
-		<div th:if="${#lists.size(likeList)>0}" style="width:700px;" align="right">
+		<div th:if="${#lists.size(likeList)>0}" style="width: 700px;"
+			align="right">
 
 			<table class="tableOne" width="700px">
-				<tr align="center" height="80px" style="border-bottom:2.2px solid lightgray">
+				<tr align="center" height="80px"
+					style="border-bottom: 2.2px solid lightgray">
 					<th>게스트하우스</th>
 					<th>가격</th>
 					<th>평점</th>
@@ -59,10 +84,12 @@ p {
 				<form action="/myPage/deleteLike" id="deleteFrm">
 					<tr th:each="likeDto : ${likeList}" align="center">
 
-						<td><img class="center"
-							th:src="@{'/gehaImg/'+${likeDto.guestHouseCode}+'/'+
-							${likeDto.savedName}}" width="120px"
-							height="100px">
+						<td><a href="#"><img class="center"
+								th:src="@{'/gehaImg/'+${likeDto.guestHouseCode}+'/'+
+							${likeDto.savedName}}"
+								width="120px" height="100px"
+								style="border: 1px solid gray; -webkit-border-radius: 7px;"
+								onclick="showImg()" th:id="${likeDto.guestHouseCode}"></a>
 
 							<div class="free">
 								[[${likeDto.guestHouseName}]]<br> <span
@@ -83,31 +110,35 @@ p {
 
 			</table>
 			<div class="buttonBox">
-			<button type="button" class="btn-primary"
-				onClick="deleteLike()">삭제</button>
+				<button type="button" class="btn-primary" onClick="deleteLike()">삭제</button>
 			</div>
-			
-			 <!-- 게시판 하단의 페이징 버튼 -->
-            <div class="box-footer clearfix" align="center">
-              <ul class="pagination pagination-sm no-margin pull-center">
-              
-              <li th:if="${pageMaker.prev} == true">
-              	<a th:href="@{/myPage/myLike(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
-              </li>
-              
-              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-                <a th:href="@{/myPage/myLike(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
-              </li>
-                
-              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-              	<a th:href="@{/myPage/myLike(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
-              </li>
-              
-              </ul>
-              
-            </div>
-			
-			
+
+			<!-- 게시판 하단의 페이징 버튼 -->
+			<div class="box-footer clearfix" align="center">
+				<ul class="pagination pagination-sm no-margin pull-center">
+
+					<li th:if="${pageMaker.prev} == true"><a
+						th:href="@{/myPage/myLike(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+					</li>
+
+					<li
+						th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
+						th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+						<a
+						th:href="@{/myPage/myLike(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}"
+						th:text="${idx}"></a>
+					</li>
+
+					<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+						<a
+						th:href="@{/myPage/myLike(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+					</li>
+
+				</ul>
+
+			</div>
+
+
 		</div>
 
 		<!--Modal: confirmModal(삭제 확인 / 완료 모달)-->
@@ -119,8 +150,7 @@ p {
 				<div class="modal-content text-center">
 					<!--Header-->
 					<div class="modal-header d-flex justify-content-center">
-						<br />
-						<br />
+						<br /> <br />
 						<p id="modalName" class="heading"></p>
 					</div>
 
@@ -136,8 +166,8 @@ p {
 					<!--Footer-->
 					<div class="modal-footer flex-center">
 						<a href="#" class="btn btn-primary btn-lg" id="secret"
-							onclick="frmSubmit()">확인</a> 
-							<a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
+							onclick="frmSubmit()">확인</a> <a href="#"
+							class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
 					</div>
 				</div>
 				<!--/.Content-->
@@ -145,6 +175,30 @@ p {
 		</div>
 		<!--Modal: confirmModal-->
 
+		<!-- Modal: 사진 슬라이더 -->
+		<div class="modal fade bs-example-modal-lg" id="imgModal"
+			tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div id="carousel-example-generic" class="carousel slide"
+						data-ride="carousel">
+						<!-- Wrapper for slides -->
+						<div class="carousel-inner" id="putImageArea"></div>
+
+						<!-- Controls -->
+						<!-- 	<a class="left carousel-control" href="#carousel-example-generic"
+							role="button" data-slide="prev"> <span
+							class="glyphicon glyphicon-chevron-left"></span>
+						</a> <a class="right carousel-control"
+							href="#carousel-example-generic" role="button" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right"></span>
+						</a> -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal: 사진 슬라이더 끝-->
 
 		<div layout:fragment="myPage_script">
 			<script
@@ -188,7 +242,26 @@ p {
 		
 		$("#deleteFrm").submit();
 	}
+	
+	
+	
+	function showImg(){
+	var map = [[${fileMap}]];
+	var guestHouseCode = event.srcElement.id;
+	var map2 = map[event.srcElement.id];
+	var result="";
+	/* console.log(map2[1].savedName); */
 
+ $(map2).each(function(){
+	 result+="<div class='item active'><img src='/gehaImg/"+guestHouseCode+"/"+this.savedName+"'></div>";
+		
+}); 
+	
+	console.log(result);
+ $("#putImageArea").html(result);
+		$("#imgModal").modal();
+		
+	}
 		</script>
 		</div>
 	</div>
