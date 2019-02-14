@@ -1,5 +1,7 @@
 package com.bit.geha.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -13,6 +15,8 @@ public class LikeDto {
 	private String roomName;
 	private int charge;
 	private long avgRating;
+	private List<FileDto> savedNameList;
 	private String savedName;
+
 	
 }

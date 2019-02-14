@@ -152,8 +152,12 @@ font-size: 18px;
 				<input class="input100" type="text" id="memberName" name="memberName" th:value="${memberDto.memberName}">
 				<span id="nameError" class="Error"></span><br/>
 				<input class="input100" type="email" th:value="${memberDto.id}" name="id" readonly="readonly"><br/>
-				<input class="input100" type="password" name="password" id="password" placeholder="비밀번호"><br/>
-				<input class="input100" type="password" id="passwordCheck" placeholder="비밀번호 확인">
+				
+			
+				<input th:unless="${memberDto.password.equals('socialMember')}" class="input100" type="password" name="password" id="password" placeholder="비밀번호"><br/>
+				<input th:unless="${memberDto.password.equals('socialMember')}" class="input100" type="password" id="passwordCheck" placeholder="비밀번호 확인">
+				
+				
 				<span style="padding-left:10px;" id="pwError" class="Error"></span>
 				<div th:if="${session.auth.equals('HOST')}">
 				<input class="input100" type="text" name="businessLicense" placeholder="사업자번호" th:value="${memberDto.businessLicense}">

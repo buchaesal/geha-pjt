@@ -63,4 +63,9 @@ where b.memberCode = #{memberCode} and b.bookingCode = r.bookingCode
 select count(*) from booking_tb
 where memberCode = #{memberCode}
 </select>
+
+<select id="getFileList" resultType="FileDto">
+select savedName from file_tb where guestHouseCode = #{guestHouseCode}
+and roomCode = 0;
+</select>
 </mapper>

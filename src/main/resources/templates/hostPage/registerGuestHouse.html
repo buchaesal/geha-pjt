@@ -18,16 +18,16 @@
          
          th {width: 200px;}
          
-         td {width: 500px;}
+         td {width: 500px; padding: 20px 0;}
          
          .imgs_wrap {
-            width: 700px;
-            margin-top: 20px;
+            width: 600px;
+            margin-top: 20px;	
          }
          
          .imgs_wrap img {
-            max-width: 200px;
-            margin: 3px;
+            max-width: 170px;
+            margin: 3px;	
          }
          
          /* The Modal (background) */
@@ -67,8 +67,8 @@
            }
            .roomInfoDiv {
               display:  grid;
-              background-color: lightpink;
-              border: 1px solid red;
+              background-color: bisque;
+              /* border: 1px solid gray; */
               margin: 10px 0;
            }
            
@@ -87,18 +87,26 @@
            .checkboxLabel {
            		margin-right: 20px;
            }
+           
+           .room_imgs_wrap {
+           		width: 400px;
+           }
+           
+           .bank_label {
+           		margin-right: 20px;
+           }
+           
+           .room_tr {
+           		padding: 0 0;
+           }
       </style>
    </head>
    <body>
       <div layout:fragment="hostPage_content">
          <form id="registerGuestHouseForm" th:action="@{registerGuestHouseComplete}" method="POST" enctype="multipart/form-data">
             <h2>내 게스트하우스 등록하기</h2>
-            
-            
-             
-            <input type="hidden" name="guestHouse_imglength">
             <input type="hidden" name="memberCode" th:value="${memberCode}">
-            <table>
+            <table class="guestHouse_table">
             	<tr>
             		<th><label class="hostPage_label">게스트하우스 사진<br>(최대 10장) <p>메인이미지를 선택해주세요.</p></label></th>
             		<td>
@@ -107,6 +115,7 @@
 			                <input type="button" value="삭제" onclick="deleteImgs(this)">
 		            	</div>
 		            	<div class="imgs_wrap" name="guestHouseImg"></div>
+		            	<input type="hidden" name="guestHouse_imglength">
             		</td>
             	</tr>
                <tr>
@@ -164,8 +173,8 @@
                   <th><label class="hostPage_label">주소</label></th>
                   <td>
                      <!-- 주소와 우편번호를 입력할 <input>들을 생성하고 적당한 name과 class를 부여한다 -->
-					<input type="button" id="postcodify_search_button" value="주소 검색하기"><br />
-					<input type="text" name="address" class="postcodify_address" value="" size="45"/><br />
+					<input type="button" id="postcodify_search_button" value="검색">
+					<input type="text" name="address" class="postcodify_address" value="" size="42"/><br />
                   </td>
                </tr>
                <tr>
@@ -175,16 +184,16 @@
                <tr>
                   <th><label class="hostPage_label">정산계좌 입력</label></th>
                   <td>
-                     <label>거래은행</label>
+                     <label class="bank_label">거래은행</label>
                      <select name="bankName">
-                        <option value="국민은행">국민은행</option>
+                        <option value="국민">국민</option>
                         <option value="농협">농협</option>
-                        <option value="기업은행">기업은행</option>
-                        <option value="우리은행">우리은행</option>
-                        <option value="신한은행">신한은행</option>
+                        <option value="기업">기업</option>
+                        <option value="우리">우리</option>
+                        <option value="신한">신한</option>
                      </select><br>
                      
-                     <label>계좌번호</label>
+                     <label class="bank_label">계좌번호</label>
                      <input type="text" name="accountNumber">
                   </td>
                </tr>
@@ -195,41 +204,43 @@
          </form>
 
          <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
-            <div>
-	  	 		<label>방 사진 (최대 5장) <p>메인이미지를 선택해주세요.</p></label><br>
-               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
-               <input type="button" value="삭제" onclick="deleteImgs(this)">
-            </div>
-            <div class="imgs_wrap" name="roomsImg">
-         		
-            </div>
-            <input type="hidden" name="room_imglength">
-            <input type="hidden" name="mainRoomImage">
             <table>
 	         	<input type="hidden" name="roomIndex">
 	         	<input type="hidden" name="roomCode" value="0">
-               <tr>
+	         	<tr class="room_tr">
+	         		<th><label>방 사진 (최대 5장) <p>메인이미지를 선택해주세요.</p></label></th>
+	         		<td>
+	         			<div>
+			               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
+			               <input type="button" value="삭제" onclick="deleteImgs(this)">
+			            </div>
+			            <div class="imgs_wrap room_imgs_wrap" name="roomsImg"></div>
+			            <input type="hidden" name="room_imglength">
+			            <input type="hidden" name="mainRoomImage">
+	         		</td>
+	         	</tr>
+               <tr class="room_tr">
                   <th>이름</th>
                   <td><input type="text" name="roomName"></td>
                </tr>
-               <tr>
+               <tr class="room_tr">
                   <th>가격</th>
                   <td><input type="text" name="charge" numberOnly placeholder="0"></td>
                </tr>
-               <tr>
+               <tr class="room_tr">
                   <th>전용</th>
                   <td>
                      <input type="hidden" name="gender">
-                     <label><input type="radio" value="혼성" checked="checked" onclick="choiceGender(this)">혼성</label>
-                     <label><input type="radio" value="여성" onclick="choiceGender(this)">여성</label>
-                     <label><input type="radio" value="남성" onclick="choiceGender(this)">남성</label>
+                     <label class="checkboxLabel"><input type="radio" value="N" checked="checked" onclick="choiceGender(this)">혼성</label>
+                     <label class="checkboxLabel"><input type="radio" value="F" onclick="choiceGender(this)">여성</label>
+                     <label class="checkboxLabel"><input type="radio" value="M" onclick="choiceGender(this)">남성</label>
                   </td>
                </tr>
-               <tr>
+               <tr class="room_tr">
                   <th>수용인원 수</th>
                   <td><input type="number" name="capacity">명</td>
                </tr>
-               <tr>
+               <tr class="room_tr">
                   <th>객실 이용안내</th>
                   <td><textarea name="roomInfo" rows="5" cols="30"></textarea></td>
                </tr>
@@ -287,9 +298,9 @@
                var files = e.target.files;
                var filesArr = Array.prototype.slice.call(files);
                
-               alert("files.length: "+files.length);
+               /* alert("files.length: "+files.length);
                
-               alert("e.name: " + e.target.name);
+               alert("e.name: " + e.target.name); */
                
                if(e.target.name == "roomAttach") {
             	   if(files.length > 5) {
@@ -319,7 +330,7 @@
                      if($(prtDiv).attr("name")=='roomsImg') { //방일 경우
                         var html = 
                            "<span class='thumbnailImgSpan'><input type='radio' name='mainRoomImage"+$(roomInfoTable).find("input[name='roomIndex']").val()+"' value='"+index
-                           +"' onclick='clickMainRoomImg($(this).parent().next().next(), this.value)'><img src=\""+e.target.result+"\" data-file='"+f.name
+                           +"' onclick='clickMainRoomImg($(this).parent().parent().next().next(), this.value)'><img src=\""+e.target.result+"\" data-file='"+f.name
                            +"' class='selProductFile' title='Click to remove'></span>";
                      } else { //게스트하우스일 경우
                         var html = "<span class='thumbnailImgSpan'><input type='radio' name='mainImage' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
