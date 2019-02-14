@@ -36,6 +36,10 @@
 			.test {
     padding: 27px;
 }
+
+th{
+text-align:center;
+}
 			
 			/* 별점 */
 			.star-input>.input,
@@ -67,14 +71,14 @@
 		<a href="/search" class="btn btn-info waves-effect">숙소 둘러보기</a>
 		</div>
 		<div th:if="${#lists.size(bookingList)>0}">
-		<table border="2">
-			<tr>
+		<table width="800px">
+			<tr height="80px" style="border-bottom:2.2px solid lightgray" align="center">
 				<th>예약 코드</th>
 				<th>예약 정보</th>
 				<th>가격</th>
 				<th>상태</th>
 			</tr>
-			<tr th:each="bookingDto, iterState : ${bookingList}">
+			<tr th:each="bookingDto, iterState : ${bookingList}" height="80px" align="center">
 				<td th:text="${bookingDto.bookingCode}"></td>
 				<td>
 					[[${bookingDto.guestHouseName}]]([[${bookingDto.roomName}]]) <br>
@@ -85,7 +89,7 @@
 				<td>
 					[[${bookingDto.bookingStatus}]] <br>
 					<div th:if="${bookingDto.bookingStatus}=='예약완료'">
-						<button class="cancelBtn" th:onclick="|javascript:cancelBtnClick('${iterState.count}')|">취소 요청하기</button>
+						<button class="cancelBtn btn-primary" th:onclick="|javascript:cancelBtnClick('${iterState.count}')|">취소 요청하기</button>
 								
 						<!-- cancelConfirm Modal -->
 						<div th:id="cancelConfirmModal+${iterState.count}" class="modal cancelConfirmModal">
@@ -99,12 +103,10 @@
 						</div>
 					</div>
 					<div th:if="${bookingDto.bookingStatus}=='숙박완료'">
-						<div th:each="bookingCodeWithReview : ${reviewList}">
-							<button th:if="${bookingDto.bookingCode}==${bookingCodeWithReview}">작성한 후기 보러가기</button>
-							<button th:unless="${bookingDto.bookingCode}==${bookingCodeWithReview}" name="writeReviewBtn">후기 작성하기</button>
-						</div>
-						<button th:if="${#lists.size(reviewList)<=0}" name="writeReviewBtn">후기 작성하기</button>
-					
+
+						<button class="btn-primary" th:if="${#lists.contains(reviewList, bookingDto.bookingCode)}">작성한 후기 보러가기</button>
+						<button class="btn-primary" th:unless="${#lists.contains(reviewList, bookingDto.bookingCode)}" name="writeReviewBtn">후기 작성하기</button>
+						<button class="btn-primary" th:if="${#lists.size(reviewList)<=0}" name="writeReviewBtn">후기 작성하기</button>
 						
 						<!-- writeReivew Modal -->
 						<div id="writeReviewModal" class="modal">
@@ -117,7 +119,7 @@
 									
 									<label>작성자</label>
 									<input type="hidden" name="memberCode" th:value="${bookingDto.memberCode}">
-									<label>[[${memberName}]]</label><br>
+									<label>[[${session.name}]]</label><br>
 									
 									<label>평점</label>
 									<span class="star-input">
@@ -153,6 +155,26 @@
 				</td>
 			</tr>
 		</table>
+		
+		<!-- 게시판 하단의 페이징 버튼 -->
+            <div class="box-footer clearfix" style="padding-left:357px">
+              <ul class="pagination pagination-sm no-margin pull-center">
+              
+              <li th:if="${pageMaker.prev} == true">
+              	<a th:href="@{/myPage/bookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+              </li>
+              
+              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+                <a th:href="@{/myPage/bookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+              </li>
+                
+              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+              	<a th:href="@{/myPage/bookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+              </li>
+              
+              </ul>
+              
+            </div>
 		</div>
 	</div>
 		

@@ -33,9 +33,10 @@ delete from review_tb where reviewNo = #{reviewNo}
 </delete>
 
 <select id="myLike" resultType="LikeDto">
-select g.guestHouseName, g.guestHouseCode, r.roomName, r.charge, r.roomCode, g.avgRating 
-from guestHouse_tb g, room_tb r, like_tb l 
-where l.roomCode = r.roomCode and r.guestHouseCode = g.guestHouseCode 
+select g.guestHouseName, g.guestHouseCode, r.roomName, r.charge, r.roomCode, g.avgRating,f.savedName
+from guestHouse_tb g, room_tb r, like_tb l,file_tb f
+where l.roomCode = r.roomCode and r.guestHouseCode = g.guestHouseCode
+and f.guestHouseCode = g.guestHouseCode and f.isMainImage = 1 and f.roomCode = 0 
 and l.memberCode = #{memberCode}
 limit #{cri.pageStart}, #{cri.perPageNum}
 </select>
@@ -56,5 +57,10 @@ select count(*) from
 <select id="getReviewTotal" resultType="int">
 select count(*) from review_tb r, booking_tb b
 where b.memberCode = #{memberCode} and b.bookingCode = r.bookingCode 
+</select>
+
+<select id="getBookingListTotal" resultType="int">
+select count(*) from booking_tb
+where memberCode = #{memberCode}
 </select>
 </mapper>

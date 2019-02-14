@@ -11,7 +11,7 @@
 <select id="searchGeha" parameterType="com.bit.geha.criteria.SearchCriteria" resultType="SearchDto">
 select distinct gh.guestHouseCode, gh.guestHouseName, gh.address, gh.avgRating, gr.recommendRating,
 	   ghmin.minprice, gh.businessTrip, gh.gourmet, gh.trip, gh.shopping,
-	   rvc.reviewCnt, fi.originalName
+	   rvc.reviewCnt, fi.savedName
 from guestHouse_tb gh
 	left join file_tb fi
 	on fi.guestHouseCode = gh.guestHouseCode
@@ -107,16 +107,16 @@ where gh.approvalDate is not NULL
 </if>
 
 <if test='sort == "rating"'>
-	order by gh.avgRating desc
+	order by gh.avgRating desc, ghmin.minprice asc
 </if>
 <if test='sort == "review"'>
-	order by rvc.reviewCnt desc
+	order by rvc.reviewCnt desc, ghmin.minprice asc
 </if>
 <if test='sort == "lowprice"'>
-	order by ghmin.minprice asc
+	order by ghmin.minprice asc, gh.avgRating desc
 </if>
 <if test='sort == "highprice"'>
-	order by ghmin.minprice desc
+	order by ghmin.minprice desc, gh.avgRating desc
 </if>
 
 </select>

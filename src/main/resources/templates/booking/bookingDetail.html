@@ -1,122 +1,120 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="fragments/main_layout">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>상세페이지</title>
-		<style>
-			.display_left {
-				width: 50%;
-				height: 80%;
-				float: left;
-			}
-			
-			.display_right {
-				width: 50%;
-				height: 80%;
-				float: right;
-			}
-			
-			table {
-				margin: 50px;
-				margin-top: 30px;
-			}
-			
-			h3 {
-				margin-top: 70px;
-				margin-left: 30px;
-			}
-			
-			th, td{
-				text-align: left;
-			}
-			
-			th {
-				width: 170px;
-				height: 40px;
-			}
-			
-			.bookingDetail_a {
-		      text-decoration: none;
-		      font-size:2rem;
-		      text-align: center;
-		      color:white;
-		      background-color: gray;
-		      padding:10px 20px 10px 20px;
-		      margin:0 auto;
-		      display:inline-block;
-		      border-radius: 10px;
-			}
-		</style>
-	</head>
-	<body>
-		<div layout:fragment="content">
-			<h2>상세페이지</h2>
-			
-			<div class="display_left">
-				<h3>예약자 정보</h3>
-				<table id="bookerInfo">
-					<tr>
-						<th>예약자명</th>
-						<td>[[${bookingDto.booker}]]</td>
-					</tr>
-					<tr>
-						<th>예약자 이메일</th>
-						<td>[[${bookingDto.bookerEmail}]]</td>
-					</tr>
-					<tr>
-						<th>예약자 연락처</th>
-						<td>[[${bookingDto.bookerContact}]]</td>
-					</tr>
-				</table>
-			
-				<h3>게스트하우스 정보</h3>
-				<table id="guestHouseInfo">
-					<tr>
-						<th>게스트하우스명</th>
-						<td>[[${bookingDto.guestHouseName}]]</td>
-					</tr>
-					<tr>
-						<th>방 타입 / 기간</th>
-						<td>[[${bookingDto.roomName}]] / 1박</td>
-					</tr>
-					<tr>
-						<th>입실 예정일</th>
-						<td>[[${#dates.format(bookingDto.bookingStart, 'yy.MM.dd E')}]] 14:00</td>
-					</tr>
-					<tr>
-						<th>퇴실 예정일</th>
-						<td>[[${#dates.format(bookingDto.bookingEnd, 'yy.MM.dd E')}]] 11:00</td>
-					</tr>
-					<tr>
-						<th>예약 번호</th>
-						<td>[[${bookingDto.bookingCode}]]</td>
-					</tr>
-				</table>
-			</div>
-			
-			<div class="display_right">
-				<h3>결제 정보</h3>
-				<table id="paymentInfo">
-					<tr>
-						<th>결제 수단</th>
-						<td>[[${bookingDto.paymentMethod}]]</td>
-					</tr>
-					<tr>
-						<th>승인 번호</th>
-						<td>[[${bookingDto.approvalNumber}]]</td>
-					</tr>
-					<tr>
-						<th>결제일자</th>
-						<td>[[${#dates.format(bookingDto.paymentDate, 'yy.MM.dd')}]]</td>
-					</tr>
-				</table>
-			</div>
-			
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/main_layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>상세페이지</title>
+<style>
+.display_left {
+	width: 50%;
+	height: 80%;
+	float: left;
+}
+
+.display_right {
+	width: 50%;
+	height: 80%;
+	float: right;
+}
+
+table {
+	margin: 50px;
+	margin-top: 30px;
+}
+
+
+th {
+	width: 170px;
+	height: 40px;
+}
+
+.bookingDetail_a {
+	text-decoration: none;
+	font-size: 2rem;
+	text-align: center;
+	color: white;
+	background-color: gray;
+	padding: 10px 20px 10px 20px;
+	margin: 0 auto;
+	display: inline-block;
+	border-radius: 10px;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content" style="height: 100%;" align="center">
+		<h2
+			style="margin-top: 52px; border-bottom: 2px solid lightgray; padding-bottom: 42px;">상세페이지
+		</h2>
+
+		<div class="display_left">
+			<h3>예약자 정보</h3>
+			<table id="bookerInfo">
+				<tr>
+					<th>예약자명</th>
+					<td>[[${bookingDto.booker}]]</td>
+				</tr>
+				<tr>
+					<th>예약자 이메일</th>
+					<td>[[${bookingDto.bookerEmail}]]</td>
+				</tr>
+				<tr>
+					<th>예약자 연락처</th>
+					<td>[[${bookingDto.bookerContact}]]</td>
+				</tr>
+			</table>
+
+			<h3>게스트하우스 정보</h3>
+			<table id="guestHouseInfo">
+				<tr>
+					<th>게스트하우스명</th>
+					<td>[[${bookingDto.guestHouseName}]]</td>
+				</tr>
+				<tr>
+					<th>방 타입 / 기간</th>
+					<td>[[${bookingDto.roomName}]] / 1박</td>
+				</tr>
+				<tr>
+					<th>입실 예정일</th>
+					<td>[[${#dates.format(bookingDto.bookingStart, 'yy.MM.dd
+						E')}]] 14:00</td>
+				</tr>
+				<tr>
+					<th>퇴실 예정일</th>
+					<td>[[${#dates.format(bookingDto.bookingEnd, 'yy.MM.dd E')}]]
+						11:00</td>
+				</tr>
+				<tr>
+					<th>예약 번호</th>
+					<td>[[${bookingDto.bookingCode}]]</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="display_right">
+			<h3>결제 정보</h3>
+			<table id="paymentInfo">
+				<tr>
+					<th>결제 수단</th>
+					<td>[[${bookingDto.paymentMethod}]]</td>
+				</tr>
+				<tr>
+					<th>승인 번호</th>
+					<td>[[${bookingDto.approvalNumber}]]</td>
+				</tr>
+				<tr>
+					<th>결제일자</th>
+					<td>[[${#dates.format(bookingDto.paymentDate, 'yy.MM.dd')}]]</td>
+				</tr>
+			</table>
+
 			<div class="out">
-				<a class="bookingDetail_a" th:href="@{/myPage/bookingList(memberCode=${bookingDto.memberCode})}">예약내역 확인하러 가기</a>
+				<a class="bookingDetail_a"
+					th:href="@{/myPage/bookingList(memberCode=${bookingDto.memberCode})}">예약내역
+					확인하러 가기</a>
 			</div>
 		</div>
-	</body>
+	</div>
+</body>
 </html>
