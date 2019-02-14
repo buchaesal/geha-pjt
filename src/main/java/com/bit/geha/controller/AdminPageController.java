@@ -95,9 +95,11 @@ public class AdminPageController {
 	
 	//승인,반려 할수있는 뷰 페이지
 	 @RequestMapping("/waitApproval")
-	    public void waitApproval(@RequestParam("guestHouseCode") int guestHouseCode, 
+	    public void waitApproval(@RequestParam("bookingStart") String bookingStart,@RequestParam("bookingEnd") String bookingEnd,
+	        	@RequestParam("bookingNumber") int bookingNumber,
+	        	@RequestParam("guestHouseCode") int guestHouseCode, 
 	    		Model model) throws Exception {
-	    	List<RoomDto> rooms = roomDao.roomInfo(guestHouseCode);
+	    	List<RoomDto> rooms = roomDao.roomInfo(bookingStart,bookingEnd,bookingNumber,guestHouseCode);
 	    	List<FacilityDto> facility = roomDao.facilityInfo(guestHouseCode);
 	    	
 	    	GuestHouseDto guestHouseDto = roomDao.gehaInfo(guestHouseCode);
