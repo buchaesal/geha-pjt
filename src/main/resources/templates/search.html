@@ -321,16 +321,16 @@
 						<div class="checkbox">
 							<p><strong>테마</strong></p>
 							<label class="col-xs-6">
-								<input type="checkbox" name="trip" value="1" />#관광
+								<input type="checkbox" id="trip" name="trip" value="1" />#관광
 							</label>
 							<label class="col-xs-6">
-								<input type="checkbox" name="gourmet" value="1" />#맛집
+								<input type="checkbox" id="gourmet" name="gourmet" value="1"/>#맛집
 							</label>
 							<label class="col-xs-6">
-								<input type="checkbox" name="shopping" value="1" />#쇼핑
+								<input type="checkbox" id="shopping" name="shopping" value="1" />#쇼핑
 							</label>
 							<label class="col-xs-6">
-								<input type="checkbox" name="businessTrip" value="1" />#출장
+								<input type="checkbox" id="business" name="business" value="1" />#출장
 							</label>
 						</div>
 
@@ -389,12 +389,6 @@
 
 					<hr />
 
-					<div th:if="${session.bookingStart}">
-						<span th:text="${session.bookingStart}"></span>
-						<span th:text="${session.bookingEnd}"></span>
-						<span th:text="${session.bookingNumber}"></span>
-					</div>
-
 					<ul id="sortBy" class="nav nav-tabs nav-justified">
 						<li id="rating" role="presentation" class="active"><a>평점 높은 순</a></li>
 						<li id="review" role="presentation"><a>리뷰 많은 순</a></li>
@@ -434,87 +428,14 @@
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e82dcfc69e95758ed76053beed11845a&libraries=services,clusterer"></script>
 
 		
-		<script th:inline="javascript">
-			
-			$(function(){
-				
-				// 시큐리티 + 에이젝스 에러 방지 설정
-				var token = $("meta[name='_csrf']").attr("content");
-				var header = $("meta[name='_csrf_header']").attr("content");
-				$(document).ajaxSend(function(e, xhr, options) {
-					xhr.setRequestHeader(header, token);
-				});
-				
-				// 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 / 세미콜론(;)넣지 않음 주의
-				$(".datepicker-here").datepicker({
-					language: 'en',
-					minDate: new Date(),
-					range: true,
-					autoClose: true,
-					onSelect: function onSelect(fd, date){
-						$("#startdate").val(fd.split(" ~ ")[0])
-						$("#enddate").val(fd.split(" ~ ")[1])
-					}
-				});
-				
-				// slider-range
-				$("#slider-range").slider({
-					range: true,
-					min: 10000,
-					max: 100000,
-					step: 10000,
-					values: [ 10000, 100000 ],
-					slide: function( event, ui ) {
-					$("#amount").text( Math.floor(ui.values[0]/10000) + "만원 ~ " + Math.floor(ui.values[1]/10000) + "만원");
-					$("#minprice").val(ui.values[0]);
-					$("#maxprice").val(ui.values[1]);
-					}
-				});
-				
-				$("#amount").text( $( "#slider-range" ).slider( "values", 0 )/10000 + "만원" +
-							" ~ " + $( "#slider-range" ).slider( "values", 1 )/10000 + "만원" );
-				$("#minprice").val($( "#slider-range" ).slider( "values", 0 ));
-				$("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
-				
-				// 인원수 버튼 구현
-				var spanPerson = $("span#person");
-				var inputPerson = $("input.person");
-				var buttonUp = $("button#up");
-				var buttonDown = $("button#down");
-
-				var personCnt = 1;
-				
-				buttonUp.click(function(){
-					personCnt++;
-					validCntAndPut();
-				});
-				buttonDown.click(function(){
-					personCnt--;
-					validCntAndPut();
-				});
-				
-				var validCntAndPut = function(){
-					
-					if (personCnt >= 10){
-						personCnt = 10;
-						buttonUp.attr("disabled", true);
-					} else {
-						buttonUp.attr("disabled", false);
-					}
-				
-					if (personCnt <= 1){
-						personCnt = 1;
-						buttonDown.attr("disabled", true);
-					} else {
-						buttonDown.attr("disabled", false);
-					}
-					
-					spanPerson.html(personCnt);
-					inputPerson.val(personCnt);
-				}
+		<script th:line="javascript">
+			// 시큐리티 + 에이젝스 에러 방지 설정
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
 			});
-		</script>
-		<script th:inline="javascript">
+
 			// daum map
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 				mapOption = {
@@ -717,8 +638,77 @@
 					alert('failed');
 				}); // ajax end
 			} // function getData end
+			
+			
+			$(function(){ // document onload
+				
+				// 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 / 세미콜론(;)넣지 않음 주의
+				$(".datepicker-here").datepicker({
+					language: 'en',
+					minDate: new Date(),
+					range: true,
+					autoClose: true,
+					onSelect: function onSelect(fd, date){
+						$("#startdate").val(fd.split(" ~ ")[0])
+						$("#enddate").val(fd.split(" ~ ")[1])
+					}
+				});
+				
+				// slider-range
+				$("#slider-range").slider({
+					range: true,
+					min: 10000,
+					max: 100000,
+					step: 10000,
+					values: [ 10000, 100000 ],
+					slide: function( event, ui ) {
+					$("#amount").text( Math.floor(ui.values[0]/10000) + "만원 ~ " + Math.floor(ui.values[1]/10000) + "만원");
+					$("#minprice").val(ui.values[0]);
+					$("#maxprice").val(ui.values[1]);
+					}
+				});
+				
+				$("#amount").text( $( "#slider-range" ).slider( "values", 0 )/10000 + "만원" +
+							" ~ " + $( "#slider-range" ).slider( "values", 1 )/10000 + "만원" );
+				$("#minprice").val($( "#slider-range" ).slider( "values", 0 ));
+				$("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
+				
+				// 인원수 버튼 구현
+				var spanPerson = $("span#person");
+				var inputPerson = $("input.person");
+				var buttonUp = $("button#up");
+				var buttonDown = $("button#down");
 
-			$(function () { // document onload
+				var personCnt = 1;
+				
+				buttonUp.click(function(){
+					personCnt++;
+					validCntAndPut();
+				});
+				buttonDown.click(function(){
+					personCnt--;
+					validCntAndPut();
+				});
+				
+				var validCntAndPut = function(){
+					
+					if (personCnt >= 10){
+						personCnt = 10;
+						buttonUp.attr("disabled", true);
+					} else {
+						buttonUp.attr("disabled", false);
+					}
+				
+					if (personCnt <= 1){
+						personCnt = 1;
+						buttonDown.attr("disabled", true);
+					} else {
+						buttonDown.attr("disabled", false);
+					}
+					
+					spanPerson.html(personCnt);
+					inputPerson.val(personCnt);
+				}
 
 				// 검색 기본 날짜 설정
 				var getToday = new Date();
@@ -740,7 +730,28 @@
 						return d;
 					}
 				}
-
+				
+				// 메인페이지에서 클릭시  테마 체크되어있는 상태로
+				var gourmet = [[${sc.gourmet}]];
+				var trip = [[${sc.trip}]];
+				var shopping = [[${sc.shopping}]];
+				var business = [[${sc.business}]];
+				
+				console.log(gourmet);
+				if(gourmet === 1) {
+					$('#gourmet').attr('checked', true);
+				}
+				if(trip === 1) {
+					$('#trip').attr('checked', true);
+				}
+				if(shopping === 1) {
+					$('#shopping').attr('checked', true);
+				}
+				if(business === 1) {
+					$('#business').attr('checked', true);
+				}
+				
+ 
 				// handlebars ifOne helper for tags
 				Handlebars.registerHelper('ifOne', function (a, opts) {
 					if (a == 1) {

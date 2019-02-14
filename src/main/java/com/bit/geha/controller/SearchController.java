@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.geha.criteria.SearchCriteria;
@@ -32,8 +33,16 @@ public class SearchController {
 	MemberService memberService;
 	
 	@RequestMapping("/search")
-	public String search(Model model) {
+	public String search(SearchCriteria sc, Model model) {
 		logger.info("search()");
+		
+		System.out.println(sc.getGourmet());
+		System.out.println(sc.getTrip());
+		System.out.println(sc.getShopping());
+		System.out.println(sc.getBusiness());
+		
+		model.addAttribute("sc", sc);
+		
 		return "search";
 	}
 	
