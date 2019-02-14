@@ -286,8 +286,6 @@ position: absolute;
 	display: inline-block;
 	vertical-align: middle;
 	background: url('/img/grade_img.png');
-
-
 }
 
 .star-input {
@@ -511,6 +509,7 @@ th, td {
 									<form action="/booking/bookingPage" onsubmit="return check()" >
 										<input type="hidden" id="startdate" name="bookingStart" />
 										<input type="hidden" id="enddate" name="bookingEnd" />
+										<input type="hidden" id="bookingNumber" name="bookingNumber" />
 										<input type="hidden" name="roomCode" th:value="${RoomDto.roomCode}">
 										<button class="btn btn-primary" type="submit">예약하기</button>
 									</form>
@@ -1000,6 +999,7 @@ th, td {
 			$('#date').val(bookingStart + ' ~ ' + bookingEnd);
 			$('#startdate').val(bookingStart);
 			$('#enddate').val(bookingEnd);
+			$('#bookingNumber').val(bookingNumber);
 			$('#person').html(bookingNumber);
 			function lessThanTen(d){
 				if (d < 10){

@@ -71,6 +71,3 @@
 .favme:hover {
   animation: favme-hover 0.3s infinite alternate;
 }
-.favme.is_animating {
-  animation: favme-anime 0.3s;
-}
