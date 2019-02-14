@@ -90,31 +90,66 @@ public class UploadFileUtils {
 		if(files==null || files.size()==0) return;
 		
 		if(files.get(0).getRoomCode() == 0) { //게스트하우스 이미지
+			System.out.println("게하 이미지");
 			for(FileDto file : files) {
 				String path = UPLOAD_PATH + file.getGuestHouseCode() + File.separator + file.getSavedName();
 				System.out.println("deletePath: " + path);
 				
 				File deleteFile = new File(path);
 				if(deleteFile.exists()) {
-//					deleteFile.delete();
-					try {
-						FileUtils.forceDelete(deleteFile);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					deleteFile.delete();
+				}
+			}
+		} else { //방 이미지
+			System.out.println("방 이미지");
+			for(FileDto file : files) {
+				String path = UPLOAD_PATH + file.getGuestHouseCode() + File.separator + file.getRoomCode() + File.separator + file.getSavedName();
+				System.out.println("deletePath: " + path);
+				
+				File deleteFile = new File(path);
+				if(deleteFile.exists()) {
+					deleteFile.delete();
 				}
 			}
 		}
 	}
 	
-	public static void deleteRoomFiles(int guestHouseCode, int roomCode) {
+	public static void deleteRoomImgFolder(int guestHouseCode, int roomCode) {
+		String path = UPLOAD_PATH + guestHouseCode + File.separator + roomCode; //폴더 삭제
+		System.out.println("deletePath: " + path);
+		
+		deleteFolder(path);
+	}
+	
+	public static void deleteGuestHouseImgFolder(int guestHouseCode) {
+		String path = UPLOAD_PATH + guestHouseCode; //폴더 삭제
+		System.out.println("deletePath: " + path);
+		
+		deleteFolder(path);
+	}
+	
+/*	public static void deleteFolder(int guestHouseCode, int roomCode) {
 		String path = UPLOAD_PATH + guestHouseCode + File.separator + roomCode; //폴더 삭제
 		System.out.println("deletePath: " + path);
 		
 		File deleteFile = new File(path);
 		if(deleteFile.exists()) {
-			deleteFile.delete();
+			try {
+				FileUtils.forceDelete(deleteFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}*/
+	
+	private static void deleteFolder(String path) {
+		File deleteFile = new File(path);
+		if(deleteFile.exists()) {
+			try {
+				FileUtils.forceDelete(deleteFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

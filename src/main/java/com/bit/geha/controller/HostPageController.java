@@ -253,9 +253,38 @@ public class HostPageController {
 			for (int i = 0; i < existingRoomCodes.size(); i++) {
 				System.out.println("delete Img");
 				hostPageDao.deleteImgs(guestHouseDto.getGuestHouseCode(), existingRoomCodes.get(i));
-				UploadFileUtils.deleteRoomFiles(guestHouseDto.getGuestHouseCode(), existingRoomCodes.get(i));
+				UploadFileUtils.deleteRoomImgFolder(guestHouseDto.getGuestHouseCode(), existingRoomCodes.get(i));
 			}
 		}
+		
+		return "redirect:myGuestHouseList";
+	}
+	
+	@RequestMapping("deleteGuestHouse")
+	public String deleteGuestHouse(int guestHouseCode) {
+		System.out.println("deleteGuestHouse code: " + guestHouseCode);
+		
+		//삭제 순서 룸파일-룸-편의시설-게스트하우스파일-게스트하우스
+		
+		List<Integer> deleteRoomCodes = hostPageDao.getRoomCodes(guestHouseCode);
+		
+		if(deleteRoomCodes.size()>0) {
+			for(int roomCode : deleteRoomCodes) {
+				System.out.println("delete roomCode: " + roomCode);
+				hostPageDao.deleteImgs(guestHouseCode, roomCode); //db에서 파일내역 지우기
+				UploadFileUtils.deleteRoomImgFolder(guestHouseCode, roomCode); //경로에서 이미지 지우기
+			}
+			hostPageDao.deleteRooms(deleteRoomCodes); //방 삭제
+		}
+		
+		//편의시설 delete
+		hostPageDao.deleteFacilities(guestHouseCode);
+		
+		//게스트하우스 파일 delete
+		hostPageDao.deleteImgs(guestHouseCode, 0);
+		UploadFileUtils.deleteGuestHouseImgFolder(guestHouseCode);
+		
+		hostPageDao.deleteGuestHouse(guestHouseCode);
 		
 		return "redirect:myGuestHouseList";
 	}
