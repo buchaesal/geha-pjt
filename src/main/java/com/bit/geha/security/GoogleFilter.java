@@ -44,6 +44,7 @@ public class GoogleFilter extends OAuth2ClientAuthenticationProcessingFilter {
         memberDto.setId(map.get("email"));
         memberDto.setMemberName(map.get("name"));
         memberDto.setPassword("socialMember");
+        memberDto.setGender("F");
        
         final UsernamePasswordAuthenticationToken authenticationToken = 
         		service.doAuthentication(memberDto); // SocialService를 이용해서 인증 절차 진행

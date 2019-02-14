@@ -60,7 +60,8 @@ p {
 					<tr th:each="likeDto : ${likeList}" align="center">
 
 						<td><img class="center"
-							src="../img/portfolio/thumbnails/1.jpg" width="120px"
+							th:src="@{'/gehaImg/'+${likeDto.guestHouseCode}+'/'+
+							${likeDto.savedName}}" width="120px"
 							height="100px">
 
 							<div class="free">

@@ -44,17 +44,25 @@ public class MyPageController {
 	MemberDao memberDao;
 	
 	//예약내역
-	@RequestMapping(value="/bookingList")
-	public void bookingList(Model model, HttpSession session, Authentication auth) {
+	@GetMapping(value="/bookingList")
+	public void bookingList(Model model, HttpSession session, Authentication auth,
+			@ModelAttribute("cri") AdminPageCriteria cri) {
 		log.info("bookingList()");
+		cri.setPerPageNum(5);
+		
 		
 		//로그인 계정 가져오기
 		memberService.getSession(auth,session);
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
 		
-		model.addAttribute("bookingList", myPageDao.getBookingListByMemberCode(memberCode));
+		//페이징
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(myPageDao.getBookingListTotal(memberCode));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("bookingList", myPageDao.getBookingListByMemberCode(cri,memberCode));
 		model.addAttribute("reviewList", myPageDao.getReviewListByMemberCode(memberCode));
-		model.addAttribute("memberName", myPageDao.getMemberName(memberCode));
 	}
 	
 	//취소요청

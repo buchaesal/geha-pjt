@@ -171,7 +171,13 @@ function search(){
 			
 }
 function authSelect(auth){
-	window.location.href="/adminPage/adminPage?auth="+auth;
+	var type = [[${pageMaker.cri.type}]];
+	var keyword = [[${pageMaker.cri.keyword}]];
+	if(keyword!==null){
+	window.location.href="/adminPage/adminPage?type="+type+"&auth="+auth+"&keyword="+keyword;
+	}else{
+		window.location.href="/adminPage/adminPage?auth="+auth;
+	}
 }
 
 </script>
@@ -267,7 +273,7 @@ border-bottom: 2px solid lightgray;
 						
 				<button class="btn btn-info waves-effect" onclick="changeAdmin()">관리자 임명</button>
 				<button class="btn btn-info waves-effect" onclick="changeUser()">강등</button>
-				<button class="btn btn-info waves-effect" onclick="location.href='/adminPage/adminPage?auth='">목록</button>
+				<button class="btn btn-info waves-effect" onclick="location.href='/adminPage/adminPage?auth='">전체목록</button>
 				</div>
 				
 				 <!-- 게시판 하단의 페이징 버튼 -->
