@@ -223,7 +223,7 @@
             </table>
             <br><br>
             <input type="button" value="취소" onclick="history.back()">
-            <input type="button" value="삭제">
+            <a th:href="@{deleteGuestHouse(guestHouseCode=${guestHouseCode})}">삭제</a>
             <input id="modifyGuestHouseBtn" type="button" value="수정하기">
          </form>
 
