@@ -39,7 +39,10 @@ $(function() {
 });
 
 function showHostInfo(){
+	
 	var memberCode = event.srcElement.name;
+	var today = new Date().toISOString().split("T")[0];
+	var tomorrow = new Date((new Date()).valueOf() + 1000*3600*24).toISOString().split("T")[0];
 	
 	$.ajax({
 		type : "POST",
@@ -52,15 +55,17 @@ function showHostInfo(){
 		},
 		success : function(data) {
 			var result="";
-		$(data).each(function(){
+			console.log(today)
+		 $(data).each(function(){
 			if(this.status=='승인완료'){
 				$("#noNow").hide();
-			result+="<tr><td><a  target='_blank' href='/room/roomInfo?guestHouseCode="
-					+this.guestHouseCode+"'>"
+			result+='<tr><td><a target="_blank" href="/room/roomInfo?guestHouseCode='
+					+this.guestHouseCode+'&bookingStart='+today+'&bookingEnd='
+					+tomorrow+'&bookingNumber=1">'
 					+this.guestHouseName+"</a></td><td>"
 					+this.approvalDate+"</td></tr>";
 			}
-		});
+		}); 
 		$("#guestHouseList").html(result);
 	 	$("#hostName").text(data[0].memberName);
 		$("#hostId").text(data[0].id);
