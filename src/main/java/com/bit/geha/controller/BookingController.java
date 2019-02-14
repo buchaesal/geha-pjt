@@ -34,8 +34,8 @@ public class BookingController {
 	@RequestMapping("/bookingPage")
 	public void loadBookingPage(Model model, int roomCode
 			, @RequestParam(value="bookingStart") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date bookingStart
-			, @RequestParam(value="bookingEnd") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date bookingEnd,
-			 HttpSession session, Authentication auth) {
+			, @RequestParam(value="bookingEnd") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date bookingEnd
+			, int bookingNumber, HttpSession session, Authentication auth) {
 		log.info("loadBookingPage()");
 		RoomDto roomDto = bookingDao.getRoom(roomCode);
 		log.info("roomDto: " + roomDto);
