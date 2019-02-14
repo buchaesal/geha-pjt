@@ -1,27 +1,26 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="fragments/main_layout">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorator="fragments/main_layout">
+
 <head>
-<!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
-<!-- default header name is X-CSRF-TOKEN -->
-<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
+	<!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
+	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>GEHA-방찾기</title>
+	<title>GEHA-방찾기</title>
 
-<!-- jquery ui-->
-<link rel="stylesheet" href="/css/jquery-ui.min.css" />
+	<!-- jquery ui-->
+	<link rel="stylesheet" href="/css/jquery-ui.min.css" />
 
-<!-- datepicker (min쓰면 안됨) -->
-<link rel="stylesheet" href="/css/datepicker.css" />
+	<!-- datepicker (min쓰면 안됨) -->
+	<link rel="stylesheet" href="/css/datepicker.css" />
 
-<style>
-	@font-face {
+	<style>
+		@font-face {
 		font-family: 'S-CoreDream-3Light';
 		src: url('fonts/SCDream3.otf') format('opentype');
 		font-weight: normal;
@@ -69,19 +68,19 @@
  	button.resetStyle {
  		position: static;
 		border: 0;
-	    top: 25px;
-	    right: 0;
-	    width: 24px;
-	    height: 24px;
-	    text-indent: -9999px;
+		top: 25px;
+		right: 0;
+		width: 24px;
+		height: 24px;
+		text-indent: -9999px;
  	}
 	button#down{
 		background: url(img/button/ico_minus.png) 50% 50% no-repeat;
-	    background-size: 20px auto;
+		background-size: 20px auto;
 	}
 	button#up{
 		background: url(img/button/ico_plus.png) 50% 50% no-repeat;
-	    background-size: 20px auto;
+		background-size: 20px auto;
 	}
 	button:disabled{
 		opacity: 0.2;
@@ -114,18 +113,18 @@
  	
  	@media (min-width: 768px){
 		.nav-tabs.nav-justified>li>a {
-		    border-bottom: 1px solid #ddd;
-		    border-radius: 4px;
-	        margin-bottom: 0;
-	        margin-left: 1.5rem;
-	        margin-right: 1.5rem;
+			border-bottom: 1px solid #ddd;
+			border-radius: 4px;
+			margin-bottom: 0;
+			margin-left: 1.5rem;
+			margin-right: 1.5rem;
 		}
 		.nav-tabs.nav-justified>li.active>a {
 			border-bottom: 1px solid rgba(255,255,255,0);
 		}
  	}
  	.nav-tabs.nav-justified>li {
-	    word-break: keep-all;
+		word-break: keep-all;
 	}
  	.nav-tabs.nav-justified>li>a {
 		color: black;
@@ -134,7 +133,7 @@
 	.nav-tabs.nav-justified>.active>a,
 	.nav-tabs.nav-justified>.active>a:focus,
 	.nav-tabs.nav-justified>.active>a:hover {
-	    border: 1px solid #f6931f;
+		border: 1px solid #f6931f;
 	}
  	.nav-tabs.nav-justified>li>a:hover {
 		cursor: pointer;
@@ -169,28 +168,28 @@
 	  border-top-color: #f6931f;
 	  border-radius: 100%;
 	  -webkit-animation: spin 800ms infinite linear;
-	          animation: spin 800ms infinite linear;
+			  animation: spin 800ms infinite linear;
 	}
 	
 	@-webkit-keyframes "spin" {
 	  from {
-	    -webkit-transform: rotate(0deg);
-	            transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+				transform: rotate(0deg);
 	  }
 	  to {
-	    -webkit-transform: rotate(359deg);
-	            transform: rotate(359deg);
+		-webkit-transform: rotate(359deg);
+				transform: rotate(359deg);
 	  }
 	}
 	
 	@keyframes "spin" {
 	  from {
-	    -webkit-transform: rotate(0deg);
-	            transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+				transform: rotate(0deg);
 	  }
 	  to {
-	    -webkit-transform: rotate(359deg);
-	            transform: rotate(359deg);
+		-webkit-transform: rotate(359deg);
+				transform: rotate(359deg);
 	  }
 	}
 
@@ -210,8 +209,8 @@
 		padding-top:0.7rem;
 		height:6rem;
 		text-align:left;
-        word-break: keep-all;
-        word-wrap: break-word;
+		word-break: keep-all;
+		word-wrap: break-word;
 	}
 	.content.yellowline{
 		color:rgba(255,167,38,1);
@@ -239,271 +238,280 @@
 		margin-top: 1rem;
 		margin-bottom:1rem;
 	}
+
+	.wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+	.wrap * {padding: 0;margin: 0;}
+	.wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+	.wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+	.info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+	.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+	.info .close:hover {cursor: pointer;}
+	.info .body {position: relative;overflow: hidden;}
+	.info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+	.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+	.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+	.info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+	.info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+	.info .link {color: #5085BB;}
+
 </style>
 </head>
+
 <body>
-
-<div layout:fragment="content">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-3 col-sm-4 searcharea">
-				<form role="form" action="#">
-					<div class="form-group" style="margin-top:20px">
-						<label for="date">날짜</label>
-						<input id="date" type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en" class="datepicker-here form-control"/>
-						<input type="hidden" id="startdate" name="bookingStart" />
-						<input type="hidden" id="enddate" name="bookingEnd" />
-					</div>
-					
-					<hr />
-					
-					<div class="form-group">
-						<label for="keywordsearch">키워드 검색</label>
-						<small>(지역, 이름)</small>
-						<input type="text" id="keywordsearch" name="keyword" class="form-control" placeholder="ex) 강남, 월드하우스"/>				
-					</div>
-					
-					<hr />
-					
-					<div class="form-group">
-						<div class="col-xs-6" style="padding-left:0px;padding-right:0px"><strong>인원</strong></div>
-						<div class="col-xs-6" style="padding-left:0px;padding-right:0px">
-							<button type="button" id="down" class="resetStyle" disabled>-</button>
-							<span id="person">1</span>
-							<input type="hidden" name="bookingNumber" class="person" value="1" />
-							<button type="button" id="up" class="resetStyle">+</button>
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 col-sm-4 searcharea">
+					<form role="form" action="#">
+						<div class="form-group" style="margin-top:20px">
+							<label for="date">날짜</label>
+							<input id="date" type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en" class="datepicker-here form-control" />
+							<input type="hidden" id="startdate" name="bookingStart" />
+							<input type="hidden" id="enddate" name="bookingEnd" />
 						</div>
-					</div>
-					
+
+						<hr />
+
+						<div class="form-group">
+							<label for="keywordsearch">키워드 검색</label>
+							<small>(지역, 이름)</small>
+							<input type="text" id="keywordsearch" name="keyword" class="form-control" placeholder="ex) 강남, 월드하우스" />
+						</div>
+
+						<hr />
+
+						<div class="form-group">
+							<div class="col-xs-6" style="padding-left:0px;padding-right:0px"><strong>인원</strong></div>
+							<div class="col-xs-6" style="padding-left:0px;padding-right:0px">
+								<button type="button" id="down" class="resetStyle" disabled>-</button>
+								<span id="person">1</span>
+								<input type="hidden" name="bookingNumber" class="person" value="1" />
+								<button type="button" id="up" class="resetStyle">+</button>
+							</div>
+						</div>
+
+						<hr />
+						<hr />
+
+						<div class="form-group">
+							<strong>가격</strong>
+							<small>(1인 1박 기준)</small>
+							<span id="amount" style="color:#f6931f; font-weight:bold;"></span><br /><br />
+							<div id="slider-range" class="slider_align ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
+							<input type="hidden" id="minprice" name="minprice" />
+							<input type="hidden" id="maxprice" name="maxprice" />
+						</div>
+
+						<div class="checkbox">
+							<p><strong>성별</strong></p>
+							<label class="col-xs-6">
+								<input type="checkbox" name="gender" value="f" />여성전용
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="gender" value="m" />남성전용
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="gender" value="n" />남녀공용
+							</label>
+						</div>
+
+						<br />
+						<br />
+
+						<div class="checkbox">
+							<p><strong>테마</strong></p>
+							<label class="col-xs-6">
+								<input type="checkbox" name="trip" value="1" />#관광
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="gourmet" value="1" />#맛집
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="shopping" value="1" />#쇼핑
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="businessTrip" value="1" />#출장
+							</label>
+						</div>
+
+						<br />
+						<br />
+
+						<div class="checkbox">
+							<p><strong>편의시설</strong></p>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="1" />세탁기
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="2" />주차장
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="3" />주방/식당
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="4" />엘리베이터
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="5" />취사가능
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="6" />전자레인지
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="7" />와이파이
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="8" />에어컨
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="9" />냉장고
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="10" />욕조
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="11" />드라이기
+							</label>
+							<label class="col-xs-6">
+								<input type="checkbox" name="facilities" value="12" />TV
+							</label>
+						</div>
+
+						<input type="hidden" id="sortInput" name="sort" value="rating" />
+
+						<button id="btn-search" type="button" class="btn btn-default btn-block btn-danger">검색</button>
+					</form>
+				</div>
+
+				<div class="col-md-9 col-sm-8 maparea">
+
+					<div id="map"></div>
+
 					<hr />
+
+					<ul id="sortBy" class="nav nav-tabs nav-justified">
+						<li id="rating" role="presentation" class="active"><a>평점 높은 순</a></li>
+						<li id="review" role="presentation"><a>리뷰 많은 순</a></li>
+						<li id="lowprice" role="presentation"><a>낮은 가격 순</a></li>
+						<li id="highprice" role="presentation"><a>높은 가격 순</a></li>
+					</ul>
+
 					<hr />
-					
-					<div class="form-group">
-						<strong>가격</strong>
-						<small>(1인 1박 기준)</small>
-						<span id="amount" style="color:#f6931f; font-weight:bold;"></span><br /><br />
-						<div id="slider-range" class="slider_align ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
-						<input type="hidden" id="minprice" name="minprice" />
-						<input type="hidden" id="maxprice" name="maxprice" />				
-					</div>
-					
-					<div class="checkbox">
-						<p><strong>성별</strong></p>
-						<label class="col-xs-6">
-							<input type="checkbox" name="gender" value="f" />여성전용
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="gender" value="m" />남성전용
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="gender" value="n" />남녀공용				
-						</label>
-					</div>
-					
-					<br />
-					<br />
-					
-					<div class="checkbox">
-						<p><strong>테마</strong></p>
-						<label class="col-xs-6">
-							<input type="checkbox" name="trip" value="1" />#관광
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="gourmet" value="1" />#맛집
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="shopping" value="1" />#쇼핑
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="businessTrip" value="1" />#출장				
-						</label>
-					</div>
-					
-					<br />
-					<br />
-					
-					<div class="checkbox">
-						<p><strong>편의시설</strong></p>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="1"/>세탁기
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="2"/>주차장
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="3"/>주방/식당
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="4"/>엘리베이터
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="5"/>취사가능
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="6"/>전자레인지
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="7"/>와이파이
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="8"/>에어컨
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="9"/>냉장고
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="10"/>욕조
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="11"/>드라이기
-						</label>
-						<label class="col-xs-6">
-							<input type="checkbox" name="facilities" value="12"/>TV
-						</label>
-					</div>
-					
-					<input type="hidden" id="sortInput" name="sort" value="rating"/>
-					
-					<button id="btn-search" type="button" class="btn btn-default btn-block btn-danger">검색</button>
-				</form>
-			</div>
-			
-			<div class="col-md-9 col-sm-8 maparea">
-				
-				<div id="map"></div>
-				
-				<hr />
-				
-				<ul id="sortBy" class="nav nav-tabs nav-justified">
-				  <li id="rating" role="presentation" class="active"><a>평점 높은 순</a></li>
-				  <li id="review" role="presentation"><a>리뷰 많은 순</a></li>
-				  <li id="lowprice" role="presentation"><a>낮은 가격 순</a></li>
-				  <li id="highprice" role="presentation"><a>높은 가격 순</a></li>
-				</ul>
-				
-				<hr />
-				
-				<div id="searchresult"> <!-- handlebars template target -->
-					<div class="wrap-loading"></div>				
-				</div> <!-- searchresult end -->
-			</div> <!-- end maparea -->
-		</div> <!-- end row -->
-	</div> <!-- end container -->
-</div> <!-- end layout content -->
 
-<div layout:fragment="script">
-<!-- script start -->
-	<!-- jquery/ui -->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/jquery/jquery-ui.min.js"></script>
-	<script src="js/jquery.serializeObject.min.js"></script>
-	
-	<!-- handlebars -->
-	<script src="js/handlebars4.js"></script>
-	
-	<!-- datepicker -->
-	<script src="js/datepicker.js"></script>
-	<script src="js/i18n/datepicker.en.js"></script>
-	
-	<!-- bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
-	
-	<!-- daum map -->
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e82dcfc69e95758ed76053beed11845a&libraries=services,clusterer"></script>
+					<div id="searchresult">
+						<!-- handlebars template target -->
+						<div class="wrap-loading"></div>
+					</div> <!-- searchresult end -->
+				</div> <!-- end maparea -->
+			</div> <!-- end row -->
+		</div> <!-- end container -->
+	</div> <!-- end layout content -->
 
-	<script>
-	$(function(){
-		
-		/* 시큐리티 + 에이젝스 에러 방지 설정 */
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		$(document).ajaxSend(function(e, xhr, options) {
-			xhr.setRequestHeader(header, token);
-		});
-		
-		/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 / 세미콜론(;)넣지 않음 주의 */
-		$(".datepicker-here").datepicker({
-			language: 'en',
-			minDate: new Date(),
-			range: true,
-			autoClose: true,
-			onSelect: function onSelect(fd, date){
-				$("#startdate").val(fd.split(" ~ ")[0])
-				$("#enddate").val(fd.split(" ~ ")[1])
-			}
-		});
-		
-		/* slider-range */
-		$("#slider-range").slider({
-			range: true,
-			min: 10000,
-			max: 100000,
-			step: 10000,
-			values: [ 10000, 100000 ],
-			slide: function( event, ui ) {
-			  $("#amount").text( Math.floor(ui.values[0]/10000) + "만원 ~ " + Math.floor(ui.values[1]/10000) + "만원");
-			  $("#minprice").val(ui.values[0]);
-			  $("#maxprice").val(ui.values[1]);
-			}
-		});
-	  	
-		$("#amount").text( $( "#slider-range" ).slider( "values", 0 )/10000 + "만원" +
-		 	  		" ~ " + $( "#slider-range" ).slider( "values", 1 )/10000 + "만원" );
-		$("#minprice").val($( "#slider-range" ).slider( "values", 0 ));
-		$("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
-	    
-		/* 인원수 버튼 구현 */
-		var spanPerson = $("span#person");
-		var inputPerson = $("input.person");
-		var buttonUp = $("button#up");
-		var buttonDown = $("button#down");
+	<div layout:fragment="script">
+		<!-- script start -->
+		<!-- jquery/ui -->
+		<script src="vendor/jquery/jquery.min.js"></script>
+		<script src="vendor/jquery/jquery-ui.min.js"></script>
+		<script src="js/jquery.serializeObject.min.js"></script>
 
-		var personCnt = 1;
-	    
-		buttonUp.click(function(){
-			plusCnt();
-			validCntAndPut();
-		});
-	    
-		buttonDown.click(function(){
-			minusCnt();
-			validCntAndPut();
-		});
-	    
-		function plusCnt(){
-			personCnt++;
-		}
-		function minusCnt(){
-			personCnt--;
-		}
-		
-		function validCntAndPut(){
-			
-			if (personCnt >= 10){
-			 personCnt = 10;
-			 buttonUp.attr("disabled", true);
-			} else {
-			 buttonUp.attr("disabled", false);
-			}
-		
-			if (personCnt <= 1){
-			 personCnt = 1;
-			 buttonDown.attr("disabled", true);
-			} else {
-			 buttonDown.attr("disabled", false);
-			}
-			
-			spanPerson.html(personCnt);
-			inputPerson.val(personCnt);
-		}
-	});
-	</script>
-	<script id="template" type="text/x-handlebars-template">
-		{{#each .}}
+		<!-- handlebars -->
+		<script src="js/handlebars4.js"></script>
+
+		<!-- datepicker -->
+		<script src="js/datepicker.js"></script>
+		<script src="js/i18n/datepicker.en.js"></script>
+
+		<!-- bootstrap -->
+		<script src="js/bootstrap.min.js"></script>
+
+		<!-- daum map -->
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e82dcfc69e95758ed76053beed11845a&libraries=services,clusterer"></script>
+
+		<script>
+			$(function(){
+				
+				// 시큐리티 + 에이젝스 에러 방지 설정
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+				$(document).ajaxSend(function(e, xhr, options) {
+					xhr.setRequestHeader(header, token);
+				});
+				
+				// 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 / 세미콜론(;)넣지 않음 주의
+				$(".datepicker-here").datepicker({
+					language: 'en',
+					minDate: new Date(),
+					range: true,
+					autoClose: true,
+					onSelect: function onSelect(fd, date){
+						$("#startdate").val(fd.split(" ~ ")[0])
+						$("#enddate").val(fd.split(" ~ ")[1])
+					}
+				});
+				
+				// slider-range
+				$("#slider-range").slider({
+					range: true,
+					min: 10000,
+					max: 100000,
+					step: 10000,
+					values: [ 10000, 100000 ],
+					slide: function( event, ui ) {
+					$("#amount").text( Math.floor(ui.values[0]/10000) + "만원 ~ " + Math.floor(ui.values[1]/10000) + "만원");
+					$("#minprice").val(ui.values[0]);
+					$("#maxprice").val(ui.values[1]);
+					}
+				});
+				
+				$("#amount").text( $( "#slider-range" ).slider( "values", 0 )/10000 + "만원" +
+							" ~ " + $( "#slider-range" ).slider( "values", 1 )/10000 + "만원" );
+				$("#minprice").val($( "#slider-range" ).slider( "values", 0 ));
+				$("#maxprice").val($( "#slider-range" ).slider( "values", 1 ));
+				
+				// 인원수 버튼 구현
+				var spanPerson = $("span#person");
+				var inputPerson = $("input.person");
+				var buttonUp = $("button#up");
+				var buttonDown = $("button#down");
+
+				var personCnt = 1;
+				
+				buttonUp.click(function(){
+					personCnt++;
+					validCntAndPut();
+				});
+				buttonDown.click(function(){
+					personCnt--;
+					validCntAndPut();
+				});
+				
+				var validCntAndPut = function(){
+					
+					if (personCnt >= 10){
+						personCnt = 10;
+						buttonUp.attr("disabled", true);
+					} else {
+						buttonUp.attr("disabled", false);
+					}
+				
+					if (personCnt <= 1){
+						personCnt = 1;
+						buttonDown.attr("disabled", true);
+					} else {
+						buttonDown.attr("disabled", false);
+					}
+					
+					spanPerson.html(personCnt);
+					inputPerson.val(personCnt);
+				}
+			});
+		</script>
+		<script id="template" type="text/x-handlebars-template">
+			{{#each .}}
 			<div class="housewrapper col-lg-4 col-md-6 col-xs-12">
 				<a href="/room/roomInfo?guestHouseCode={{guestHouseCode}}">
 					<div class="houseborder">
-						<div class="houseimage" style="background-image:url({{originalName}});">
+						<div class="houseimage" style="background-image:url(/gehaImg/{{guestHouseCode}}/{{savedName}});">
 						</div>
 						<div class="contentwrapper">
 							<div class="content gehaname">
@@ -535,196 +543,264 @@
 					</div>
 				</a>
 			</div> <!-- housewrapper end -->
-		{{/each}}
-	</script>
-	<script> /* handlebars and daum maps api */
+			{{/each}}
+		</script>
+		<script>
+			// handlebars and daum maps api
 
-	var gehaArr = [];
-	var gehaObj = {};
-	
-	/* daum map */
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = { 
-        center: new daum.maps.LatLng(37.54477858829654, 127.00561259855127), // 지도의 중심좌표
-        level: 8 // 지도의 확대 레벨
-    };
-	var map = new daum.maps.Map(mapContainer, mapOption);
-	// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
-	var zoomControl = new daum.maps.ZoomControl();
-	map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
-	
-	function setZoomable(zoomable){
-		map.setZoomable(zoomable);
-	}
-	
-	/* map을 클릭하면 휠로 줌 가능 */
-	daum.maps.event.addListener(map, 'click', function(){
-		console.log("map clicked");
-		setZoomable(true);
-	});
-	/* map을 드래그하기 시작하면 휠로 줌 가능*/
-	daum.maps.event.addListener(map, 'dragstart', function(){
-		console.log("map dragstarted");
-		setZoomable(true);
-		getMapInfo();
-	});
-	
-	/* default */
-	setZoomable(false);
-	
-	/* mouse가 map을 벗어나면 휠로 줌 불가능 */
-	daum.maps.event.addListener(map, 'mouseout', function(){
-		console.log("map mouseouted");
-		setZoomable(false);
-	});
-	
-	function getMapInfo() {
-	    // 지도의 현재 중심좌표를 얻어옵니다 
-	    var center = map.getCenter(); 
-	    
-	    // 지도의 현재 레벨을 얻어옵니다
-	    var level = map.getLevel();
-	    
-	    // 지도의 현재 영역을 얻어옵니다 
-	    var bounds = map.getBounds();
-	    
-	    // 영역의 남서쪽 좌표를 얻어옵니다 
-	    var swLatLng = bounds.getSouthWest(); 
-	    
-	    // 영역의 북동쪽 좌표를 얻어옵니다 
-	    var neLatLng = bounds.getNorthEast(); 
-		
-	    var message = '지도 중심좌표 \n위도 : ' + center.getLat() + '\n';
-	    message += '경도 : ' + center.getLng() + '\n';
-	    message += '지도 레벨 : ' + level + '\n';
-	    message += '지도의 남서쪽 좌표 : ' + swLatLng.getLat() + ', ' + swLatLng.getLng() + '\n';
-	    message += '북동쪽 좌표 : ' + neLatLng.getLat() + ', ' + neLatLng.getLng();
-	    
-	    console.log(message);
-	}
-	
-	$(function(){ // Virtual DOM => after document has been loaded
- 		
-		/* 검색 기본 날짜 설정 */
-		var getToday = new Date();
-		var getTomorrow = new Date();
-		getTomorrow.setDate(getTomorrow.getDate() + 1);
-		
-		var strToday = getToday.getFullYear() + '-' + lessThanTen(getToday.getMonth() + 1) + '-' + lessThanTen(getToday.getDate());
-		var strTomorrow = getTomorrow.getFullYear() + '-' + lessThanTen(getTomorrow.getMonth() + 1) + '-' + lessThanTen(getTomorrow.getDate());
-		
-		$('#date').val(strToday + ' ~ ' + strTomorrow);
-		$('#startdate').val(strToday);
-		$('#enddate').val(strTomorrow);
-		
-		function lessThanTen(d){
-			if (d < 10){
-				return '0'+d;
-			} else {
-				return d;
-			}
-		}
-		
-		/* handlebars ifOne helper for tags */
-		Handlebars.registerHelper('ifOne', function(a, opts) {
-		    if(a == 1)
-		        return opts.fn(this);
-		    else
-		        return opts.inverse(this);
-		});
-		
-		
-		function getData(){
+			// daum map
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+				mapOption = {
+					center: new daum.maps.LatLng(37.54477858829654, 127.00561259855127), // 지도의 중심좌표
+					level: 8 // 지도의 확대 레벨
+				};
+			var map = new daum.maps.Map(mapContainer, mapOption);
 			
-			var formData = $("form").serializeObject();
-			delete formData["_csrf"];
-			
-			/* 성별, 편의시설 하나만 선택할때 스트링으로 들어가는 것을 배열로 변경 */
-			if(typeof formData.gender =="string"){
-				formData.gender = [formData.gender];
+			// 지도 확대 축소를 제어할 수 있는  줌 컨트롤 생성
+			var zoomControl = new daum.maps.ZoomControl();
+			map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
+
+			function setZoomable(zoomable) {
+				map.setZoomable(zoomable);
 			}
-			if(typeof formData.facilities == "string"){
-				formData.facilities = [formData.facilities];
-			}
-			
-			$.ajax({
-			  url: "/searchgehainfo",
-			  type: "post",
-			  contentType: "application/json; charset=utf8",
-			  data: JSON.stringify(formData),
-			  dataType: "json",
-			  beforeSend: function(){
-				  $('.wrap-loading').addClass('loader');
-		      },
-		      complete: function(){
-		    	  $('.wrap-loading').removeClass('loader');
-		      }
-			})
-			.done(function(data){
-				var source = $("#template").html();
-				var template = Handlebars.compile(source);
-				$("#searchresult").html(template(data));
-			})
-			.done(function(data){
-				
-				var geocoder = new daum.maps.services.Geocoder();
-				
-				for(var i=0, len=data.length; i<len ; i++){
-					console.log(data[i].address);
-					
-					geocoder.addressSearch(data[i].address, function(result, status) {
-					     if (status === daum.maps.services.Status.OK) {
-							
-					    	var coords = new daum.maps.LatLng(result[0].y, result[0].x);
-							gehaArr.push(coords);
-							
-							console.log(gehaArr);
-							
-					    	gehaObj = {
-					    		ccc : gehaArr	
-					    	}
-					    	
-					    	console.log(gehaObj);
-					    	
-					    	var marker = new daum.maps.Marker({
-					            map: map,
-					            position: coords
-					        });
-					    }
-					});
-				}
-				
-				console.log(gehaArr);
-				
-			})
-			.fail(function(){
-				alert("failed");
+
+			daum.maps.event.addListener(map, 'click', function () {
+				console.log('map clicked');
+				setZoomable(true);
 			});
-		}
-		
- 		$("#btn-search").click(function(){
-			getData();
-		});
- 		$("#keywordsearch").keyup(function(e){
- 			if(e.keyCode == 13){
-	 			getData(); 				
- 			}
- 		});
-		
- 		getData();
- 		
-		$("#sortBy").delegate("li", "click", function(){
-			if($(this).attr("class") != 'active'){
-				$("#sortBy .active").removeClass();
-				$(this).addClass("active")
-				$("#sortInput").val($(this).attr("id"));
-				console.log($("#sortInput").val());
-				getData();
+
+			daum.maps.event.addListener(map, 'dragstart', function () {
+				console.log('map dragstarted');
+				setZoomable(true);
+				getMapInfo();
+			});
+
+			setZoomable(false);
+
+			daum.maps.event.addListener(map, 'mouseout', function () {
+				console.log('map mouseouted');
+				setZoomable(false);
+			});
+
+			function getMapInfo() {
+				var center = map.getCenter();
+				var level = map.getLevel();
+				var bounds = map.getBounds();
+				var swLatLng = bounds.getSouthWest();
+				var neLatLng = bounds.getNorthEast();
+
+				var message = '지도 중심좌표 \n위도 : ' + center.getLat() + '\n';
+				message += '경도 : ' + center.getLng() + '\n';
+				message += '지도 레벨 : ' + level + '\n';
+				message += '지도의 남서쪽 좌표 : ' + swLatLng.getLat() + ', ' + swLatLng.getLng() + '\n';
+				message += '북동쪽 좌표 : ' + neLatLng.getLat() + ', ' + neLatLng.getLng();
+
+				console.log(message);
 			}
-		});
-	});
-	</script>
-	<!-- script end -->
-</div> <!-- end layout script -->
+
+			var markers = [];
+			var overlays = [];
+			var clickedOverlay = null;
+
+			function getData() {
+
+				var formData = $('form').serializeObject();
+				delete formData['_csrf'];
+
+				// 성별, 편의시설 하나만 선택할때 스트링으로 들어가는 것을 배열로 변경
+				if (typeof formData.gender == 'string') {
+					formData.gender = [formData.gender];
+				}
+				if (typeof formData.facilities == 'string') {
+					formData.facilities = [formData.facilities];
+				}
+
+				$.ajax({
+					url: '/searchgehainfo',
+					type: 'post',
+					contentType: 'application/json; charset=utf8',
+					data: JSON.stringify(formData),
+					dataType: 'json',
+					beforeSend: function () {
+						$('.wrap-loading').addClass('loader');
+					},
+					complete: function () {
+						$('.wrap-loading').removeClass('loader');
+						$('.wrap-loading').hide();
+					}
+				})
+				.done(function (data) {
+					// handlebars 템플릿 주입
+					var source = $('#template').html();
+					var template = Handlebars.compile(source);
+					$('#searchresult').html(template(data));
+				})
+				.done(function (data) {
+					// 마커 & 오버레이
+					markers.forEach(function (marker) { marker.setMap(null); });
+					markers.length = 0 // 마커 배열 초기화
+					overlays.forEach(function (overlay) { overlay.setMap(null); });
+					overlays.length = 0 // 오버레이 배열 초기화
+
+					var geocoder = new daum.maps.services.Geocoder();
+					var bounds = new daum.maps.LatLngBounds();
+					
+					data.forEach(function (x, i) {
+						geocoder.addressSearch(data[i].address, function (result, status) {
+							if (status === daum.maps.services.Status.OK) {
+								// markers가 하나라도 있으면
+								// hide 하고 show
+
+								var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+
+								// 마커를 생성하고 배열에 삽입
+								var marker = new daum.maps.Marker({
+									map: map,
+									position: coords
+								});
+								markers.push(marker);
+
+								var customContent = document.createElement('div');
+								customContent.className = 'wrap';
+
+								var info = document.createElement('div');
+								info.className = 'info';
+
+								var contentTitle = document.createElement('div');
+								contentTitle.className = 'title';
+								contentTitle.textContent = data[i].guestHouseName;
+
+								var closeBtn = document.createElement('div');
+								closeBtn.className = 'close';
+								closeBtn.title = '닫기';
+
+								closeBtn.addEventListener("click", function(){ 
+									CustomOverlay.setMap(null)
+								});
+
+								var contentBody = document.createElement('div');
+								contentBody.className = 'body';
+
+								var imgDiv = document.createElement('div');
+								imgDiv.className = 'img';
+
+								var imgTag = document.createElement('img');
+								imgTag.src = '/gehaImg/'+data[i].guestHouseCode+'/'+data[i].savedName;
+								imgTag.width = 73;
+								imgTag.height = 70;
+
+								var contentDesc = document.createElement('div');
+								contentDesc.className = 'desc';
+
+								var ellipsis = document.createElement('div');
+								ellipsis.className = 'ellipsis';
+								ellipsis.textContent = data[i].address;
+
+								var aDiv = document.createElement('div');
+								var aTag = document.createElement('a');
+								aTag.href = '/room/roomInfo?guestHouseCode='+data[i].guestHouseCode;
+								aTag.target = '_blank';
+								aTag.className = 'link';
+								aTag.textContent = '게스트하우스 정보 보기';
+
+								customContent.appendChild(info);
+									info.appendChild(contentTitle);
+										contentTitle.appendChild(closeBtn);
+											closeBtn.appendChild(contentBody);
+									info.appendChild(contentBody);
+										contentBody.appendChild(imgDiv);
+											imgDiv.appendChild(imgTag);
+										contentBody.appendChild(contentDesc);
+											contentDesc.appendChild(ellipsis);
+											contentDesc.appendChild(aDiv);
+												aDiv.appendChild(aTag);
+								
+								var CustomOverlay = new daum.maps.CustomOverlay({
+									map: map,
+									zIndex: 3,
+									position: marker.getPosition()
+								});
+								
+								daum.maps.event.addListener(marker, 'click', function() {
+									if (clickedOverlay){
+										clickedOverlay.setMap(null);
+									}
+									CustomOverlay.setMap(map);
+									CustomOverlay.setContent(customContent);
+									
+									clickedOverlay = CustomOverlay;
+								});
+								overlays.push(CustomOverlay);
+								
+								bounds.extend(coords);
+								map.setBounds(bounds);
+							} // if status ok end
+						}); // geocoder address search end
+
+					}); // forEach end
+				})
+				.fail(function () {
+					alert('failed');
+				}); // ajax end
+			} // function getData end
+
+			$(function () { // document onload
+
+				// 검색 기본 날짜 설정
+				var getToday = new Date();
+				var getTomorrow = new Date();
+				getTomorrow.setDate(getTomorrow.getDate() + 1);
+
+				var strToday = getToday.getFullYear() + '-' + lessThanTen(getToday.getMonth() + 1) + '-' + lessThanTen(getToday.getDate());
+				var strTomorrow = getTomorrow.getFullYear() + '-' + lessThanTen(getTomorrow.getMonth() + 1) + '-' + lessThanTen(
+					getTomorrow.getDate());
+
+				$('#date').val(strToday + ' ~ ' + strTomorrow);
+				$('#startdate').val(strToday);
+				$('#enddate').val(strTomorrow);
+
+				function lessThanTen(d) {
+					if (d < 10) {
+						return '0' + d;
+					} else {
+						return d;
+					}
+				}
+
+				// handlebars ifOne helper for tags
+				Handlebars.registerHelper('ifOne', function (a, opts) {
+					if (a == 1) {
+						return opts.fn(this);
+					} else {
+						return opts.inverse(this);
+					}
+				});
+
+				$('#btn-search').click(function () {
+					getData();
+				});
+				$('#keywordsearch').keyup(function (e) {
+					if (e.keyCode == 13) {
+						getData();
+					}
+				});
+
+				getData();
+
+				// 정렬 버튼 이벤트 위임으로 등록
+				$('#sortBy').delegate('li', 'click', function () {
+					if ($(this).attr('class') != 'active') {
+						$('#sortBy .active').removeClass('active');
+						$(this).addClass('active')
+						$('#sortInput').val($(this).attr('id'));
+						console.log($('#sortInput').val());
+						getData();
+					}
+				});
+			}); // document onload end
+		</script>
+		<!-- script end -->
+	</div> <!-- end layout script -->
 </body>
+
 </html>

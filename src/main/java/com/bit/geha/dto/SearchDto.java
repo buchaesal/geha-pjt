@@ -16,6 +16,6 @@ public class SearchDto {
 	private Integer shopping;
 	private Integer reviewCnt;
 	private String address;
-	private String originalName;
+	private String savedName;
 	
 }

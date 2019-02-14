@@ -56,12 +56,15 @@ public interface HostPageDao {
 	public void modifyMainImage(FileDto img);
 	public void modifyRoom(RoomDto roomDto);
 	
+	
+	//게스트하우스 삭제하기
 	@Delete("DELETE FROM file_tb WHERE guestHouseCode=#{guestHouseCode} AND roomCode=#{roomCode}")
 	public void deleteImgs(int guestHouseCode, int roomCode);
 	@Delete("DELETE FROM guestHouse_has_facility_tb WHERE guestHouseCode=#{guestHouseCode}")
 	public void deleteFacilities(int guestHouseCode);
 	public void deleteRooms(List<Integer> roomCodeList);
-	
+	@Delete("DELETE FROM guestHouse_tb WHERE guestHouseCode=#{guestHouseCode}")
+	public void deleteGuestHouse(int guestHouseCode);
 	
 	
 	//회원예약내역
