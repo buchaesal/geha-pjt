@@ -16,15 +16,14 @@
 
 <link href="/css/swiper.min.css" rel="stylesheet">
 <link href="/css/readmore.css" rel="stylesheet">
-<link href="/css/datepicker.css" rel="stylesheet" type="text/css">
 <link href="//s.w.org/wp-includes/css/dashicons.css?20150710" rel="stylesheet" type="text/css">
 <link href="/css/like.css" rel="stylesheet">
 <style >
 
 	.jcontent{
-    height: 100%;
+
     width: 1024px;
-    margin: 112px 200px 0 150px;
+    margin: 112px 200px 0 250px;
 	}
     .swiper-container .gallery-top {
       background: #000;
@@ -35,20 +34,21 @@
       padding: 0;
     }
     .swiper-container {
-      width: 30%;
+      width: 33%;
       height: 450px;
       margin-left: auto;
       margin-right: auto;
     }
-
+	
     
     .swiper-slide {
       background-size: cover;
       background-position: center;
+      width:247px;
     }
     .gallery-top {
       height: 100%;
-      width: 30%;5
+      width: 30%;
     }
     .gallery-thumbs {
       height: 20%;
@@ -67,7 +67,7 @@
 
 	.top-container{
 		 width: 100%;
- 		 height: 70%;
+ 		 height: 570px;
  		 position: relative;
  		 margin-left: 78px;
 	}
@@ -408,33 +408,17 @@ th, td {
 	<div class="top-container">
 		<div class="left">
 			  <div class="swiper-container gallery-top" style="width: 600px">
-			    <div class="swiper-wrapper">
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/2/ )"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/1/ )"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/3/ )"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/4/ )"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/5/ )"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/6/ )"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/7/ )"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/8/ )"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/9/ )"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/10/ )"></div>
+			    <div class="swiper-wrapper" >
+			      <div class="swiper-slide" th:if="${gehaImg.roomCode} == 0" th:each="gehaImg,stat:${gehaImg}"  th:style="|background-image:url(/gehaImg/${gehaImg.guestHouseCode}/${gehaImg.savedName})|"></div>
+
 			    </div>
 			    <div class="swiper-button-next swiper-button-white"></div>
 			    <div class="swiper-button-prev swiper-button-white"></div>
 			  </div>
 			  <div class="swiper-container gallery-thumbs">
-			    <div class="swiper-wrapper ">
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/2/)"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/1/)"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/3/)"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/4/)"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/5/)"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/6/)"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/7/)"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/8/)"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/9/)"></div>
-			      <div class="swiper-slide" style="background-image:url(http://lorempixel.com/1200/1200/nature/10/)"></div>
+			  
+			    <div class="swiper-wrapper " >
+			      <div class="swiper-slide" th:if="${gehaImg.roomCode} == 0" th:each="gehaImg,stat:${gehaImg}" th:style="|background-image:url(/gehaImg/${gehaImg.guestHouseCode}/${gehaImg.savedName})|"></div>
 			    </div>
 			  </div>
 			</div>
@@ -474,82 +458,65 @@ th, td {
     		<li class="active"><a data-toggle="tab" href="#home" >객실안내/예약</a></li>
     		<li><a data-toggle="tab" href="#menu1" id="geha">숙소정보</a></li>
 		    <li><a data-toggle="tab" href="#menu2">리뷰</a></li>
-		    <li><a data-toggle="tab" href="#menu3">#태그</a></li>
 		</ul>
 
 			<div class="tab-content">
 			  	<!-- 객실안내/예약탭  -->
 			    <div id="home" class="tab-pane active">
-			      	<div class="picker">
-						<label>날짜 :</label> <input type="text" data-range="true" data-multiple-dates-separator=" ~ " data-language="en"	id= "date" class="datepicker-here"     />
- 						<label>인원수 : </label> <button type="button" id="down" class="resetStyle" disabled>-</button>
-							<span id="person">1</span>
-								<input type="hidden" name="bookingNumber" class="person" value="1" />
-							<button type="button" id="up" class="resetStyle">+</button>
-							<button id="btn-search" type="button" class="btn btn-default btn-danger" >검색</button>
+			      	<div class="picker" style="    font-size: 19px;">
+						<label>예약 날짜 :</label> <input type="text"  id= "date" readonly style="cursor:default; border: none; " />&nbsp;&nbsp;
+ 						<label>인원수 : </label><span id="person"></span>
+								
 					</div>
 
 					<br><br>
 					
-					
-					<article class="roomInfo" th:each="RoomDto,stat:${room}" th:object="${RoomDto}">
-					
-					
+					<article class="roomInfo" th:each="RoomDto,stat:${room}" >
 						<div class="room" style="border: 1px solid black; margin-top: 20px;">
 							  <div class="swiper-container" style="display: inline-block; height: 265px;">
 							    <div class="swiper-wrapper" >
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/1/)"></div>
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/2/)"></div>
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/3/)"></div>
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/4/)"></div>
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/5/)"></div>
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/6/)"></div>
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/7/)"></div>
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/8/)"></div>
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/9/)"></div>
-							      <div class="swiper-slide" id="roomslide" style="background-image:url(http://lorempixel.com/1200/1200/nature/10/)"></div>
+							      <div class="swiper-slide" id="roomslide" th:if="${RoomDto.roomCode == gehaImg.roomCode}" 
+							      th:each="gehaImg,stat:${gehaImg}" th:style="|background-image:url(/gehaImg/${gehaImg.guestHouseCode}/${RoomDto.roomCode}/${gehaImg.savedName});|"></div>
 							    </div>
 							    <!-- Add Pagination -->
 							    <div class="swiper-pagination"></div>
 							  </div>
 							  
-						<div class="rInfo">
-							<h1 th:text=*{roomName}></h1>
-							<div class="flexbox">
+
+						<div class="col-md-8">
+						
+						    <div class="row">
+						        <div class="col-md-8">
+						        	<h1 th:text=${RoomDto.roomName}></h1>				
 								<div class="fav-btn">
-									<input type="hidden" id="favmecode" name="favmecode" th:value="*{roomCode}">
-									<span class="favme dashicons dashicons-heart" th:name=|favme*{roomCode}| th:onclick=|like(*{roomCode})|></span>
+									<input type="hidden" id="favmecode" name="favmecode" th:value="${RoomDto.roomCode}">
+									<span class="favme dashicons dashicons-heart" th:name=|favme${RoomDto.roomCode}| th:onclick=|like(${RoomDto.roomCode})|></span>
 								</div>
-							</div>
-							<span th:text="|*{capacity}명|"></span>
-							<span th:text="|*{charge}원|"></span>
-							
-							<span th:switch=*{gender}>
-								<span th:case="F" th:text="여성전용"></span>
-								<span th:case="M" th:text="남성전용"></span>
-								<span th:case="N" th:text="남녀공용"></span>
-							</span>
-							
-				
-							  <!-- panel with buttons -->
-				            <div class="panel">
-				                <a th:href=|#login_form*{roomCode}|  id="login_pop">객실 이용 안내</a>
-				            </div>
-			            
-			        		<!-- popup form #1 -->
-			        		<a href="#x" class="overlay" th:id=|login_form*{roomCode}|></a>
-			        		<div class="popup">
-			           			<h2>객실 이용 안내</h2>
-								<p th:utext="*{roomInfo}"></p>
-			            		<a class="close" href="#close"></a>
-			       			</div>
+						
+						        </div>
+						        <div class="col-md-8">
+						        <span th:text=	"|${RoomDto.capacity}명|"></span>
+						        </div>
+						        <div class="col-md-8">
+						        <span th:text="|${	RoomDto.charge}원|"></span>
+						        </div>
+						        <div class="col-md-8">
+						        	<span th:switch=${RoomDto.gender}>
+										<span th:case="F" th:text="여성전용"></span>
+										<span th:case="M" th:text="남성전용"></span>
+										<span th:case="N" th:text="남녀공용"></span>
+									</span>
+								</div>
+								<div class="col-md-8">
+									<form action="/booking/bookingPage" onsubmit="return check()" >
+										<input type="hidden" id="startdate" name="bookingStart" />
+										<input type="hidden" id="enddate" name="bookingEnd" />
+										<input type="hidden" name="roomCode" th:value="${RoomDto.roomCode}">
+										<button class="btn btn-primary" type="submit">예약하기</button>
+									</form>
+								</div>
+						    </div>
 						</div>
-						<form action="/booking/bookingPage" onsubmit="return check()" >
-							<input type="hidden" id="startdate" name="bookingStart" />
-							<input type="hidden" id="enddate" name="bookingEnd" />
-							<input type="hidden" name="roomCode" th:value="*{roomCode}">
-							<button class="btn btn-primary" type="submit">예약하기</button>
-						</form>
 					</div>
 					</article>
 			
@@ -621,11 +588,6 @@ th, td {
 				              <ul class="pagination pagination-lg justify-content-center " id="paging"> </ul>
 			             </div>
 					</div>
-  
-				  	<!--  #태그 탭 -->
-				    <div id="menu3" class="tab-pane ">
-
-					</div>
     	</div>
   </div>
 
@@ -637,8 +599,6 @@ th, td {
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-		<script src="/js/datepicker.js"></script>
-		<script src="/js/i18n/datepicker.en.js"></script>
 		<!-- bootstrap -->
 		<script src="/js/bootstrap.min.js"></script>		
 		<script src="/js/readmore.js"></script>
@@ -668,7 +628,7 @@ th, td {
 			return true;
 		}
 	};
-	
+
 	var guestHouseCode = [[${geha.guestHouseCode}]];
 		//리뷰리스트 
  	 	function commentList(page){
@@ -726,7 +686,6 @@ th, td {
 		        data : {'endPage':endPage,'guestHouseCode':guestHouseCode},
 		        success : function(data){
 		       		var b =''
-		       		console.log(data)
   					if(data.prev == true){
 						b += '<li id="prev">'
 						b += '<a href="#menu2" onclick="commentList('+data.startPage+'-10); paging('+data.startPage+'-1); " >&laquo;</a></li>'
@@ -754,7 +713,11 @@ th, td {
 		function commentCheck(reviewNo) {
 			
 			  if($.trim($('[name=content_'+reviewNo+']').val()) == ''){
-				   alert("내용을 입력하십시오.");
+					swal({
+						  title: "내용을 입력하세요!",
+						  text: "You clicked the button!",
+						  icon: "error",
+						});
 				   $('[name=content_'+reviewNo+']').focus();
 				   return false;
 			}else {
@@ -778,7 +741,11 @@ th, td {
 		//댓글수정시 유효성
 		function commentUpCheck(reviewNo) {
 			  if($.trim($('[name=contentUp_'+reviewNo+']').val()) == ''){
-				   alert("내용을 입력하십시오.");
+					swal({
+						  title: "내용을 입력하세요!",
+						  text: "You clicked the button!",
+						  icon: "error",
+						});
 				   $('.replyContentUpdate').focus();
 				   return false;
 			}else {
@@ -856,7 +823,7 @@ th, td {
 					        type : 'post',
 					        data : {"roomCode" : roomCode, "memberCode" : memberCode}, 
 					        success : function(){
-								alert("좋아요취소");
+								
 					        }
 					    }); 
 					
@@ -867,7 +834,7 @@ th, td {
 				        type : 'post',
 				        data : {"roomCode" : roomCode, "memberCode" : memberCode}, 
 				        success : function(){
-				        	alert("좋아요");
+				        	
 				        }
 				    }); 
 				}
@@ -936,32 +903,13 @@ th, td {
 	 	
 	 	
  	$(function() {
- 		
- 	/*  datepicker start  */
-	var endDate = $("#enddate").val();
-	
-	/* 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 /세미콜론(;)넣지 않음 주의 */
-  	$(".datepicker-here").datepicker({
-		language: 'en',
-		minDate: new Date(),
-		range: true,
-		autoClose: true,
-		defaultDate : new Date(),
-	    onSelect: function onSelect(fd, date){
-	    	$("#startdate").val(fd.split(" ~ ")[0])
-	    	$("#enddate").val(fd.split(" ~ ")[1])
-	    }
-	});
-	  
-  
-		    var swiper = new Swiper('.swiper-container', {
+	    var swiper = new Swiper('.swiper-container', {
 		      pagination: {
 		        el: '.swiper-pagination',
 		        dynamicBullets: true,
 		      },
-		    });
+		    });	
 
-	
     		var galleryThumbs = new Swiper('.gallery-thumbs', {
     		 spaceBetween: 10,
     		 slidesPerView: 4,
@@ -972,7 +920,7 @@ th, td {
    		  	 watchSlidesProgress: true,
   		 	 });
 
-  		  var galleryTop = new Swiper('.gallery-top', {
+  		  	var galleryTop = new Swiper('.gallery-top', {
     		  spaceBetween: 10,
     		  loop:true,
      		 loopedSlides: 5, //looped slides should be the same
@@ -984,11 +932,7 @@ th, td {
      		   swiper: galleryThumbs,
      		 },
    		 });
-  		 /*  datepicker  end  */ 
-  		  
-  		  
-  		 /* tab start   */
-  		 
+
   		// Select all tabs
   		$('.nav-tabs a').click(function(){
   		  $(this).tab('show');
@@ -997,61 +941,18 @@ th, td {
   		$('.nav-tabs a[href="#home"]').tab('show')
   		/*  tab end */
   		
-  		/* 인원수 버튼 구현 */
-		var personCnt = 1;
-		var spanPerson = $("span#person");
-		var inputPerson = $("input.person");
-		var buttonUp = $("button#up");
-		var buttonDown = $("button#down");
-	    
-		buttonUp.click(function(){
-			plusCnt();
-			validCnt();
-			spanPerson.html(personCnt);
-			inputPerson.val(personCnt);
-		});
-	    
-		buttonDown.click(function(){
-			minusCnt();
-			validCnt();
-			spanPerson.html(personCnt);
-			inputPerson.val(personCnt);
-		});
-	    
-		function plusCnt(){
-			personCnt++;
-		}
-		function minusCnt(){
-			personCnt--;
-		}
-		function validCnt(){
-			if (personCnt >= 10){
-			 personCnt = 10;
-			 buttonUp.attr("disabled", true);
-			} else {
-			 buttonUp.attr("disabled", false);
-			}
-		
-			if (personCnt <= 1){
-			 personCnt = 1;
-			 buttonDown.attr("disabled", true);
-			} else {
-			 buttonDown.attr("disabled", false);
-			}
-		}
-
-
  	});
  	 </script>
  	 
  	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=604b4318a4a32385a61aae53dc5e199b&libraries=services"></script>
 	<script th:inline="javascript">
-		 $(document).click(function() { 
-		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-		  mapOption = {
-			    center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-			   level: 3 // 지도의 확대 레벨
-		  };  
+	$(document).ready(function() {
+		 $('#geha').on("click",function() { 
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			  	mapOption = {
+				    		center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+				 			level: 3 // 지도의 확대 레벨
+				  };  
 		// 지도를 생성합니다    
 		var map = new daum.maps.Map(mapContainer, mapOption); 
 		// 주소-좌표 변환 객체를 생성합니다
@@ -1074,34 +975,42 @@ th, td {
 			    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 			    map.setCenter(coords);
 			 } 
-		}); 
-	});
+		}) 
+	})
+	})
 
 	</script>
+	
 	<script>
-$(function(){
-	/* default 검색 데이터 설정 */
-	var getToday = new Date();
-	var getTomorrow = new Date();
-	getTomorrow.setDate(getTomorrow.getDate() + 1);
-	
-	var strToday = getToday.getFullYear() + '-' + lessThanTen(getToday.getMonth() + 1) + '-' + lessThanTen(getToday.getDate());
-	var strTomorrow = getTomorrow.getFullYear() + '-' + lessThanTen(getTomorrow.getMonth() + 1) + '-' + lessThanTen(getTomorrow.getDate());
-	
-	$('#date').val(strToday + ' ~ ' + strTomorrow);
-	$('#startdate').val(strToday);
-	$('#enddate').val(strTomorrow);
-	
-	function lessThanTen(d){
-		if (d < 10){
-			return '0'+d;
-		} else {
-			return d;
-		}
-	}
-
-});
-</script>
+		$(function(){
+			function getParameterByName(e) {
+				e = e.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+			    var regex = new RegExp("[\\?&]" + e + "=([^&#]*)"),
+			        results = regex.exec(location.search);
+			    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+			var bookingStart = getParameterByName('bookingStart');
+			var bookingEnd = getParameterByName('bookingEnd');
+			var bookingNumber = getParameterByName('bookingNumber');
+			
+			/* default 검색 데이터 설정 */
+			var getToday = bookingStart;
+			var getTomorrow = bookingEnd;
+		
+			$('#date').val(bookingStart + ' ~ ' + bookingEnd);
+			$('#startdate').val(bookingStart);
+			$('#enddate').val(bookingEnd);
+			$('#person').html(bookingNumber);
+			function lessThanTen(d){
+				if (d < 10){
+					return '0'+d;
+				} else {
+					return d;
+				}
+			}
+		
+		});
+	</script>
 	</div>
 </body>
 </html>

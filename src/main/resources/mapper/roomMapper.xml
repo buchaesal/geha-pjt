@@ -4,10 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bit.geha.dao.RoomDao">
 
-	<select id="selectGuestHouse" resultType="GuestHouseDto">
-		select * from
-		guestHouse_tb
-	</select>
 
 	<select id="gehaInfo" resultType="GuestHouseDto">
 		select	*
@@ -17,9 +13,33 @@
 	</select>
 
 	<select id="roomInfo" resultType="RoomDto">
-		select *
-		from room_tb
-		where guestHouseCode = #{guestHouseCode}
+	select rm.guestHouseCode, rm.roomCode, rm.roomName, rm.capacity, rm.gender, rm.charge,rm.roomInfo
+	from room_tb rm
+	   join
+	      (select t.roomCode, count(t.d) "countdate"
+	      from
+	      (select b.roomCode, a.d
+	      from 
+	         (select d
+	         from date_t
+	         where d between #{bookingStart} and #{bookingEnd}
+	         ) a
+	         cross join
+	         room_tb b
+	         left join booking_tb c
+	            on b.roomCode = c.roomCode
+	            and a.d between c.bookingStart and c.bookingEnd
+	      group by b.roomCode, b.roomName, b.capacity, a.d
+	      having b.capacity - ifnull(sum(c.bookingNumber), 0) >= #{bookingNumber}
+	      ) t
+	      group by t.roomCode
+	      having count(t.d) = TIMESTAMPDIFF(DAY, #{bookingStart}, #{bookingEnd}) + 1
+	      ) dp
+	   on rm.roomCode = dp.roomCode
+	   join guestHouse_tb gh
+	   on gh.guestHouseCode = rm.guestHouseCode
+	where gh.guestHouseCode = #{guestHouseCode}
+
 	</select>
 
 	<select id="facilityInfo" resultType="FacilityDto">
@@ -29,6 +49,15 @@
 		where a.guestHouseCode = #{guestHouseCode}
 		and b.facilityCode = a.facilityCode
 		
+	</select>
+	<select id="gehaImg" resultType="FileDto">
+	select ft.savedName,ft.originalName,ft.guestHouseCode,ft.roomCode,ft.isMainImage
+	from  guestHouse_tb gt
+	join file_tb ft on gt.guestHouseCode=ft.guestHouseCode
+	where ft.guestHouseCode = #{guestHouseCode}
+
+	
+	
 	</select>
 
 
