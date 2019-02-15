@@ -41,6 +41,7 @@ public class BookingController {
 		log.info("roomDto: " + roomDto);
 		String guestHouseName = bookingDao.getGuestHouseNameByGuestHouseCode(roomDto.getGuestHouseCode());
 		log.info("guestHouseName: " + guestHouseName);
+		log.info("bookingNumber: " + bookingNumber);
 		
 		
 		model.addAttribute("checkin", bookingStart);

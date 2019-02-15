@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bit.geha.dto.FileDto;
@@ -17,9 +19,30 @@ import lombok.extern.java.Log;
 
 @Log
 public class UploadFileUtils {
-	public static final String UPLOAD_PATH = "C:\\Users\\tmfrl\\git\\geha-pjt\\src\\main\\resources\\static\\gehaImg\\";
+//	public static final String UPLOAD_PATH = "C:\\Users\\tmfrl\\git\\geha-pjt\\src\\main\\resources\\static\\gehaImg\\";
+	
+	public static String makeUploadRootPath() {
+		String uploadRootPath = null;
+
+		final DefaultResourceLoader defaultResourceLoader = new DefaultResourceLoader();
+		
+		Resource resource = (Resource) defaultResourceLoader.getResource("file:src\\main\\resources\\static\\gehaImg\\");
+		try {
+			uploadRootPath = resource.getFile().getAbsolutePath();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("uploadRootPath: " + uploadRootPath);
+		
+		return uploadRootPath;
+	}
+	
+	
 	
 	private static void makeDir(String uploadPath, String ...paths) {
+		
 		if(new File(uploadPath + paths[paths.length-1]).exists())
 			return;
 		
@@ -36,13 +59,15 @@ public class UploadFileUtils {
 	
 	public static List<FileDto> uploadFiles(Object dto) throws Exception {
 		List<FileDto> resultList = new ArrayList<FileDto>();
+		String uploadPath = makeUploadRootPath() ;
 		
 		if(dto instanceof GuestHouseDto) {
 			GuestHouseDto guestHouseDto = (GuestHouseDto) dto;
 			List<MultipartFile> uploadFiles = guestHouseDto.getFiles();
 			
-			String guestHousePath = guestHouseDto.getGuestHouseCode() + File.separator;
-			makeDir(UPLOAD_PATH, guestHousePath);
+			String guestHousePath = File.separator + guestHouseDto.getGuestHouseCode() + File.separator;
+			System.out.println();
+			makeDir(uploadPath , guestHousePath);
 			
 			for(int i=0; i<uploadFiles.size(); i++) {
 				MultipartFile file = uploadFiles.get(i);
@@ -50,7 +75,7 @@ public class UploadFileUtils {
 				
 				String savedName = uid.toString() + "_" + file.getOriginalFilename();
 				
-				File target = new File(UPLOAD_PATH+guestHousePath, savedName);
+				File target = new File(uploadPath+guestHousePath, savedName);
 				file.transferTo(target);
 				
 				resultList.add(new FileDto(savedName, file.getOriginalFilename(), guestHouseDto.getGuestHouseCode(), ((i==guestHouseDto.getMainImage())?true:false)));
@@ -61,9 +86,9 @@ public class UploadFileUtils {
 			System.out.println("File Upload RoomDto: " + roomDto.getRoomName());
 			List<MultipartFile> uploadFiles = roomDto.getRoomFiles();
 			
-			String guestHousePath = roomDto.getGuestHouseCode() + File.separator;
+			String guestHousePath = File.separator + roomDto.getGuestHouseCode() + File.separator;
 			String roomPath = guestHousePath + roomDto.getRoomCode() + File.separator;
-			makeDir(UPLOAD_PATH, guestHousePath, roomPath);
+			makeDir(uploadPath, guestHousePath, roomPath);
 			
 			for(MultipartFile file : uploadFiles) {
 				System.out.println("--uploadFile: " + file.getOriginalFilename());
@@ -74,7 +99,7 @@ public class UploadFileUtils {
 				
 				String savedName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 				
-				file.transferTo(new File(UPLOAD_PATH+roomPath, savedName));
+				file.transferTo(new File(uploadPath+roomPath, savedName));
 				
 				resultList.add(new FileDto(savedName, file.getOriginalFilename(), roomDto.getGuestHouseCode(), roomDto.getRoomCode(), ((i==roomDto.getMainImage())?true:false)));
 			}
@@ -89,10 +114,12 @@ public class UploadFileUtils {
 	public static void deleteFiles(List<FileDto> files) {
 		if(files==null || files.size()==0) return;
 		
+		String uploadPath = makeUploadRootPath() ;
+		
 		if(files.get(0).getRoomCode() == 0) { //게스트하우스 이미지
 			System.out.println("게하 이미지");
 			for(FileDto file : files) {
-				String path = UPLOAD_PATH + file.getGuestHouseCode() + File.separator + file.getSavedName();
+				String path = uploadPath + file.getGuestHouseCode() + File.separator + file.getSavedName();
 				System.out.println("deletePath: " + path);
 				
 				File deleteFile = new File(path);
@@ -103,7 +130,7 @@ public class UploadFileUtils {
 		} else { //방 이미지
 			System.out.println("방 이미지");
 			for(FileDto file : files) {
-				String path = UPLOAD_PATH + file.getGuestHouseCode() + File.separator + file.getRoomCode() + File.separator + file.getSavedName();
+				String path = uploadPath + file.getGuestHouseCode() + File.separator + file.getRoomCode() + File.separator + file.getSavedName();
 				System.out.println("deletePath: " + path);
 				
 				File deleteFile = new File(path);
@@ -115,21 +142,25 @@ public class UploadFileUtils {
 	}
 	
 	public static void deleteRoomImgFolder(int guestHouseCode, int roomCode) {
-		String path = UPLOAD_PATH + guestHouseCode + File.separator + roomCode; //폴더 삭제
+		String uploadPath = makeUploadRootPath() ;
+		
+		String path = uploadPath + guestHouseCode + File.separator + roomCode; //폴더 삭제
 		System.out.println("deletePath: " + path);
 		
 		deleteFolder(path);
 	}
 	
 	public static void deleteGuestHouseImgFolder(int guestHouseCode) {
-		String path = UPLOAD_PATH + guestHouseCode; //폴더 삭제
+		String uploadPath = makeUploadRootPath() ;
+		
+		String path = uploadPath + guestHouseCode; //폴더 삭제
 		System.out.println("deletePath: " + path);
 		
 		deleteFolder(path);
 	}
 	
 /*	public static void deleteFolder(int guestHouseCode, int roomCode) {
-		String path = UPLOAD_PATH + guestHouseCode + File.separator + roomCode; //폴더 삭제
+		String path = uploadPath + guestHouseCode + File.separator + roomCode; //폴더 삭제
 		System.out.println("deletePath: " + path);
 		
 		File deleteFile = new File(path);

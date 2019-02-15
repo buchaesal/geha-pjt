@@ -2,6 +2,8 @@ package com.bit.geha.controller;
 
 
 
+import java.io.File;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class CommonController {
 		
 		memberService.getSession(auth, session);
 		
+		String path = session.getServletContext().getRealPath("static/gehaImg/");
+		System.out.println("path: " + new File(path).exists() + ", " + path);
+		session.setAttribute("uploadPath", path);
 		
 		return "home";
 	}
