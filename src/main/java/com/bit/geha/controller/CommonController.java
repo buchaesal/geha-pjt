@@ -2,6 +2,8 @@ package com.bit.geha.controller;
 
 
 
+import java.io.File;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,7 @@ public class CommonController {
 	public String home(Authentication auth,HttpSession session) {
 		
 		memberService.getSession(auth, session);
-		
-		
+
 		return "home";
 	}
 	
