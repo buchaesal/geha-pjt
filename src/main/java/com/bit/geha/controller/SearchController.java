@@ -34,7 +34,7 @@ public class SearchController {
 	@RequestMapping("/search")
 	public String search(Model model) {
 		logger.info("search()");
-		return "search";
+		return "/search";
 	}
 	
 	@PostMapping(path = "/searchgehainfo", consumes = "application/json", produces = "application/json")

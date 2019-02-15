@@ -395,6 +395,9 @@ th, td {
     display: block;
     transform: scale(2.5);
 }
+.row{
+    font-size: 20px;
+    }
 </style>
 
 </head>
@@ -493,10 +496,10 @@ th, td {
 						
 						        </div>
 						        <div class="col-md-8">
-						        <span th:text=	"|${RoomDto.capacity}명|"></span>
+						        <label>인원수 : </label><span th:text=	"|${RoomDto.capacity}명|"></span>
 						        </div>
 						        <div class="col-md-8">
-						        <span th:text="|${	RoomDto.charge}원|"></span>
+						        <label>가격 : </label><span th:text="|${RoomDto.charge}원|"></span>
 						        </div>
 						        <div class="col-md-8">
 						        	<span th:switch=${RoomDto.gender}>
@@ -511,7 +514,7 @@ th, td {
 										<input type="hidden" id="enddate" name="bookingEnd" />
 										<input type="hidden" id="bookingNumber" name="bookingNumber" />
 										<input type="hidden" name="roomCode" th:value="${RoomDto.roomCode}">
-										<button class="btn btn-primary" type="submit">예약하기</button>
+										<button class="btn btn-primary" type="submit" style="width: 100%; border-radius: 4px; height: 46px;">예약하기</button>
 									</form>
 								</div>
 						    </div>
