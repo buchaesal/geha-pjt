@@ -23,11 +23,7 @@ public class CommonController {
 	public String home(Authentication auth,HttpSession session) {
 		
 		memberService.getSession(auth, session);
-		
-		String path = session.getServletContext().getRealPath("static/gehaImg/");
-		System.out.println("path: " + new File(path).exists() + ", " + path);
-		session.setAttribute("uploadPath", path);
-		
+
 		return "home";
 	}
 	

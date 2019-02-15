@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
- layout:decorator="fragments/main_layout">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/myPage_layout">
 
 <head>
 	<!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
@@ -247,10 +248,10 @@
 	.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
 	.info .close:hover {cursor: pointer;}
 	.info .body {position: relative;overflow: hidden;}
-	.info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
-	.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+	.info .desc {position: relative;margin: 10px 0 0 90px;height: 75px;}
+	.desc div {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 	.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
-	.info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+	.info .img {position: absolute;top: 10px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
 	.info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 	.info .link {color: #5085BB;}
 
@@ -598,6 +599,34 @@
 								aTag.className = 'link';
 								aTag.textContent = '게스트하우스 정보 보기';
 
+								var yellowline = document.createElement('div');
+								yellowline.className = 'content yellowline';
+
+								var rating = document.createElement('span');
+								rating.className = 'rating';
+								rating.textContent = data[i].avgRating;
+
+								var ratingname = document.createElement('span');
+								ratingname.className = 'ratingname';
+								ratingname.textContent = ' '+data[i].recommendRating;
+
+								var comments = document.createElement('span');
+								comments.className = 'comments';
+								comments.textContent = ' ('+data[i].reviewCnt+')';
+
+								var priceDiv = document.createElement('div');
+								priceDiv.className = 'price';
+
+								var priceSpan = document.createElement('span');
+								priceSpan.className = 'price';
+								priceSpan.textContent = data[i].minprice+'원';
+
+								// <div class="content yellowline">
+								// 	<span class="rating">{{avgRating}}</span>
+								// 	<span class="ratingname">{{recommendRating}}</span>
+								// 	<span class="comments">({{reviewCnt}})</span>
+								// </div>
+
 								customContent.appendChild(info);
 									info.appendChild(contentTitle);
 										contentTitle.appendChild(closeBtn);
@@ -609,6 +638,12 @@
 											contentDesc.appendChild(ellipsis);
 											contentDesc.appendChild(aDiv);
 												aDiv.appendChild(aTag);
+											contentDesc.appendChild(yellowline);
+												yellowline.appendChild(rating);
+												yellowline.appendChild(ratingname);
+												yellowline.appendChild(comments);
+											contentDesc.appendChild(priceDiv);
+												priceDiv.appendChild(priceSpan);
 								
 								var CustomOverlay = new daum.maps.CustomOverlay({
 									map: map,
