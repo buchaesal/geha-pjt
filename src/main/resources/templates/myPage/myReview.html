@@ -258,7 +258,9 @@ font-size: 18px;
 				<th></th>
 			</tr>
 			<tr th:each="reviewDto : ${reviewList}" height="80px" align="center">
-				<td><a th:href="@{'/room/roomInfo?guestHouseCode='+${reviewDto.guestHouseCode}}">
+				<td><a target="_blank" th:href="@{'/room/roomInfo?guestHouseCode='+${reviewDto.guestHouseCode}+
+				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
+				'&bookingEnd='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+'&bookingNumber=1'}">
 				[[${reviewDto.guestHouseName}]]</a><br>
 					([[${reviewDto.roomName}]])
 				</td>
