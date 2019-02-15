@@ -5,8 +5,8 @@
 
    <head>
    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-      <title>게스트하우스 등록</title>
-      <style>
+      	<title>게스트하우스 등록</title>
+      	<style>
          .hostPage_label {
             padding: 18px 15px;
             font-size: 17px;
@@ -67,7 +67,7 @@
            }
            .roomInfoDiv {
               display:  grid;
-              background-color: bisque;
+              background-color: #deebff;
               /* border: 1px solid gray; */
               margin: 10px 0;
            }
@@ -100,6 +100,8 @@
            		padding: 0 0;
            }
       </style>
+   		<!-- 스마트에디터 api 적용 -->
+		<script type="text/javascript" th:src="@{/nse/js/service/HuskyEZCreator.js}" charset="utf-8"></script>
    </head>
    <body>
       <div layout:fragment="hostPage_content">
@@ -201,6 +203,9 @@
             <br><br>
             <input type="button" value="취소" onclick="history.back()">
             <input id="regiestGuestHouseBtn" type="button" value="등록신청">
+            
+            <textarea name="smarteditor" id="smarteditor" rows="10" cols="100" style="width:766px; height:412px;"></textarea>
+            
          </form>
 
          <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
@@ -250,7 +255,48 @@
       </div>
       
       <div layout:fragment="hostPage_script">
+
+      	<script type="text/javascript">
+        	//스마트 에디터 적용
+	        $(document).ready(function() { 
+	        	var oEditors = []; // 개발되어 있는 소스에 맞추느라, 전역변수로 사용하였지만, 지역변수로 사용해도 전혀 무관 함. 
+	        
+	            // Editor Setting 
+	            nhn.husky.EZCreator.createInIFrame({ 
+	            	oAppRef : oEditors, // 전역변수 명과 동일해야 함. 
+		            elPlaceHolder : "smarteditor", // 에디터가 그려질 textarea ID 값과 동일 해야 함. 
+		            sSkinURI : "/nse/SmartEditor2Skin.html", // Editor HTML 
+		            fCreator : "createSEditor2", // SE2BasicCreator.js 메소드명이니 변경 금지 X 
+		            htParams : { // 툴바 사용 여부 (true:사용/ false:사용하지 않음) 
+		            	bUseToolbar : true, // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음) 
+		            	bUseVerticalResizer : true, // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음) 
+		            	bUseModeChanger : true, 
+		            } 
+	            }); 
+	        });
+	        
+	        function validation(){ 
+	        	var contents = $.trim(oEditors[0].getContents()); 
+	        	if(contents === '<p>&bnsp;</p>' || contents === ''){ // 기본적으로 아무것도 입력하지 않아도 값이 입력되어 있음. 
+	        		alert("내용을 입력하세요."); 
+	        		oEditors.getById['smarteditor'].exec('FOCUS'); 
+	        		return false; 
+	        	} 
+	        	
+	        	return true; 
+	     	}
+
+      	
+      	</script>
+      
+      
 		<script type="text/javascript" th:inline="javascript">
+		
+		 
+	        
+		
+		
+		
             var roomIndex=1;
             $("#addRoomInfoBtn").click(function() {
                var div = document.createElement('div');
@@ -330,7 +376,7 @@
                      if($(prtDiv).attr("name")=='roomsImg') { //방일 경우
                         var html = 
                            "<span class='thumbnailImgSpan'><input type='radio' name='mainRoomImage"+$(roomInfoTable).find("input[name='roomIndex']").val()+"' value='"+index
-                           +"' onclick='clickMainRoomImg($(this).parent().parent().next().next(), this.value)'><img src=\""+e.target.result+"\" data-file='"+f.name
+                           +"' onclick='clickMainRoomImg($(this).parent().parent().next().next(), this.value)'"+(index==0?'th:checked=checked':'')+"><img src=\""+e.target.result+"\" data-file='"+f.name
                            +"' class='selProductFile' title='Click to remove'></span>";
                      } else { //게스트하우스일 경우
                         var html = "<span class='thumbnailImgSpan'><input type='radio' name='mainImage' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
@@ -354,14 +400,16 @@
             function clickMainRoomImg(obj, chkValue) {
                $(obj).val(chkValue);
             }
-
+           
+            
          </script>
          
+         <!-- 주소 api 적용 -->
          <!-- Postcodify를 로딩한다 -->
 		 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
-		
 		 <!-- "검색" 단추를 누르면 팝업 레이어가 열리도록 설정한다 -->
 		 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
+		
       </div>
    </body>
 </html>
