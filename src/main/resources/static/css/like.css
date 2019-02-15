@@ -15,9 +15,10 @@
 }
 
 .fav-btn {
-    position: absolute;
-    left: 565px;
-    top: 28px;
+    position: relative;
+    left: 612px;
+    top: -37px;
+    float: left;
 }
 
 @keyframes favme-anime {

@@ -12,7 +12,7 @@
 <meta id="_csrf_header" name="_csrf_header"
 	th:content="${_csrf.headerName}" />
  
-<title>Insert title here</title>
+<title>GEHA-방상세보기</title>
 
 <link href="/css/swiper.min.css" rel="stylesheet">
 <link href="/css/readmore.css" rel="stylesheet">
@@ -44,7 +44,7 @@
     .swiper-slide {
       background-size: cover;
       background-position: center;
-      width:247px;
+      width:368px;
     }
     .gallery-top {
       height: 100%;
@@ -79,10 +79,10 @@
 	}
 	.right{
 	width:50%;
-	float:right;
+	float:left;
 	height: 450px;
 	  position: relative;
-	  left: 25%;
+	  left: 19%;
 	}
 
 	}
@@ -107,7 +107,7 @@
 	.roomInfo {
   display:block;
   float:center;
-  width: 80%;
+  width: 100%;
   height:auto;
 }
 .tag>ul{
@@ -405,7 +405,6 @@ th, td {
 <body>
 
 <div class="jcontent" layout:fragment="content"  style="font-family: 'yg-jalnan';">
-
 	<div class="top-container">
 		<div class="left">
 			  <div class="swiper-container gallery-top" style="width: 600px">
@@ -466,14 +465,14 @@ th, td {
 			    <div id="home" class="tab-pane active">
 			      	<div class="picker" style="    font-size: 19px;">
 						<label>예약 날짜 :</label> <input type="text"  id= "date" readonly style="cursor:default; border: none; " />&nbsp;&nbsp;
- 						<label>인원수 : </label><span id="person"></span>
+ 						<label>예약 인원수 : </label><span id="person"></span>
 								
 					</div>
 
 					<br><br>
 					
 					<article class="roomInfo" th:each="RoomDto,stat:${room}" >
-						<div class="room" style="border: 1px solid black; margin-top: 20px;">
+						<div class="room" style="border: 1px solid rgb(0,0,0,0.08); margin-top: 20px; padding:10px;">
 							  <div class="swiper-container" style="display: inline-block; height: 265px;">
 							    <div class="swiper-wrapper" >
 							      <div class="swiper-slide" id="roomslide" th:if="${RoomDto.roomCode == gehaImg.roomCode}" 
@@ -496,7 +495,7 @@ th, td {
 						
 						        </div>
 						        <div class="col-md-8">
-						        <label>인원수 : </label><span th:text=	"|${RoomDto.capacity}명|"></span>
+						        <label>인원 : </label><span th:text=	"|${RoomDto.capacity}명|"></span>
 						        </div>
 						        <div class="col-md-8">
 						        <label>가격 : </label><span th:text="|${RoomDto.charge}원|"></span>
