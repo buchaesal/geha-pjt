@@ -37,9 +37,6 @@ public class MemberController {
 
 		String referrer = request.getHeader("Referer");
 		request.getSession().setAttribute("prevPage", referrer);
-		String path = request.getSession().getServletContext().getRealPath("static/gehaImg");
-		System.out.println("path: " + new File(path).exists() + ", " + path);
-		request.getSession().setAttribute("uploadPath", path);
 	}
 	
 	@RequestMapping("/goLogin")

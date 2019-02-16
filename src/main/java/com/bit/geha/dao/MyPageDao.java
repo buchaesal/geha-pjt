@@ -35,6 +35,11 @@ public interface MyPageDao {
 	@Insert("INSERT INTO review_tb (bookingCode, rating, writingDate, title, content) VALUES (#{bookingCode}, #{rating}, now(), #{title}, #{content})")
 	public void addReview(ReviewDto reviewDto);
 	
+	@Select("SELECT guestHouseCode FROM bkrmghmatching_view WHERE bookingCode=#{bookingCode}")
+	public int getGuestHouseCode(int bookingCode);
+	
+	public void calculateAvgRating(int guestHouseCode);
+	
 	public void modifyNameEtc(String id,String memberName,String businessLicense,String gender);
 	
 	public void modifyInfo(String id,String memberName, String password, String businessLicense,String gender);

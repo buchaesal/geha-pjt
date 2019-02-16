@@ -33,13 +33,13 @@
 				font-size:20px;
 			}
 			
-			.test {
-    padding: 27px;
-}
-
-th{
-text-align:center;
-}
+			/* .test {
+			    padding: 27px;
+			} */
+			
+			th{
+			text-align:center;
+			}
 			
 			/* 별점 */
 			.star-input>.input,
@@ -55,11 +55,17 @@ text-align:center;
 			.star-input>.input>input:focus+label,
 			.star-input>.input>input:checked+label{background-size: 150px;background-position: 0 bottom;}
 			.star-input>.input>label:hover~label{background-image: none;}
-			.star-input>.input>label[for="p1"]{width:30px;z-index:5;}
-			.star-input>.input>label[for="p2"]{width:60px;z-index:4;}
-			.star-input>.input>label[for="p3"]{width:90px;z-index:3;}
-			.star-input>.input>label[for="p4"]{width:120px;z-index:2;}
-			.star-input>.input>label[for="p5"]{width:150px;z-index:1;}
+			.star-input>.input>label[for="p1"]{width:15px;z-index:10;}
+			.star-input>.input>label[for="p2"]{width:30px;z-index:9;}
+			.star-input>.input>label[for="p3"]{width:45px;z-index:8;}
+			.star-input>.input>label[for="p4"]{width:60px;z-index:7;}
+			.star-input>.input>label[for="p5"]{width:75px;z-index:6;}
+			.star-input>.input>label[for="p6"]{width:90px;z-index:5;}
+			.star-input>.input>label[for="p7"]{width:105px;z-index:4;}
+			.star-input>.input>label[for="p8"]{width:120px;z-index:3;}
+			.star-input>.input>label[for="p9"]{width:135px;z-index:2;}
+			.star-input>.input>label[for="p10"]{width:150px;z-index:1;}
+			
 			.star-input>output{display:inline-block;width:60px; font-size:18px;text-align:right; vertical-align:middle;}
 		</style>
 	</head>
@@ -104,7 +110,7 @@ text-align:center;
 					</div>
 					<div th:if="${bookingDto.bookingStatus}=='숙박완료'">
 
-						<button class="btn-primary" th:if="${#lists.contains(reviewList, bookingDto.bookingCode)}">작성한 후기 보러가기</button>
+						<button class="btn-primary" th:if="${#lists.contains(reviewList, bookingDto.bookingCode)}" th:onclick="location.href='myReview'">작성한 후기 보러가기</button>
 						<button class="btn-primary" th:unless="${#lists.contains(reviewList, bookingDto.bookingCode)}" name="writeReviewBtn">후기 작성하기</button>
 						<button class="btn-primary" th:if="${#lists.size(reviewList)<=0}" name="writeReviewBtn">후기 작성하기</button>
 						
@@ -123,17 +129,27 @@ text-align:center;
 									
 									<label>평점</label>
 									<span class="star-input">
-									<span class="input">
-									    	<input type="radio" name="rating" value="1" id="p1">
+										<span class="input">
+											<input type="radio" name="rating" value="1" id="p1">
 									    	<label for="p1">1</label>
 									    	<input type="radio" name="rating" value="2" id="p2">
 									    	<label for="p2">2</label>
-									    	<input type="radio" name="rating" value="3" id="p3">
+											<input type="radio" name="rating" value="3" id="p3">
 									    	<label for="p3">3</label>
 									    	<input type="radio" name="rating" value="4" id="p4">
 									    	<label for="p4">4</label>
-									    	<input type="radio" name="rating" value="5" id="p5">
+											<input type="radio" name="rating" value="5" id="p5">
 									    	<label for="p5">5</label>
+									    	<input type="radio" name="rating" value="6" id="p6">
+									    	<label for="p6">6</label>
+											<input type="radio" name="rating" value="7" id="p7">
+									    	<label for="p7">7</label>
+									    	<input type="radio" name="rating" value="8" id="p8">
+									    	<label for="p8">8</label>
+											<input type="radio" name="rating" value="9" id="p9">
+									    	<label for="p9">9</label>
+									    	<input type="radio" name="rating" value="10" id="p10">
+									    	<label for="p10">10</label>
 									  	</span>
 									  	<output for="star-input"><b>0</b>점</output>						
 									</span>
@@ -156,25 +172,25 @@ text-align:center;
 			</tr>
 		</table>
 		
-		<!-- 게시판 하단의 페이징 버튼 -->
-            <div class="box-footer clearfix" style="padding-left:357px">
-              <ul class="pagination pagination-sm no-margin pull-center">
-              
-              <li th:if="${pageMaker.prev} == true">
-              	<a th:href="@{/myPage/bookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
-              </li>
-              
-              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-                <a th:href="@{/myPage/bookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
-              </li>
-                
-              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-              	<a th:href="@{/myPage/bookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
-              </li>
-              
-              </ul>
-              
-            </div>
+			<!-- 게시판 하단의 페이징 버튼 -->
+	        <div class="box-footer clearfix" style="padding-left:357px">
+	          <ul class="pagination pagination-sm no-margin pull-center">
+	          
+	          <li th:if="${pageMaker.prev} == true">
+	          	<a th:href="@{/myPage/bookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+	          </li>
+	          
+	          <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+	            <a th:href="@{/myPage/bookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+	          </li>
+	            
+	          <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+	          	<a th:href="@{/myPage/bookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+	          </li>
+	          
+	          </ul>
+	          
+	        </div>
 		</div>
 	</div>
 		

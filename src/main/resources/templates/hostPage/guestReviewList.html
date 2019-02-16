@@ -19,18 +19,38 @@
 		<div layout:fragment="hostPage_content">
 			<table border="2">
 				<tr>
-					<th>NO</th>
 					<th>리뷰번호</th>
 					<th>알림 내용</th>
 					<th>작성일</th>
+					<th>답변 여부</th>
 				</tr>
-				<tr th:each="reviewDto, iterState : ${guestReviewList}">
-					<td th:text="${iterState.count}"></td>
+				<tr th:each="reviewDto : ${guestReviewList}">
 					<td th:text="${reviewDto.reviewNo}"></td>
-					<td><a id="notifyContent">[[${reviewDto.guestHouseName}]]에서 [[${reviewDto.writer}]]님이 리뷰를 작성하였습니다.</a></td>
-					<td th:text="${#dates.format(reviewDto.writingDate, 'yy.MM.dd HH:mm')}"></td>
+					<td>
+						<a id="notifyContent" th:href="@{/room/roomInfo(guestHouseCode=${reviewDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingNumber=1)}">[[${reviewDto.guestHouseName}]]에서 [[${reviewDto.writer}]]님이 리뷰를 작성하였습니다.</a>
+					</td>
+					<td th:text="${#dates.format(reviewDto.writingDate, 'yy.MM.dd')}"></td>
+					<td th:text="${reviewDto.replyContent}==null ? N : Y"></td>
 				</tr>
 			</table>
+			
+			<!-- 게시판 하단의 페이징 버튼 -->
+            <div class="box-footer clearfix" style="padding-left:357px">
+              <ul class="pagination pagination-sm no-margin pull-center">
+              
+              <li th:if="${pageMaker.prev} == true">
+              	<a th:href="@{/hostPage/guestReviewList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+              </li>
+              
+              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+                <a th:href="@{/hostPage/guestReviewList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+              </li>
+                
+              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+              	<a th:href="@{/hostPage/guestReviewList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+              </li>
+              </ul>
+            </div>
 		</div>
 	</body>
 </html>

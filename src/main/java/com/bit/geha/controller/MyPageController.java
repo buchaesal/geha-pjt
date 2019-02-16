@@ -31,7 +31,6 @@ import com.bit.geha.security.SecurityMember;
 import com.bit.geha.service.MemberService;
 import com.bit.geha.util.PageMaker;
 
-import ch.qos.logback.classic.Logger;
 import lombok.extern.java.Log;
 
 @Controller
@@ -80,14 +79,15 @@ public class MyPageController {
 
 	// 리뷰작성
 	@RequestMapping(value = "/writeReview", method = RequestMethod.POST)
-	public String writeReivew(ReviewDto reviewDto, int memberCode) {
+	public String writeReivew(ReviewDto reviewDto, int bookingCode) {
 		log.info("writeReview()");
 
 		System.out.println("reviewDto: " + reviewDto);
 		myPageDao.addReview(reviewDto);
 
 		// 평균평점 구하기
-
+		myPageDao.calculateAvgRating(myPageDao.getGuestHouseCode(bookingCode));
+		
 		return "redirect:bookingList";
 	}
 
