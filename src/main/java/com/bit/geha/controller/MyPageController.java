@@ -31,7 +31,6 @@ import com.bit.geha.security.SecurityMember;
 import com.bit.geha.service.MemberService;
 import com.bit.geha.util.PageMaker;
 
-import ch.qos.logback.classic.Logger;
 import lombok.extern.java.Log;
 
 @Controller
@@ -101,8 +100,9 @@ public class MyPageController {
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(myPageDao.getReviewTotal(memberCode));
-
 		model.addAttribute("pageMaker", pageMaker);
+
+		model.addAttribute("tomorrow", memberService.getTomorrow());
 	}
 
 	// 내정보관리
@@ -110,7 +110,7 @@ public class MyPageController {
 	public void myInfo(Model model, Authentication auth) {
 		SecurityMember sc = (SecurityMember) auth.getPrincipal();
 		model.addAttribute("memberDto", memberDao.findById(sc.getUsername()));
-		
+
 	}
 
 	// 내정보수정
@@ -156,21 +156,14 @@ public class MyPageController {
 		int memberCode = ((Integer) session.getAttribute("memberCode")).intValue();
 		cri.setPerPageNum(5);
 
-		/*
-		 * List<LikeDto> likeDtoList = myPageDao.myLike(cri,memberCode); for(LikeDto
-		 * list : likeDtoList) {
-		 * model.addAttribute("fileList",myPageDao.getFileList(list.getGuestHouseCode())
-		 * ); }
-		 */
-		
 		HashMap<Integer, List<FileDto>> map = new HashMap<Integer, List<FileDto>>();
 		List<LikeDto> likeDtoList = myPageDao.myLike(cri, memberCode);
 		for (LikeDto list : likeDtoList) {
-			
+
 			map.put(list.getGuestHouseCode(), myPageDao.getFileList(list.getGuestHouseCode()));
 
 		}
-		
+
 		model.addAttribute("fileMap", map);
 		model.addAttribute("likeList", myPageDao.myLike(cri, memberCode));
 		PageMaker pageMaker = new PageMaker();
