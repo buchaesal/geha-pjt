@@ -31,9 +31,7 @@ p {
 	padding-top: 26px;
 }
 
-.test {
-	padding: 27px;
-}
+
 
 .buttonBox {
 	padding-top: 12px;
@@ -70,7 +68,7 @@ img {
 </head>
 <body>
 	<div layout:fragment="myPage_content">
-		<div th:if="${#lists.size(likeList)==0}" class="test">
+		<div th:if="${#lists.size(likeList)==0}" style="padding-top: 33px">
 			<p class="heading">찜 한 숙소가 없습니다.</p>
 			<a href="/search" class="btn btn-info waves-effect">숙소 둘러보기</a>
 		</div>
