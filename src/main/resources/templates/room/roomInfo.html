@@ -23,7 +23,7 @@
 	.jcontent{
 
     width: 1024px;
-    margin: 112px 200px 0 250px;
+    margin: 112px 200px 0 150px;
 	}
     .swiper-container .gallery-top {
       background: #000;
@@ -325,7 +325,7 @@ position: absolute;
 	left: 0;
 }
 
-.star-input>.input>label[for="p1"] {
+.star-input>.input>label[for="p1"]   {
 	width: 30px;
 	z-index: 5;
 }
@@ -350,6 +350,26 @@ position: absolute;
 	z-index: 1;
 }
 
+.star-input>.input>label[for="p11"]   {
+	width: 30px;
+	z-index: 5;
+}
+.star-input>.input>label[for="p22"]   {
+	width: 60px;
+	z-index:4;
+}
+.star-input>.input>label[for="p33"]   {
+	width: 90px;
+	z-index: 3;
+}
+.star-input>.input>label[for="p44"]   {
+	width: 120px;
+	z-index:2;
+}
+.star-input>.input>label[for="p55"]   {
+	width: 150px;
+	z-index: 1;
+}
 .off-screen {
     display: none;
 }
@@ -398,6 +418,21 @@ th, td {
 .row{
     font-size: 20px;
     }
+#login_pop  {
+    border-radius: 4px;
+    width: 500px;
+    margin-left: 0;
+    text-align: center;
+      background-color: white;
+   color: black;
+}
+.infobtn   {
+border-radius:4px;
+ margin: 0;
+  background-color: white;
+   color: black;
+}
+
 </style>
 
 </head>
@@ -410,7 +445,6 @@ th, td {
 			  <div class="swiper-container gallery-top" style="width: 600px">
 			    <div class="swiper-wrapper" >
 			      <div class="swiper-slide" th:if="${gehaImg.roomCode} == 0" th:each="gehaImg,stat:${gehaImg}"  th:style="|background-image:url(/gehaImg/${gehaImg.guestHouseCode}/${gehaImg.savedName})|"></div>
-
 			    </div>
 			    <div class="swiper-button-next swiper-button-white"></div>
 			    <div class="swiper-button-prev swiper-button-white"></div>
@@ -464,13 +498,10 @@ th, td {
 			  	<!-- 객실안내/예약탭  -->
 			    <div id="home" class="tab-pane active">
 			      	<div class="picker" style="    font-size: 19px;">
-						<label>예약 날짜 :</label> <input type="text"  id= "date" readonly style="cursor:default; border: none; " />&nbsp;&nbsp;
+						<label>예약 날짜 :</label> <input type="text"  id= "date" readonly style="cursor:default; border: none;"/>&nbsp;&nbsp;
  						<label>예약 인원수 : </label><span id="person"></span>
-								
 					</div>
-
 					<br><br>
-					
 					<article class="roomInfo" th:each="RoomDto,stat:${room}" >
 						<div class="room" style="border: 1px solid rgb(0,0,0,0.08); margin-top: 20px; padding:10px;">
 							  <div class="swiper-container" style="display: inline-block; height: 265px;">
@@ -481,24 +512,22 @@ th, td {
 							    <!-- Add Pagination -->
 							    <div class="swiper-pagination"></div>
 							  </div>
-							  
 
 						<div class="col-md-8">
 						
 						    <div class="row">
 						        <div class="col-md-8">
 						        	<h1 th:text=${RoomDto.roomName}></h1>				
-								<div class="fav-btn">
-									<input type="hidden" id="favmecode" name="favmecode" th:value="${RoomDto.roomCode}">
-									<span class="favme dashicons dashicons-heart" th:name=|favme${RoomDto.roomCode}| th:onclick=|like(${RoomDto.roomCode})|></span>
-								</div>
-						
+										<div class="fav-btn">
+											<input type="hidden" id="favmecode" name="favmecode" th:value="${RoomDto.roomCode}">
+											<span class="favme dashicons dashicons-heart" th:name=|favme${RoomDto.roomCode}| th:onclick=|like(${RoomDto.roomCode})|></span>
+										</div>
 						        </div>
 						        <div class="col-md-8">
-						        <label>인원 : </label><span th:text=	"|${RoomDto.capacity}명|"></span>
+						        	<label>인원 : </label><span th:text=	"|${RoomDto.capacity}명|"></span>
 						        </div>
 						        <div class="col-md-8">
-						        <label>가격 : </label><span th:text="|${RoomDto.charge}원|"></span>
+						        	<label>가격 : </label><span th:text="|${RoomDto.charge}원|"></span>
 						        </div>
 						        <div class="col-md-8">
 						        	<span th:switch=${RoomDto.gender}>
@@ -507,13 +536,23 @@ th, td {
 										<span th:case="N" th:text="남녀공용"></span>
 									</span>
 								</div>
-								<div class="col-md-8">
+								<div class="col-md-8 panel" style="margin:0; width: 100%;">
+									<a th:href=|#login_form${RoomDto.roomCode}| class="infobtn" id="login_pop"   style="border-radius: 4px;  margin: 0; background-color: white; color: black; " >객실 이용 안내</a>								
+								</div>
+								<a href="#x" class="overlay" th:id=|login_form${RoomDto.roomCode}|></a>
+								<div class="popup">
+									<h2>객실 이용 안내</h2>
+									<p th:utext="${RoomDto.roomInfo}"></p>
+									<a class="close" href="#close"></a>
+								</div>
+								
+								<div class="col-md-8" style="width: 100%">
 									<form action="/booking/bookingPage" onsubmit="return check()" >
 										<input type="hidden" id="startdate" name="bookingStart" />
-										<input type="hidden" id="enddate" name="bookingEnd" />
+										<input type="hidden" id="enddate" name="bookingEnd" /> 
 										<input type="hidden" id="bookingNumber" name="bookingNumber" />
 										<input type="hidden" name="roomCode" th:value="${RoomDto.roomCode}">
-										<button class="btn btn-primary" type="submit" style="width: 100%; border-radius: 4px; height: 46px;">예약하기</button>
+										<button class="btn btn-primary infobtn" type="submit" style="width: 100%;  border-radius: 4px; height: 46px; border: 2px solid #c8a9ff">예약하기</button>
 									</form>
 								</div>
 						    </div>
@@ -564,14 +603,14 @@ th, td {
 								<img th:case="TV" th:src="@{/img/facility/television.png}"></img>	
 							</li>
 						</ul>
+						<br><br>
 						<div id="map" style="width:100%;height:300px;"></div>
 					</div>
 		
 					<!-- 리뷰 탭 -->
     				<div id="menu2" class="tab-pane "><br>
-						<p th:text="${rating.recommendRating}" ></p>
+						<h1 th:text="${rating.recommendRating}" ></h1>
 	    				<p th:text="${rating.avgRating}"></p>
-	    				<br>
 	    				<p class="star-input"> 
 	    					<span class="input"> 
 			    				<input type="hidden" name="rating" value="1" id="p1"> <label for="p1">1</label>
@@ -582,7 +621,7 @@ th, td {
 							</span>
 						</p>
 						<p th:text=|전체리뷰:${rating.reviewCnt}| ></p>
-   								<div class="guest" ></div> 
+   						<div class="guest" ></div> 
 
    						<!-- 게시판 하단의 페이징 버튼 -->
 	           			 <div class="box-footer clearfix">
@@ -614,9 +653,38 @@ th, td {
 		$(document).ajaxSend(function(e, xhr, options) {
 			xhr.setRequestHeader(header, token);
 		});
-	});
-	
 
+		function getParameterByName(e) {
+			e = e.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		    var regex = new RegExp("[\\?&]" + e + "=([^&#]*)"),
+		        results = regex.exec(location.search);
+		    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+		var bookingStart = getParameterByName('bookingStart');
+		var bookingEnd = getParameterByName('bookingEnd');
+		var bookingNumber = getParameterByName('bookingNumber');
+		
+		/* default 검색 데이터 설정 */
+		var getToday = bookingStart;
+		var getTomorrow = bookingEnd;
+	
+		$('#date').val(bookingStart + ' ~ ' + bookingEnd);
+		$('#startdate').val(bookingStart);
+		$('#enddate').val(bookingEnd);
+		$('#bookingNumber').val(bookingNumber);
+		$('#person').html(bookingNumber);
+		function lessThanTen(d){
+			if (d < 10){
+				return '0'+d;
+			} else {
+				return d;
+			}
+		}
+	
+	});
+
+
+	
 	function check() {
 		if([[${session.memberCode}]] == null){
 			swal({
@@ -641,16 +709,16 @@ th, td {
 		       		var a ='';
 
 		             $.each(data, function(key, value){ 
-
-		           		a+= '<div id="comment'+guestHouseCode+'" style="border: 1px solid gray; margin : 30px 0px;">'
+		            	
+		           		a+= '<div id="comment'+guestHouseCode+'" style=" margin : 30px 0px;">'
 		              	a += '<h4>'+ value.title +'</h4>';
-		              	a += '<p>'+value.reviewNo+'</p>';
-		                a += '<p>'+value.rating+'</p>';
+		            	a += '<p class="star-input"><span class="input" id="rt_'+key+'"><input type="hidden" name="rating" value="11" id="p11"> <label id="rt'+key+'"for="p11">11</label><input type="hidden" name="rating" value="22" id="p22"> <label id="rt'+key+'" for="p22">22</label><input type="hidden" name="rating" value="33" id="p33"> <label id="rt'+key+'" for="p33">33</label>	<input type="hidden" name="rating" value="44" id="p44"> <label id="rt'+key+'" for="p44">44</label><input type="hidden" name="rating" value="55" id="p55"> <label id="rt'+key+'" for="p55">55</label></span>&nbsp;&nbsp;<labal id="'+key+'">'+value.rating+'</labal></p>';
+		                a += '<span>'+value.roomName+'</span>&bull;';
+		                a += '<span>'+value.booker+'</span></br></br>';		       
 		                a += '<p id="con">'+value.content+'</p>';
-		                a += '<p>'+value.roomName+'</p>';
-		                a += '<p>'+value.booker+'</p>';		                
 		                a += '<p>'+jQuery.timeago(new Date(value.writingDate))+'</p>';
-		                a += '</div>'  
+		                a += '</div>'
+		                	
 		              	if(value.replyContent == null && [[${session.auth}]] == 'HOST' && [[${session.memberCode}]] == [[${geha.memberCode}]]){
 		              		a += '<form id="commentForm">'
 		              		a += '<input type="text" id="replyContent"  name="content_'+value.reviewNo+'" required >'
@@ -659,9 +727,9 @@ th, td {
 		              		a += '</form>'
 		              	};
 		              	if (value.replyContent != null){
-		              		a += '<div class="host" id="comment2" style="border: 1px solid red " >'
+		              		a += '<div class="host" id="comment2" style="border: 1px solid red; padding-left:10%" >'
 		              		a += '<div class="commentList"'
-		              		a += '<h1>관리자 답변</h1>'
+		              		a += '<h1>제휴점 답변</h1>'
 		              		a += '<p class="replyContent'+value.reviewNo+'">' + value.replyContent + '</p>'
 		              		a += '<p class="replyDate">' + jQuery.timeago(new Date(value.replyDate)) + '</p>'
 								if (value.replyContent != null && [[${session.memberCode}]] == [[${geha.memberCode}]] ) {
@@ -670,14 +738,57 @@ th, td {
 			              		}	
 		              		a += '</div></div>'
 		              	}
+		             
+		            	
 		            }); 
-		            
-		        
-		            $(".guest").html(a);
-		           
-		        	}
-
+		             
+		             $(".guest").html(a);
+		             var count=( $('labal').length)  
+				     var rating = $('labal').eq(0).html()
+						rating *= 1;
+			             for (var i =0; i < count;i++){
+					           var rating = $('labal').eq(i).html()
+								rating *= 1;
+			            	    if( rating >= 10 ){
+						 			$('#rt_'+i+'>label[for="p55"]')
+						 			.css('display','inline-block')
+						 			.css('vertical-align','middle')
+						 			.css('background',"url('/img/grade_img.png')")
+						 			.css('background-size','150px')
+						 			.css('background-position','0 bottom')
+						 		}else if (rating >= 8){
+						 			$('#rt_'+i+'>label[for="p44"]')
+						 			.css('display','inline-block')
+						 			.css('vertical-align','middle')
+						 			.css('background',"url('/img/grade_img.png')")
+						 			.css('background-size','150px')
+						 			.css('background-position','0 bottom')
+						 		}else if (rating >= 6){
+						 			$('#rt_'+i+'>label[for="p33"]')
+						 			.css('display','inline-block')
+						 			.css('vertical-align','middle')
+						 			.css('background',"url('/img/grade_img.png')")
+						 			.css('background-size','150px')
+						 			.css('background-position','0 bottom')
+						 		}else if (rating >= 4){
+						 			$('#rt_'+i+'>label[for="p22"]')
+						 			.css('display','inline-block')
+						 			.css('vertical-align','middle')
+						 			.css('background',"url('/img/grade_img.png')")
+						 			.css('background-size','150px')
+						 			.css('background-position','0 bottom')
+						 		}else if (rating >= 2){
+						 			$('#rt_'+i+'>label[for="p11"]')
+						 			.css('display','inline-block')
+						 			.css('vertical-align','middle')
+						 			.css('background',"url('/img/grade_img.png')")
+						 			.css('background-size','150px')
+						 			.css('background-position','0 bottom')
+						 		}     
+			            } 
+		        }
 		    });
+
 		} ;
 		//리뷰리스트 페이징
  	 	function paging(endPage){
@@ -851,6 +962,9 @@ th, td {
 	 			likeList();
 	 		};
 
+	 		
+	 		
+	 		
 	 		  var rating = [[${rating.avgRating}]]
 		 		if(rating >= 10){
 		 			$("label[for='p5']")
@@ -888,6 +1002,7 @@ th, td {
 		 			.css('background-size','150px')
 		 			.css('background-position','0 bottom')
 		 		}
+	 		  
 	 		
 	 	});
 		
@@ -982,37 +1097,7 @@ th, td {
 
 	</script>
 	
-	<script>
-		$(function(){
-			function getParameterByName(e) {
-				e = e.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-			    var regex = new RegExp("[\\?&]" + e + "=([^&#]*)"),
-			        results = regex.exec(location.search);
-			    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-			}
-			var bookingStart = getParameterByName('bookingStart');
-			var bookingEnd = getParameterByName('bookingEnd');
-			var bookingNumber = getParameterByName('bookingNumber');
-			
-			/* default 검색 데이터 설정 */
-			var getToday = bookingStart;
-			var getTomorrow = bookingEnd;
-		
-			$('#date').val(bookingStart + ' ~ ' + bookingEnd);
-			$('#startdate').val(bookingStart);
-			$('#enddate').val(bookingEnd);
-			$('#bookingNumber').val(bookingNumber);
-			$('#person').html(bookingNumber);
-			function lessThanTen(d){
-				if (d < 10){
-					return '0'+d;
-				} else {
-					return d;
-				}
-			}
-		
-		});
-	</script>
+	
 	</div>
 </body>
 </html>
