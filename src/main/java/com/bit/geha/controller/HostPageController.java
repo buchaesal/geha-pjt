@@ -70,6 +70,7 @@ public class HostPageController {
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("guestHouseList", guestHouseList);
 		model.addAttribute("isRejectList", isRejectList);
+		model.addAttribute("tomorrow", memberService.getTomorrow());
 	}
 	
 	@RequestMapping("getRejectList")
@@ -346,5 +347,6 @@ public class HostPageController {
 		pageMaker.setTotalCount(hostPageDao.getGuestReviewListTotal(memberCode));
 
 		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("tomorrow", memberService.getTomorrow());
 	}
 }

@@ -27,7 +27,7 @@
 				<tr th:each="reviewDto : ${guestReviewList}">
 					<td th:text="${reviewDto.reviewNo}"></td>
 					<td>
-						<a id="notifyContent" th:href="@{/room/roomInfo(guestHouseCode=${reviewDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingNumber=1)}">[[${reviewDto.guestHouseName}]]에서 [[${reviewDto.writer}]]님이 리뷰를 작성하였습니다.</a>
+						<a id="notifyContent" th:href="@{/room/roomInfo(guestHouseCode=${reviewDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${tomorrow}, bookingNumber=1)}">[[${reviewDto.guestHouseName}]]에서 [[${reviewDto.writer}]]님이 리뷰를 작성하였습니다.</a>
 					</td>
 					<td th:text="${#dates.format(reviewDto.writingDate, 'yy.MM.dd')}"></td>
 					<td th:text="${reviewDto.replyContent}==null ? N : Y"></td>
