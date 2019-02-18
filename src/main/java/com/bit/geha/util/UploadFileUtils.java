@@ -119,7 +119,7 @@ public class UploadFileUtils {
 		if(files.get(0).getRoomCode() == 0) { //게스트하우스 이미지
 			System.out.println("게하 이미지");
 			for(FileDto file : files) {
-				String path = uploadPath + file.getGuestHouseCode() + File.separator + file.getSavedName();
+				String path = uploadPath + File.separator + file.getGuestHouseCode() + File.separator + file.getSavedName();
 				System.out.println("deletePath: " + path);
 				
 				File deleteFile = new File(path);
@@ -130,7 +130,7 @@ public class UploadFileUtils {
 		} else { //방 이미지
 			System.out.println("방 이미지");
 			for(FileDto file : files) {
-				String path = uploadPath + file.getGuestHouseCode() + File.separator + file.getRoomCode() + File.separator + file.getSavedName();
+				String path = uploadPath + File.separator + file.getGuestHouseCode() + File.separator + file.getRoomCode() + File.separator + file.getSavedName();
 				System.out.println("deletePath: " + path);
 				
 				File deleteFile = new File(path);
@@ -144,7 +144,7 @@ public class UploadFileUtils {
 	public static void deleteRoomImgFolder(int guestHouseCode, int roomCode) {
 		String uploadPath = makeUploadRootPath() ;
 		
-		String path = uploadPath + guestHouseCode + File.separator + roomCode; //폴더 삭제
+		String path = uploadPath + File.separator + guestHouseCode + File.separator + roomCode; //폴더 삭제
 		System.out.println("deletePath: " + path);
 		
 		deleteFolder(path);
@@ -153,7 +153,7 @@ public class UploadFileUtils {
 	public static void deleteGuestHouseImgFolder(int guestHouseCode) {
 		String uploadPath = makeUploadRootPath() ;
 		
-		String path = uploadPath + guestHouseCode; //폴더 삭제
+		String path = uploadPath + File.separator + guestHouseCode; //폴더 삭제
 		System.out.println("deletePath: " + path);
 		
 		deleteFolder(path);
