@@ -139,13 +139,17 @@ font-size: 18px;
 .modifyBtn{
  padding-left: 96px;
 }
+
+#myInfo {
+	text-decoration: underline;
+	font-size: 27px;
+}
 </style>
 </head>
 <body>
 <div layout:fragment="myPage_content" class="container-login100">
 
-<h3>내 정보 관리</h3>
-
+	<h3>내 정보 관리</h3>
 
 				<form action="/myPage/updateInfo" id="frm" width="200px">
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />

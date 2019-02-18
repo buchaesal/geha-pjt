@@ -6,11 +6,12 @@
 	<meta http-equiv="Content-Type" content="charset=UTF-8"/>
  	<style>
  		header {
- 		    background-color: #2a6acc;
+ 		    background-color: #395d5d;
  		}
  		
 		.hostPage_section {
 			padding: 50px 0;
+			background-color: #3c5e5e21;
 		}
 		
 		.hostPage_container {
@@ -47,15 +48,18 @@
 		}
 		
 		.hostPage_main {
-		   padding: 50px;
 		   float: right;
-		   width: 80%
+		   width: 75%
 		}
 		
 		.hostPage_li {
 		   margin: 30px;
-		   width: 150px;
-		   font-size: 20px;
+		   width: 200px;
+		   font-size: 24px;
+		}
+		
+		.hostPage_li:hover {
+			text-decoration: underline;
 		}
 		
 		.hostPage_ul {
@@ -69,19 +73,25 @@
 		.hostPage_a {
 			color: black;
 		}
+		
+		.hostPage_a:hover {
+			color: #395d5d;
+		}
 	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
+		<p style="position: absolute; top: 150px; font-size: 49px; left: 58px; "><a style="text-decoration:none;  color: white;"
+			 href="/hostPage/myGuestHouseList">호스트페이지</a></p>
 	   <div class="hostPage_container">
 
 	      <section class="hostPage_section">	
 	         <nav class="hostPage_nav">
 	            <ul class="hostPage_ul">
-	               <li class="hostPage_li"><a href="/hostPage/myGuestHouseList" class="hostPage_a">내 게스트하우스</a></li>
-	               <li class="hostPage_li"><a href="/hostPage/guestBookingList" class="hostPage_a">회원예약내역</a></li>
-	               <li class="hostPage_li"><a href="/hostPage/guestReviewList" class="hostPage_a">리뷰관리</a></li>
+	               <li class="hostPage_li" id="myGuestHouseList"><a href="/hostPage/myGuestHouseList" class="hostPage_a">내 게스트하우스</a></li>
+	               <li class="hostPage_li" id="guestBookingList"><a href="/hostPage/guestBookingList" class="hostPage_a">회원예약내역</a></li>
+	               <li class="hostPage_li" id="guestReviewList"><a href="/hostPage/guestReviewList" class="hostPage_a">리뷰관리</a></li>
 	            </ul>
 	         </nav>
 	         
