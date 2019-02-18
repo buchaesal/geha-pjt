@@ -189,7 +189,7 @@ a.portfolio-box{
 							<li class="divider"></li>
 							<li><a href="/myPage/bookingList" class="page-scroll">마이페이지</a></li>
 							<li th:if="${session.auth.equals('HOST')}"><a href="/hostPage/myGuestHouseList" class="page-scroll">호스트페이지</a></li>
-							<li th:if="${session.auth.equals('ADMIN')}"><a href="/adminPage/memberList" class="page-scroll">관리자페이지</a></li>
+							<li th:if="${session.auth.equals('ADMIN')}"><a href="/adminPage/adminPage?auth=" class="page-scroll">관리자페이지</a></li>
 							<li><a href="/logout" onclick="">로그아웃</a></li>
 						</ul>
 					</div>

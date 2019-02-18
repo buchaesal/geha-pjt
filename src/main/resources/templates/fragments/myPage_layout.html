@@ -1,111 +1,122 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="fragments/main_layout">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/main_layout">
 <head>
-	<meta charset="utf-8">
- 	<style>
- 		header {
- 		    background-color: #ff7907;
- 		}
- 	
-		.myPage_section {
-			padding: 14px 0;
-		}
-		
-		.myPage_container {
-		   display: flex;
-		   flex-direction: column;
-		}
-		
-		.myPage_footer {
-		   padding: 20px;
-		   text-align: center;
-		}
-		
-		.myPage_content {
-		   display: flex;
-		}
-		
-		.myPage_content .myPage_nav {
-		   
-		   padding-right: 15px;
-		   padding: 30px;
-		   padding-left: 0;
-		}	
-		
-		.myPage_content aside {
-		   border-left: 1px solid gray;
-		}
-		
-		.myPage_nav, aside {
-		   flex-basis: 150px;
-		   flex-shrink: 0;
-		   width: 25%;
-		   height: 300px;	
-		   float: left;
-		}
-		
-		.myPage_main {
-		  
-		   float: right;
-		   width: 75%
-		}
-		
-		.myPage_li {
-		   margin: 30px;
-		   width: 135px;
-		   font-size: 24px;
-		}
-		
-		.myPage_ul {
-		   list-style: none;
-		}
-		a.myPage_a {
-    color: #353232;
+<meta charset="utf-8">
+<style>
+
+header {
+	background-color: #2a416b;
 }
 
-.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
-    
-    background-color: #c8a9ff;
-    border-color: #ecd3ff;
+.myPage_section {
+	padding: 14px 0;
+	background: lavender;
+}
+
+.myPage_container {
+	display: flex;
+	flex-direction: column;
+}
+
+.myPage_footer {
+	padding: 20px;
+	text-align: center;
+	    background: lavender;
+}
+
+.myPage_content {
+	display: flex;
+	
+}
+
+.myPage_content .myPage_nav {
+	padding-right: 15px;
+	padding: 30px;
+	padding-left: 0;
+}
+
+.myPage_content aside {
+	border-left: 1px solid gray;
+}
+
+.myPage_nav, aside {
+	flex-basis: 150px;
+	flex-shrink: 0;
+	width: 25%;
+	height: 300px;
+	float: left;
+}
+
+.myPage_main {
+	float: right;
+	width: 75%
+}
+
+.myPage_li {
+	margin: 30px;
+	width: 135px;
+	font-size: 24px;
+}
+
+.myPage_ul {
+	list-style: none;
+}
+
+a.myPage_a {
+	color: #353232;
+}
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover,
+	.pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover
+	{
+	background-color: #c8a9ff;
+	border-color: #ecd3ff;
 }
 
 .pagination>li>a, .pagination>li>span {
-    color: #c5a9f7;
+	color: #c5a9f7;
 }
-	</style>
+.btn-primary{
+background-color:#172d54;
+}
+</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
-	   <div class="myPage_container">
+		<p
+			style="position: absolute; top: 131px; font-size: 49px; left: 58px; color: white;">마이페이지</p>
+		<div class="myPage_container">
+			<section class="myPage_section">
+				<nav class="myPage_nav">
+					<ul class="myPage_ul">
+						<li class="myPage_li"><a href="/myPage/bookingList"
+							class="myPage_a">예약내역</a></li>
+						<li class="myPage_li"><a href="/myPage/myReview"
+							class="myPage_a">리뷰관리</a></li>
+						<li class="myPage_li"><a href="/myPage/myLike"
+							class="myPage_a">찜한숙소</a></li>
+						<li class="myPage_li"><a href="/myPage/myInfo"
+							class="myPage_a">내정보관리</a></li>
+					</ul>
+				</nav>
 
-	      <section class="myPage_section">	
-	         <nav class="myPage_nav">
-	            <ul class="myPage_ul">
-	               <li class="myPage_li"><a href="/myPage/bookingList" class="myPage_a">예약내역</a></li>
-	               <li class="myPage_li"><a href="/myPage/myReview" class="myPage_a">리뷰관리</a></li>
-	               <li class="myPage_li"><a href="/myPage/myLike" class="myPage_a">찜한숙소</a></li>
-	               <li class="myPage_li"><a href="/myPage/myInfo" class="myPage_a">내정보관리</a></li>
-	            </ul>
-	         </nav>
-	         
-	         <main class="myPage_main">
+				<main class="myPage_main">
 				<div layout:fragment="myPage_content"></div>
-	         </main>
-	      </section>
+				</main>
+			</section>
 
-	      <footer class="myPage_footer">
-	      </footer>
+			<footer class="myPage_footer"> </footer>
 
-	   </div>
-  </div>
-   
-  <div layout:fragment="script">
+		</div>
+	</div>
+
+	<div layout:fragment="script">
 		<div layout:fragment="myPage_script"></div>
-  </div> 
-   
+	</div>
+
 </body>
 </html>

@@ -87,7 +87,7 @@ public class MyPageController {
 
 		// 평균평점 구하기
 		myPageDao.calculateAvgRating(myPageDao.getGuestHouseCode(bookingCode));
-		
+
 		return "redirect:bookingList";
 	}
 
@@ -116,11 +116,10 @@ public class MyPageController {
 
 	// 내정보수정
 	@RequestMapping("/updateInfo")
-	public String updateInfo(@RequestParam String id, @RequestParam String memberName, @RequestParam String password,
-			@RequestParam(required = false) String businessLicense, @RequestParam String gender,
-			RedirectAttributes redirectAttributes, HttpSession session) {
-		if (password == "") {
-
+	public String updateInfo(@RequestParam String id, @RequestParam String memberName,
+			@RequestParam(required = false) String password, @RequestParam(required = false) String businessLicense,
+			@RequestParam String gender, RedirectAttributes redirectAttributes, HttpSession session) {
+		if (password == "" || password == null) {
 			myPageDao.modifyNameEtc(id, memberName, businessLicense, gender);
 		} else {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -139,6 +138,7 @@ public class MyPageController {
 	@RequestMapping("/modifyReview")
 	public String modifyReview(ReviewDto reviewDto, RedirectAttributes redirectAttributes) {
 		myPageDao.modifyReview(reviewDto);
+		myPageDao.calculateAvgRating(reviewDto.getGuestHouseCode());
 		redirectAttributes.addFlashAttribute("modifyOk", "리뷰가 수정되었습니다!");
 		return "redirect:/myPage/myReview";
 	}
