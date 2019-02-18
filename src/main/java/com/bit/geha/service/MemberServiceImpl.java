@@ -1,5 +1,7 @@
 package com.bit.geha.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -117,4 +119,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.findByMemberCode(memberCode);
 	}
 
+	public String getTomorrow() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, 1);  //하루를 더해준다.
+		return sdf.format(c.getTime());
+	}
 }
