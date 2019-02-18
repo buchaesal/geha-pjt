@@ -9,9 +9,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.bit.geha.dto.BoardCriteria;
+import com.bit.geha.criteria.AdminPageCriteria;
 import com.bit.geha.dto.BookingDto;
-import com.bit.geha.dto.FacilityDto;
 import com.bit.geha.dto.FileDto;
 import com.bit.geha.dto.GuestHouseDto;
 import com.bit.geha.dto.RejectDto;
@@ -21,8 +20,8 @@ import com.bit.geha.dto.RoomDto;
 @Mapper
 public interface HostPageDao {
 	//내 게스트하우스
-	@Select("SELECT * FROM guestHouse_tb WHERE memberCode=#{memberCode}")
-	public List<GuestHouseDto> getGuestHouseList(int memberCode);
+	@Select("SELECT * FROM guestHouse_tb WHERE memberCode=#{memberCode} LIMIT #{cri.pageStart}, #{cri.perPageNum}")
+	public List<GuestHouseDto> getGuestHouseList(@Param("cri")AdminPageCriteria cri, int memberCode);
 	
 	@Select("SELECT guestHouseCode FROM reject_tb WHERE memberCode=#{memberCode}")
 	public List<Integer> getIsRejectList(int memberCode);
@@ -68,15 +67,18 @@ public interface HostPageDao {
 	
 	
 	//회원예약내역
-	public List<BookingDto> getGuestBookingList(@Param("hostCode") int hostCode, @Param("cri") BoardCriteria cri);
-	//회원예약내역_페이징
-	public int getGuestBookingListCount(int hostCode);
+	public List<BookingDto> getGuestBookingList(@Param("cri")AdminPageCriteria cri, int hostCode);
 	
 	@Update("UPDATE booking_tb SET bookingStatus='숙박완료', bookingEnd=now() WHERE bookingCode=#{bookingCode}")
 	public void modifyBookingStatusToCheckout(int bookingCode);
 	
 	//회원리뷰관리
-	@Select("SELECT r.*, v.guestHouseCode, v.guestHouseName, m.id AS writer FROM review_tb r, bkrmghmatching_view v, member_tb m"
-			+ " WHERE r.bookingCode=v.bookingCode AND v.memberCode=m.memberCode AND v.hostCode=#{hostCode}")
-	public List<ReviewDto> getGuestReviewList(int hostCode);
+	public List<ReviewDto> getGuestReviewList(@Param("cri")AdminPageCriteria cri, int hostCode);
+	
+	//페이징
+	public int getGuestHouseListTotal(int memberCode);
+	
+	public int getGuestBookingListTotal(int hostCode);
+	
+	public int getGuestReviewListTotal(int hostCode);
 }

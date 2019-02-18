@@ -22,7 +22,7 @@ public interface AdminPageDao {
 	
 	public int getTotal(AdminPageCriteria cri,String auth);
 	
-	public List<GuestHouseDto> getApprovalHouseList();
+	public List<GuestHouseDto> getApprovalHouseList(@Param("cri")AdminPageCriteria cri);
 	
 	public void approveNewGuestHouse(int guestHouseCode);
 	
@@ -31,5 +31,7 @@ public interface AdminPageDao {
 	public void insertReject(@Param("dto")RejectDto rejectDto);
 	
 	public List<RejectDto> getRejectListByGuestHouseCode(int guestHouseCode);
+	
+	public int getApprovalTotal();
 	
 }

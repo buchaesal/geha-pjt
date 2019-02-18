@@ -21,7 +21,7 @@
          td {width: 500px; padding: 20px 0;}
          
          .imgs_wrap {
-            width: 580px;
+            width: 600px;
             margin-top: 20px;	
          }
          
@@ -112,10 +112,10 @@
            			<td>
            				<div>
 			               <input type="file" id="input_imgs" name="files" multiple>
-			               <input type="button" value="삭제" onclick="deleteImgs(this)">
+			               <input type="button" value="파일삭제" onclick="deleteImgs(this)">
 			            </div>
 			            <div class="imgs_wrap" name="guestHouseImg">
-				           	<span th:each="img, iterState : ${guestHouseImgs}">
+				           	<span class='thumbnailImgSpan' th:each="img, iterState : ${guestHouseImgs}">
 					           	<input type="radio" name="mainImage" th:value="${iterState.index}" th:checked="${img.mainImage}"><img th:src="@{'/gehaImg/'+${img.guestHouseCode}+'/'+${img.savedName}}" data-file="" class="selProductFile" title="Click to remove">
 				           	</span>
 			            </div>
@@ -129,15 +129,16 @@
                <tr>
                   <th><label class="hostPage_label">태그<br>(복수 선택 가능)</label></th>
                   <td>
-                     <label class="checkboxLabel"><input type="checkbox" name="gourmet" value="1" th:checked="${guestHouseDto.gourmet}">#맛집</label>
-                     <label class="checkboxLabel"><input type="checkbox" name="trip" value="1" th:checked="${guestHouseDto.trip}">#관광</label>
-                     <label class="checkboxLabel"><input type="checkbox" name="shopping" value="1" th:checked="${guestHouseDto.shopping}">#쇼핑</label>
-                     <label class="checkboxLabel"><input type="checkbox" name="businessTrip" value="1" th:checked="${guestHouseDto.businessTrip}">#출장</label>
+                     <label class="checkboxLabel"><input type="checkbox" id="tag" name="gourmet" value="1" th:checked="${guestHouseDto.gourmet}">#맛집</label>
+                     <label class="checkboxLabel"><input type="checkbox" id="tag" name="trip" value="1" th:checked="${guestHouseDto.trip}">#관광</label>
+                     <label class="checkboxLabel"><input type="checkbox" id="tag" name="shopping" value="1" th:checked="${guestHouseDto.shopping}">#쇼핑</label>
+                     <label class="checkboxLabel"><input type="checkbox" id="tag" name="businessTrip" value="1" th:checked="${guestHouseDto.businessTrip}">#출장</label>
                   </td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">설명</label></th>
-                  <td><textarea name="guestHouseInfo" rows="7" cols="50" maxlength="500">[[${guestHouseDto.guestHouseInfo}]]</textarea></td>
+                  <td>
+                  <textarea name="guestHouseInfo" rows="15" cols="63" maxlength="500" onload="load()"></textarea></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">편의시설</label></th>
@@ -166,14 +167,14 @@
 	                     <div class="roomInfoDiv">
 	                     	<input type="hidden" name="roomCode" th:value="${room.roomCode}">
 				            
-				            <table>
+				            <table th:name="${room.roomCode}">
 				            	<input type="hidden" name="roomIndex" th:value="${iterState.count}">
 				               <tr>
 				               		<th><label>방 사진 (최대 5장) <p>메인이미지를 선택해주세요.</p></label></th>
 				               		<td>
 				               			<div>
 							               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
-							               <input type="button" value="삭제" onclick="deleteImgs(this)">
+							               <input type="button" value="파일삭제" onclick="deleteImgs(this)">
 							            </div>
 							            <div class="imgs_wrap room_imgs_wrap" name="roomsImg">
 							            	<span th:each="img, iterState : ${room.roomImgs}">
@@ -191,7 +192,7 @@
 				               </tr>
 				               <tr>
 				                  <th>가격</th>
-				                  <td><input type="text" name="charge" th:value="${room.charge}"></td>
+				                  <td><input type="text" class="inputNumber" name="charge" th:value="${#numbers.formatInteger(room.charge, 3, 'COMMA')}" onchange="numberFormat(this)"> 원</td>
 				               </tr>
 				               <tr>
 				                  <th>전용</th>
@@ -204,11 +205,11 @@
 				               </tr>
 				               <tr>
 				                  <th>수용인원 수</th>
-				                  <td><input type="number" name="capacity" th:value="${room.capacity}">명</td>
+				                  <td><input type="text" class="inputNumber" name="capacity" th:value="${room.capacity}" size="5" onchange="numberFormat(this)">명</td>
 				               </tr>
 				               <tr>
 				                  <th>객실 이용안내</th>
-				                  <td><textarea name="roomInfo" rows="5" cols="30">[[${room.roomInfo}]]</textarea></td>
+				                  <td><textarea name="roomInfo" rows="5" cols="30">asdf</textarea></td>
 				               </tr>
 				            </table>
 				            <input type="button" class="removeRoomBtn" value="삭제" onclick="removeRoom(this)">
@@ -221,9 +222,9 @@
                   <th><label class="hostPage_label">숙소 정보</label></th>
                   <td>
                      <label>숙소이용규칙</label><br>
-                     <textarea name="rules" rows="10" cols="50" maxlength="1000">[[${guestHouseDto.rules}]]</textarea><br>
+                     <textarea name="rules" rows="20" cols="63" maxlength="1000"></textarea><br><br>
                      <label>주차장 정보</label><br>
-                     <textarea name="parkingInfo" rows="5" cols="50" maxlength="100">[[${guestHouseDto.parkingInfo}]]</textarea>
+                     <textarea name="parkingInfo" rows="10" cols="63" maxlength="100"></textarea>
                   </td>
                </tr>
                <tr>
@@ -236,7 +237,7 @@
                </tr>
                <tr>
                   <th><label class="hostPage_label">오시는 길</label></th>
-                  <td><textarea name="directions" rows="5" cols="50" maxlength="100">[[${guestHouseDto.directions}]]</textarea></td>
+                  <td><textarea name="directions" rows="10" cols="63" maxlength="100"></textarea></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">정산계좌 입력</label></th>
@@ -261,6 +262,16 @@
             <input id="modifyGuestHouseBtn" type="button" value="수정하기">
          </form>
 
+		 <!-- inputCheck Modal -->
+		<div id="inputCheckModal" class="modal">
+		
+			<!-- Modal content -->
+			<div class="modal-content">
+				<p id="modalMessage"></p>
+				<button id="inputCheckModalClose">확인</button>
+			</div>
+		</div>
+
          <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
             <table>
             	<input type="hidden" name="roomIndex">
@@ -274,7 +285,7 @@
 			            </div>
 			            <div class="imgs_wrap room_imgs_wrap" name="roomsImg"></div>
 			            <input type="hidden" name="room_imglength">
-			            <input type="hidden" name="mainRoomImage">
+			            <input type="hidden" name="mainRoomImage" value="0">
             		</td>
             	</tr>
                <tr>
@@ -283,7 +294,7 @@
                </tr>
                <tr>
                   <th>가격</th>
-                  <td><input type="text" name="charge" numberOnly placeholder="0"></td>
+                  <td><input type="text" class="inputNumber" name="charge" placeholder="0" onchange="numberFormat(this)"> 원</td>
                </tr>
                <tr>
                   <th>전용</th>
@@ -296,7 +307,7 @@
                </tr>
                <tr>
                   <th>수용인원 수</th>
-                  <td><input type="number" name="capacity">명</td>
+                  <td><input type="text" class="inputNumber" name="capacity" onchange="numberFormat(this)" size="5"> 명</td>
                </tr>
                <tr>
                   <th>객실 이용안내</th>
@@ -309,6 +320,17 @@
       
       <div layout:fragment="hostPage_script">
 		<script type="text/javascript" th:inline="javascript">
+			window.onload = function () {
+			 	$("textarea[name=guestHouseInfo]").val(outputTextArea([[${guestHouseDto.guestHouseInfo}]]));
+			 	$("textarea[name=rules]").val(outputTextArea([[${guestHouseDto.rules}]]));
+			 	$("textarea[name=parkingInfo]").val(outputTextArea([[${guestHouseDto.parkingInfo}]]));
+			 	$("textarea[name=directions]").val(outputTextArea([[${guestHouseDto.directions}]]));
+			 	
+			 	for(var i=0; i<[[${#lists.size(rooms)}]]; i++) {
+			 		$('table[name=' + [[${rooms}]][i].roomCode + ']').find('textarea[name=roomInfo]').val(outputTextArea([[${rooms}]][i].roomInfo));
+			 	}
+			}
+		
             var roomIndex=[[${#lists.size(rooms)}]]+1;
             $("#addRoomInfoBtn").click(function() {
             	var div = document.createElement('div');
@@ -336,7 +358,104 @@
             
             //게스트하우스 수정하기
             $("#modifyGuestHouseBtn").click(function() {
-               $("#modifyGuestHouseForm").submit();
+           		if(checkValue()) {
+           			console.log("true");
+           			inputTextArea();
+	               $("#modifyGuestHouseForm").submit();
+	           	} else {
+	           		console.log("false");
+	           	}
+            })
+            
+            
+             
+           	function checkValue() {
+            	console.log("checkValue");
+            	
+            	if(!($("input:checkbox[id='tag']").is(":checked")) || !($("input:checkbox[name='facilityCode']").is(":checked"))) { //체크란 체크여부
+            		$("#modalMessage").text("체크란을 체크해주세요!");
+            		$("#inputCheckModal").css("display", "block");
+            		return false;
+            	} else if($(".guestHouse_table").find('.roomInfoDiv').length == 0) { //방 등록 여부
+            		$("#modalMessage").text("방 등록은 1개 이상이어야합니다.");
+            		$("#inputCheckModal").css("display", "block");
+            		return false;
+            	}
+            	console.log("1");
+            	//파일 업로드 여부
+            	var imgDivTags = $(".guestHouse_table").find(".imgs_wrap");
+            	for(var i=0; i<imgDivTags.length; i++) { 
+            		if($(imgDivTags[i]).children().length==0) {
+            			$("#modalMessage").text("파일 업로드를 해주세요!");
+                		$("#inputCheckModal").css("display", "block");
+                		return false;
+            		}
+            	}
+            	console.log("2");
+            	//textarea 태그 개수
+            	var textareaTags =  $(".guestHouse_table").find("textarea");
+            	for(var i=0; i<textareaTags.length; i++) {
+            		if(!textareaTags[i].value) {
+            			$("#modalMessage").text("입력란을 모두 작성해주세요!");
+                		$("#inputCheckModal").css("display", "block");
+                		return false;
+            		}
+            	}
+            	console.log("3");
+            	var inputTextTag = $(".guestHouse_table").find("input[type=text]");
+            	for(var i=0; i<inputTextTag.length; i++) {
+            		if(!inputTextTag[i].value) {
+            			$("#modalMessage").text("입력란을 모두 작성해주세요!");
+                		$("#inputCheckModal").css("display", "block");
+                		return false;
+            		}
+            	}
+            	
+            	console.log("4");
+            	//숫자 받는 입력란 콤마 제거
+            	var inputNumberTag = $(".guestHouse_table").find(".inputNumber");
+            	for(var i=0; i<inputNumberTag.length; i++) {
+            		var x = inputNumberTag[i].value;
+            		inputNumberTag[i].value = removeCommas(x);
+            	}
+            	console.log("5");
+            	return true;
+            }
+            
+            function numberFormat(obj) {
+            	$(obj).val(addCommas($(obj).val().replace(/[^0-9]/g,"")));
+            }
+            
+           //3자리 단위마다 콤마 생성
+            function addCommas(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+             
+            //모든 콤마 제거
+            function removeCommas(x) {
+                if(!x || x.length == 0) return "";
+                else return x.split(",").join("");
+            }
+            
+            //textArea br태그 넣기
+            function inputTextArea() {
+            	var textareaTags =  $(".guestHouse_table").find("textarea");
+            	for(var i=0; i<textareaTags.length; i++) {
+            		var str = textareaTags[i].value;
+        			str = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+        			textareaTags[i].value=str;
+            	}
+            }
+            
+            function outputTextArea(value) {
+            	var str = value;
+            	str = str.split('<br/>').join("\r\n");
+            	return str;
+            }
+            
+
+            $("#inputCheckModalClose").click(function() {
+            	$("#inputCheckModal").css("display", "none");
             })
             
             //파일업로드
@@ -357,6 +476,21 @@
                var files = e.target.files;
                var filesArr = Array.prototype.slice.call(files);
                
+               
+               if(e.target.name == "roomAttach") {
+            	   if(2 > files.length || files.length > 5) {
+            		   alert("방 이미지는 2장~5장까지만 등록하실 수 있습니다.");
+                       $(e.target).val("");
+            		   return;
+            	   }
+               } else {
+            	   if(4 > files.length || files.length > 10) {
+            		   alert("게스트하우스 이미지는 4장~10장까지만 등록하실 수 있습니다.");
+            		   $(e.target).val("");
+            		   return;
+            	   }
+               }
+               
                var index = 0;
                filesArr.forEach(function(f) {
                   if(!f.type.match("image.*")) {
@@ -371,12 +505,12 @@
                      
                      if($(prtDiv).attr("name")=='roomsImg') { //방일 경우
                         var html = 
-                           "<input type='radio' name='mainRoomImage"+$(roomInfoTable).find("input[name='roomIndex']").val()+"' value='"+index
-                           +"' onclick='clickMainRoomImg($(this).parent().next().next(), this.value)'><img src=\""+e.target.result+"\" data-file='"+f.name
-                           +"' class='selProductFile' title='Click to remove'>";
+                           "<span class='thumbnailImgSpan'><input type='radio' name='mainRoomImage"+$(roomInfoTable).find("input[name='roomIndex']").val()+"' value='"+index
+                           +"' onclick='clickMainRoomImg($(this).parent().parent().next().next(), this.value)'"+(index==0?'checked=checked':'')+"><img src=\""+e.target.result+"\" data-file='"+f.name
+                           +"' class='selProductFile' title='Click to remove'></span>";
                      } else { //게스트하우스일 경우
-                        var html = "<input type='radio' name='mainImage' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
-                        +"' class='selProductFile' title='Click to remove'>";
+                        var html = "<span class='thumbnailImgSpan'><input type='radio' name='mainImage' value='"+index+"' "+(index==0?'checked=checked':'')+"><img src=\""+e.target.result+"\" data-file='"+f.name
+                        +"' class='selProductFile' title='Click to remove'></span>";
                      }
                      $(prtDiv).append(html);
                      index++;
@@ -385,11 +519,11 @@
                   reader.readAsDataURL(f);
                });
             }
-            
+/*             
             $("#deleteImgsBtn").click(function() {
                $("#input_imgs").val("");
                $(".selProductFile").remove();
-            })
+            }) */
             
             function deleteImgs(obj) {
                 var input_imgs = obj.previousElementSibling;

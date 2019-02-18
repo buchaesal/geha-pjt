@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bit.geha.criteria.AdminPageCriteria;
 import com.bit.geha.dao.HostPageDao;
 import com.bit.geha.dao.MemberDao;
 import com.bit.geha.dao.MyPageDao;
-import com.bit.geha.dto.BoardCriteria;
 import com.bit.geha.dto.FileDto;
 import com.bit.geha.dto.GuestHouseDto;
-import com.bit.geha.dto.PageMaker;
 import com.bit.geha.dto.RejectDto;
 import com.bit.geha.dto.RoomDto;
 import com.bit.geha.dto.RoomDtos;
 import com.bit.geha.service.MemberService;
+import com.bit.geha.util.PageMaker;
 import com.bit.geha.util.UploadFileUtils;
 
 import lombok.extern.java.Log;
@@ -50,17 +50,24 @@ public class HostPageController {
 	
 	
 	@RequestMapping("/myGuestHouseList")
-	public void myGuestHouseList(HttpSession session, Authentication auth, Model model) {
+	public void myGuestHouseList(HttpSession session, Authentication auth, Model model,
+			@ModelAttribute("cri") AdminPageCriteria cri) {
 		log.info("myGuestHouseList()");
+		cri.setPerPageNum(5);
 		
 		//로그인계정 가져오기
 		memberService.getSession(auth,session);
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
 		
 		List<Integer> isRejectList = hostPageDao.getIsRejectList(memberCode);
+		List<GuestHouseDto> guestHouseList = hostPageDao.getGuestHouseList(cri, memberCode);
 		
-		List<GuestHouseDto> guestHouseList = hostPageDao.getGuestHouseList(memberCode);
-		
+		// 페이징
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(hostPageDao.getGuestHouseListTotal(memberCode));
+
+		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("guestHouseList", guestHouseList);
 		model.addAttribute("isRejectList", isRejectList);
 	}
@@ -290,18 +297,21 @@ public class HostPageController {
 	}
 	
 	@RequestMapping(value="guestBookingList")
-	public void guestBookingList(@ModelAttribute("cri") BoardCriteria cri, HttpSession session, Authentication auth, Model model) {
+	public void guestBookingList(HttpSession session, Authentication auth, Model model, @ModelAttribute("cri") AdminPageCriteria cri) {
 		log.info("guestBookingList()");
+		cri.setPerPageNum(5);
 		
 		//로그인계정 가져오기
 		memberService.getSession(auth,session);
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
 		
-		model.addAttribute("guestBookingList", hostPageDao.getGuestBookingList(memberCode, cri));
+		model.addAttribute("guestBookingList", hostPageDao.getGuestBookingList(cri, memberCode));
+		
+		// 페이징
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(hostPageDao.getGuestBookingListCount(memberCode)); //파라미터 추가로 boardSearchCriteria 추가해야됨
-		
+		pageMaker.setTotalCount(hostPageDao.getGuestHouseListTotal(memberCode));
+
 		model.addAttribute("pageMaker", pageMaker);
 	}
 	
@@ -320,13 +330,21 @@ public class HostPageController {
 	}
 	
 	@RequestMapping(value="guestReviewList")
-	public void guestReviewList(HttpSession session, Authentication auth, Model model) {
+	public void guestReviewList(HttpSession session, Authentication auth, Model model, @ModelAttribute("cri") AdminPageCriteria cri) {
 		log.info("guestReviewList()");
+		cri.setPerPageNum(10);
 		
 		//로그인계정 가져오기
 		memberService.getSession(auth,session);
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
 		
-		model.addAttribute("guestReviewList", hostPageDao.getGuestReviewList(memberCode));
+		model.addAttribute("guestReviewList", hostPageDao.getGuestReviewList(cri, memberCode));
+		
+		// 페이징
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(hostPageDao.getGuestReviewListTotal(memberCode));
+
+		model.addAttribute("pageMaker", pageMaker);
 	}
 }

@@ -51,7 +51,6 @@
 		<div layout:fragment="hostPage_content">
 			<table border="2">
 				<tr>
-	               <th>NO</th>
 	               <th>예약번호</th>
 	               <th>예약 정보</th>
 	               <th>결제금액</th>
@@ -59,7 +58,6 @@
 	               <th></th>
 	            </tr>
 	            <tr th:each="bookingDto, iterState : ${guestBookingList}">
-	            	<td>[[${iterState.count}]]</td>
 	            	<td th:text="${bookingDto.bookingCode}"></td>
 	            	<td>
 	            		[[${bookingDto.guestHouseName}]]([[${bookingDto.roomName}]]) <br>
@@ -102,24 +100,23 @@
 	            </tr>
 			</table>
 			
-			<footer class="hostPage_footer">
-				<!-- 페이징 버튼 -->
-				<div class="paging">
-					<ul>
-						<li th:if="${pageMaker.prev} == true">
-							<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
-						</li>
-						
-						<li th:each="idx,iterState : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx}+1 ? active : null">
-							<a th:href="@{/hostPage/guestBookingList(page=${idx}+1,perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}+1"></a>
-						</li>
-						
-						<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-							<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
-						</li>
-					</ul>
-				</div>
-			</footer>
+			<!-- 게시판 하단의 페이징 버튼 -->
+            <div class="box-footer clearfix" style="padding-left:357px">
+              <ul class="pagination pagination-sm no-margin pull-center">
+              
+              <li th:if="${pageMaker.prev} == true">
+              	<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+              </li>
+              
+              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+                <a th:href="@{/hostPage/guestBookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+              </li>
+                
+              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+              	<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+              </li>
+              </ul>
+            </div>
 		</div>
 		<div layout:fragment="hostPage_script">
 			<script type="text/javascript">

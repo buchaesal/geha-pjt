@@ -1,6 +1,9 @@
 package com.bit.geha.dto;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import lombok.Data;
 
@@ -20,4 +23,6 @@ public class ReviewDto {
 	private String roomName;
 	private int guestHouseCode;
 	private String writer;
+	
+	
 }

@@ -39,26 +39,24 @@
 		<div layout:fragment="hostPage_content">
 			<table border="2">
 	            <tr>
-	               <th>NO</th>
 	               <th>등록번호</th>
 	               <th>이름</th>
 	               <th>신청일</th>
 	               <th>상태</th>
 	            </tr>
-	            <tr th:each="guestHouseDto, iterState : ${guestHouseList}">
-					<td th:text="${iterState.count}"></td>
+	            <tr th:each="guestHouseDto : ${guestHouseList}">
 					<td th:text="${guestHouseDto.guestHouseCode}"></td>
 					<td th:text="${guestHouseDto.guestHouseName}"></td>
 					<td th:text="${#dates.format(guestHouseDto.registerDate, 'yy.MM.dd')}"></td>
 					<td>
 						<div th:if="${guestHouseDto.approvalDate}">
-							등록완료<br><a>보기</a>
+							등록완료<br><a th:href="@{/room/roomInfo(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingNumber=1)}">보기</a>
 						</div>
 						<div th:unless="${guestHouseDto.approvalDate}">
 							<label th:if="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
 								반려
 								<button th:onclick="|javascript:getRejectList('${guestHouseDto.guestHouseCode}')|">이력</button><br>
-								<a th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode})}">수정/삭제</a>
+								<a th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">수정/삭제</a>
 							</label>
 							<label th:unless="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
 								등록신청<br>
@@ -68,6 +66,24 @@
 					</td>
 				</tr>
 			</table>
+			
+			<!-- 게시판 하단의 페이징 버튼 -->
+            <div class="box-footer clearfix" style="padding-left:357px">
+              <ul class="pagination pagination-sm no-margin pull-center">
+              
+              <li th:if="${pageMaker.prev} == true">
+              	<a th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+              </li>
+              
+              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+                <a th:href="@{/hostPage/myGuestHouseList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+              </li>
+                
+              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+              	<a th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+              </li>
+              </ul>
+            </div>
          
 			<a href="registerGuestHouse">내 게스트하우스 등록하기</a>
 	         		
