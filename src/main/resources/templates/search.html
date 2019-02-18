@@ -346,9 +346,10 @@
 							ellipsis.textContent = data[i].address;
 		
 							var aDiv = document.createElement('div');
-							var aTag = document.createElement('a');
-							aTag.href = '/room/roomInfo?guestHouseCode='+data[i].guestHouseCode;
+							aDiv.className = 'ellipsis';
 							
+							var aTag = document.createElement('a');
+							aTag.href = '/room/roomInfo?guestHouseCode='+data[i].guestHouseCode+'&bookingStart='+data[i].bookingStart+'&bookingEnd='+data[i].bookingEnd+'&bookingNumber='+data[i].bookingNumber;
 							aTag.addEventListener('click', function(){
 								console.log(this);
 							});
@@ -373,7 +374,7 @@
 							comments.textContent = ' ('+data[i].reviewCnt+')';
 		
 							var priceDiv = document.createElement('div');
-							priceDiv.className = 'price';
+							priceDiv.className = 'price ellipsis';
 		
 							var priceSpan = document.createElement('span');
 							priceSpan.className = 'price';
@@ -398,6 +399,7 @@
 											priceDiv.appendChild(priceSpan);
 							
 							var CustomOverlay = new daum.maps.CustomOverlay({
+								clickable: true,
 								map: map,
 								zIndex: 3,
 								position: marker.getPosition()
