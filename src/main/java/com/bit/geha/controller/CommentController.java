@@ -94,11 +94,10 @@ public class CommentController {
 	    @RequestMapping("/update") //댓글 수정  
 	    @ResponseBody
 	    public int mCommentServiceUpdateProc(@RequestParam int reviewNo, @RequestParam String replyContent) throws Exception{
-
 	        ReplyReviewDto comment = new ReplyReviewDto();
 	        comment.setReviewNo(reviewNo);
 	        comment.setReplyContent(replyContent);
-
+	        System.out.println("2");
 	        return mCommentService.commentUpdateService(comment);
 	    }
 

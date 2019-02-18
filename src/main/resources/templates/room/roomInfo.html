@@ -728,7 +728,7 @@ border-radius:4px;
 		              	};
 		              	if (value.replyContent != null){
 		              		a += '<div class="host" id="comment2" style="border: 1px solid red; padding-left:10%" >'
-		              		a += '<div class="commentList"'
+		              		a += '<div class="`"'
 		              		a += '<h1>제휴점 답변</h1>'
 		              		a += '<p class="replyContent'+value.reviewNo+'">' + value.replyContent + '</p>'
 		              		a += '<p class="replyDate">' + jQuery.timeago(new Date(value.replyDate)) + '</p>'
@@ -744,48 +744,48 @@ border-radius:4px;
 		             
 		             $(".guest").html(a);
 		             var count=( $('labal').length)  
-				     var rating = $('labal').eq(0).html()
-						rating *= 1;
-			             for (var i =0; i < count;i++){
-					           var rating = $('labal').eq(i).html()
-								rating *= 1;
-			            	    if( rating >= 10 ){
-						 			$('#rt_'+i+'>label[for="p55"]')
-						 			.css('display','inline-block')
-						 			.css('vertical-align','middle')
-						 			.css('background',"url('/img/grade_img.png')")
-						 			.css('background-size','150px')
-						 			.css('background-position','0 bottom')
-						 		}else if (rating >= 8){
-						 			$('#rt_'+i+'>label[for="p44"]')
-						 			.css('display','inline-block')
-						 			.css('vertical-align','middle')
-						 			.css('background',"url('/img/grade_img.png')")
-						 			.css('background-size','150px')
-						 			.css('background-position','0 bottom')
-						 		}else if (rating >= 6){
-						 			$('#rt_'+i+'>label[for="p33"]')
-						 			.css('display','inline-block')
-						 			.css('vertical-align','middle')
-						 			.css('background',"url('/img/grade_img.png')")
-						 			.css('background-size','150px')
-						 			.css('background-position','0 bottom')
-						 		}else if (rating >= 4){
-						 			$('#rt_'+i+'>label[for="p22"]')
-						 			.css('display','inline-block')
-						 			.css('vertical-align','middle')
-						 			.css('background',"url('/img/grade_img.png')")
-						 			.css('background-size','150px')
-						 			.css('background-position','0 bottom')
-						 		}else if (rating >= 2){
-						 			$('#rt_'+i+'>label[for="p11"]')
-						 			.css('display','inline-block')
-						 			.css('vertical-align','middle')
-						 			.css('background',"url('/img/grade_img.png')")
-						 			.css('background-size','150px')
-						 			.css('background-position','0 bottom')
-						 		}     
-			            } 
+					     var rating = $('labal').eq(0).html()
+							rating *= 1;
+						      for (var i =0; i < count;i++){
+						           var rating = $('labal').eq(i).html()
+									rating *= 1;
+						    	    if( rating >= 10 ){
+							 			$('#rt_'+i+'>label[for="p55"]')
+							 			.css('display','inline-block')
+							 			.css('vertical-align','middle')
+							 			.css('background',"url('/img/grade_img.png')")
+							 			.css('background-size','150px')
+							 			.css('background-position','0 bottom')
+							 		}else if (rating >= 8){
+							 			$('#rt_'+i+'>label[for="p44"]')
+							 			.css('display','inline-block')
+							 			.css('vertical-align','middle')
+							 			.css('background',"url('/img/grade_img.png')")
+							 			.css('background-size','150px')
+							 			.css('background-position','0 bottom')
+							 		}else if (rating >= 6){
+							 			$('#rt_'+i+'>label[for="p33"]')
+							 			.css('display','inline-block')
+							 			.css('vertical-align','middle')
+							 			.css('background',"url('/img/grade_img.png')")
+							 			.css('background-size','150px')
+							 			.css('background-position','0 bottom')
+							 		}else if (rating >= 4){
+							 			$('#rt_'+i+'>label[for="p22"]')
+							 			.css('display','inline-block')
+							 			.css('vertical-align','middle')
+							 			.css('background',"url('/img/grade_img.png')")
+							 			.css('background-size','150px')
+							 			.css('background-position','0 bottom')
+							 		}else if (rating >= 2){
+							 			$('#rt_'+i+'>label[for="p11"]')
+							 			.css('display','inline-block')
+							 			.css('vertical-align','middle')
+							 			.css('background',"url('/img/grade_img.png')")
+							 			.css('background-size','150px')
+							 			.css('background-position','0 bottom')
+							 		}     
+						    } 
 		        }
 		    });
 
@@ -861,12 +861,11 @@ border-radius:4px;
 				   $('.replyContentUpdate').focus();
 				   return false;
 			}else {
-				commentUpdate(reviewNo);
+				commentUpdate1(reviewNo);
 			};
 		}
-		
-		//댓글 수정
-		function commentUpdate(reviewNo){
+		//답글 수정
+		function commentUpdate1(reviewNo){
   			var replyContent = $('[name=contentUp_'+reviewNo+']').val();
   			var reno = $('[name=reviewno_'+reviewNo+']').val();
   			reno = reviewNo;
@@ -875,7 +874,22 @@ border-radius:4px;
 		        type : 'post',
 		        data : {'replyContent' : replyContent, 'reviewNo' : reno}, 
 		        success : function(){
-		        	commentList();
+		        	commentList(1);
+		        }
+		    }) 
+		}; 
+		
+		//호스트답글 
+		function commentUpdate(reviewNo){
+  			var replyContent = $('[name=content_'+reviewNo+']').val();
+  			var reno = $('[name=reviewno_'+reviewNo+']').val();
+  			reno = reviewNo;
+	 	    $.ajax({
+		        url : '/comment/update',
+		        type : 'post',
+		        data : {'replyContent' : replyContent, 'reviewNo' : reno}, 
+		        success : function(){
+		        	commentList(1);
 		        }
 		    }) 
 		}; 
@@ -885,7 +899,7 @@ border-radius:4px;
 		        url : '/comment/delete/'+reviewNo,
 		        type : 'post',
 		        success : function(data){
-		            if(data == 1) commentList(); //댓글 삭제후 목록 출력 
+		            if(data == 1) commentList(1); //댓글 삭제후 목록 출력 
 		        }
 		    });
 		}
