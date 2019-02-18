@@ -1,5 +1,8 @@
 package com.bit.geha.dto;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -18,4 +21,7 @@ public class MemberDto {
 	private String guestHouseName;
 	private String status;
 	private int guestHouseCode;
+	private Date approvalDate;
+	
+
 }

@@ -235,6 +235,7 @@ font-size: 18px;
 		
 		$("#modalName").text('From.'+gehaName);
 		$("#modalBody").text(content);
+		$("#modalBody").show();
 		$("#confirmModal").modal();
 	}
 	
@@ -260,7 +261,7 @@ font-size: 18px;
 			<tr th:each="reviewDto : ${reviewList}" height="80px" align="center">
 				<td><a target="_blank" th:href="@{'/room/roomInfo?guestHouseCode='+${reviewDto.guestHouseCode}+
 				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
-				'&bookingEnd='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+'&bookingNumber=1'}">
+				'&bookingEnd='+${tomorrow}+'&bookingNumber=1'}">
 				[[${reviewDto.guestHouseName}]]</a><br>
 					([[${reviewDto.roomName}]])
 				</td>
@@ -313,7 +314,7 @@ font-size: 18px;
 		<div class="modal fade" id="modifyReviewModal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm modal-notify modal-danger"
-				role="document">
+				role="document" style="width: 507px;">
 				<!--Content-->
 				<div class="modal-content text-center">
 					<!--Header-->
@@ -388,7 +389,7 @@ font-size: 18px;
 <!--Modal: confirmModal-->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document" style="width: 507px;">
     <!--Content-->
     <div class="modal-content text-center">
       <!--Header-->

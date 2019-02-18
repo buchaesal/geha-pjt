@@ -19,5 +19,7 @@ public interface MemberService {
 	public void sendMail(String id) throws Exception;
 	
 	public List<MemberDto> findByMemberCode(int memberCode);
+	
+	public String getTomorrow();
 
 }
