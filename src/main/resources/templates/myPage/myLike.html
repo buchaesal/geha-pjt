@@ -59,6 +59,10 @@ img {
 	text-align: left;
 	vertical-align: middle;
 }
+
+tr {
+	border-bottom: 2px solid lightgray;
+}
 </style>
 </head>
 <body>
@@ -67,17 +71,17 @@ img {
 			<p class="heading">찜 한 숙소가 없습니다.</p>
 			<a href="/search" class="btn btn-info waves-effect">숙소 둘러보기</a>
 		</div>
-		<div th:if="${#lists.size(likeList)>0}" style="width: 700px;"
+		<div th:if="${#lists.size(likeList)>0}" style="width: 800px;"
 			align="right">
 
-			<table class="tableOne" width="700px">
+			<table class="tableOne" width="800px">
 				<tr align="center" height="80px"
-					style="border-bottom: 2.2px solid lightgray">
+					style="border-bottom: 2.2px solid lightgray; background: #f1f1fb;">
 					<th>게스트하우스</th>
 					<th>가격</th>
 					<th>평점</th>
-					<th></th>
-					<th><input type="checkbox" id="checkall"></th>
+					<th>-</th>
+					<th style="width: 55px;"><input type="checkbox" id="checkall"></th>
 				</tr>
 				<form action="/myPage/deleteLike" id="deleteFrm">
 					<tr th:each="likeDto : ${likeList}" align="center">
@@ -99,7 +103,7 @@ img {
 							target="_blank" th:href="@{'/room/roomInfo?guestHouseCode='+${likeDto.guestHouseCode}+
 				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
 				'&bookingEnd='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+'&bookingNumber=1'}">
-								예약하러가기</a></td>
+								<button class="btn-primary">예약하러가기</button></a></td>
 						<td><input type="checkbox" name="chk"
 							th:value="${likeDto.roomCode}"></td>
 
