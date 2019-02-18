@@ -376,11 +376,8 @@ header .header-content .header-content-inner p {
 
 .btn-primary {
 	color: #fff;
-	background-color: #c8a9ff;
-	border-color: #c8a9ff;
+	background-color: #2a416b;
 /* 	-webkit-transition: all .35s; */
-/* 	-moz-transition: all .35s; */
-/* 	transition: all .35s */
 }
 
 .btn-primary.active, .btn-primary.focus, .btn-primary:active,

@@ -186,8 +186,7 @@ th {
 					<td>[[${bookingDto.bookingStatus}]] <br>
 						<div th:if="${bookingDto.bookingStatus}=='예약완료'">
 							<button class="cancelBtn btn-primary"
-								th:onclick="|javascript:cancelBtnClick('${iterState.count}')|">취소
-								요청하기</button>
+								th:onclick="|javascript:cancelBtnClick('${iterState.count}')|">취소요청</button>
 
 							<!-- cancelConfirm Modal -->
 							<div th:id="cancelConfirmModal+${iterState.count}"
