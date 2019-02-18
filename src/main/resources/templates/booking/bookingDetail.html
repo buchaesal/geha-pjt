@@ -73,7 +73,10 @@ th {
 				</tr>
 				<tr>
 					<th>방 타입 / 기간</th>
-					<td>[[${bookingDto.roomName}]] / 1박</td>
+					<td>
+						<label>[[${bookingDto.roomName}]] / </label>
+						<label id="diffDay"></label>
+					</td>
 				</tr>
 				<tr>
 					<th>입실 예정일</th>
@@ -107,6 +110,10 @@ th {
 					<th>결제일자</th>
 					<td>[[${#dates.format(bookingDto.paymentDate, 'yy.MM.dd')}]]</td>
 				</tr>
+				<tr>
+					<th>결제 금액</th>
+					<td>[[${#numbers.formatInteger(bookingDto.paymentAmount, 3, 'COMMA')}]] 원</td>
+				</tr>
 			</table>
 
 			<!-- <div class="out">
@@ -115,6 +122,19 @@ th {
 					확인하러 가기</a>
 			</div> -->
 		</div>
+	</div>
+	
+	<div layout:fragment="script">
+		<script th:inline="javascript" type="text/javascript">
+			$(document).ready(function() {
+		    	var bookingStart = new Date([[${bookingDto.bookingStart}]]);
+		    	var bookingEnd = new Date([[${bookingDto.bookingEnd}]]);
+		    	
+		    	//날짜 일 차이 구하기
+		    	var diffDay = (bookingEnd.getTime() - bookingStart.getTime()) / (1000*60*60*24);
+		    	$("#diffDay").text(diffDay + "박");
+		    })
+		</script>
 	</div>
 </body>
 </html>

@@ -32,6 +32,11 @@
            p {
             font-weight: bold;
          }
+         
+         #myGuestHouseList {
+			text-decoration: underline;
+			font-size: 27px;
+		}
       </style>
    </head>
    
@@ -50,7 +55,7 @@
 					<td th:text="${#dates.format(guestHouseDto.registerDate, 'yy.MM.dd')}"></td>
 					<td>
 						<div th:if="${guestHouseDto.approvalDate}">
-							등록완료<br><a th:href="@{/room/roomInfo(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingNumber=1)}">보기</a>
+							등록완료<br><a th:href="@{/room/roomInfo(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${tomorrow}, bookingNumber=1)}">보기</a>
 						</div>
 						<div th:unless="${guestHouseDto.approvalDate}">
 							<label th:if="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">

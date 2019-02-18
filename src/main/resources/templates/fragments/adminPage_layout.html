@@ -5,6 +5,10 @@
 <head>
 	<meta charset="utf-8">
  	<style>
+ 		header {
+ 			background-color: #41104d;
+ 		}
+ 	
 		.adminPage_section {
 			padding: 50px 0;
 		}
@@ -49,26 +53,36 @@
 		
 		.adminPage_li {
 		   margin: 30px;
-		   width: 162px;
-		   font-size: 20px;
+		   width: 210px;
+		   font-size: 24px;
 		}
 		
 		.adminPage_ul {
 		   list-style: none;
 		}
 		
+		.adminPage_li:hover {
+			text-decoration: underline;
+		}
+		
+		.adminPage_a {
+			color: #353232;
+		}
 	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
+		<p
+				style="position: absolute; top: 131px; font-size: 49px; left: 58px; "><a style="text-decoration:none;  color: white;"
+				 href="/myPage/bookingList">관리자페이지</a></p>
 	   <div class="adminPage_container">
 
 	      <section class="adminPage_section">	
 	         <nav class="adminPage_nav">
 	            <ul class="adminPage_ul">
-	               <li class="adminPage_li"><a href="/adminPage/adminPage?auth=" class="adminPage_a">회원관리</a></li>
-	               <li class="adminPage_li"><a href="/adminPage/approvalHouse" class="adminPage_a">신규 하우스 승인</a></li>
+	               <li class="adminPage_li" id="adminPage"><a href="/adminPage/adminPage?auth=" class="adminPage_a">회원관리</a></li>
+	               <li class="adminPage_li" id="approvalHouse"><a href="/adminPage/approvalHouse" class="adminPage_a">신규 하우스 승인</a></li>
 	            </ul>
 	         </nav>
 	         

@@ -35,9 +35,6 @@ p{
 th {
     text-align: center;
 }
-.test {
-    padding: 27px;
-}
 
 .modal-header {
     background: #b6e3f5;
@@ -123,6 +120,11 @@ font-size: 18px;
 	font-size: 18px;
 	text-align: right;
 	vertical-align: middle;
+}
+
+#myReview {
+	text-decoration: underline;
+	font-size: 27px;
 }
 
 </style>
@@ -230,7 +232,7 @@ font-size: 18px;
 </head>
 <body>
 	<div layout:fragment="myPage_content">
-	<div th:if="${#lists.size(reviewList)==0}" class="test">
+	<div th:if="${#lists.size(reviewList)==0}" style="padding-top: 33px">
 		<p style="font-size:20px;">작성한 리뷰가 없습니다.</p>
 		<a href="/myPage/bookingList" class="btn btn-info waves-effect">리뷰쓰러가기</a>
 		</div>
