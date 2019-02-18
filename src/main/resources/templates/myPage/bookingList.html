@@ -1,304 +1,396 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="fragments/myPage_layout">
-	<head>
-		<title>bookingList</title>
-		<meta http-equiv="Content-Type" content="charset=UTF-8"/>
-		<style type="text/css">
-			/* The Modal (background) */
-			.modal {
-	            display: none; /* Hidden by default */
-	            position: fixed; /* Stay in place */
-	            z-index: 1; /* Sit on top */
-	            left: 0;
-	            top: 0;
-	            width: 100%; /* Full width */
-	            height: 100%; /* Full height */
-	            overflow: auto; /* Enable scroll if needed */
-	            background-color: rgb(0,0,0); /* Fallback color */
-	            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-	        }
-	    
-	        /* Modal Content/Box */
-	        .modal-content {
-	            background-color: #fefefe;
-	            margin: 15% auto; /* 15% from the top and centered */
-	            padding: 20px;
-	            border: 1px solid #888;
-	            width: 50%; /* Could be more or less, depending on screen size */                          
-	        }
-  			p {
-				font-weight: bold;
-				font-size:20px;
-			}
-			
-			/* .test {
-			    padding: 27px;
-			} */
-			
-			th{
-			text-align:center;
-			}
-			
-			/* 별점 */
-			.star-input>.input,
-			.star-input>.input>label:hover,
-			.star-input>.input>input:focus+label,
-			.star-input>.input>input:checked+label{display: inline-block;vertical-align:middle;background:url('/img/grade_img.png')no-repeat;}
-			.star-input{display:inline-block; white-space:nowrap;width:225px;height:40px;line-height:30px;}
-			.star-input>.input{display:inline-block;width:150px;background-size:150px;height:28px;white-space:nowrap;overflow:hidden;position: relative;}
-			.star-input>.input>input{position:absolute;width:1px;height:1px;opacity:0;}
-			.star-input>.input.focus{outline:1px dotted #ddd;}
-			.star-input>.input>label{width:30px;height:0;padding:28px 0 0 0;overflow: hidden;float:left;cursor: pointer;position: absolute;top: 0;left: 0;}
-			.star-input>.input>label:hover,
-			.star-input>.input>input:focus+label,
-			.star-input>.input>input:checked+label{background-size: 150px;background-position: 0 bottom;}
-			.star-input>.input>label:hover~label{background-image: none;}
-			.star-input>.input>label[for="p1"]{width:15px;z-index:10;}
-			.star-input>.input>label[for="p2"]{width:30px;z-index:9;}
-			.star-input>.input>label[for="p3"]{width:45px;z-index:8;}
-			.star-input>.input>label[for="p4"]{width:60px;z-index:7;}
-			.star-input>.input>label[for="p5"]{width:75px;z-index:6;}
-			.star-input>.input>label[for="p6"]{width:90px;z-index:5;}
-			.star-input>.input>label[for="p7"]{width:105px;z-index:4;}
-			.star-input>.input>label[for="p8"]{width:120px;z-index:3;}
-			.star-input>.input>label[for="p9"]{width:135px;z-index:2;}
-			.star-input>.input>label[for="p10"]{width:150px;z-index:1;}
-			
-			.star-input>output{display:inline-block;width:60px; font-size:18px;text-align:right; vertical-align:middle;}
-		</style>
-	</head>
-	<body>
-		
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/myPage_layout">
+<head>
+<title>bookingList</title>
+<meta http-equiv="Content-Type" content="charset=UTF-8" />
+<style type="text/css">
+/* The Modal (background) */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 50%; /* Could be more or less, depending on screen size */
+}
+
+p {
+	font-weight: bold;
+	font-size: 20px;
+}
+
+th {
+	text-align: center;
+}
+
+/* 별점 */
+.star-input>.input, .star-input>.input>label:hover, .star-input>.input>input:focus+label,
+	.star-input>.input>input:checked+label {
+	display: inline-block;
+	vertical-align: middle;
+	background: url('/img/grade_img.png') no-repeat;
+}
+
+.star-input {
+	display: inline-block;
+	white-space: nowrap;
+	width: 225px;
+	height: 40px;
+	line-height: 30px;
+}
+
+.star-input>.input {
+	display: inline-block;
+	width: 150px;
+	background-size: 150px;
+	height: 28px;
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+}
+
+.star-input>.input>input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+}
+
+.star-input>.input.focus {
+	outline: 1px dotted #ddd;
+}
+
+.star-input>.input>label {
+	width: 30px;
+	height: 0;
+	padding: 28px 0 0 0;
+	overflow: hidden;
+	float: left;
+	cursor: pointer;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.star-input>.input>label:hover, .star-input>.input>input:focus+label,
+	.star-input>.input>input:checked+label {
+	background-size: 150px;
+	background-position: 0 bottom;
+}
+
+.star-input>.input>label:hover ~label {
+	background-image: none;
+}
+
+.star-input>.input>label[for="p1"] {
+	width: 15px;
+	z-index: 10;
+}
+
+.star-input>.input>label[for="p2"] {
+	width: 30px;
+	z-index: 9;
+}
+
+.star-input>.input>label[for="p3"] {
+	width: 45px;
+	z-index: 8;
+}
+
+.star-input>.input>label[for="p4"] {
+	width: 60px;
+	z-index: 7;
+}
+
+.star-input>.input>label[for="p5"] {
+	width: 75px;
+	z-index: 6;
+}
+
+.star-input>.input>label[for="p6"] {
+	width: 90px;
+	z-index: 5;
+}
+
+.star-input>.input>label[for="p7"] {
+	width: 105px;
+	z-index: 4;
+}
+
+.star-input>.input>label[for="p8"] {
+	width: 120px;
+	z-index: 3;
+}
+
+.star-input>.input>label[for="p9"] {
+	width: 135px;
+	z-index: 2;
+}
+
+.star-input>.input>label[for="p10"] {
+	width: 150px;
+	z-index: 1;
+}
+
+.star-input>output {
+	display: inline-block;
+	width: 60px;
+	font-size: 18px;
+	text-align: right;
+	vertical-align: middle;
+}
+</style>
+</head>
+<body>
+
 	<div layout:fragment="myPage_content">
-	<div th:if="${#lists.size(bookingList)==0}" class="test">
-		<p class="heading">예약내역이 없습니다.</p>
-		<a href="/search" class="btn btn-info waves-effect">숙소 둘러보기</a>
+		<div th:if="${#lists.size(bookingList)==0}" style="padding-top: 33px;">
+			<p class="heading">예약내역이 없습니다.</p>
+			<a href="/search" class="btn btn-info waves-effect">숙소 둘러보기</a>
 		</div>
 		<div th:if="${#lists.size(bookingList)>0}">
-		<table width="800px">
-			<tr height="80px" style="border-bottom:2.2px solid lightgray" align="center">
-				<th>예약 코드</th>
-				<th>예약 정보</th>
-				<th>가격</th>
-				<th>상태</th>
-			</tr>
-			<tr th:each="bookingDto, iterState : ${bookingList}" height="80px" align="center">
-				<td th:text="${bookingDto.bookingCode}"></td>
-				<td>
-					[[${bookingDto.guestHouseName}]]([[${bookingDto.roomName}]]) <br>
-					[[${#dates.format(bookingDto.bookingStart, 'yy.MM.dd')}]] ~ [[${#dates.format(bookingDto.bookingEnd, 'yy.MM.dd')}]]
-					<a th:href="@{/booking/bookingDetail(bookingCode=${bookingDto.bookingCode})}">상세내역</a>
-				</td>
-				<td th:text="${#numbers.formatInteger(bookingDto.paymentAmount, 3, 'COMMA')}"></td>
-				<td>
-					[[${bookingDto.bookingStatus}]] <br>
-					<div th:if="${bookingDto.bookingStatus}=='예약완료'">
-						<button class="cancelBtn btn-primary" th:onclick="|javascript:cancelBtnClick('${iterState.count}')|">취소 요청하기</button>
-								
-						<!-- cancelConfirm Modal -->
-						<div th:id="cancelConfirmModal+${iterState.count}" class="modal cancelConfirmModal">
-						
-							<!-- Modal content -->
-							<div class="modal-content">
-								<p>예약을 취소하시겠습니까?</p>
-								<button th:onclick="|javascript:onClick('${bookingDto.bookingCode}')|">YES</button>
-								<button class="cancelConfirmModalClose">NO</button>
+			<table width="800px">
+				<tr height="80px" style="border-bottom: 2.2px solid lightgray"
+					align="center">
+					<th>예약 코드</th>
+					<th>예약 정보</th>
+					<th>가격</th>
+					<th>상태</th>
+				</tr>
+				<tr th:each="bookingDto, iterState : ${bookingList}" height="80px"
+					align="center">
+					<td th:text="${bookingDto.bookingCode}"></td>
+					<td>
+						[[${bookingDto.guestHouseName}]]([[${bookingDto.roomName}]]) <br>
+						[[${#dates.format(bookingDto.bookingStart, 'yy.MM.dd')}]] ~
+						[[${#dates.format(bookingDto.bookingEnd, 'yy.MM.dd')}]] <a
+						th:href="@{/booking/bookingDetail(bookingCode=${bookingDto.bookingCode})}">상세내역</a>
+					</td>
+					<td
+						th:text="${#numbers.formatInteger(bookingDto.paymentAmount, 3, 'COMMA')}"></td>
+					<td>[[${bookingDto.bookingStatus}]] <br>
+						<div th:if="${bookingDto.bookingStatus}=='예약완료'">
+							<button class="cancelBtn btn-primary"
+								th:onclick="|javascript:cancelBtnClick('${iterState.count}')|">취소
+								요청하기</button>
+
+							<!-- cancelConfirm Modal -->
+							<div th:id="cancelConfirmModal+${iterState.count}"
+								class="modal cancelConfirmModal">
+
+								<!-- Modal content -->
+								<div class="modal-content">
+									<p>예약을 취소하시겠습니까?</p>
+									<button
+										th:onclick="|javascript:onClick('${bookingDto.bookingCode}')|">YES</button>
+									<button class="cancelConfirmModalClose">NO</button>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div th:if="${bookingDto.bookingStatus}=='숙박완료'">
+						<div th:if="${bookingDto.bookingStatus}=='숙박완료'">
 
-						<button class="btn-primary" th:if="${#lists.contains(reviewList, bookingDto.bookingCode)}" th:onclick="location.href='myReview'">작성한 후기 보러가기</button>
-						<button class="btn-primary" th:unless="${#lists.contains(reviewList, bookingDto.bookingCode)}" name="writeReviewBtn">후기 작성하기</button>
-						<button class="btn-primary" th:if="${#lists.size(reviewList)<=0}" name="writeReviewBtn">후기 작성하기</button>
-						
-						<!-- writeReivew Modal -->
-						<div id="writeReviewModal" class="modal">
-						
-							<!-- Modal content -->
-							<div class="modal-content">
-								<p>후기 작성하기</p>
-								<form th:action="@{/myPage/writeReview}" id="reviewForm" method="post">
-									<input type="hidden" name="bookingCode" th:value="${bookingDto.bookingCode}">
-									
-									<label>작성자</label>
-									<input type="hidden" name="memberCode" th:value="${bookingDto.memberCode}">
-									<label>[[${session.name}]]</label><br>
-									
-									<label>평점</label>
-									<span class="star-input">
-										<span class="input">
-											<input type="radio" name="rating" value="1" id="p1">
-									    	<label for="p1">1</label>
-									    	<input type="radio" name="rating" value="2" id="p2">
-									    	<label for="p2">2</label>
-											<input type="radio" name="rating" value="3" id="p3">
-									    	<label for="p3">3</label>
-									    	<input type="radio" name="rating" value="4" id="p4">
-									    	<label for="p4">4</label>
-											<input type="radio" name="rating" value="5" id="p5">
-									    	<label for="p5">5</label>
-									    	<input type="radio" name="rating" value="6" id="p6">
-									    	<label for="p6">6</label>
-											<input type="radio" name="rating" value="7" id="p7">
-									    	<label for="p7">7</label>
-									    	<input type="radio" name="rating" value="8" id="p8">
-									    	<label for="p8">8</label>
-											<input type="radio" name="rating" value="9" id="p9">
-									    	<label for="p9">9</label>
-									    	<input type="radio" name="rating" value="10" id="p10">
-									    	<label for="p10">10</label>
-									  	</span>
-									  	<output for="star-input"><b>0</b>점</output>						
-									</span>
-									<br><br>
-									
-									<label>제목</label><br>
-									<input name="title" type="text" size="50" maxlength="30" required><br>
-									<label>내용</label><br>
-									<textarea id="content" name="content" rows="8" cols="50" maxlength="500" required></textarea>
-									<br>
-									
-									<input type="button" id="writeReviewModalClose" value="취소">
-									<input type="button" id="completedReview" value="작성완료">
-								</form>
+							<button class="btn-primary"
+								th:if="${#lists.contains(reviewList, bookingDto.bookingCode)}"
+								th:onclick="location.href='myReview'">작성한 후기 보러가기</button>
+							<button class="btn-primary"
+								th:unless="${#lists.contains(reviewList, bookingDto.bookingCode)}"
+								name="writeReviewBtn">후기 작성하기</button>
+							<button class="btn-primary" th:if="${#lists.size(reviewList)<=0}"
+								name="writeReviewBtn">후기 작성하기</button>
+
+							<!-- writeReivew Modal -->
+							<div id="writeReviewModal" class="modal">
+
+								<!-- Modal content -->
+								<div class="modal-content">
+									<p>후기 작성하기</p>
+									<form th:action="@{/myPage/writeReview}" id="reviewForm"
+										method="post">
+										<input type="hidden" name="bookingCode"
+											th:value="${bookingDto.bookingCode}"> <label>작성자</label>
+										<input type="hidden" name="memberCode"
+											th:value="${bookingDto.memberCode}"> <label>[[${session.name}]]</label><br>
+
+										<label>평점</label> <span class="star-input"> <span
+											class="input"> <input type="radio" name="rating"
+												value="1" id="p1"> <label for="p1">1</label> <input
+												type="radio" name="rating" value="2" id="p2"> <label
+												for="p2">2</label> <input type="radio" name="rating"
+												value="3" id="p3"> <label for="p3">3</label> <input
+												type="radio" name="rating" value="4" id="p4"> <label
+												for="p4">4</label> <input type="radio" name="rating"
+												value="5" id="p5"> <label for="p5">5</label> <input
+												type="radio" name="rating" value="6" id="p6"> <label
+												for="p6">6</label> <input type="radio" name="rating"
+												value="7" id="p7"> <label for="p7">7</label> <input
+												type="radio" name="rating" value="8" id="p8"> <label
+												for="p8">8</label> <input type="radio" name="rating"
+												value="9" id="p9"> <label for="p9">9</label> <input
+												type="radio" name="rating" value="10" id="p10"> <label
+												for="p10">10</label>
+										</span> <output for="star-input">
+												<b>0</b>점
+											</output>
+										</span> <br> <br> <label>제목</label><br> <input
+											name="title" type="text" size="50" maxlength="30" required><br>
+										<label>내용</label><br>
+										<textarea id="content" name="content" rows="8" cols="50"
+											maxlength="500" required></textarea>
+										<br> <input type="button" id="writeReviewModalClose"
+											value="취소"> <input type="button" id="completedReview"
+											value="작성완료">
+									</form>
+								</div>
 							</div>
-						</div> <!-- writeReivew Modal -->
-						
-					</div> <!-- bookingStatus -if:숙박완료 -->
-				</td>
-			</tr>
-		</table>
-		
+							<!-- writeReivew Modal -->
+
+						</div> <!-- bookingStatus -if:숙박완료 -->
+					</td>
+				</tr>
+			</table>
+
 			<!-- 게시판 하단의 페이징 버튼 -->
-	        <div class="box-footer clearfix" style="padding-left:357px">
-	          <ul class="pagination pagination-sm no-margin pull-center">
-	          
-	          <li th:if="${pageMaker.prev} == true">
-	          	<a th:href="@{/myPage/bookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
-	          </li>
-	          
-	          <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-	            <a th:href="@{/myPage/bookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
-	          </li>
-	            
-	          <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-	          	<a th:href="@{/myPage/bookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
-	          </li>
-	          
-	          </ul>
-	          
-	        </div>
+			<div class="box-footer clearfix" style="padding-left: 357px">
+				<ul class="pagination pagination-sm no-margin pull-center">
+
+					<li th:if="${pageMaker.prev} == true"><a
+						th:href="@{/myPage/bookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+					</li>
+
+					<li
+						th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
+						th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+						<a
+						th:href="@{/myPage/bookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}"
+						th:text="${idx}"></a>
+					</li>
+
+					<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+						<a
+						th:href="@{/myPage/bookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+					</li>
+
+				</ul>
+
+			</div>
 		</div>
 	</div>
-		
-		
-			
+
+
+
 	<div layout:fragment="myPage_script">
 		<script th:inline="javascript" type="text/javascript">
 			//취소요청 확인창 모달
-			var cancelConfirmModal = document.getElementById('cancelConfirmModal');
+			var cancelConfirmModal = document
+					.getElementById('cancelConfirmModal');
 			//후기 작성 모달
 			var writeReviewModal = document.getElementById('writeReviewModal');
-			
-			
+
 			function cancelBtnClick(cancelCount) {
-				$("#cancelConfirmModal"+cancelCount).css("display", "block");
+				$("#cancelConfirmModal" + cancelCount).css("display", "block");
 			}
-			
+
 			$(function() {
 				$(".cancelConfirmModalClose").click(function() {
 					$(".cancelConfirmModal").css("display", "none");
 				})
 			})
-			
+
 			$(function() {
 				$("button[name=writeReviewBtn]").click(function() {
 					writeReviewModal.style.display = "block";
 				})
 			})
-			
-			$('.starRev span').click(function(){
-			  $(this).parent().children('span').removeClass('on');
-			  $(this).addClass('on').prevAll('span').addClass('on');
-			  return false;
+
+			$('.starRev span').click(function() {
+				$(this).parent().children('span').removeClass('on');
+				$(this).addClass('on').prevAll('span').addClass('on');
+				return false;
 			});
-			
+
 			$(function() {
 				$("#writeReviewModalClose").click(function() {
 					writeReviewModal.style.display = "none";
 				})
 			})
-			
-		
+
 			function onClick(bookingCode) {
 				$.ajax({
-					type: "GET",
-					url: "requestBookingCancel",
-					data: {"bookingCode": bookingCode},
-					success: function() {
+					type : "GET",
+					url : "requestBookingCancel",
+					data : {
+						"bookingCode" : bookingCode
+					},
+					success : function() {
 						location.reload();
 					}
 				})
 			}
-			
-			
+
 			$(function() {
 				$("#completedReview").click(function() {
 					//리뷰 내용
 					var str = document.getElementById("content").value;
 					str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
 					document.getElementById("content").value = str;
-					
+
 					$("#reviewForm").submit();
-					
+
 				})
 			})
 		</script>
 		<script th:inline="javascript" type="text/javascript">
-			var starRating = function(){
-				var $star = $(".star-input"),
-				    $result = $star.find("output>b");
-					
-				  	$(document)
-					.on("focusin", ".star-input>.input", 
-						function(){
-				   		 $(this).addClass("focus");
-				 	})
-						 
-				   	.on("focusout", ".star-input>.input", function(){
-				    	var $this = $(this);
-				    	setTimeout(function(){
-				      		if($this.find(":focus").length === 0){
-				       			$this.removeClass("focus");
-				     	 	}
-				   		}, 100);
-				 	 })
-				  
-				    .on("change", ".star-input :radio", function(){
-				    	$result.text($(this).next().text());
-				  	})
-				    .on("mouseover", ".star-input label", function(){
-				    	$result.text($(this).text());
-				    })
-				    .on("mouseleave", ".star-input>.input", function(){
-				    	var $checked = $star.find(":checked");
-				    		if($checked.length === 0){
-				     	 		$result.text("0");
-				   		 	} else {
-				     	 		$result.text($checked.next().text());
-				    		}
-				  	});
-				};
-	
-				starRating();
+			var starRating = function() {
+				var $star = $(".star-input"), $result = $star.find("output>b");
+
+				$(document).on("focusin", ".star-input>.input", function() {
+					$(this).addClass("focus");
+				})
+
+				.on("focusout", ".star-input>.input", function() {
+					var $this = $(this);
+					setTimeout(function() {
+						if ($this.find(":focus").length === 0) {
+							$this.removeClass("focus");
+						}
+					}, 100);
+				})
+
+				.on("change", ".star-input :radio", function() {
+					$result.text($(this).next().text());
+				}).on("mouseover", ".star-input label", function() {
+					$result.text($(this).text());
+				}).on("mouseleave", ".star-input>.input", function() {
+					var $checked = $star.find(":checked");
+					if ($checked.length === 0) {
+						$result.text("0");
+					} else {
+						$result.text($checked.next().text());
+					}
+				});
+			};
+
+			starRating();
 		</script>
-		</div>
+	</div>
 
-	
 
-	
-	</body>
+
+
+</body>
 </html>

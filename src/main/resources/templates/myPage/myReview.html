@@ -183,16 +183,16 @@ font-size: 18px;
 	});
 	
 	function modifyFrm() {
-
-		var title = event.srcElement.name;
-		var reviewNo = event.srcElement.id;
-		var content = event.srcElement.value;
-		$("#reviewNo").val(reviewNo);
-		$("#title").val(title);
-		$("#content").val(content);
-
+		var reviewDto = [[${reviewList}]][event.srcElement.value];
+		console.log(reviewDto);
+		$("#reviewNo").val(reviewDto.reviewNo);
+		$("#title").val(reviewDto.title);
+		$("#content").val(reviewDto.content);
+		$("#guestHouseCode").val(reviewDto.guestHouseCode);
+		$("#starOutput").text(reviewDto.rating);
+		$('input:radio[name="rating"]').filter('[value='+reviewDto.rating+']').attr('checked', true);
 		
-		$("#modifyReviewModal").modal();
+		$("#modifyReviewModal").modal(); 
 
 	}
 
@@ -244,7 +244,7 @@ font-size: 18px;
 				<th>답변</th>
 				<th></th>
 			</tr>
-			<tr th:each="reviewDto : ${reviewList}" height="80px" align="center">
+			<tr th:each="reviewDto, iter : ${reviewList}" height="80px" align="center">
 				<td><a target="_blank" th:href="@{'/room/roomInfo?guestHouseCode='+${reviewDto.guestHouseCode}+
 				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
 				'&bookingEnd='+${tomorrow}+'&bookingNumber=1'}">
@@ -263,8 +263,7 @@ font-size: 18px;
 				
 				<td style="padding:35px">
 					<button type="button" class="btn-primary" 
-					th:name="${reviewDto.title}" th:id="${reviewDto.reviewNo}" 
-					th:value="${reviewDto.content}" onclick="modifyFrm()">수정</button>
+					th:value="${iter.index}" onclick="modifyFrm()">수정</button>
 					<button type="button" class="btn-primary" 
 					th:id="${reviewDto.reviewNo}" onClick="showDeleteModal()">삭제</button>
 					
@@ -314,7 +313,7 @@ font-size: 18px;
 
 						<form th:action="@{/myPage/modifyReview}" id="reviewForm"
 							method="post">
-							
+							<input type="hidden" id="guestHouseCode" name="guestHouseCode">
 							<input type="hidden" id="reviewNo" name="reviewNo"> 
 							<label>작성자</label>
 							<label>[[${session.name}]]</label><br> 
@@ -344,7 +343,7 @@ font-size: 18px;
 							</span> 
 							
 							<output for="star-input">
-									<b>0</b>점
+									<b id="starOutput">0</b>점
 								</output>
 								
 							</span> <br> <br> 
