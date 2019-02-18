@@ -13,7 +13,7 @@ select distinct gh.guestHouseCode, gh.guestHouseName, gh.address, gh.avgRating, 
 	   ghmin.minprice, gh.businessTrip, gh.gourmet, gh.trip, gh.shopping,
 	   rvc.reviewCnt, fi.savedName
 from guestHouse_tb gh
-	left join file_tb fi
+	join file_tb fi
 	on fi.guestHouseCode = gh.guestHouseCode
 	and fi.isMainImage = 1
 	and fi.roomCode = 0
@@ -47,9 +47,9 @@ from guestHouse_tb gh
 		group by gh.guestHouseCode
 		) rvc
 	on rvc.guestHouseCode = gh.guestHouseCode
+	<if test="facilities != null and facilities.size() > 0">
 	join guestHouse_has_facility_tb ghf
 	on gh.guestHouseCode = ghf.guestHouseCode
-	<if test="facilities != null and facilities.size() > 0">
 		join
 			(select ghf.guestHouseCode, COUNT(ghf.facilityCode)
 			from guestHouse_has_facility_tb ghf
