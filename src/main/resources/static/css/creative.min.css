@@ -6,7 +6,7 @@
  @font-face { font-family: 'yg-jalnan'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff'); font-weight: normal; font-style: normal; }
  
 .navbar-default, a {
-	-webkit-transition: all .35s;
+/* 	-webkit-transition: all .35s; */
 	-moz-transition: all .35s
 }
 
@@ -42,7 +42,7 @@ hr.light {
 }
 
 a {
-	transition: all .35s;
+/* 	transition: all .35s; */
 	color: #c8a9ff
 }
 
@@ -89,12 +89,12 @@ aside {
 .navbar-default {
 	background-color: #fff;
 	border-color: rgba(34, 34, 34, .05);
-	transition: all .35s
+/* 	transition: all .35s */
 }
 
 .btn-default, .portfolio-box .portfolio-box-caption {
-	-webkit-transition: all .35s;
-	-moz-transition: all .35s
+	/* -webkit-transition: all .35s; */
+	/* -moz-transition: all .35s */
 }
 
 .navbar-default .navbar-header .navbar-brand {
@@ -274,7 +274,7 @@ header .header-content .header-content-inner p {
 	text-align: center;
 	width: 100%;
 	height: 100%;
-	transition: all .35s
+/* 	transition: all .35s */
 }
 
 .btn-default.active, .btn-default:active, .btn-primary.active,
@@ -346,7 +346,7 @@ header .header-content .header-content-inner p {
 	color: #222;
 	background-color: #fff;
 	border-color: #fff;
-	transition: all .35s
+/* 	transition: all .35s */
 }
 
 .btn-default.active, .btn-default.focus, .btn-default:active,
@@ -378,9 +378,9 @@ header .header-content .header-content-inner p {
 	color: #fff;
 	background-color: #c8a9ff;
 	border-color: #c8a9ff;
-	-webkit-transition: all .35s;
-	-moz-transition: all .35s;
-	transition: all .35s
+/* 	-webkit-transition: all .35s; */
+/* 	-moz-transition: all .35s; */
+/* 	transition: all .35s */
 }
 
 .btn-primary.active, .btn-primary.focus, .btn-primary:active,
