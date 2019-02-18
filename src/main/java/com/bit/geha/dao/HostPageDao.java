@@ -20,7 +20,7 @@ import com.bit.geha.dto.RoomDto;
 @Mapper
 public interface HostPageDao {
 	//내 게스트하우스
-	@Select("SELECT * FROM guestHouse_tb WHERE memberCode=#{memberCode} LIMIT #{cri.pageStart}, #{cri.perPageNum}")
+	@Select("SELECT * FROM guestHouse_tb WHERE memberCode=#{memberCode} ORDER BY registerDate desc, guestHouseCode desc LIMIT #{cri.pageStart}, #{cri.perPageNum}")
 	public List<GuestHouseDto> getGuestHouseList(@Param("cri")AdminPageCriteria cri, int memberCode);
 	
 	@Select("SELECT guestHouseCode FROM reject_tb WHERE memberCode=#{memberCode}")

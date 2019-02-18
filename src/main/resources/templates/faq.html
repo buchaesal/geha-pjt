@@ -1,3 +1,4 @@
+<!------ Include the above in your HEAD tag ---------->
 <!DOCTYPE html>
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -5,314 +6,295 @@
 	layout:decorator="fragments/main_layout">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>Material Bootstrap Wizard by Creative Tim</title>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+<!--     Fonts and icons     -->
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
 <style>
-.container {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	display: flex;
+header {
+    background-image:url( "https://images.pexels.com/photos/1131458/pexels-photo-1131458.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" );
 }
 
-.content {
-	display: flex;
-	
+.template_faq {
+    background: #edf3fe none repeat scroll 0 0;
 }
-
-.content aside {
-	border-left: 2px solid lightgray;
+.panel-group {
+    background: #fff none repeat scroll 0 0;
+    border-radius: 3px;
+    box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.04);
+    margin-bottom: 0;
+    padding: 30px;
 }
-
-aside {
-	flex-basis: 150px;
-	flex-shrink: 0;
+#accordion .panel {
+    border: medium none;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0 0 15px 10px;
 }
-
-main {
-	padding: 10px;
-	width: 75%;
+#accordion .panel-heading {
+    border-radius: 30px;
+    padding: 0;
 }
-
-section {
-	padding: 0px 0;
+#accordion .panel-title a {
+    background: #ffb900 none repeat scroll 0 0;
+    border: 1px solid transparent;
+    border-radius: 30px;
+    color: #fff;
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 12px 20px 12px 50px;
+    position: relative;
+    transition: all 0.3s ease 0s;
 }
-
-.btn2, .card-body{
-font-size:17px;
-    margin-left: 53px;
-    margin-right: 63px;
-        width: 609px;
-            padding: 19px;
+#accordion .panel-title a.collapsed {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ddd;
+    color: #333;
 }
-
-
-h5.mb-0 {
-    margin-top: 21px;
-    height: 53px;
+#accordion .panel-title a::after, #accordion .panel-title a.collapsed::after {
+    background: #ffb900 none repeat scroll 0 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.58);
+    color: #fff;
+    content: "";
+    font-family: fontawesome;
+    font-size: 25px;
+    height: 55px;
+    left: -20px;
+    line-height: 55px;
+    position: absolute;
+    text-align: center;
+    top: -5px;
+    transition: all 0.3s ease 0s;
+    width: 55px;
 }
-
-
-
+#accordion .panel-title a.collapsed::after {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ddd;
+    box-shadow: none;
+    color: #333;
+    content: "";
+}
+#accordion .panel-body {
+    background: transparent none repeat scroll 0 0;
+    border-top: medium none;
+    padding: 20px 25px 10px 9px;
+    position: relative;
+}
+#accordion .panel-body p {
+    border-left: 1px dashed #8c8c8c;
+    padding-left: 25px;
+}
 </style>
 </head>
 <body>
 	<div layout:fragment="content">
-	
-	
-		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-		<!------ Include the above in your HEAD tag ---------->
-		
-		 <div class="container">
-		        <div class="col-md-12 col-sm-12 col-xs-12">
-		            <h3>Default collapse with scaling icon</h3>
-		            <div class="panel-group wrap" id="bs-collapse">
-		
-		                <div class="panel">
-		                    <div class="panel-heading">
-		                        <h4 class="panel-title">
-						        <a data-toggle="collapse" data-parent="#bs-collapse" href="#one">
-						         Content 1
-						        </a>
-						      </h4>
-		                    </div>
-		                    <div id="one" class="panel-collapse collapse">
-		                        <div class="panel-body">
-		                            Where now are the horse and the rider? Where is the horn that was blowing? Where is the helm and the hauberk, and the bright hair flowing?
-		                        </div>
-		                    </div>
-		                </div>
-		                <!-- end of panel -->
-		
-		                <div class="panel">
-		                    <div class="panel-heading">
-		                        <h4 class="panel-title">
-							        <a data-toggle="collapse" data-parent="#bs-collapse" href="#two">
-							       		Content 2
-							        </a>
-						        </h4>
-		                    </div>
-		                    <div id="two" class="panel-collapse collapse">
-		                        <div class="panel-body">
-		
-		                            Where is the harp on the harpstring, and the red fire glowing? Where is the spring and the harvest and the tall corn growing?
-		
-		                        </div>
-		
-		                    </div>
-		                </div>
-		                <!-- end of panel -->
-		
-		                <div class="panel">
-		                    <div class="panel-heading">
-		                        <h4 class="panel-title">
-		        <a data-toggle="collapse" data-parent="#bs-collapse" href="#three">
-		          Content 3
-		        </a>
-		      </h4>
-		                    </div>
-		                    <div id="three" class="panel-collapse collapse">
-		                        <div class="panel-body">
-		                            ave gone down in the West behind the hills into shadow. Who shall gather the smoke of the deadwood burning, Or behold the flowing years from the Sea returning? The days have gone down in the West behind the hills into shadow. Who shall gather the smoke of the deadwood burning, Or behold the flowing years from the Sea returning? The days have gone down in the West behind the hills into shadow. Who shall gather the smoke of the deadwood burning, Or behold the flowing years from the Sea returning? The days have gone down in the West behind the hills into shadow. Who shall gather the smoke of the deadwood burning, Or behold the flowing years from the Sea returning?
-		                        </div>
-		                    </div>
-		                </div>
-		                <!-- end of panel -->
-		
-		                <div class="panel">
-		                    <div class="panel-heading">
-		                        <h4 class="panel-title">
-		        <a data-toggle="collapse" data-parent="#bs-collapse" href="#four">
-		         Content 4
-		        </a>
-		      </h4>
-		                    </div>
-		                    <div id="four" class="panel-collapse collapse in">
-		                        <div class="panel-body">
-		
-		                            They have passed like rain on the mountain, like a wind in the meadow; The days have gone down in the West behind the hills into shadow.
-		                        </div>
-		                    </div>
-		                </div>
-		                <!-- end of panel -->
-		
-		            </div>
-		            <!-- end of #bs-collapse  -->
-		
-		        </div>
-		
-		
-		
-		    </div>
-		    <!-- end of container -->
-	
-	
-	
-	
-	
-	
-		<!-- <div class="container">
-
-			<section class="content">
-
-				<main>
-				<h1 style="padding-bottom:20px; padding-left: 55px; border-bottom: 1px solid lightgray;">자주 묻는 질문</h1>
-				<div class="accordion" id="accordionExample">
-
-					<div class="card">
-						<div class="card-header" id="headingOne">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#one" aria-expanded="false"
-									aria-controls="one">어디서 내 예약 세부 사항과 현황을 확인할 수 있나요?</button>
-							</h5>
-						</div>
-						<div id="one" class="collapse" aria-labelledby="headingOne"
-							data-parent="#accordionExample">
-							<div class="card-body">웹사이트에 있는 '마이페이지 - 예약내역' 혹은 메인 메뉴의
-								예약내역에 접속으로 고객님의 예약 현황을 확인하실 수 있습니다.</div>
-						</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="section-title text-center wow zoomIn">
+						<h1>FAQ</h1>
+						<span></span>
+						<p>이외의 궁금한 점이 있으시면 관리자에게 문의해주세요.</p>
 					</div>
-					<div class="card">
-						<div class="card-header" id="headingTwo">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#two" aria-expanded="false"
-									aria-controls="two">예약에 있는 이름을 변경할 수 있나요?</button>
-							</h5>
-						</div>
-						<div id="two" class="collapse" aria-labelledby="headingTwo"
-							data-parent="#accordionExample">
-							<div class="card-body">대표 투숙객 이름을 변경하셔야 합니다. 되도록이면 빠른 시일 내에
-								#GEHA로 문의해 주시기 바랍니다. 만약 대표 투숙객 이름을 변경하지 않으면, 게스트하우스에서는 체크인을 거부할
-								수 있는 권한을 갖고 있습니다.</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header" id="headingThree">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#three"
-									aria-expanded="false" aria-controls="three">예약을 취소하려면
-									어떻게 해야 하나요?</button>
-							</h5>
-						</div>
-						<div id="three" class="collapse" aria-labelledby="headingThree"
-							data-parent="#accordionExample">
-							<div class="card-body">웹사이트 '마이페이지-예약내역'에 접속하여 예약을 취소할 수
-								있습니다.</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header" id="headingFour">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#four"
-									aria-expanded="false" aria-controls="four">#GEHA에서
-									게스트하우스를 추천해줄 수 있나요?</button>
-							</h5>
-						</div>
-						<div id="four" class="collapse" aria-labelledby="headingFour"
-							data-parent="#accordionExample">
-							<div class="card-body">#GEHA에서는 여행 조언은 제공하고 있지 않습니다. 고객님의 결정에
-								도움이 되도록 호텔 페이지, 방 상세 페이지와 게스트하우스 리뷰를 읽어보시길 추천 드립니다.</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header" id="headingFive">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#five"
-									aria-expanded="false" aria-controls="five">
-									오늘 체크인 날짜로도 #GEHA를 통해서 예약할 수 있나요?</button>
-							</h5>
-						</div>
-						<div id="five" class="collapse" aria-labelledby="headingFive"
-							data-parent="#accordionExample">
-							<div class="card-body">네, #GEHA 웹사이트에서 검색하시고 빈 객실이 남아 있다면 가능합니다</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header" id="headingSix">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#six" aria-expanded="false"
-									aria-controls="six">제가 게스트하우스와 직접 연결하여 예약할 수 있나요?</button>
-							</h5>
-						</div>
-						<div id="six" class="collapse" aria-labelledby="headingSix"
-							data-parent="#accordionExample">
-							<div class="card-body">네, 직접 게스트하우스와 연결하셔서 예약하실 수 있습니다.
-							 하지만 #GEHA 웹사이트에 올려져 있는 가격표는 
-							 저희 서비스를 통하여서만 이용하실 수 있는 요금인 점을 알려드립니다.</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header" id="headingSeven">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#seven"
-									aria-expanded="false" aria-controls="seven">
-									객실이 있다면, 확인하는데 얼마나 걸리나요?</button>
-							</h5>
-						</div>
-						<div id="seven" class="collapse" aria-labelledby="headingSeven"
-							data-parent="#accordionExample">
-							<div class="card-body">객실 현황은 고객님의 검색 기준을 토대로 보여집니다. 고객님이 검색하셨을 때 보여지는 객실은 다 사용 가능합니다.</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header" id="headingEight">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#eight"
-									aria-expanded="false" aria-controls="eight">
-									왜 객실 요금이 변경된 건가요?</button>
-							</h5>
-						</div>
-						<div id="eight" class="collapse" aria-labelledby="headingEight"
-							data-parent="#accordionExample">
-							<div class="card-body">저희의 게스트하우스 파트너들은
-							 언제든지 요금과 프로모션을 변경할 수 있습니다. 
-							 시장 상황, 전략 변경, 유효성 등등 요금 변동이 발생할 수 있는 몇 가지 이유들이 있습니다.</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header" id="headingNine">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#nine"
-									aria-expanded="false" aria-controls="nine">
-									친구의 신용카드를 이용하여 예약할 수 있나요?</button>
-							</h5>
-						</div>
-						<div id="nine" class="collapse" aria-labelledby="headingNine"
-							data-parent="#accordionExample">
-							<div class="card-body">네. 3자 예약을 하시면 보안의 목적으로 고객님께 연락을 취할 수 있습니다.</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header" id="headingTen">
-							<h5 class="mb-0">
-								<button class="btn btn2 collapsed" type="button"
-									data-toggle="collapse" data-target="#ten" aria-expanded="false"
-									aria-controls="ten">어디서 객실 세부사항을 볼 수 있나요?</button>
-							</h5>
-						</div>
-						<div id="ten" class="collapse" aria-labelledby="headingTen"
-							data-parent="#accordionExample">
-							<div class="card-body">방의 세부사항은 선택하신 객실 정보 아래에 있는 [숙소정보]탭을 클릭하시면 표시되어 있습니다.</div>
-						</div>
-					</div>
-
 				</div>
-				</main>
-				<aside></aside>
-			</section>
-
-		</div> -->
+			</div>
+			<div class="row">				
+				<div class="col-md-12">
+					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingOne">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										어디서 내 예약 세부 사항과 현황을 확인할 수 있나요?
+									</a>
+								</h4>
+							</div>
+							<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+								<div class="panel-body">
+									<p>웹사이트에 있는 '마이페이지 - 예약내역' 혹은 메인 메뉴의
+								예약내역에 접속으로 고객님의 예약 현황을 확인하실 수 있습니다. </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingTwo">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+										예약에 있는 이름을 변경할 수 있나요? 
+									</a>
+								</h4>
+							</div>
+							<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+								<div class="panel-body">
+									<p>대표 투숙객 이름을 변경하셔야 합니다. <br>되도록이면 빠른 시일 내에
+								#GEHA로 문의해 주시기 바랍니다. 만약 대표 투숙객 이름을 변경하지 않으면, 게스트하우스에서는 체크인을 거부할
+								수 있는 권한을 갖고 있습니다. </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingThree">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+										예약을 취소하려면 어떻게 해야 하나요?
+									</a>
+								</h4>
+							</div>
+							<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+								<div class="panel-body">
+									<p>웹사이트 '마이페이지-예약내역'에 접속하여 예약을 취소할 수 있습니다. </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingFour">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+										#GEHA에서 게스트하우스를 추천해줄 수 있나요?
+									</a>
+								</h4>
+							</div>
+							<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+								<div class="panel-body">
+									<p>#GEHA에서는 여행 조언은 제공하고 있지 않습니다. 고객님의 결정에
+								도움이 되도록 호텔 페이지, 방 상세 페이지와 게스트하우스 리뷰를 읽어보시길 추천 드립니다. </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingFive">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+										오늘 체크인 날짜로도 #GEHA를 통해서 예약할 수 있나요? 
+									</a>
+								</h4>
+							</div>
+							<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+								<div class="panel-body">
+									<p>네, #GEHA 웹사이트에서 검색하시고 빈 객실이 남아 있다면 가능합니다 </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingFive">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseFive">
+										제가 게스트하우스와 직접 연결하여 예약할 수 있나요?
+									</a>
+								</h4>
+							</div>
+							<div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+								<div class="panel-body">
+									<p>네, 직접 게스트하우스와 연결하셔서 예약하실 수 있습니다.
+										 하지만 #GEHA 웹사이트에 올려져 있는 가격표는 
+										 저희 서비스를 통하여서만 이용하실 수 있는 요금인 점을 알려드립니다. </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingFive">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseFive">
+										제가 게스트하우스와 직접 연결하여 예약할 수 있나요?
+									</a>
+								</h4>
+							</div>
+							<div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+								<div class="panel-body">
+									<p>네, 직접 게스트하우스와 연결하셔서 예약하실 수 있습니다.
+										 하지만 #GEHA 웹사이트에 올려져 있는 가격표는 
+										 저희 서비스를 통하여서만 이용하실 수 있는 요금인 점을 알려드립니다. </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingFive">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false" aria-controls="collapseFive">
+										객실이 있다면, 확인하는데 얼마나 걸리나요?
+									</a>
+								</h4>
+							</div>
+							<div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+								<div class="panel-body">
+									<p>객실 현황은 고객님의 검색 기준을 토대로 보여집니다. 고객님이 검색하셨을 때 보여지는 객실은 다 사용 가능합니다. </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingFive">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="false" aria-controls="collapseFive">
+										왜 객실 요금이 변경된 건가요?
+									</a>
+								</h4>
+							</div>
+							<div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+								<div class="panel-body">
+									<p>저희의 게스트하우스 파트너들은
+										 언제든지 요금과 프로모션을 변경할 수 있습니다. 
+										 시장 상황, 전략 변경, 유효성 등등 요금 변동이 발생할 수 있는 몇 가지 이유들이 있습니다. </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingFive">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="false" aria-controls="collapseFive">
+										친구의 신용카드를 이용하여 예약할 수 있나요?
+									</a>
+								</h4>
+							</div>
+							<div id="collapseTen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+								<div class="panel-body">
+									<p>네. 3자 예약을 하시면 보안의 목적으로 고객님께 연락을 취할 수 있습니다. </p>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingFive">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEleven" aria-expanded="false" aria-controls="collapseFive">
+										어디서 객실 세부사항을 볼 수 있나요?
+									</a>
+								</h4>
+							</div>
+							<div id="collapseEleven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+								<div class="panel-body">
+									<p>방의 세부사항은 선택하신 객실 정보 아래에 있는 [숙소정보]탭을 클릭하시면 표시되어 있습니다. </p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!--- END COL -->		
+			</div><!--- END ROW -->			
+		</div>
 	</div>
+	
+	<div layout:fragment="script">
+		<script type="text/javascript">
+			(function($) {
+				'use strict';
+				jQuery(document).on('ready', function(){
+						$('a.page-scroll').on('click', function(e){
+							var anchor = $(this);
+							$('html, body').stop().animate({
+								scrollTop: $(anchor.attr('href')).offset().top - 50
+							}, 1500);
+							e.preventDefault();
+						});		
+				}); 	
+			})(jQuery);
+		</script>
+	</div>
+	
 </body>
 </html>
