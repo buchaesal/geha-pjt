@@ -52,19 +52,6 @@
                border: 1px solid #888;
                width: 50%; /* Could be more or less, depending on screen size */                          
            }
-           /* The Close Button */
-           .close {
-               color: #aaa;
-               float: right;
-               font-size: 28px;
-               font-weight: bold;
-           }
-           .close:hover,
-           .close:focus {
-               color: black;
-               text-decoration: none;
-               cursor: pointer;
-           }
            .roomInfoDiv {
               display:  grid;
               background-color: #deebff;
@@ -100,8 +87,7 @@
            		padding: 0 0;
            }
       </style>
-   		<!-- 스마트에디터 api 적용 -->
-		<script type="text/javascript" th:src="@{/nse/js/service/HuskyEZCreator.js}" charset="utf-8"></script>
+   		<script type="text/javascript" src="/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
    </head>
    <body>
       <div layout:fragment="hostPage_content">
@@ -114,7 +100,7 @@
             		<td>
             			<div>
 			                <input type="file" id="input_imgs" name="files" multiple>
-			                <input type="button" value="삭제" onclick="deleteImgs(this)">
+			                <input type="button" value="파일삭제" onclick="deleteImgs(this)">
 		            	</div>
 		            	<div class="imgs_wrap" name="guestHouseImg"></div>
 		            	<input type="hidden" name="guestHouse_imglength">
@@ -122,20 +108,20 @@
             	</tr>
                <tr>
                   <th><label class="hostPage_label">게스트하우스 이름<br>(상호명)</label></th>
-                  <td><input type="text" name="guestHouseName" size="25" style="font-size: 23px;"></td>
+                  <td><input type="text" name="guestHouseName" size="25" style="font-size: 23px;" th:value="${#request.contextPath}"></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">태그<br>(복수 선택 가능)</label></th>
                   <td>
-                     <label class="checkboxLabel"><input type="checkbox" name="gourmet" value="1">#맛집</label>
-                     <label class="checkboxLabel"><input type="checkbox" name="trip" value="1">#관광</label>
-                     <label class="checkboxLabel"><input type="checkbox" name="shopping" value="1">#쇼핑</label>
-                     <label class="checkboxLabel"><input type="checkbox" name="businessTrip" value="1">#출장</label>
+                     <label class="checkboxLabel"><input type="checkbox" id="tag" name="gourmet" value="1">#맛집</label>
+                     <label class="checkboxLabel"><input type="checkbox" id="tag" name="trip" value="1">#관광</label>
+                     <label class="checkboxLabel"><input type="checkbox" id="tag" name="shopping" value="1">#쇼핑</label>
+                     <label class="checkboxLabel"><input type="checkbox" id="tag" name="businessTrip" value="1">#출장</label>
                   </td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">설명</label></th>
-                  <td><textarea name="guestHouseInfo" rows="7" cols="50" maxlength="500"></textarea></td>
+                  <td><textarea id="guestHouseInfo" name="guestHouseInfo" rows="15" cols="63" maxlength="500"></textarea></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">편의시설</label></th>
@@ -166,9 +152,9 @@
                   <th><label class="hostPage_label">숙소 정보</label></th>
                   <td>
                      <label>숙소이용규칙</label><br>
-                     <textarea name="rules" rows="10" cols="50" maxlength="1000"></textarea><br>
+                     <textarea id="rules" name="rules" rows="20" cols="63" maxlength="1000"></textarea><br><br>
                      <label>주차장 정보</label><br>
-                     <textarea name="parkingInfo" rows="5" cols="50" maxlength="100"></textarea>
+                     <textarea id="parkingInfo" name="parkingInfo" rows="10" cols="63" maxlength="100"></textarea>
                   </td>
                </tr>
                <tr>
@@ -181,7 +167,7 @@
                </tr>
                <tr>
                   <th><label class="hostPage_label">오시는 길</label></th>
-                  <td><textarea name="directions" rows="5" cols="50" maxlength="100"></textarea></td>
+                  <td><textarea id="directions" name="directions" rows="10" cols="63" maxlength="100"></textarea></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">정산계좌 입력</label></th>
@@ -204,10 +190,19 @@
             <input type="button" value="취소" onclick="history.back()">
             <input id="regiestGuestHouseBtn" type="button" value="등록신청">
             
-            <textarea name="smarteditor" id="smarteditor" rows="10" cols="100" style="width:766px; height:412px;"></textarea>
-            
          </form>
-
+         
+         <!-- inputCheck Modal -->
+		<div id="inputCheckModal" class="modal">
+		
+			<!-- Modal content -->
+			<div class="modal-content">
+				<p id="modalMessage"></p>
+				<button id="inputCheckModalClose">확인</button>
+			</div>
+		</div>
+         
+         
          <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
             <table>
 	         	<input type="hidden" name="roomIndex">
@@ -217,11 +212,11 @@
 	         		<td>
 	         			<div>
 			               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
-			               <input type="button" value="삭제" onclick="deleteImgs(this)">
+			               <input type="button" value="파일삭제" onclick="deleteImgs(this)">
 			            </div>
 			            <div class="imgs_wrap room_imgs_wrap" name="roomsImg"></div>
 			            <input type="hidden" name="room_imglength">
-			            <input type="hidden" name="mainRoomImage">
+			            <input type="hidden" name="mainRoomImage" value="0">
 	         		</td>
 	         	</tr>
                <tr class="room_tr">
@@ -230,7 +225,7 @@
                </tr>
                <tr class="room_tr">
                   <th>가격</th>
-                  <td><input type="text" name="charge" numberOnly placeholder="0"></td>
+                  <td><input type="text" class="inputNumber" name="charge" placeholder="0" onkeyup="numberFormat(this)"> 원</td>
                </tr>
                <tr class="room_tr">
                   <th>전용</th>
@@ -243,7 +238,7 @@
                </tr>
                <tr class="room_tr">
                   <th>수용인원 수</th>
-                  <td><input type="number" name="capacity">명</td>
+                  <td><input type="text" class="inputNumber" name="capacity" onkeyup="numberFormat(this)" size="5"> 명</td>
                </tr>
                <tr class="room_tr">
                   <th>객실 이용안내</th>
@@ -255,48 +250,40 @@
       </div>
       
       <div layout:fragment="hostPage_script">
-
-      	<script type="text/javascript">
-        	//스마트 에디터 적용
-	        $(document).ready(function() { 
-	        	var oEditors = []; // 개발되어 있는 소스에 맞추느라, 전역변수로 사용하였지만, 지역변수로 사용해도 전혀 무관 함. 
-	        
-	            // Editor Setting 
-	            nhn.husky.EZCreator.createInIFrame({ 
-	            	oAppRef : oEditors, // 전역변수 명과 동일해야 함. 
-		            elPlaceHolder : "smarteditor", // 에디터가 그려질 textarea ID 값과 동일 해야 함. 
-		            sSkinURI : "/nse/SmartEditor2Skin.html", // Editor HTML 
-		            fCreator : "createSEditor2", // SE2BasicCreator.js 메소드명이니 변경 금지 X 
-		            htParams : { // 툴바 사용 여부 (true:사용/ false:사용하지 않음) 
-		            	bUseToolbar : true, // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음) 
-		            	bUseVerticalResizer : true, // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음) 
-		            	bUseModeChanger : true, 
-		            } 
-	            }); 
-	        });
-	        
-	        function validation(){ 
-	        	var contents = $.trim(oEditors[0].getContents()); 
-	        	if(contents === '<p>&bnsp;</p>' || contents === ''){ // 기본적으로 아무것도 입력하지 않아도 값이 입력되어 있음. 
-	        		alert("내용을 입력하세요."); 
-	        		oEditors.getById['smarteditor'].exec('FOCUS'); 
-	        		return false; 
-	        	} 
-	        	
-	        	return true; 
-	     	}
-
-      	
-      	</script>
-      
-      
+      	<!-- <script type="text/javascript">
+			 var oEditors = [];
+			 nhn.husky.EZCreator.createInIFrame({
+			 oAppRef: oEditors,
+			 elPlaceHolder: "guestHouseInfo", //textarea에서 지정한 id와 일치해야 합니다.
+			 sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+			 fCreator: "createSEditor2"
+			 });
+			
+			 var oEditors = [];
+			 nhn.husky.EZCreator.createInIFrame({
+			 oAppRef: oEditors,
+			 elPlaceHolder: "rules", //textarea에서 지정한 id와 일치해야 합니다.
+			 sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+			 fCreator: "createSEditor2"
+			 });
+			 
+			 var oEditors = [];
+			 nhn.husky.EZCreator.createInIFrame({
+			 oAppRef: oEditors,
+			 elPlaceHolder: "parkingInfo", //textarea에서 지정한 id와 일치해야 합니다.
+			 sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+			 fCreator: "createSEditor2"
+			 });
+			 
+			 var oEditors = [];
+			 nhn.husky.EZCreator.createInIFrame({
+			 oAppRef: oEditors,
+			 elPlaceHolder: "directions", //textarea에서 지정한 id와 일치해야 합니다.
+			 sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+			 fCreator: "createSEditor2"
+			 });
+		</script> -->
 		<script type="text/javascript" th:inline="javascript">
-		
-		 
-	        
-		
-		
-		
             var roomIndex=1;
             $("#addRoomInfoBtn").click(function() {
                var div = document.createElement('div');
@@ -323,7 +310,96 @@
             
             //게스트하우스 등록완료
             $("#regiestGuestHouseBtn").click(function() {
-               $("#registerGuestHouseForm").submit();
+            	if(checkValue()) {
+            		console.log("true");
+            		$("#registerGuestHouseForm").submit();
+            	}
+            })
+            
+            
+           	function checkValue() {
+            	console.log("checkValue");
+            	
+            	if(!($("input:checkbox[id='tag']").is(":checked")) || !($("input:checkbox[name='facilityCode']").is(":checked"))) { //체크란 체크여부
+            		$("#modalMessage").text("체크란을 체크해주세요!");
+            		$("#inputCheckModal").css("display", "block");
+            		return false;
+            	} else if($(".guestHouse_table").find('.roomInfoDiv').length == 0) { //방 등록 여부
+            		$("#modalMessage").text("방 등록은 1개 이상이어야합니다.");
+            		$("#inputCheckModal").css("display", "block");
+            		return false;
+            	}
+            	
+            	//파일 업로드 여부
+            	var fileTags = $(".guestHouse_table").find("input[type=file]");
+            	for(var i=0; i<fileTags.length; i++) { 
+            		if(!fileTags[i].value) {
+            			$("#modalMessage").text("파일 업로드를 해주세요!");
+                		$("#inputCheckModal").css("display", "block");
+                		return false;
+            		} 
+            	}
+            	
+            	//textarea 태그 개수
+            	var textareaTags =  $(".guestHouse_table").find("textarea");
+            	for(var i=0; i<textareaTags.length; i++) {
+            		if(!textareaTags[i].value) {
+            			$("#modalMessage").text("입력란을 모두 작성해주세요!");
+                		$("#inputCheckModal").css("display", "block");
+                		return false;
+            		}
+            	}
+            	
+            	var inputTextTag = $(".guestHouse_table").find("input[type=text]");
+            	for(var i=0; i<inputTextTag.length; i++) {
+            		if(!inputTextTag[i].value) {
+            			$("#modalMessage").text("입력란을 모두 작성해주세요!");
+                		$("#inputCheckModal").css("display", "block");
+                		return false;
+            		}
+            	}
+            	
+
+            	//숫자 받는 입력란 콤마 제거
+            	var inputNumberTag = $(".guestHouse_table").find(".inputNumber");
+            	for(var i=0; i<inputNumberTag.length; i++) {
+            		var x = inputNumberTag[i].value;
+            		inputNumberTag[i].value = removeCommas(x);
+            	}
+            	
+            	inputTextArea();
+            	
+            	return true;
+            }
+            
+            function numberFormat(obj) {
+            	$(obj).val(addCommas($(obj).val().replace(/[^0-9]/g,"")));
+            }
+            
+           //3자리 단위마다 콤마 생성
+            function addCommas(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+             
+            //모든 콤마 제거
+            function removeCommas(x) {
+                if(!x || x.length == 0) return "";
+                else return x.split(",").join("");
+            }
+            
+            //textArea br태그 넣기
+            function inputTextArea() {
+            	var textareaTags =  $(".guestHouse_table").find("textarea");
+            	for(var i=0; i<textareaTags.length; i++) {
+            		var str = textareaTags[i].value;
+        			str = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+        			textareaTags[i].value=str;
+            	}
+            }
+            
+            
+            $("#inputCheckModalClose").click(function() {
+            	$("#inputCheckModal").css("display", "none");
             })
             
             //파일업로드
@@ -344,19 +420,17 @@
                var files = e.target.files;
                var filesArr = Array.prototype.slice.call(files);
                
-               /* alert("files.length: "+files.length);
-               
-               alert("e.name: " + e.target.name); */
                
                if(e.target.name == "roomAttach") {
-            	   if(files.length > 5) {
-            		   alert("방 이미지는 5개까지만 등록하실 수 있습니다.");
-            		   
+            	   if(2 > files.length || files.length > 5) {
+            		   alert("방 이미지는 2장~5장까지만 등록하실 수 있습니다.");
+                       $(e.target).val("");
             		   return;
             	   }
                } else {
-            	   if(files.length > 10) {
-            		   alert("게스트하우스 이미지는 10개까지만 등록하실 수 있습니다.");
+            	   if(4 > files.length || files.length > 10) {
+            		   alert("게스트하우스 이미지는 4장~10장까지만 등록하실 수 있습니다.");
+            		   $(e.target).val("");
             		   return;
             	   }
                }
@@ -376,10 +450,10 @@
                      if($(prtDiv).attr("name")=='roomsImg') { //방일 경우
                         var html = 
                            "<span class='thumbnailImgSpan'><input type='radio' name='mainRoomImage"+$(roomInfoTable).find("input[name='roomIndex']").val()+"' value='"+index
-                           +"' onclick='clickMainRoomImg($(this).parent().parent().next().next(), this.value)'"+(index==0?'th:checked=checked':'')+"><img src=\""+e.target.result+"\" data-file='"+f.name
+                           +"' onclick='clickMainRoomImg($(this).parent().parent().next().next(), this.value)'"+(index==0?'checked=checked':'')+"><img src=\""+e.target.result+"\" data-file='"+f.name
                            +"' class='selProductFile' title='Click to remove'></span>";
                      } else { //게스트하우스일 경우
-                        var html = "<span class='thumbnailImgSpan'><input type='radio' name='mainImage' value='"+index+"'><img src=\""+e.target.result+"\" data-file='"+f.name
+                        var html = "<span class='thumbnailImgSpan'><input type='radio' name='mainImage' value='"+index+"' "+(index==0?'checked=checked':'')+"><img src=\""+e.target.result+"\" data-file='"+f.name
                         +"' class='selProductFile' title='Click to remove'></span>";
                      }
                      $(prtDiv).append(html);

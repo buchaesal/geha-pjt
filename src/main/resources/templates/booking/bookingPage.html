@@ -69,6 +69,15 @@
 				margin: 20px 0;
 				font-weight: bold;
 			}
+			
+			.inputLabel {
+				display: block;
+			}
+			
+			.checkValue_label {
+				display: none; 
+				color: red
+			}
 		</style>
 	</head>
 	<body>
@@ -77,17 +86,26 @@
 				<div class="display_left">
 					<div class="input-box">
 						<h4>예약자 정보</h4>
+						<input type="hidden" name="memberCode" th:value="${appliedBookingInfo.memberCode}">
 						
-						<input type="hidden" name="memberCode" th:value="${memberCode}">
+						<label class="inputLabel">예약자 이름<br>
+						<input class="inputLine" type="text" name="booker" onkeyup="name_checkValue_reg(this.value)"></label>
+						<label class="nullCheck_label checkValue_label">이름을 입력해주세요.</label>
+						<label id="name_regCheck_label" class="checkValue_label">형식에 맞게 이름을 작성해주세요</label>
+						<br>
+				
 						
-						<label>예약자 이름<br>
-						<input type="text" name="booker"></label><br><br>
+						<label class="inputLabel">예약자 이메일<br>
+						<input class="inputLine" type="text" name="bookerEmail" onkeyup="email_checkValue_reg(this.value)"></label>
+						<label class="nullCheck_label checkValue_label">이메일을 입력해주세요.</label>		
+						<label id="email_regCheck_label" class="checkValue_label">형식에 맞게 이메일을 작성해주세요</label>				
+						<br>
 						
-						<label>예약자 이메일<br>
-						<input type="text" name="bookerEmail"></label><br><br>
-						
-						<label>예약자 연락처<br>
-						<input type="text" name="bookerContact"></label><br><br>
+						<label class="inputLabel">예약자 연락처<br>
+						<input class="inputLine" type="text" name="bookerContact" onkeyup="contact_checkValue_reg(this.value)"></label>
+						<label class="nullCheck_label checkValue_label">연락처를 입력해주세요.</label>
+						<label id="contact_regCheck_label" class="checkValue_label">형식에 맞게 연락처를 작성해주세요</label>
+						<br>
 					</div>
 					
 					<div class="input-box">
@@ -201,29 +219,29 @@
 					
 					<div class="input-box">
 						<h4>숙소정보</h4>
-						<input type="hidden" name="roomCode" th:value="${#numbers.formatInteger(roomDto.roomCode, 3, 'COMMA')}">
-						<input type="hidden" name="bookingNumber" th:value="${#numbers.formatInteger(3, 3, 'COMMA')}">
+						<input type="hidden" name="roomCode" th:value="${#numbers.formatInteger(appliedBookingInfo.roomDto.roomCode, 3, 'COMMA')}">
+						<input type="hidden" name="bookingNumber" th:value="${appliedBookingInfo.bookingNumber}">
 						
 						<label>숙소이름</label><br>
-						<label>[[${guestHouseName}]]</label>
-						<input type="hidden" name="guestHouseName" th:value="${guestHouseName}"><br><br>
+						<label>[[${appliedBookingInfo.guestHouseName}]]</label>
+						<input type="hidden" name="guestHouseName" th:value="${appliedBookingInfo.guestHouseName}"><br><br>
 						
 						<label>객실타입/기간</label><br>
-						<label>[[${roomDto.roomName}]]</label>
-						<input type="hidden" name="roomName" th:value="${roomDto.roomName}">
-						<label>/1박</label><br><br>
+						<label>[[${appliedBookingInfo.roomDto.roomName}]] / </label>
+						<input type="hidden" name="roomName" th:value="${appliedBookingInfo.roomDto.roomName}">
+						<label id="diffDay"></label><br><br>
 						
 						<label>입실 예정일</label><br>
-						<label>[[${#dates.format(checkin, 'yy.MM.dd E')}]]</label> 14:00 <br><br>
-						<input type="hidden" name="bookingStart" th:value="${#dates.format(checkin, 'yyyy-MM-dd')}">
+						<label>[[${#dates.format(appliedBookingInfo.bookingStart, 'yy.MM.dd E')}]]</label> 14:00 <br><br>
+						<input type="hidden" name="bookingStart" th:value="${#dates.format(appliedBookingInfo.bookingStart, 'yyyy-MM-dd')}">
 						
 						<label>퇴실 예정일</label><br>
-						<label>[[${#dates.format(checkout, 'yy.MM.dd E')}]]</label> 11: 00 <br><br>
-						<input type="hidden" name="bookingEnd" th:value="${#dates.format(checkout, 'yyyy-MM-dd')}">
+						<label>[[${#dates.format(appliedBookingInfo.bookingEnd, 'yy.MM.dd E')}]]</label> 11: 00 <br><br>
+						<input type="hidden" name="bookingEnd" th:value="${#dates.format(appliedBookingInfo.bookingEnd, 'yyyy-MM-dd')}">
 						
 						<label>총 결제 금액(VAT포함)</label><br>
-						<label>[[${#numbers.formatInteger(roomDto.charge, 3, 'COMMA')}]]</label>
-						<input type="hidden" name="paymentAmount" th:value="${roomDto.charge}">원<br><br>
+						<label id="paymentAmount"></label>
+						<input type="hidden" name="paymentAmount">원<br><br>
 
 						<input type="hidden" name="approvalNumber" >
 						<input id="paymentBtn" type="button" value="결제하기">
@@ -237,13 +255,14 @@
 					<!-- Modal content -->
 					<div class="modal-content">
 						<span id="bookingConfirmModalClose" class="close">&times;</span>
-						<p>예약내역</p>
-						<p>[[${guestHouseName}]]</p>
-						<p>[[${roomDto.roomName}]]/1박</p>
-						<p><label id="checkin">체크인</label>
-						<label>[[${#dates.format(checkin, 'yy.MM.dd E')}]] 14:00 </label></p>
-						<p><label id="checkout">체크아웃</label>
-						<label>[[${#dates.format(checkout, 'yy.MM.dd E')}]] 11:00 </label></p>
+						<p>예약 확인</p>
+						<p>게스트하우스 이름 : [[${appliedBookingInfo.guestHouseName}]]</p>
+						<p>예약하실 방 이름 : [[${appliedBookingInfo.roomDto.roomName}]]</p>
+						<p id="diffDay_p"></p>
+						<p><label id="bookingStart">입실 예정일 : </label>
+						<label>[[${#dates.format(appliedBookingInfo.bookingStart, 'yy.MM.dd E')}]] 14:00 </label></p>
+						<p><label id="bookingEnd">퇴실 예정일 : </label>
+						<label>[[${#dates.format(appliedBookingInfo.bookingEnd, 'yy.MM.dd E')}]] 11:00 </label></p>
 						<ul>
 							<li> 해당 숙소는 예약 대기상태이며, 숙소의 확인 후 예약 확정 여부가 문자로 발송됩니다. </li>
 							<li> 숙소의사정으로 예약 불가능할 경우 결제된 금액은 자동 취소됩니다. </li>
@@ -253,12 +272,23 @@
 					</div>
 				</div>
 			</form>
+			
+			
+			<!-- agreements confirm Modal -->
+			<div id="agreementsConfirmModal" class="modal">
+			
+				<!-- Modal content -->
+				<div class="modal-content">
+					<p>필수 동의사항을 체크해주세요.</p>
+					<button onclick="$('#agreementsConfirmModal').css('display', 'none')">확인</button>
+				</div>
+			</div>
 		</div>
 		
 			
 		
 		<div layout:fragment="script">
-			<script type="text/javascript">
+			<script th:inline="javascript" type="text/javascript">
 				//사용규칙 모달
 				var useRulesModal = document.getElementById('useRulesModal');
 				//개인정보수집 모달
@@ -272,6 +302,22 @@
 			    //모든 모달창의 닫기버튼
 			    var closeSpan = document.getElementsByClassName("close");     	
 			    
+			    
+			    $(document).ready(function() {
+			    	var bookingStart = new Date([[${appliedBookingInfo.bookingStart}]]);
+			    	var bookingEnd = new Date([[${appliedBookingInfo.bookingEnd}]]);
+			    	
+			    	//날짜 일 차이 구하기
+			    	var diffDay = (bookingEnd.getTime() - bookingStart.getTime()) / (1000*60*60*24);
+			    	var charge = [[${appliedBookingInfo.roomDto.charge * appliedBookingInfo.bookingNumber}]] * diffDay;
+			    	
+			    	$("#diffDay").text(diffDay + "박");
+			    	$("#diffDay_p").text("기간 : " + diffDay + "박 " + (diffDay+1) + "일");
+			    	
+			    	
+			    	$("#paymentAmount").text(charge.toLocaleString());
+			    	$("input[name=paymentAmount]").val(charge);
+			    })
 			
 			
 				//체크박스 전체동의 및 동의상세정보 모달창 띄우기
@@ -287,21 +333,99 @@
 								//해당화면에 모든 checkbox들의 체크를 해제시킨다.
 								$("input[type=checkbox]").prop("checked", false);
 							}
-						} else if(this.id == "useRules") { //숙소이용규칙 및 취소/환불규정 동의 클릭 시
+						} else if(this.id == "useRules" && $(this).is(':checked')) { //숙소이용규칙 및 취소/환불규정 동의 클릭 시
 							useRulesModal.style.display = "block";
-						} else if(this.id == "personalInfoCollection") { //개인정보 수집 및 이용 동의 클릭 시
+						} else if(this.id == "personalInfoCollection" && $(this).is(':checked')) { //개인정보 수집 및 이용 동의 클릭 시
 							personalInfoCollectionModal.style.display = "block";
-						} else { //개인정보 제 3자 제공 동의 클릭 시
+						} else if(this.id == "personalInfoProvision" && $(this).is(':checked')) { //개인정보 제 3자 제공 동의 클릭 시
 							personalInfoProvisionModal.style.display = "block";
 						}
-						
 					})
 				})                                     
 			
 			    //예약하기 화면- 결제하기 클릭 시 예약정보 확인 모달 띄우기
 			    paymentBtn.onclick = function() {
-			    	bookingConfirmModal.style.display = "block";
+			    	if(checkInputValue()) {
+			    		console.log("유효한 값이 아님");
+			    	} else {
+			    		console.log("유효한 값이 맞음");
+				    	bookingConfirmModal.style.display = "block";
+			    	}
 			    }
+			    
+			    function checkInputValue() {
+ 			    	if($('input[name=booker]').val()=="" || $('input[name=bookerEmail]').val()=="" || $('input[name=bookerContact]').val()=="") {
+ 			    		for(var i=$('.inputLine').length-1; i>=0; i--) {
+ 			    			var inputLine = $('.inputLine').get(i);
+ 			    			var nullCheckLabel = $('.nullCheck_label')[i];
+ 			    			
+ 			    			if($(inputLine).val()=="") {
+		 			    		$(nullCheckLabel).css("display", "block");
+		 			    		$(inputLine).focus();
+ 			    			} else {
+		 			    		$(nullCheckLabel).css("display", "none");
+ 			    			}
+ 			    		}
+ 			    	}
+			    	
+ 			    	
+ 			    	for(var i=0; i<$('.checkValue_label').length; i++) {
+	 			    	var checkValue_label = $('.checkValue_label')[i];
+ 			    		if($(checkValue_label).css('display')=='block') {
+ 			    			return true;
+ 			    		}
+ 			    	}
+ 			    	
+ 			    	
+ 			    	for(var i=0; i<$('input[type=checkbox]').length; i++) {
+ 			    		var checkbox = $('input[type=checkbox]')[i];
+ 			    		
+ 			    		if(checkbox.id!='allCheck' && !($(checkbox).is(':checked'))){
+ 			    			$('#agreementsConfirmModal').css('display', 'block');
+ 			    			return true;
+ 			    		}
+ 			    	}
+ 			    	
+			    	return false;
+			    }
+			    
+			    //이름 유효성 체크
+			    function name_checkValue_reg(value) {
+			    	var reg_name = /^[가-힣]{2,4}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/; // 한글 또는 영문 (혼용X)
+			    	
+			    	$('#name_regCheck_label').prev().css("display", "none");
+			    	
+			    	if(!reg_name.test(value)) $('#name_regCheck_label').css("display", "block");
+			    	else $('#name_regCheck_label').css("display", "none");
+			    	
+			    	if(value=="") $('#name_regCheck_label').css("display", "none");
+			    }
+			    
+			    //이메일 유효성 체크
+			    function email_checkValue_reg(value) {
+			    	var reg_email = /^[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[@]{1}[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[.]{1}[A-Za-z]{1,5}$/;
+			    	
+			    	$('#email_regCheck_label').prev().css("display", "none");
+			    	
+			    	if(!reg_email.test(value)) $('#email_regCheck_label').css("display", "block");
+			    	else $('#email_regCheck_label').css("display", "none");
+			    	
+			    	if(value=="") $('#email_regCheck_label').css("display", "none");
+			    }
+			    
+			    
+			    //연락처 유효성 체크
+			    function contact_checkValue_reg(value) {
+			    	var reg_contact = /^\d{2,3}-\d{3,4}-\d{4}$/;
+			    	
+			    	$('#contact_regCheck_label').prev().css("display", "none");
+			    	
+			    	if(!reg_contact.test(value)) $('#contact_regCheck_label').css("display", "block");
+			    	else $('#contact_regCheck_label').css("display", "none");
+			    	
+			    	if(value=="") $('#contact_regCheck_label').css("display", "none");
+			    }
+			    
 			
 			    //모달 창 닫기버튼 클릭 시
 			    for(var i=0; i<closeSpan.length; i++) {
@@ -349,8 +473,8 @@
 			    		// IMP.request_pay(param, callback) 호출
 						IMP.request_pay({ // param
 						    pay_method: "card",
-						    merchant_uid: [[${roomDto.roomCode}]]+"-"+today,
-						    name: [[${guestHouseName}]]+"/"+[[${roomDto.roomName}]],
+						    merchant_uid: [[${appliedBookingInfo.roomDto.roomCode}]]+"-"+today,
+						    name: [[${appliedBookingInfo.guestHouseName}]]+"/"+[[${appliedBookingInfo.roomDto.roomName}]],
 						    amount: 100,
 						    buyer_email: $("input[name='bookerEmail']").val(),
 						    buyer_name: $("input[name='booker']").val(),

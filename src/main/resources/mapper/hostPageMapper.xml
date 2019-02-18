@@ -64,15 +64,35 @@
 	
 	
 	<select id="getGuestBookingList" parameterType="map" resultType="BookingDto">
-		SELECT b.*, v.guestHouseName, v.roomName FROM booking_tb b,  bkrmghmatching_view v 
+		SELECT b.*, v.guestHouseCode, v.guestHouseName, v.roomName FROM booking_tb b,  bkrmghmatching_view v 
 		WHERE b.bookingCode=v.bookingCode AND v.hostCode=#{hostCode} 
 		ORDER BY b.bookingCode desc
 		LIMIT #{cri.pageStart}, #{cri.perPageNum}
 	</select>
 	
-	<select id="getGuestBookingListCount" parameterType="int" resultType="int">
-		SELECT count(*) FROM booking_tb b,  bkrmghmatching_view v 
+	<select id="getGuestReviewList" resultType="ReviewDto">
+		SELECT r.*, v.guestHouseCode, v.guestHouseName, m.id AS writer 
+		FROM review_tb r, bkrmghmatching_view v, member_tb m 
+		WHERE r.bookingCode=v.bookingCode AND v.memberCode=m.memberCode AND v.hostCode=#{hostCode} 
+		ORDER BY r.writingDate desc
+		LIMIT #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<select id="getGuestHouseListTotal" resultType="int">
+		SELECT count(*) FROM guestHouse_tb
+		WHERE memberCode = #{memberCode}
+	</select>
+	
+	<select id="getGuestBookingListTotal" resultType="int">
+		SELECT count(b.*) 
+		FROM booking_tb b,  bkrmghmatching_view v
 		WHERE b.bookingCode=v.bookingCode AND v.hostCode=#{hostCode} 
 		ORDER BY b.bookingCode desc
+	</select>
+	
+	<select id="getGuestReviewListTotal" resultType="int">
+		SELECT count(*) 
+		FROM review_tb r, bkrmghmatching_view v, member_tb m 
+		WHERE r.bookingCode=v.bookingCode AND v.memberCode=m.memberCode AND v.hostCode=#{hostCode}
 	</select>
 </mapper>

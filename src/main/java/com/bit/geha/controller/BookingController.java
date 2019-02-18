@@ -1,6 +1,8 @@
 package com.bit.geha.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -43,16 +45,27 @@ public class BookingController {
 		log.info("guestHouseName: " + guestHouseName);
 		log.info("bookingNumber: " + bookingNumber);
 		
-		
-		model.addAttribute("checkin", bookingStart);
-		model.addAttribute("checkout", bookingEnd);
-		model.addAttribute("roomDto", roomDto);
-		model.addAttribute("guestHouseName", guestHouseName);
-		
+
 		//로그인 계정 가져오기
 		memberService.getSession(auth,session);
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
-		model.addAttribute("memberCode", memberCode);
+		
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("bookingStart", bookingStart);
+		map.put("bookingEnd", bookingEnd);
+		map.put("roomDto", roomDto);
+		map.put("guestHouseName", guestHouseName);
+		map.put("bookingNumber", bookingNumber);
+		map.put("memberCode", memberCode);
+		
+		model.addAttribute("appliedBookingInfo", map);
+		
+		/*model.addAttribute("checkin", bookingStart);
+		model.addAttribute("checkout", bookingEnd);
+		model.addAttribute("roomDto", roomDto);
+		model.addAttribute("guestHouseName", guestHouseName);*/
+		
 		
 	}
 	
