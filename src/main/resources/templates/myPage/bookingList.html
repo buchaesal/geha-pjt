@@ -155,9 +155,14 @@ th {
 	vertical-align: middle;
 }
 
+
+tr {
+    border-bottom: 2px solid lightgray;
+
 #bookingList {
 	text-decoration: underline;
 	font-size: 27px;
+
 }
 </style>
 </head>
@@ -170,7 +175,7 @@ th {
 		</div>
 		<div th:if="${#lists.size(bookingList)>0}">
 			<table width="800px">
-				<tr height="80px" style="border-bottom: 2.2px solid lightgray"
+				<tr height="80px" style="border-bottom: 2.2px solid lightgray;     background: #f1f1fb;"
 					align="center">
 					<th>예약 코드</th>
 					<th>예약 정보</th>

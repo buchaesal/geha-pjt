@@ -18,18 +18,27 @@
 				text-decoration: underline;
 				font-size: 27px;
 			}
+			
+						th {
+	text-align: center;
+}
+
+tr {
+	border-bottom: 2px solid lightgray;
+}
 		</style>
 	</head>
 	<body>
 		<div layout:fragment="hostPage_content">
-			<table border="2">
-				<tr>
+			<table width="800px">
+				<tr height="80px" align="center" style="background: #f1f1fb;">
 					<th>리뷰번호</th>
 					<th>알림 내용</th>
 					<th>작성일</th>
-					<th>답변 여부</th>
+					<th width="100px">답변 여부</th>
 				</tr>
-				<tr th:each="reviewDto : ${guestReviewList}">
+				<tr th:each="reviewDto : ${guestReviewList}" align="center"
+				height="80px">
 					<td th:text="${reviewDto.reviewNo}"></td>
 					<td>
 						<a id="notifyContent" th:href="@{/room/roomInfo(guestHouseCode=${reviewDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${tomorrow}, bookingNumber=1)}">[[${reviewDto.guestHouseName}]]에서 [[${reviewDto.writer}]]님이 리뷰를 작성하였습니다.</a>

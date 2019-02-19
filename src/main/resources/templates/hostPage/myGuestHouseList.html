@@ -1,140 +1,173 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="fragments/hostPage_layout">
-   
-   <head>
-   		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-      <title>내 게스트하우스</title>
-      <style>
-         /* The Modal (background) */
-         .modal {
-               display: none; /* Hidden by default */
-               position: fixed; /* Stay in place */
-               z-index: 1; /* Sit on top */
-               left: 0;
-               top: 0;
-               width: 100%; /* Full width */
-               height: 100%; /* Full height */
-               overflow: auto; /* Enable scroll if needed */
-               background-color: rgb(0,0,0); /* Fallback color */
-               background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-           }
-       
-           /* Modal Content/Box */
-           .modal-content {
-               background-color: #fefefe;
-               margin: 15% auto; /* 15% from the top and centered */
-               padding: 20px;
-               border: 1px solid #888;
-               width: 50%; /* Could be more or less, depending on screen size */                          
-           }
-           p {
-            font-weight: bold;
-         }
-         
-         #myGuestHouseList {
-			text-decoration: underline;
-			font-size: 27px;
-		}
-      </style>
-   </head>
-   
-	<body>
-		<div layout:fragment="hostPage_content">
-			<table border="2">
-	            <tr>
-	               <th>등록번호</th>
-	               <th>이름</th>
-	               <th>신청일</th>
-	               <th>상태</th>
-	            </tr>
-	            <tr th:each="guestHouseDto : ${guestHouseList}">
-					<td th:text="${guestHouseDto.guestHouseCode}"></td>
-					<td th:text="${guestHouseDto.guestHouseName}"></td>
-					<td th:text="${#dates.format(guestHouseDto.registerDate, 'yy.MM.dd')}"></td>
-					<td>
-						<div th:if="${guestHouseDto.approvalDate}">
-							등록완료<br><a th:href="@{/room/roomInfo(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${tomorrow}, bookingNumber=1)}">보기</a>
-						</div>
-						<div th:unless="${guestHouseDto.approvalDate}">
-							<label th:if="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
-								반려
-								<button th:onclick="|javascript:getRejectList('${guestHouseDto.guestHouseCode}')|">이력</button><br>
-								<a th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">수정/삭제</a>
-							</label>
-							<label th:unless="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
-								등록신청<br>
-								<a th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode})}">수정/삭제</a>
-							</label>
-						</div>
-					</td>
-				</tr>
-			</table>
-			
-			<!-- 게시판 하단의 페이징 버튼 -->
-            <div class="box-footer clearfix" style="padding-left:357px">
-              <ul class="pagination pagination-sm no-margin pull-center">
-              
-              <li th:if="${pageMaker.prev} == true">
-              	<a th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
-              </li>
-              
-              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-                <a th:href="@{/hostPage/myGuestHouseList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
-              </li>
-                
-              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-              	<a th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
-              </li>
-              </ul>
-            </div>
-         
-			<a href="registerGuestHouse">내 게스트하우스 등록하기</a>
-	         		
-			<!-- rejectList Modal -->
-			<div id="rejectListModal" class="modal">
-				
-				<!-- Modal content -->
-				<div class="modal-content">
-					<p>반려 이력</p>
-					<table id="rejectModalTable"></table>
-					<button id="rejectListModalClose">확인</button>
-				</div><!-- Modal content -->
-			</div> <!-- rejectList Modal -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/hostPage_layout">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>내 게스트하우스</title>
+<style>
+/* The Modal (background) */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 50%; /* Could be more or less, depending on screen size */
+}
+
+p {
+	font-weight: bold;
+}
+
+#myGuestHouseList {
+	text-decoration: underline;
+	font-size: 27px;
+}
+
+tr {
+	border-bottom: 2px solid lightgray;
+}
+
+th {
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+	<div layout:fragment="hostPage_content">
+	<div th:if="${#lists.size(guestHouseList)==0}" style="padding-top: 33px;">
+			<p class="heading">내 게스트하우스가 없습니다.</p>
+			<a href="registerGuestHouse"><button class="btn"
+				>새
+				게스트하우스 등록하기</button></a>
 		</div>
-      
-		<div layout:fragment="hostPage_script">
-		   <script type="text/javascript">
-		      	function getRejectList(guestHouseCode) {
-		     		$.ajax({
-						type: "GET",
-						url: "getRejectList",
-						data: {"guestHouseCode" : guestHouseCode},
-						success: function(data) {
-							$("#rejectListModal").css("display", "block");
-							
-							$("#rejectModalTable").empty();
-							
-							var content="<tr><th>반려 사유</th><th>반려일</th></tr>";
-							for(var i=0; i<data.length; i++) {
-								content += 
-									"<tr>"
-									+"<td>" + data[i].rejectMsg + "</td>"
-									+"<td>" + data[i].rejectDate + "</td>"
-									+"</tr>";
-							}
-							
-							$("#rejectModalTable").append(content);
+		<div th:if="${#lists.size(guestHouseList)>0}">
+		<table width="800px">
+			<tr height="80px" align="center" style="background: #f1f1fb;">
+				<th>등록번호</th>
+				<th>이름</th>
+				<th>신청일</th>
+				<th>상태</th>
+			</tr>
+			<tr th:each="guestHouseDto : ${guestHouseList}" align="center"
+				height="80px">
+				<td th:text="${guestHouseDto.guestHouseCode}"></td>
+				<td th:text="${guestHouseDto.guestHouseName}"></td>
+				<td
+					th:text="${#dates.format(guestHouseDto.registerDate, 'yy.MM.dd')}"></td>
+				<td>
+					<div th:if="${guestHouseDto.approvalDate}">
+						등록완료<br>
+						<a
+							th:href="@{/room/roomInfo(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${tomorrow}, bookingNumber=1)}">보기</a>
+					</div>
+					<div th:unless="${guestHouseDto.approvalDate}">
+						<label
+							th:if="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
+							반려
+							<button
+								th:onclick="|javascript:getRejectList('${guestHouseDto.guestHouseCode}')|">이력</button>
+							<br> <a
+							th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">수정/삭제</a>
+						</label> <label
+							th:unless="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
+							등록신청<br> <a
+							th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode})}">수정/삭제</a>
+						</label>
+					</div>
+				</td>
+			</tr>
+		</table>
+
+		<!-- 게시판 하단의 페이징 버튼 -->
+		<div class="box-footer clearfix" style="padding-left: 357px">
+			<ul class="pagination pagination-sm no-margin pull-center">
+
+				<li th:if="${pageMaker.prev} == true"><a
+					th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+				</li>
+
+				<li
+					th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
+					th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+					<a th:if="${idx}"
+					th:href="@{/hostPage/myGuestHouseList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}"
+					th:text="${idx}"></a>
+				</li>
+
+				<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+					<a
+					th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+
+		<a href="registerGuestHouse"><button class="btn-primary"
+				style="position: absolute; bottom: -133px; top: 1; right: 230px;">새
+				게스트하우스 등록하기</button></a>
+
+		<!-- rejectList Modal -->
+		<div id="rejectListModal" class="modal">
+
+			<!-- Modal content -->
+			<div class="modal-content">
+				<p>반려 이력</p>
+				<table id="rejectModalTable"></table>
+				<button id="rejectListModalClose">확인</button>
+			</div>
+			<!-- Modal content -->
+		</div>
+		<!-- rejectList Modal -->
+	</div>
+</div>
+	<div layout:fragment="hostPage_script">
+		<script type="text/javascript">
+			function getRejectList(guestHouseCode) {
+				$.ajax({
+					type : "GET",
+					url : "getRejectList",
+					data : {
+						"guestHouseCode" : guestHouseCode
+					},
+					success : function(data) {
+						$("#rejectListModal").css("display", "block");
+
+						$("#rejectModalTable").empty();
+
+						var content = "<tr><th>반려 사유</th><th>반려일</th></tr>";
+						for (var i = 0; i < data.length; i++) {
+							content += "<tr>" + "<td>" + data[i].rejectMsg
+									+ "</td>" + "<td>" + data[i].rejectDate
+									+ "</td>" + "</tr>";
 						}
-					})
-		     	}
-		      	
-		      	$("#rejectListModalClose").click(function() {
-		      		$("#rejectListModal").css("display", "none");
+
+						$("#rejectModalTable").append(content);
+					}
 				})
-		     </script>
-		</div>
-	</body>
+			}
+
+			$("#rejectListModalClose").click(function() {
+				$("#rejectListModal").css("display", "none");
+			})
+		</script>
+	</div>
+</body>
 
 </html>

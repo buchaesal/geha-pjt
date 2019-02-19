@@ -695,6 +695,11 @@ th, td {
 var guestHouseCode = [[${guestHouseCode}]];
 var memberCode = [[${memberCode}]];
 var approveOk = [[${approveOk}]];
+var today = new Date().toISOString().split("T")[0];
+var tomorrow = new Date((new Date()).valueOf() + 1000 * 3600 * 24)
+		.toISOString().split("T")[0];
+var bookingNumber = [[${bookingNumber}]];
+
 $(function() {
 	
 	$("#secret").hide();
@@ -703,17 +708,7 @@ $(function() {
 	$("#textAr").hide();
 	$("#normalClose").hide();
 
-	if(approveOk!==null){
-		$("#modalName").text(approveOk);
-		$("#secret").hide();
-		$("#secret2").hide();
-		$("#textAr").hide();
-		$("#normalClose").hide();
-		$("#realClose").show();
-		$("#confirmModal").modal({backdrop: 'static', keyboard: false});
-		
-		
-	}
+	
 });
 
 function showModal(){
@@ -731,12 +726,6 @@ function showModal(){
 function frmSubmit(){
 	$("#approve").submit();
 
-	
-}
-
-function wClose(){
-	opener.parent.location.reload();
-	window.close();
 	
 }
 
