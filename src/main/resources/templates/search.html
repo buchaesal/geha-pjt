@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="fragments/myPage_layout">
+      layout:decorator="/fragments/main_layout">
 
 <head>
 	<!-- 시큐리티 + 에이젝스 에러 방지 설정 -->
@@ -551,7 +551,7 @@
 			}
 			if(business === 1) {
 				$('#business').attr('checked', true);
-						}
+			}
 						
 		 
 			// handlebars ifOne helper for tags
