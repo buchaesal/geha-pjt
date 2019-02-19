@@ -14,10 +14,6 @@ th {
 	text-align: center;
 }
 
-.test {
-	border-bottom: 2px solid lightgray;
-}
-
 tr {
 	height: 60px;
 }
@@ -25,6 +21,11 @@ tr {
 #approvalHouse {
 	text-decoration: underline;
 	font-size: 27px;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover
+	{
+	background-color: #f0ebf1;
 }
 </style>
 <script
@@ -126,8 +127,9 @@ tr {
 </head>
 <body>
 	<div layout:fragment="adminPage_content">
+
 		<table width="700px">
-			<tr align="center" class="test">
+			<tr align="center" style="border-bottom: 2px solid lightgray;">
 
 				<th>호스트</th>
 				<th>상호명</th>
@@ -135,8 +137,8 @@ tr {
 				<th>신청내역</th>
 				<th>상태</th>
 			</tr>
-			<tr th:each="list : ${list}" align="center">
 
+			<tr th:each="list : ${list}" align="center">
 				<td><a href="#" style="text-decoration: none"
 					th:name="${list.memberCode}" onclick="showHostInfo()">
 						[[${list.memberName}]]</a></td>
@@ -153,99 +155,133 @@ tr {
 
 			</tr>
 		</table>
-<!-- 게시판 하단의 페이징 버튼 -->
-            <div class="box-footer clearfix" style="padding-left:357px">
-              <ul class="pagination pagination-sm no-margin pull-center">
-              
-              <li th:if="${pageMaker.prev} == true">
-              	<a th:href="@{/adminPage/approvalHouse(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
-              </li>
-              
-              <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-                <a th:href="@{/adminPage/approvalHouse(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
-              </li>
-                
-              <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-              	<a th:href="@{/adminPage/approvalHouse(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
-              </li>
-              
-              </ul>
-              
-            </div>
-		<!--Modal-->
+
+		<!-- 게시판 하단의 페이징 버튼 -->
+		<div class="box-footer clearfix" style="padding-left: 357px">
+			<ul class="pagination pagination-sm no-margin pull-center">
+
+				<li th:if="${pageMaker.prev} == true"><a
+					th:href="@{/adminPage/approvalHouse(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+				</li>
+
+				<li
+					th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
+					th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+					<a
+					th:href="@{/adminPage/approvalHouse(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}"
+					th:text="${idx}"></a>
+				</li>
+
+				<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+					<a
+					th:href="@{/adminPage/approvalHouse(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+				</li>
+
+			</ul>
+
+		</div>
+
+
+
+		<!--호스트 상세 : Modal-->
+
 		<div class="modal fade" id="infoModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
+
 			<div class="modal-dialog modal-sm modal-notify modal-danger"
 				role="document">
+
 				<!--Content-->
 				<div class="modal-content text-center">
+
 					<!--Header-->
 					<div class="d-flex justify-content-center"
 						style="padding-top: 26px;">
-
-						<p class="test" style="font-size: 24px; margin-bottom:0;">호스트 정보</p>
-
+						<img src="https://image.flaticon.com/icons/svg/236/236830.svg"
+							width="70px" height="70px">
+						<p style="font-size: 24px; margin-bottom: 0;">호스트 상세</p>
 					</div>
+					<!-- /Header -->
 
 					<!--Body-->
+
 					<div class="modal-body">
-						<table width="278px">
-							<tr>
-								<th>이름</th>
-								<th id="hostName"></th>
-							</tr>
-							<tr>
-								<th>아이디</th>
-								<th id="hostId"></th>
-							</tr>
-							<tr>
-								<th>사업자번호</th>
-								<th id="businessLicense"></th>
-							</tr>
-						</table>
-						<p class="test" style="padding-top: 19px">운영 현황</p>
-						<table id="guestHouseList" width="260px">
 
-						</table>
-						<p id="noNow">현재 운영중인 게스트하우스가 없습니다.</p>
+						<ul class="nav nav-tabs">
+							<li class="active"><a data-toggle="tab" href="#home">호스트정보</a></li>
+							<li><a data-toggle="tab" href="#menu1">운영현황</a></li>
+						</ul>
 
+						<div class="tab-content">
+							<!-- 객실안내/예약탭  -->
+							<div id="home" class="tab-pane active">
+								<table width="278px">
+									<tr>
+										<th>이름</th>
+										<th id="hostName"></th>
+									</tr>
+									<tr>
+										<th>아이디</th>
+										<th id="hostId"></th>
+									</tr>
+									<tr>
+										<th>사업자번호</th>
+										<th id="businessLicense"></th>
+									</tr>
+								</table>
+							</div>
+							<div id="menu1" class="tab-pane ">
+								<table id="guestHouseList" width="260px">
+
+								</table>
+								<p id="noNow">현재 운영중인 게스트하우스가 없습니다.</p>
+
+
+							</div>
+
+
+						</div>
+						<!-- /tab-content -->
+
+
+						<br />
+						<!--Footer-->
+						<div class="modal-footer flex-center" style="padding-bottom: 0px;">
+							<a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
+						</div>
 					</div>
-					<br />
-					<!--Footer-->
-					<div class="modal-footer flex-center">
-						<a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
-					</div>
+					<!--/.Modal-body-->
 				</div>
-				<!--/.Content-->
 			</div>
 		</div>
-		<!--Modal-->
+		<!--호스트 상세 : Modal-->
 
 		<!--Reject Modal-->
 		<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm modal-notify modal-danger"
-				role="document">
+				role="document" style="width: 380px;">
 				<!--Content-->
 				<div class="modal-content text-center">
 					<!--Header-->
-					<div class="d-flex justify-content-center">
-						<br />
-						<br />
-						<p class="test">반려 이력</p>
+					<div class="d-flex justify-content-center"
+						style="padding-top: 31px;">
+
+						<img src="https://image.flaticon.com/icons/svg/1477/1477589.svg"
+							width="70px" height="70px">
+						<p style="padding-top: 14px; font-size: 24px;">반려 이력</p>
 
 					</div>
 
 					<!--Body-->
 					<div class="modal-body">
 
-
-						<table id="rejectList" width="270px">
+					
+						<table id="rejectList" width="360px">
 
 						</table>
 
 					</div>
-					<br />
 					<!--Footer-->
 					<div class="modal-footer flex-center">
 						<a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
@@ -257,5 +293,7 @@ tr {
 		<!--Modal-->
 
 	</div>
+
+
 </body>
 </html>
