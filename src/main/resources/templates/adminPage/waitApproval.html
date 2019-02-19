@@ -2,14 +2,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="/fragments/main_layout">
+	layout:decorator="/fragments/adminPage_layout">
 <head>
 <meta charset="UTF-8">
 
 
 <title>신규 승인/반려</title>
-<link href="/css/swiper.min.css" rel="stylesheet">
 <link href="/css/readmore.css" rel="stylesheet">
+<link href="/css/swiper.min.css" rel="stylesheet">
 <link href="//s.w.org/wp-includes/css/dashicons.css?20150710"
 	rel="stylesheet" type="text/css">
 <link href="/css/like.css" rel="stylesheet">
@@ -418,7 +418,8 @@ th, td {
 
 <body>
 
-	<div class="jcontent" layout:fragment="content" style="font-family: 'yg-jalnan';">
+	<div class="jcontent" layout:fragment="content"
+		style="font-family: 'yg-jalnan';">
 
 		<div class="top-container">
 			<div class="left">
@@ -431,7 +432,7 @@ th, td {
 					<div class="swiper-button-next swiper-button-white"></div>
 					<div class="swiper-button-prev swiper-button-white"></div>
 				</div>
-				
+
 				<div class="swiper-container gallery-thumbs">
 					<div class="swiper-wrapper ">
 						<div class="swiper-slide" th:if="${gehaImg.roomCode} == 0"
@@ -489,15 +490,12 @@ th, td {
 				<!-- 객실안내/예약탭  -->
 				<div id="home" class="tab-pane active">
 					<div class="picker" style="font-size: 19px;">
-						<label>예약 날짜 :</label> 
-						<input type="text" id="date" readonly style="cursor: default; 
-						border: none;" />&nbsp;&nbsp; 
-						<label>인원수 : </label>
-						<span id="person"></span>
+						<label>예약 날짜 :</label> <input type="text" id="date" readonly
+							style="cursor: default; border: none;" />&nbsp;&nbsp; <label>인원수
+							: </label> <span id="person"></span>
 					</div>
 
-					<br>
-					<br>
+					<br> <br>
 
 					<article class="roomInfo" th:each="RoomDto,stat:${room}">
 						<div class="room"
@@ -542,7 +540,7 @@ th, td {
 										</span>
 									</div>
 									<div class="col-md-8">
-											<button class="btn btn-primary" type="submit">예약하기</button>
+										<button class="btn btn-primary" type="submit">예약하기</button>
 									</div>
 								</div>
 							</div>
@@ -603,12 +601,9 @@ th, td {
 					<p>평점</p>
 					<br>
 					<p class="star-input">
-						<span class="input"> 
-						<label for="p1">1</label> 
-						<label for="p2">2</label> 
-						<label for="p3">3</label> 
-						<label for="p4">4</label>
-						<label for="p5">5</label>
+						<span class="input"> <label for="p1">1</label> <label
+							for="p2">2</label> <label for="p3">3</label> <label for="p4">4</label>
+							<label for="p5">5</label>
 						</span>
 					</p>
 					<p>리뷰</p>
@@ -624,77 +619,83 @@ th, td {
 			</div>
 		</div>
 
-	
 
-	<!-- 고정 버튼 -->
-	<div style="position: fixed; bottom: 5px; right: 5px;">
-		<a href="#" class="btn btn-primary btn-lg" onclick="showModal()">승인</a>
-		<a href="#" class="btn btn-primary btn-lg" onclick="showRejectModal()">반려</a>
-	</div>
 
-	<!--Modal: confirmModal-->
-	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-sm modal-notify modal-danger"
-			role="document">
-			<!--Content-->
-			<div class="modal-content text-center">
-				<!--Header-->
-				<div class="modal-header d-flex justify-content-center">
-					<br />
-					<br />
-					<p id="modalName" class="heading"></p>
-				</div>
-
-				<!--Body-->
-				<div class="modal-body">
-					<form id="approve" action="/adminPage/approveGuestHouse">
-						<input type="hidden" id="hiddenInput" name="guestHouseCode">
-					</form>
-					<form id="reject" action="/adminPage/rejectGuestHouse" style="
-    width: 278px;
-">
-						<input type="hidden" id="rejectInput" name="guestHouseCode">
-						<input type="hidden" id="rejectInput2" name="memberCode">
-						<textarea id="textAr" name="rejectMsg" placeholder="반려사유를 적어주세요."></textarea>
-					</form>
-				</div>
-				<br />
-				<!--Footer-->
-				<div class="modal-footer flex-center">
-					<a href="#" class="btn btn-primary btn-lg" id="secret"
-						onclick="frmSubmit()">확인</a> 
-						<a href="#" class="btn btn-primary btn-lg" id="secret2"
-						onclick="rejectSubmit()">확인</a> 
-						<a href="#" id="normalClose"
-						class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
-						<a href="#" id="realClose" class="btn btn-primary btn-lg"
-						onclick="wClose()">닫기</a>
-
-				</div>
-			</div>
-			<!--/.Content-->
+		<!-- 고정 버튼 -->
+		<div style="position: fixed; bottom: 5px; right: 5px;">
+			<a href="#" class="btn btn-primary btn-lg" onclick="showModal()">승인</a>
+			<a href="#" class="btn btn-primary btn-lg"
+				onclick="showRejectModal()">반려</a>
 		</div>
-	</div>
-	<!--Modal: confirmModal-->
-<div layout:fragment="script">
-		<script src="/js/swiper.min.js"></script>
-		<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="	crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-		<!-- bootstrap -->
-		<script src="/js/bootstrap.min.js"></script>		
-		<script src="/js/readmore.js"></script>
-		<script src="/js/jquery.timeago.js"></script>		
-		<script src="/js/jquery.timeago.ko.js"></script>
-		<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script th:inline="javascript">
+
+		<!--Modal: confirmModal-->
+		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm modal-notify modal-danger"
+				role="document">
+				<!--Content-->
+				<div class="modal-content text-center">
+					<!--Header-->
+					<div class="modal-header d-flex justify-content-center">
+						<br /> <br />
+						<p id="modalName" class="heading"></p>
+					</div>
+
+					<!--Body-->
+					<div class="modal-body">
+						<form id="approve" action="/adminPage/approveGuestHouse">
+							<input type="hidden" id="hiddenInput" name="guestHouseCode">
+						</form>
+						<form id="reject" action="/adminPage/rejectGuestHouse"
+							style="width: 278px;">
+							<input type="hidden" id="rejectInput" name="guestHouseCode">
+							<input type="hidden" id="rejectInput2" name="memberCode">
+							<textarea id="textAr" name="rejectMsg" placeholder="반려사유를 적어주세요."></textarea>
+						</form>
+					</div>
+					<br />
+					<!--Footer-->
+					<div class="modal-footer flex-center">
+						<a href="#" class="btn btn-primary btn-lg" id="secret"
+							onclick="frmSubmit()">확인</a> <a href="#"
+							class="btn btn-primary btn-lg" id="secret2"
+							onclick="rejectSubmit()">확인</a> <a href="#" id="normalClose"
+							class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a> <a
+							href="#" id="realClose" class="btn btn-primary btn-lg"
+							onclick="wClose()">닫기</a>
+
+					</div>
+				</div>
+				<!--/.Content-->
+			</div>
+		</div>
+		<!--Modal: confirmModal-->
+		<div layout:fragment="adminPage_script">
+			<script src="/js/swiper.min.js"></script>
+			<script src="http://code.jquery.com/jquery-3.3.1.min.js"
+				integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+				crossorigin="anonymous"></script>
+			<script
+				src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+			<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+			<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+			<!-- bootstrap -->
+			<script src="/js/bootstrap.min.js"></script>
+			<script src="/js/jquery.timeago.js"></script>
+			<script src="/js/jquery.timeago.ko.js"></script>
+			<script src="/js/readmore.js"></script>
+			<script
+				src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+			<script th:inline="javascript">
 
 var guestHouseCode = [[${guestHouseCode}]];
 var memberCode = [[${memberCode}]];
 var approveOk = [[${approveOk}]];
+var today = new Date().toISOString().split("T")[0];
+var tomorrow = new Date((new Date()).valueOf() + 1000 * 3600 * 24)
+		.toISOString().split("T")[0];
+var bookingNumber = [[${bookingNumber}]];
+
 $(function() {
 	
 	$("#secret").hide();
@@ -703,17 +704,7 @@ $(function() {
 	$("#textAr").hide();
 	$("#normalClose").hide();
 
-	if(approveOk!==null){
-		$("#modalName").text(approveOk);
-		$("#secret").hide();
-		$("#secret2").hide();
-		$("#textAr").hide();
-		$("#normalClose").hide();
-		$("#realClose").show();
-		$("#confirmModal").modal({backdrop: 'static', keyboard: false});
-		
-		
-	}
+	
 });
 
 function showModal(){
@@ -734,12 +725,6 @@ function frmSubmit(){
 	
 }
 
-function wClose(){
-	opener.parent.location.reload();
-	window.close();
-	
-}
-
 function showRejectModal(){
 	
 	$("#modalName").text('반려하기');
@@ -757,7 +742,7 @@ function rejectSubmit(){
 	$("#reject").submit();
 }
 </script>
-		<script th:inline="javascript">
+			<script th:inline="javascript">
 		/* when a user clicks, toggle the 'is-animating' class */
   		$(".favme").on('click touchstart', function(){
   		$(this).toggleClass('is_animating');
@@ -810,9 +795,10 @@ function rejectSubmit(){
   	  		
   	 	});
   		</script>
-  		
-  		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=604b4318a4a32385a61aae53dc5e199b&libraries=services"></script>
-	<script th:inline="javascript">
+
+			<script type="text/javascript"
+				src="//dapi.kakao.com/v2/maps/sdk.js?appkey=604b4318a4a32385a61aae53dc5e199b&libraries=services"></script>
+			<script th:inline="javascript">
 	$(document).ready(function() {
 		 $('#geha').on("click",function() { 
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 

@@ -111,6 +111,7 @@ public class AdminPageController {
 		GuestHouseDto guestHouseDto = roomDao.gehaInfo(guestHouseCode);
 		model.addAttribute("gehaImg", gehaImg);
 		model.addAttribute("guestHouseCode", guestHouseCode);
+		model.addAttribute("bookingNumber",bookingNumber);
 		model.addAttribute("memberCode", guestHouseDto.getMemberCode());
 		model.addAttribute("geha", guestHouseDto);
 		model.addAttribute("room", rooms);
@@ -123,7 +124,7 @@ public class AdminPageController {
 			RedirectAttributes redirectAttributes) {
 		adminPageDao.approveNewGuestHouse(guestHouseCode);
 		redirectAttributes.addFlashAttribute("approveOk", "승인이 성공적으로 완료되었습니다.");
-		return "redirect:/adminPage/waitApproval?guestHouseCode=" + guestHouseCode;
+		return "redirect:/";
 	}
 
 	@RequestMapping("/rejectGuestHouse")
@@ -132,7 +133,7 @@ public class AdminPageController {
 		adminPageDao.rejectNewGuestHouse(rejectDto.getGuestHouseCode());
 		adminPageDao.insertReject(rejectDto);
 		redirectAttributes.addFlashAttribute("approveOk", "반려가 처리되었습니다.");
-		return "redirect:/adminPage/waitApproval?guestHouseCode=" + rejectDto.getMemberCode();
+		return "redirect:/";
 	}
 
 	@RequestMapping("getRejectList.do")
