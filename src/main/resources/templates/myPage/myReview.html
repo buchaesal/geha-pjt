@@ -348,7 +348,7 @@ tr {
 			</div>
 		</div>
 
-		<!--Modal: idAuth-->
+		<!--Modal: 후기 수정하기-->
 		<div class="modal fade" id="modifyReviewModal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm modal-notify modal-danger"
@@ -411,9 +411,41 @@ tr {
 				<!--/.Content-->
 			</div>
 		</div>
-		<!--Modal: idAuth-->
+		<!--Modal: 후기 수정하기-->
 
-		<!--Modal: confirmModal-->
+		<!--Modal: 후기 삭제 확인-->
+		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm modal-notify modal-danger"
+				role="document" style="width: 377px;">
+				<!--Content-->
+				<div class="modal-content text-center">
+					<!--Header-->
+				
+
+					<!--Body-->
+					<div class="modal-body" style="padding: 48px; padding-bottom: 10px;">
+					<p style="font-size: 21px;">이 후기를 삭제하시겠습니까?</p>
+						<form id="deleteFrm" action="/myPage/deleteReview">
+							<input type="hidden" id="deleteInput" name="reviewNo">
+						</form>
+
+						<p id="modalBody" class="heading"></p>
+					</div>
+					<br />
+					<!--Footer-->
+					<div class="flex-center" style="padding: 15px; text-align: center; padding-bottom: 29px;">
+						<a href="#" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a> 
+						<a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
+					</div>
+				</div>
+				<!--/.Content-->
+			</div>
+		</div>
+		<!--Modal: 후기 삭제 확인-->
+
+
+		<!--Modal: 호스트 답변 확인-->
 		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm modal-notify modal-danger"
@@ -446,8 +478,7 @@ tr {
 				<!--/.Content-->
 			</div>
 		</div>
-		<!--Modal: confirmModal-->
-
+		<!--Modal: 호스트 답변 확인-->
 	</div>
 
 

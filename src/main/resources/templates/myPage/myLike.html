@@ -110,7 +110,7 @@ tr {
 							target="_blank" th:href="@{'/room/roomInfo?guestHouseCode='+${likeDto.guestHouseCode}+
 				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
 				'&bookingEnd='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+'&bookingNumber=1'}">
-								<button class="btn-primary">예약하러가기</button></a></td>
+								<button type="button" class="btn-primary">예약하러가기</button></a></td>
 						<td><input type="checkbox" name="chk"
 							th:value="${likeDto.roomCode}"></td>
 
