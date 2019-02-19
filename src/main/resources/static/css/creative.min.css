@@ -57,9 +57,9 @@ p {
 }
 
 .bg-primary {
-	background-image: url(https://wattrealty.com.au/wp-content/uploads/2018/08/share-house-living.jpg);
+	background-image: url(https://images.pexels.com/photos/386025/pexels-photo-386025.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
     width: 100%;
-    height: 70%;
+    height: 85%;
     background-size: cover;
     background-position: center;
 }
@@ -260,7 +260,6 @@ header .header-content .header-content-inner p {
 .portfolio-box {
 	position: relative;
 	display: block;
-	max-width: 650px;
 	margin: 0 auto
 }
 
@@ -272,7 +271,7 @@ header .header-content .header-content-inner p {
 	position: absolute;
 	bottom: 0;
 	text-align: center;
-	width: 100%;
+	width: 150px;
 	height: 100%;
 /* 	transition: all .35s */
 }
