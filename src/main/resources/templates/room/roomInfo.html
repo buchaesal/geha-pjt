@@ -19,6 +19,9 @@
 <link href="//s.w.org/wp-includes/css/dashicons.css?20150710" rel="stylesheet" type="text/css">
 <link href="/css/like.css" rel="stylesheet">
 <style >
+
+	
+	
 	.jcontent{
 	    width: 1024px;
 	    margin: 112px 200px 0 150px;
@@ -407,6 +410,31 @@
 	    color: black;
 	    background-size: 18px auto;
 	}
+	
+	@media(max-width:900px){
+
+	.jcontent{
+	margin :0px;
+	} 
+	
+	.left{
+	float: none;
+	position: relative;
+	}
+	.right{
+	float: none;
+	position: relative;
+	left:0;
+	}
+	.gallery-thumbs {
+
+    display: none;
+	}
+	.top-container{
+	height:auto;
+	}
+	
+	}
 </style>
 </head>
 
@@ -419,7 +447,7 @@
 		<div class="left">
 			  <div class="swiper-container gallery-top" style="width: 600px">
 			    <div class="swiper-wrapper" >
-			      <div class="swiper-slide" th:if="${gehaImg.roomCode} == 0" th:each="gehaImg,stat:${gehaImg}"  th:style="|background-image:url(/gehaImg/${gehaImg.guestHouseCode}/${gehaImg.savedName})|"></div>
+			      <div class="swiper-slide" th:if="${gehaImg.roomCode} == 0" th:each="gehaImg,stat:${gehaImg}"  th:style=|background-image:url(/gehaImg/${gehaImg.guestHouseCode}/${gehaImg.savedName})|></div>
 			    </div>
 			    <div class="swiper-button-next swiper-button-white"></div>
 			    <div class="swiper-button-prev swiper-button-white"></div>
@@ -628,6 +656,8 @@
  	<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
+	
+	
 	$(function() {
 		$(document).ajaxSend(function(e, xhr, options) {
 			xhr.setRequestHeader(header, token);
@@ -921,8 +951,7 @@
 	 		};
 
 	 		$('[data-toggle="tooltip"]').tooltip();
-	 		
-	 		
+
 	 		  var rating = [[${rating.avgRating}]]
 		 		if(rating >= 10){
 		 			$("label[for='p5']")
