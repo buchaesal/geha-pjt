@@ -71,7 +71,7 @@
 
 .glyphicon.glyphicon-user {
 	font-size: 25px;
-	padding-right: 20px;
+
 }
 
 #footer {
@@ -210,25 +210,23 @@ a.portfolio-box {
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse"
-				id="bs-example-n	avbar-collapse-1" th:object="${session.member}">
+			<div class="collapse navbar-collapse" id="bs-example-n	avbar-collapse-1" th:object="${session.member}">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a class="page-scroll" href="/search">방찾기</a></li>
 					<li><a class="page-scroll" href="/myPage/bookingList">예약내역</a>
 					</li>
 					<li><a class="page-scroll" href="/faq">FAQ</a></li>
-					<li th:unless="${session.name}"><a href="/member/login"
-						class="page-scroll">로그인</a></li>
+					<li th:unless="${session.name}"><a href="/member/login"	class="page-scroll">로그인</a></li>
 
 					<!-- Single button -->
 					<div class="btn-group" th:if="${session.name}">
 						<button type="button" class="btn btn-default dropdown-toggle"
-							data-toggle="dropdown" data-hover="dropdown">
+							data-toggle="dropdown" data-hover="dropdown" style="padding: 15px 15px;">
 							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 						</button>
 
 						<ul class="dropdown-menu" role="menu">
-							<li><span style="border: 1px;" th:text="${session.name}+'님'"></span></li>
+							<li style="text-align: center; "><span style="border: 1px;" th:text="${session.name}+'님'"></span></li>
 							<li class="divider"></li>
 							<li><a href="/myPage/bookingList" class="page-scroll">마이페이지</a></li>
 							<li th:if="${session.auth.equals('HOST')}"><a
@@ -258,6 +256,8 @@ a.portfolio-box {
 		<div class="row">
 			<div class="col-lg-12 text-center"></div>
 		</div>
+		<h2 class="text-center mt-0">#GEHA - 태그로 검색</h2>
+      	<hr class="divider my-4" style="border-color:#445867">
 		<section class="no-padding">
 			<div class="container-fluid" style="padding-left: 265px; margin: 30px 0 100px 0">
 				<div class="row no-gutter popup-gallery">

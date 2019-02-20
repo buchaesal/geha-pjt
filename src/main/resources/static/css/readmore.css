@@ -45,7 +45,7 @@ h1 {
     display: inline-block;
     color: #fff;
     cursor: pointer;
-    background: #c8a9ff;
+    background: #2a416b;
     padding: 5px 20px;
     width: 20%;
     border-radius: 20px;
@@ -54,7 +54,7 @@ h1 {
     padding: 0;
 }
 .close-btn p {
-    background: #c8a9ff;
+    background: #2a416b;
         color: #fff;
 }
 .close{

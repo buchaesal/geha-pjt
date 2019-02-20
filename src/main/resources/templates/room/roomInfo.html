@@ -19,11 +19,9 @@
 <link href="//s.w.org/wp-includes/css/dashicons.css?20150710" rel="stylesheet" type="text/css">
 <link href="/css/like.css" rel="stylesheet">
 <style >
-
 	.jcontent{
-
-    width: 1024px;
-    margin: 112px 200px 0 150px;
+	    width: 1024px;
+	    margin: 112px 200px 0 150px;
 	}
     .swiper-container .gallery-top {
       background: #000;
@@ -39,8 +37,6 @@
       margin-left: auto;
       margin-right: auto;
     }
-	
-    
     .swiper-slide {
       background-size: cover;
       background-position: center;
@@ -55,7 +51,6 @@
       width: 600px;
       box-sizing: border-box;
       padding: 10px 0;
-      
     }
     .gallery-thumbs .swiper-slide {
       height: 100%;
@@ -72,380 +67,352 @@
  		 margin-left: 78px;
 	}
 	.left{
-	float: left;
-	width: 50%;
-	height: 450px;
-	position: relative;
+		float: left;
+		width: 50%;
+		height: 450px;
+		position: relative;
 	}
 	.right{
-	width:50%;
-	float:left;
-	height: 450px;
-	  position: relative;
-	  left: 19%;
+		width:50%;
+		float:left;
+		height: 450px;
+		position: relative;
+		left: 19%;
 	}
-
 	}
 	.right h2{
-	font-size: 28px;}
-	
-	
+		font-size: 28px;
+	}
   	.picker {
-	margin-top: 20px;
+		margin-top: 20px;
 	} 
 	.content-text{
-	padding: 3px 3px;
+		padding: 3px 3px;
 	}
-
-
 	.container{
-	margin-left: 78px;
-	margin-bottom: 150px;
-	
+		margin-left: 78px;
+		margin-bottom: 150px;
 	}
 	
 	.roomInfo {
-  display:block;
-  float:center;
-  width: 100%;
-  height:auto;
-}
-.tag>ul{
-padding: 0;
+		display:block;
+	  	float:center;
+	  	width: 100%;
+	 	 height:auto;
+	}
+	.tag>ul{
+		padding: 0;
+	
+	}
+	#menu1>ul {
+		padding:0;
+	}
+	#menu1>ul>li{
+		display: inline-block;
+	}
+	#menu2>ul {
+		padding:0;
+		list-style: none;
+	}
+	#menu2>p{
+		text-align: center;
+	}
+	#menu1>ul>li>img{
+		height: 35px;
+		width: 35px;
+		margin: 0px 5px
+	
+	}
+	.tag>ul>li{
+		display: inline-block;
+	}
+	.tag>ul>li>img{
+		width: 45px;
+		height: 45px;
+		margin: 0px 10px
+	
+	}
 
-}
-#menu1>ul {
-padding:0;
-}
-#menu1>ul>li{
-display: inline-block;
-}
-#menu2>ul {
-padding:0;
-list-style: none;
-}
-#menu2>p{
-text-align: center;
-}
-#menu1>ul>li>img{
-height: 35px;
-width: 35px;
-margin: 0px 5px
+	.panel a#login_pop, .panel a#join_pop {
+		border-bottom: 1px solid #c3c3c3;
+	    background-color: #c8a9ff;
+	    color: #fff;
+	    display: block;
+	    float: left;
+	    margin-left: 10px;
+	    padding: 5px 10px;
+	    text-decoration: none;
+	}	
 
-}
-.tag>ul>li{
-display: inline-block;
-}
-.tag>ul>li>img{
-width: 45px;
-height: 45px;
-margin: 0px 10px
-
-}
-
-.panel a#login_pop, .panel a#join_pop {
-	border-bottom: 1px solid black;
-    background-color: #c8a9ff;
-    color: #fff;
-    display: block;
-    float: left;
-    margin-left: 10px;
-    padding: 5px 10px;
-    text-decoration: none;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
-  
-
-}
-
-.overlay {
-    background-color: rgba(0, 0, 0, 0.6);
-    bottom: 0;
-    cursor: default;
-    left: 0;
-    opacity: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
-    visibility: hidden;
-    z-index: 1;
-
-    -webkit-transition: opacity .5s;
-    -moz-transition: opacity .5s;
-    -ms-transition: opacity .5s;
-    -o-transition: opacity .5s;
-    transition: opacity .5s;
-}
-.overlay:target {
-    visibility: visible;
-    opacity: 1;
-}
-.popup {
-    background-color: #fff;
-    border: 3px solid #fff;
-    display: inline-block;
-    left: 50%;
-    opacity: 0;
-    padding: 15px;
-    position: fixed;
-    text-align: justify;
-    top: 40%;
-    visibility: hidden;
-    z-index: 10;
-
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
-    border-radius: 10px;
-
-    -webkit-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-    -moz-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-    -ms-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-    -o-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-    box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-
-    -webkit-transition: opacity .5s, top .5s;
-    -moz-transition: opacity .5s, top .5s;
-    -ms-transition: opacity .5s, top .5s;
-    -o-transition: opacity .5s, top .5s;
-    transition: opacity .5s, top .5s;
-}
-.overlay:target+.popup {
-    top: 50%;
-    opacity: 1;
-    visibility: visible;
-}
-.close {
-    background-color: rgba(0, 0, 0, 0.8);
-    height: 30px;
-    line-height: 30px;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    text-decoration: none;
-    top: -15px;
-    width: 30px;
-
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
-    border-radius: 15px;
-}
-.close:before {
-    color: rgba(255, 255, 255, 0.9);
-    content: "X";
-    font-size: 24px;
-    text-shadow: 0 -1px rgba(0, 0, 0, 0.9);
-}
-.close:hover {
-    background-color: rgba(64, 128, 128, 0.8);
-}
-.popup p, .popup div {
-    margin-bottom: 10px;
-}
-.popup label {
-    display: inline-block;
-    text-align: left;
-    width: 120px;
-}
-.popup input[type="text"], .popup input[type="password"] {
-    border: 1px solid;
-    border-color: #999 #ccc #ccc;
-    margin: 0;
-    padding: 2px;
-
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    -ms-border-radius: 2px;
-    -o-border-radius: 2px;
-    border-radius: 2px;
-}
-.popup input[type="text"]:hover, .popup input[type="password"]:hover {
-    border-color: #555 #888 #888;
-}
-
-.rInfo{
-display: inline-block;
-position: absolute;
-}
-
-/* 별점 */
-.star-input>.input {
+	.overlay {
+	    background-color: rgba(0, 0, 0, 0.6);
+	    bottom: 0;
+	    cursor: default;
+	    left: 0;
+	    opacity: 0;
+	    position: fixed;
+	    right: 0;
+	    top: 0;
+	    visibility: hidden;
+	    z-index: 1;
+	
+	    -webkit-transition: opacity .5s;
+	    -moz-transition: opacity .5s;
+	    -ms-transition: opacity .5s;
+	    -o-transition: opacity .5s;
+	    transition: opacity .5s;
+	}
+	.overlay:target {
+	    visibility: visible;
+	    opacity: 1;
+	}
+	.popup {
+	    background-color: #fff;
+	    border: 3px solid #fff;
+	    display: inline-block;
+	    left: 50%;
+	    opacity: 0;
+	    padding: 15px;
+	    position: fixed;
+	    text-align: justify;
+	    top: 40%;
+	    visibility: hidden;
+	    z-index: 10;
+	
+	    -webkit-transform: translate(-50%, -50%);
+	    -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	    -o-transform: translate(-50%, -50%);
+	    transform: translate(-50%, -50%);
+	
+	    -webkit-border-radius: 10px;
+	    -moz-border-radius: 10px;
+	    -ms-border-radius: 10px;
+	    -o-border-radius: 10px;
+	    border-radius: 10px;
+	
+	    -webkit-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+	    -moz-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+	    -ms-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+	    -o-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+	    box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+	
+	    -webkit-transition: opacity .5s, top .5s;
+	    -moz-transition: opacity .5s, top .5s;
+	    -ms-transition: opacity .5s, top .5s;
+	    -o-transition: opacity .5s, top .5s;
+	    transition: opacity .5s, top .5s;
+	}
+	.overlay:target+.popup {
+	    top: 50%;
+	    opacity: 1;
+	    visibility: visible;
+	}
+	.close {
+	    background-color: rgba(0, 0, 0, 0.8);
+	    height: 30px;
+	    line-height: 30px;
+	    position: absolute;
+	    right: 0;
+	    text-align: center;
+	    text-decoration: none;
+	    top: -15px;
+	    width: 30px;
+	
+	    -webkit-border-radius: 15px;
+	    -moz-border-radius: 15px;
+	    -ms-border-radius: 15px;
+	    -o-border-radius: 15px;
+	    border-radius: 15px;
+	}
+	.close:before {
+	    color: rgba(255, 255, 255, 0.9);
+	    content: "X";
+	    font-size: 24px;
+	    text-shadow: 0 -1px rgba(0, 0, 0, 0.9);
+	}
+	.close:hover {
+	    background-color: rgba(64, 128, 128, 0.8);
+	}
+	.popup p, .popup div {
+	    margin-bottom: 10px;
+	}
+	.popup label {
+	    display: inline-block;
+	    text-align: left;
+	    width: 120px;
+	}
+	.popup input[type="text"], .popup input[type="password"] {
+	    border: 1px solid;
+	    border-color: #999 #ccc #ccc;
+	    margin: 0;
+	    padding: 2px;
+	    -webkit-border-radius: 2px;
+	    -moz-border-radius: 2px;
+	    -ms-border-radius: 2px;
+	    -o-border-radius: 2px;
+	    border-radius: 2px;
+	}
+	.popup input[type="text"]:hover, .popup input[type="password"]:hover {
+	    border-color: #555 #888 #888;
+	}
+	.rInfo{
 	display: inline-block;
-	vertical-align: middle;
-	background: url('/img/grade_img.png');
-}
-
-.star-input {
-	display: inline-block;
-	white-space: nowrap;
-	width:100%;
-	height: 40px;
-	line-height: 30px;
-}
-
-.star-input>.input {
-	display: inline-block;
-	width: 150px;
-	background-size: 150px;
-	height: 28px;
-	white-space: nowrap;
-	overflow: hidden;
-	position: relative;
-}
-
-.star-input>.input>input {
 	position: absolute;
-	width: 1px;
-	height: 1px;
-	opacity: 1;
-}
-
-
-.star-input>.input>label {
-	width: 30px;
-	height: 0;
-	padding: 28px 0 0 0;
-	overflow: hidden;
-	float: left;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-.star-input>.input>label[for="p1"]   {
-	width: 30px;
-	z-index: 5;
-}
-
-.star-input>.input>label[for="p2"] {
-	width: 60px;
-	z-index: 4;
-}
-
-.star-input>.input>label[for="p3"] {
-	width: 90px;
-	z-index: 3;
-}
-
-.star-input>.input>label[for="p4"] {
-	width: 120px;
-	z-index: 2;
-}
-
-.star-input>.input>label[for="p5"] {
-	width: 150px;
-	z-index: 1;
-}
-
-.star-input>.input>label[for="p11"]   {
-	width: 30px;
-	z-index: 5;
-}
-.star-input>.input>label[for="p22"]   {
-	width: 60px;
-	z-index:4;
-}
-.star-input>.input>label[for="p33"]   {
-	width: 90px;
-	z-index: 3;
-}
-.star-input>.input>label[for="p44"]   {
-	width: 120px;
-	z-index:2;
-}
-.star-input>.input>label[for="p55"]   {
-	width: 150px;
-	z-index: 1;
-}
-.off-screen {
-    display: none;
-}
-form {
-    width: 500px;
-}
-table {
-    border-collapse:collapse;
-    margin-bottom: 10px;
-}
-th, td {
-    padding: 3px 10px;
-}
-.off-screen {
-    display: none;
-}
-#nav {
-    width: 500px;
-    text-align: center;
-}
-#nav a {
-    display: inline-block;
-    padding: 3px 5px;
-    margin-right: 10px;
-    font-family:Tahoma;
-    background: #ccc;
-    color: #000;
-    text-decoration: none;
-}
-#nav a.active {
-    background: #333;
-    color: #fff;
-}
-.pagination {
-    display: inline-block;
-    width: 100%;
-    padding-left: 40%;
-    margin: 20px 0;
-    border-radius: 4px;
-}
-.dashicons-heart:before {
-    content: "\f487";
-    display: block;
-    transform: scale(2.0);
-}
-.row{
-    font-size: 20px;
-    }
-.row>div {
-padding-right: 0;
-margin-bottom: 5px;
-}
-.row>span{
-float: right;
-}    
-#login_pop  {
-    border-radius: 4px;
-    width: 500px;
-    margin-left: 0;
-    text-align: center;
-      background-color: white;
-   color: black;
-}
-.infobtn   {
-border-radius:4px;
- margin: 0;
-  background-color: white;lolo
-   color: black;
-}
+	}
+	
+	/* 별점 */
+	.star-input>.input {
+		display: inline-block;
+		vertical-align: middle;
+		background: url('/img/grade_img.png');
+	}
+	
+	.star-input {
+		display: inline-block;
+		white-space: nowrap;
+		width:100%;
+		height: 40px;
+		line-height: 30px;
+	}
+	
+	.star-input>.input {
+		display: inline-block;
+		width: 150px;
+		background-size: 150px;
+		height: 28px;
+		white-space: nowrap;
+		overflow: hidden;
+		position: relative;
+	}
+	
+	.star-input>.input>input {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		opacity: 1;
+	}
+	
+	
+	.star-input>.input>label {
+		width: 30px;
+		height: 0;
+		padding: 28px 0 0 0;
+		overflow: hidden;
+		float: left;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	
+	.star-input>.input>label[for="p1"]   {
+		width: 30px;
+		z-index: 5;
+	}
+	
+	.star-input>.input>label[for="p2"] {
+		width: 60px;
+		z-index: 4;
+	}
+	
+	.star-input>.input>label[for="p3"] {
+		width: 90px;
+		z-index: 3;
+	}
+	
+	.star-input>.input>label[for="p4"] {
+		width: 120px;
+		z-index: 2;
+	}
+	
+	.star-input>.input>label[for="p5"] {
+		width: 150px;
+		z-index: 1;
+	}
+	
+	.star-input>.input>label[for="p11"]   {
+		width: 30px;
+		z-index: 5;
+	}
+	.star-input>.input>label[for="p22"]   {
+		width: 60px;
+		z-index:4;
+	}
+	.star-input>.input>label[for="p33"]   {
+		width: 90px;
+		z-index: 3;
+	}
+	.star-input>.input>label[for="p44"]   {
+		width: 120px;
+		z-index:2;
+	}
+	.star-input>.input>label[for="p55"]   {
+		width: 150px;
+		z-index: 1;
+	}
+	.off-screen {
+	    display: none;
+	}
+	form {
+	    width: 500px;
+	}
+	.off-screen {
+	    display: none;
+	}
+	#nav {
+	    width: 500px;
+	    text-align: center;
+	}
+	#nav a {
+	    display: inline-block;
+	    padding: 3px 5px;
+	    margin-right: 10px;
+	    font-family:Tahoma;
+	    background: #ccc;
+	    color: #000;
+	    text-decoration: none;
+	}
+	#nav a.active {
+	    background: #333;
+	    color: #fff;
+	}
+	.pagination {
+	    display: inline-block;
+	    width: 100%;
+	    padding-left: 40%;
+	    margin: 20px 0;
+	    border-radius: 4px;
+	}
+	.dashicons-heart:before {
+	    content: "\f487";
+	    display: block;
+	    transform: scale(2.0);
+	}
+	.row{
+	font-size: 20px;
+	}
+	.row>span{
+		float: right;
+	}    
+	#login_pop  {
+	    width: 500px;
+	    margin-left: 0;
+	    text-align: left;
+	   background-color: white;
+	   color: black;
+	}
+	a.infobtn   {
+	    margin: 0;
+	    background: white url(//image.goodchoice.kr/images/web_v3/ico_arr_gt_2.png) 100% 50% no-repeat;
+	    color: black;
+	    background-size: 18px auto;
+	}
 </style>
-
 </head>
 
 <body>
-
 <div class="jcontent" layout:fragment="content"  style="font-family: 'yg-jalnan';">
-<p style="position: absolute; top: 131px; font-size: 49px; left: 58px; color: white;">방상세보기
-	
+<p style="position: absolute; top: 131px; font-size: 49px; left: 58px; color: white;cursor: default;">방상세보기
 </p>
 
 	<div class="top-container">
@@ -524,20 +491,20 @@ border-radius:4px;
 						<div class="col-md-8">
 						
 						    <div class="row">
-						        <div class="col-md-8">
+						        <div class="col-md-8" style="padding-right: 0;margin-bottom: 5px;">
 						        	<span th:text=${RoomDto.roomName} style="font-size: 35px"></span>				
 										<div class="fav-btn">
 											<input type="hidden" id="favmecode" name="favmecode" th:value="${RoomDto.roomCode}">
 											<span class="favme dashicons dashicons-heart" th:name=|favme${RoomDto.roomCode}| th:onclick=|like(${RoomDto.roomCode})|></span>
 										</div>
 						        </div>
-						        <div class="col-md-8">
+						        <div class="col-md-8" style="padding-right: 0;margin-bottom: 5px;">
 						        	<label>수용인원 : </label><span style="float: right;" th:text="|${RoomDto.capacity}명|"></span>
 						        </div>
-						        <div class="col-md-8">
+						        <div class="col-md-8" style="padding-right: 0;margin-bottom: 5px;">
 						        	<label>가격 : </label><span style="float: right;" th:text="|${RoomDto.charge}원|"></span>
 						        </div>
-						        <div class="col-md-8">
+						        <div class="col-md-8"style="padding-right: 0;margin-bottom: 5px;">
 						        	<span th:switch=${RoomDto.gender} style="float: right;">
 										<span th:case="F" th:text="여성전용"></span>
 										<span th:case="M" th:text="남성전용"></span>
@@ -545,11 +512,15 @@ border-radius:4px;
 									</span>
 								</div>
 								<div class="col-md-8 panel" style="margin:0; ">
-									<a th:href=|#login_form${RoomDto.roomCode}| class="infobtn" id="login_pop"   style="  margin: 0; background-color: white; color: black; " >객실 이용 안내</a>								
+									<a th:href=|#login_form${RoomDto.roomCode}| class="infobtn" id="login_pop"style="margin: 0; background-color: white; color: black; " >객실 이용 안내</a>								
+								
 								</div>
 								<a href="#x" class="overlay" th:id=|login_form${RoomDto.roomCode}|></a>
 								<div class="popup">
 									<h2>객실 이용 안내</h2>
+									<ul>
+										<li style="color: red">기준인원 외 인원추가 시 비용이 발생될 수 있으며, 현장 결제 하시기 바랍니다.(1인 추가 가격 : 15,000원)</li>
+									</ul>
 									<p th:utext="${RoomDto.roomInfo}"></p>
 									<a class="close" href="#close"></a>
 								</div>
@@ -560,14 +531,13 @@ border-radius:4px;
 										<input type="hidden" class="enddate" name="bookingEnd" /> 
 										<input type="hidden" class="bookingNumber" name="bookingNumber" />
 										<input type="hidden" name="roomCode" th:value="${RoomDto.roomCode}">
-										<button class="btn infobtn" type="submit" style="width: 100%;border-radius: 4px; height:46px;color:black;font-size: 20px">예약하기</button>
+										<button class="btn infobtn" type="submit" style="width: 100%;border-radius:4px; height:46px;color:white;font-size:20px;background-color:#2a416b ">예약하기</button>
 									</form>
 								</div>
 						    </div>
 						</div>
 					</div>
 					</article>
-			
 					
 			    </div>  
 			    <!--  숙소정보 탭  -->
@@ -599,7 +569,7 @@ border-radius:4px;
 						<h3>편의 시설</h3>
 						<ul class ="facility"  >
 							<li th:each="FacilityDto,stat: ${facility}" th:object="${FacilityDto}"  th:switch="*{facilityName}" > 
-								<img data-toggle="tooltip" th:title="*{facilityName}" class="facilitytooltip" th:case="세탁기" th:src="@{/img/facility/washing-machine.png }"></img> 
+								<img data-toggle="tooltip" th:title="*{facilityName}" th:case="세탁기" th:src="@{/img/facility/washing-machine.png }"></img> 
 								<img data-toggle="tooltip" th:title="*{facilityName}" th:case="주차장" th:src="@{/img/facility/parking.png}"></img> 
 								<img data-toggle="tooltip" th:title="*{facilityName}" th:case="주방" th:src="@{/img/facility/kitchen.png}"></img>
 								<img data-toggle="tooltip" th:title="*{facilityName}" th:case="엘리베이터" th:src="@{/img/facility/elevator.png}"></img>
@@ -640,7 +610,6 @@ border-radius:4px;
 					</div>
     	</div>
   </div>
-
 	</div>
 
 	<div layout:fragment="script">
@@ -663,13 +632,7 @@ border-radius:4px;
 		$(document).ajaxSend(function(e, xhr, options) {
 			xhr.setRequestHeader(header, token);
 		});
-
-		
-	
 	});
-
-
-	
 	function check() {
 		if([[${session.memberCode}]] == null){
 			swal({
@@ -692,7 +655,6 @@ border-radius:4px;
 		        data : {'page':page,'guestHouseCode':guestHouseCode},
 		        success : function(data){
 		       		var a ='';
-
 		             $.each(data, function(key, value){ 
 		            	a += '<div class ="com" style=" border-bottom: 1px solid #B9B7B7;">'
 		           		a+= '<div id="comment'+guestHouseCode+'" style=" margin : 30px 0px;">'
@@ -704,9 +666,7 @@ border-radius:4px;
 		                a += '<p id="con">'+value.content+'</p>';
 		                a += '<p>'+jQuery.timeago(new Date(value.writingDate))+'</p>';
 		                a += '</div>'
-		                	
 		              	if(value.replyContent == null && [[${session.auth}]] == 'HOST' && [[${session.memberCode}]] == [[${geha.memberCode}]]){
-		              		
 		              		a += '<form id="commentForm">'
 		              		a += '<input type="text" id="replyContent"  name="content_'+value.reviewNo+'" required >'
 				            a += '<input id="reviewno"  name="reviewno_'+ value.reviewNo +'" type="hidden" value="' + value.reviewNo + '">' 
@@ -830,12 +790,9 @@ border-radius:4px;
 		    $('.replyDate').hide();
 		    $('#up').hide();
 		    $('#del').hide();
-		    
 		  	a += '<input type="text" class="replyContentUpdate" name="contentUp_'+reviewNo+'" value="'+replyContent+'"/>';
 		    a += '<button class="btn btn-primary" type="button" onclick="commentUpCheck('+reviewNo+');">수정</button>';
-
 		    $('.replyContent'+reviewNo).html(a);
-		    
 		}
 		//댓글수정시 유효성
 		function commentUpCheck(reviewNo) {
