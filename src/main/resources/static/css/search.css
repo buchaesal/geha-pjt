@@ -25,35 +25,35 @@ hr {
 	margin-top: 4rem;
 }
 
-	.searcharea{ 
- 		border: 1px solid rgba(30,30,30,0.2);
- 		border-radius: 0.5rem;
-  		height: 100%;
-  		margin-bottom:3rem;
-	}
-	
-	.form-control.datepicker-here{
-		background-color: #fff;
-	}
-	
-	#date {
-	cursor: pointer;
+.searcharea{ 
+	border: 1px solid rgba(30,30,30,0.2);
+	border-radius: 0.5rem;
+	height: 100%;
+	margin-bottom:3rem;
+}
+
+.form-control.datepicker-here{
+	background-color: #fff;
+}
+
+#date {
+cursor: pointer;
 }	
 
-	input[type="text"]{ 
- 		width:90%;
-  		margin: 0 auto;
-	}
+input[type="text"]{ 
+	width:90%;
+	margin: 0 auto;
+}
 
-	button.resetStyle {
-		position: static;
+button.resetStyle {
+	position: static;
 	border: 0;
 	top: 25px;
 	right: 0;
 	width: 24px;
 	height: 24px;
 	text-indent: -9999px;
-	}
+}
 button#down{
 	background: url(/img/button/ico_minus.png) 50% 50% no-repeat;
 	background-size: 20px auto;
@@ -66,10 +66,10 @@ button:disabled{
 	opacity: 0.2;
 }
 	
-	#btn-search {
-		margin-top:180px;
-		margin-bottom:30px;
-	}
+#btn-search {
+	margin-top:180px;
+	margin-bottom:30px;
+}
 
 #btn-search.btn {
 	border: 1px solid #f6931f;
@@ -82,16 +82,16 @@ button:disabled{
 	background-color: #f6931f;
 }
 	
-	.maparea{ 
-		margin-bottom:3rem;	
-	}
+.maparea{ 
+	margin-bottom:3rem;	
+}
+
+#map{
+	background-color:gray;
+	height:450px;
+}
 	
-	#map{
-		background-color:gray;
-		height:450px;
-	}
-	
-	@media (min-width: 768px){
+@media (min-width: 768px){
 	.nav-tabs.nav-justified>li>a {
 		border-bottom: 1px solid #ddd;
 		border-radius: 4px;
@@ -102,29 +102,31 @@ button:disabled{
 	.nav-tabs.nav-justified>li.active>a {
 		border-bottom: 1px solid rgba(255,255,255,0);
 	}
-	}
-	.nav-tabs.nav-justified>li {
+}
+
+.nav-tabs.nav-justified>li {
 	word-break: keep-all;
 }
-	.nav-tabs.nav-justified>li>a {
+
+.nav-tabs.nav-justified>li>a {
 	color: black;
-	
 }
+
 .nav-tabs.nav-justified>.active>a,
 .nav-tabs.nav-justified>.active>a:focus,
 .nav-tabs.nav-justified>.active>a:hover {
 	border: 1px solid #f6931f;
 }
-	.nav-tabs.nav-justified>li>a:hover {
+.nav-tabs.nav-justified>li>a:hover {
 	cursor: pointer;
 }
 .nav-tabs.nav-justified>li.active>a {
 	border: 1px solid #f6931f;
 }
 	
-	.house {
-		margin: 1rem 0;
-	}
+.house {
+	margin: 1rem 0;
+}
 
 .housewrapper{
 	margin-bottom: 2rem;
@@ -244,4 +246,8 @@ button:disabled{
 
 #footer .container {
 	margin-top: 0;
+}
+
+#footer .fa {
+	font-family: FontAwesome;
 }
