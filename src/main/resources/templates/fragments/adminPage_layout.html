@@ -1,97 +1,147 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="fragments/main_layout">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="fragments/main_layout">
 <head>
-	<meta charset="utf-8">
- 	<style>
- 		header {
- 			background-color: #41104d;
- 		}
- 	
-		.adminPage_section {
-			padding: 50px 0;
-			background: #fbebff;
-		}
-		
-		.adminPage_container {
-		   display: flex;
-		   flex-direction: column;
-		}
+<meta charset="utf-8">
+<style>
+header {
+	background-color: #e45501;
+}
 
-		.adminPage_content {
-		   display: flex;
-		}
-		
-		.adminPage_content .adminPage_nav {
-		   
-		   padding-right: 15px;
-		   padding: 30px;
-		   padding-left: 0;
-		}
-		
-		.adminPage_content aside {
-		   border-left: 1px solid gray;
-		}
-		
-		.adminPage_nav, aside {
-		   flex-basis: 150px;
-		   flex-shrink: 0;
-		   width: 30%;
-		   height: 300px;	
-		   float: left;
-		}
-		
-		.adminPage_main {
-		   float: left;
-		   width: 70%
-		}
-		
-		.adminPage_li {
-		   margin: 30px;
-		   width: 210px;
-		   font-size: 24px;
-		}
-		
-		.adminPage_ul {
-		   list-style: none;
-		}
-		
-		.adminPage_li:hover {
-			text-decoration: underline;
-		}
-		
-		.adminPage_a {
-			color: #353232;
-		}
-	</style>
+.adminPage_section {
+	padding: 50px 0;
+	background: #ececec;
+}
+
+.adminPage_container {
+	display: flex;
+	flex-direction: column;
+}
+
+
+
+.adminPage_content {
+	display: flex;
+}
+
+.adminPage_content .adminPage_nav {
+	padding-right: 15px;
+	padding: 30px;
+	padding-left: 0;
+}
+
+.adminPage_content aside {
+	border-left: 1px solid gray;
+}
+
+.adminPage_nav, aside {
+	flex-basis: 150px;
+	flex-shrink: 0;
+	width: 30%;
+	height: 300px;
+	float: left;
+}
+
+.adminPage_main {
+	float: left;
+	width: 70%
+}
+
+.adminPage_li {
+	margin: 30px;
+	width: 210px;
+	font-size: 24px;
+}
+
+.adminPage_ul {
+	list-style: none;
+}
+
+a.adminPage_a {
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	position: relative;
+	transition: 0.5s color ease;
+	color: #353232;
+	text-decoration: none;
+}
+
+a.before:before, a.after:after {
+	content: "";
+	transition: 0.5s all ease;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	position: absolute;
+}
+
+a.before:before {
+	top: -0.25em;
+}
+
+a.after:after {
+	bottom: -0.25em;
+}
+
+a.before:before, a.after:after {
+	height: 5px;
+	height: 0.35rem;
+	width: 0;
+	background: #d73444;
+}
+
+a.first:after {
+	left: 0;
+}
+
+a.before:hover:before, a.after:hover:after {
+	width: 100%;
+}
+</style>
+
 </head>
 
 <body>
 	<div layout:fragment="content">
 		<p
-				style="position: absolute; top: 131px; font-size: 49px; left: 58px; "><a style="text-decoration:none;  color: white;"
-				 href="/adminPage/adminPage?auth=">관리자페이지</a></p>
-	   <div class="adminPage_container">
+			style="position: absolute; top: 131px; font-size: 49px; left: 58px;">
+			<a style="text-decoration: none; color: white;"
+				href="/adminPage/adminPage?auth=">관리자페이지</a>
+		</p>
+		<div class="adminPage_container">
 
-	      <section class="adminPage_section">	
-	         <nav class="adminPage_nav">
-	            <ul class="adminPage_ul">
-	               <li class="adminPage_li" id="adminPage"><a href="/adminPage/adminPage?auth=" class="adminPage_a">회원관리</a></li>
-	               <li class="adminPage_li" id="approvalHouse"><a href="/adminPage/approvalHouse" class="adminPage_a">신규 하우스 승인</a></li>
-	            </ul>
-	         </nav>
-	         
-	         <main class="adminPage_main">
+			<section class="adminPage_section">
+				<nav class="adminPage_nav">
+					<ul class="adminPage_ul">
+						<li class="adminPage_li"><a id="adminPage"
+							href="/adminPage/adminPage?auth=" class="adminPage_a first after">회원관리</a></li>
+						<li class="adminPage_li"><a id="approvalHouse"
+							href="/adminPage/approvalHouse" class="adminPage_a first after">신규
+								하우스 승인</a></li>
+					</ul>
+				</nav>
+
+				<main class="adminPage_main">
 				<div layout:fragment="adminPage_content"></div>
+<<<<<<< HEAD
+				</main>
+			</section>
+
+
+		</div>
+	</div>
+
+	<div layout:fragment="script">
+=======
 	         </main>
 	      </section>
 	   </div>
   </div>
    
   <div layout:fragment="script">
+>>>>>>> refs/remotes/origin/master
 		<div layout:fragment="adminPage_script"></div>
-  </div> 
-   
+	</div>
+
 </body>
 </html>

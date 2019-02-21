@@ -160,8 +160,15 @@ tr {
 }
 
 #bookingList {
-	text-decoration: underline;
-	font-size: 27px;
+	
+}
+
+a.before#bookingList:before,a.after#bookingList:after {
+   content: "";
+  position:absolute;
+  bottom:-0.25em;
+  height:0.35rem;
+  width:100%;
 }
 
 </style>
@@ -169,9 +176,6 @@ tr {
 <body>
 
 	<div layout:fragment="myPage_content">
-	<img src="https://image.flaticon.com/icons/svg/149/149657.svg"
-			width="20px" height="20px"
-			style="position: absolute; left: 17p; left: 39px; top: 276px;">
 		<div th:if="${#lists.size(bookingList)==0}" style="padding-top: 33px;">
 			<p class="heading">예약내역이 없습니다.</p>
 			<a href="/search" class="btn btn-info waves-effect" >숙소 둘러보기</a>

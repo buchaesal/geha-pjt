@@ -18,14 +18,19 @@ tr {
 	height: 60px;
 }
 
-#approvalHouse {
-	text-decoration: underline;
-	font-size: 27px;
-}
+
 
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover
 	{
 	background-color: #f0ebf1;
+}
+
+a.before#approvalHouse:before,a.after#approvalHouse:after {
+   content: "";
+  position:absolute;
+  bottom:-0.25em;
+  height:0.35rem;
+  width:100%;
 }
 </style>
 <script

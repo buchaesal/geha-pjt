@@ -100,7 +100,6 @@ function changeUser(){
 
 
 	      if(this.checked){//checked 처리된 항목의 값
-					
 	            if(this.value=='HOST'){
 	            	$("#modalName").text('호스트의 권한은 변경할 수 없습니다.');
 	        		$("#confirmModal").modal();
@@ -215,9 +214,12 @@ tr {
 	border-bottom: 2px solid lightgray;
 }
 
-#adminPage {
-	text-decoration: underline;
-	font-size: 27px;
+a.before#adminPage:before,a.after#adminPage:after {
+   content: "";
+  position:absolute;
+  bottom:-0.25em;
+  height:0.35rem;
+  width:100%;
 }
 </style>
 </head>
@@ -286,20 +288,20 @@ tr {
 				<ul class="pagination pagination-sm no-margin pull-center">
 
 					<li th:if="${pageMaker.prev} == true"><a
-						th:href="@{/adminPage/adminPage(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum},auth=${auth})}">&laquo;</a>
+						th:href="@{/adminPage/adminPage(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum},auth=${auth},type=${type},keyword=${keyword})}">&laquo;</a>
 					</li>
 
 					<li
 						th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
 						th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
 						<a th:if="${idx}"
-						th:href="@{/adminPage/adminPage(page=${idx},perPageNum=${pageMaker.cri.perPageNum},auth=${auth})}"
+						th:href="@{/adminPage/adminPage(page=${idx},perPageNum=${pageMaker.cri.perPageNum},auth=${auth},type=${type},keyword=${keyword})}"
 						th:text="${idx}"></a>
 					</li>
 
 					<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
 						<a
-						th:href="@{/adminPage/adminPage(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum},auth=${auth})}">&raquo;</a>
+						th:href="@{/adminPage/adminPage(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum},auth=${auth},type=${type},keyword=${keyword})}">&raquo;</a>
 					</li>
 
 				</ul>

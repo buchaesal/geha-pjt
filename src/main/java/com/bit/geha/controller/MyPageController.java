@@ -172,6 +172,7 @@ public class MyPageController {
 		pageMaker.setTotalCount(myPageDao.getLikeTotal(memberCode));
 
 		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("tomorrow",memberService.getTomorrow());
 
 	}
 

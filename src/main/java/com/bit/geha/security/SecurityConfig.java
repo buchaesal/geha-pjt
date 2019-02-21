@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					"/member/hostSignUp","/member/changePw","/member/chooseAuth",
 					"/member/sendEmailComplete","/member/emailConfirm")
 			.anonymous()
-			.antMatchers("/myPage/*")
+			.antMatchers("/myPage/*","/hostPage/*","/adminPage/*")
 			.authenticated()
 			.antMatchers("/**").permitAll()
 			.and()
