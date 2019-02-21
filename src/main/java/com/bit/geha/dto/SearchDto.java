@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SearchDto {
-
+	private int rownum;
 	private int guestHouseCode;
 	private String guestHouseName;
 	private double avgRating;
