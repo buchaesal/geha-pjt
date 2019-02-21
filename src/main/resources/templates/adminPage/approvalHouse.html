@@ -144,7 +144,7 @@ tr {
 						[[${list.memberName}]]</a></td>
 				<td th:text="${list.guestHouseName}"></td>
 				<td th:text="${#dates.format(list.registerDate, 'yy.MM.dd')}"></td>
-				<td><a
+				<td><a th:if="${list.status.equals('승인대기')}"
 					th:href="@{'/adminPage/waitApproval?guestHouseCode='+${list.guestHouseCode}+
 				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
 				'&bookingEnd='+${tomorrow}+'&bookingNumber=1'}"

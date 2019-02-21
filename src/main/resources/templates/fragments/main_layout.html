@@ -15,8 +15,9 @@
 <!-- Theme CSS -->
 <link href="/css/creative.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100" rel="stylesheet">
-
+<link rel="stylesheet" href="/style.css" />
 <style>
+
 @font-face {
 	font-family: 'yg-jalnan';
 	src:
@@ -25,26 +26,25 @@
 	font-weight: normal;
 	font-style: normal;
 }
-*{
 
-font-family: 'yg-jalnan';
+* {
+	font-family: 'yg-jalnan';
 }
+
 .navbar-default .btn-group>.btn:first-child {
 	margin-left: 0;
 	background: transparent;
 	color: rgba(255, 255, 255, .7);
-	padding: 14px 20px;
+	/*     padding: 14px 20px;  */
 	font-size: large;
-	border: 0;
 }
 
 .navbar-default.affix .btn-group>.btn:first-child {
 	margin-left: 0;
 	background: transparent;
 	color: #222;
-	padding: 14px 20px;
+	padding: 15px 15px;
 	font-size: large;
-	border: 0;
 }
 
 .navbar {
@@ -63,86 +63,12 @@ font-family: 'yg-jalnan';
 	padding-top: 15px;
 }
 
-header {
-	background-color: #2a416b;
-}
-
 .glyphicon.glyphicon-user {
 	font-size: 25px;
 }
-section {
-    padding: 31px 0;
-}
 
-section .section-title {
-    text-align: center;
-    color: #007b5e;
-    margin-bottom: 50px;
-    text-transform: uppercase;
-}
 #footer {
 	background: #181c1f !important;
-}
-
-#footer h5 {
-	padding-left: 10px;
-	border-left: 3px solid #eeeeee;
-	padding-bottom: 6px;
-	margin-bottom: 20px;
-	color: #ffffff;
-}
-
-#footer a {
-	color: #ffffff;
-	text-decoration: none !important;
-	background-color: transparent;
-	-webkit-text-decoration-skip: objects;
-}
-
-#footer ul.social li {
-	padding: 3px 0;
-}
-
-#footer ul.social li a i {
-	margin-right: 5px;
-	font-size: 25px;
-	-webkit-transition: .5s all ease;
-	-moz-transition: .5s all ease;
-	transition: .5s all ease;
-}
-
-#footer ul.social li:hover a i {
-	font-size: 30px;
-	margin-top: -10px;
-}
-
-#footer ul.social li a, #footer ul.quick-links li a {
-	color: #ffffff;
-}
-
-#footer ul.social li a:hover {
-	color: #eeeeee;
-}
-
-#footer ul.quick-links li {
-	padding: 3px 0;
-	-webkit-transition: .5s all ease;
-	-moz-transition: .5s all ease;
-	transition: .5s all ease;
-}
-
-#footer ul.quick-links li:hover {
-	padding: 3px 0;
-	margin-left: 5px;
-	font-weight: 700;
-}
-
-#footer ul.quick-links li a i {
-	margin-right: 5px;
-}
-
-#footer ul.quick-links li:hover a i {
-	font-weight: 700;
 }
 
 @media ( max-width :767px) {
@@ -154,23 +80,119 @@ section .section-title {
 	}
 }
 
+#footer li {
+	font-family: 'S-CoreDream-3Light';
+	font-size: 12px;
+}
+
 section#footer {
 	padding: 3px;
 }
 
-#footer li {
-    font-family: 'S-CoreDream-3Light';
-      font-size: 12px;
-}
-table {
-  border-collapse: collapse;
-  border-radius: 1em;
-  overflow: hidden;
+a.portfolio-box {
+	cursor: pointer;
 }
 
-a{
-text-decoration:none;
+.bg-primary {
+	background-image:
+		url(https://images.pexels.com/photos/386025/pexels-photo-386025.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+	height: 85%;
 }
+
+.portfolio-box .portfolio-box-caption {
+	width: 150px;
+}
+
+.col-sm-6 {
+	width: 20%;
+}
+
+.container {
+	height: 100%;
+}
+
+.img-region {
+	max-width: 210px;
+}
+
+.portfolio-box-region .portfolio-box-caption-region {
+	width: 210px;
+}
+
+.portfolio-box .portfolio-box-caption {
+	background-color: #676767bd;
+}
+
+.col-sm-6-region {
+	margin-left: 10px;
+}
+.navbar-brand{
+font-size: 45px;
+color: rgba(255, 255, 255, .7);
+}
+.btn-group>.btn:first-child {
+     margin-left: 0; 
+}
+.btn-default  {
+    background-color: transparent;
+
+}
+.btn-default:hover  {
+    background-color: transparent;
+
+}
+.open>.dropdown-toggle.btn-default{
+   background-color: transparent;
+}
+.btn{
+padding: 15px 15px;
+}
+.dropdown-menu {
+right: 10px;
+left: auto;
+}
+.menu ul ul > li a {
+    padding: 3px 20px;
+    height: auto;
+    background: white;
+    color: black;
+}
+.menu ul ul  {
+
+    background: white;
+}
+.spinner-master{
+height: 0;
+margin: 0;
+}
+.nav_wrapper{
+margin-top: 15px;
+}
+a.navbar-brand:hover{
+color: white;
+}
+
+header {
+	background-color: #2a416b;
+	    min-height: 32%;
+}
+body {
+	background-color: transparent;
+}
+@media ( max-width :768px) {
+header {
+	    min-height: 50%;
+}
+.btn-group.open{
+width: 60px;
+
+}
+
+.menu ul ul, .menu ul ul ul {
+    left: 50px;
+}
+}
+
 </style>
 </head>
 
@@ -193,7 +215,7 @@ text-decoration:none;
 	<script src="/vendor/scrollreveal/scrollreveal.min.js"></script>
 	<!-- Theme JavaScript -->
 	<script src="/js/creative.min.js"></script>
-
+	<script src="/script.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.js"></script>
 		

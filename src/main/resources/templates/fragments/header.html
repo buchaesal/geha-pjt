@@ -3,9 +3,9 @@
 
 <header th:fragment="header" xmlns:th="http://www.thymeleaf.org">
 	<!-- Static navbar -->
-	<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+	<!-- <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
-			<!-- Brand and toggle get grouped for better mobile display -->
+			Brand and toggle get grouped for better mobile display
 			<div class="navbar-header">
 
 				<h1>
@@ -13,7 +13,6 @@
 				</h1>
 			</div>
 
-			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
@@ -24,7 +23,7 @@
 					<li th:unless="${session.name}"><a class="page-scroll"
 						href="/member/login"> 로그인</a></li>
 
-					<!-- Single button -->
+					Single button
 					<div class="btn-group" th:if="${session.name}">
 						<button type="button" class="btn btn-default dropdown-toggle"
 							data-toggle="dropdown" data-hover="dropdown">
@@ -42,10 +41,48 @@
 					</div>
 				</ul>
 			</div>
-			
-			<!-- /.navbar-collapse -->
 		</div>
-		<!-- /.container-fluid -->
-	</nav>
 
+	</nav> -->
+ <div class="nav_wrapper"> 
+  			    <div class="spinner-master">
+					    <input type="checkbox" id="spinner-form" />
+					    <label for="spinner-form" class="spinner-spin">
+					    <div class="spinner diagonal part-1"></div>
+					    <div class="spinner horizontal"></div>
+					    <div class="spinner diagonal part-2"></div>
+					    </label>
+					  </div>
+  
+  <nav id="menu" class="menu">
+  
+  			<a class="navbar-brand page-scroll" href="/" style=" color: rgb(255,255,255,0.7);" >#GEHA</a>
+	  		<ul class="dropdown">
+	   	 	 <li><a class="page-scroll" title="Link" href="/search">방찾기</a></li>
+	    	 <li><a class="page-scroll" title="Link" href="/myPage/bookingList">예약내역</a></li>
+	     	 <li><a class="page-scroll" title="Link" href="/faq">FAQ</a></li>
+			<li th:unless="${session.name}"><a href="/member/login" title="Link"	class="page-scroll">로그인</a></li>
+	     	
+	     		<div class="btn-group" th:if="${session.name}">
+						<button type="button" class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown" data-hover="dropdown">
+							<span class="glyphicon glyphicon-user" aria-hidden="true" style=" color: rgb(255,255,255,0.7);"></span>
+						</button>
+
+						<ul class="dropdown-menu" role="menu">
+							<li style="text-align: center;"><span style="border: 1px; " th:text="${session.name}+'님'"></span></li>
+							<li class="divider"></li>
+							<li><a href="/myPage/bookingList" class="page-scroll">마이페이지</a></li>
+							<li th:if="${session.auth.equals('HOST')}"><a
+								href="/hostPage/myGuestHouseList" class="page-scroll">호스트페이지</a></li>
+							<li th:if="${session.auth.equals('ADMIN')}"><a
+								href="/adminPage/adminPage?auth=" class="page-scroll">관리자페이지</a></li>
+							<li><a href="/logout" onclick="">로그아웃</a></li>
+						</ul>
+					</div>
+	    </ul>
+	    
+  </nav>
+		
+</div>
 </header>
