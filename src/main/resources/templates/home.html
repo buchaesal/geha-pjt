@@ -200,7 +200,7 @@ color: white;
 	     		<div class="btn-group" th:if="${session.name}">
 						<button type="button" class="btn btn-default dropdown-toggle"
 							data-toggle="dropdown" data-hover="dropdown">
-							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+							<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: white"></span>
 						</button>
 
 						<ul class="dropdown-menu" role="menu">
@@ -505,6 +505,12 @@ color: white;
 			window.close();
 
 		}
+		
+		
+		window.onbeforeunload = function () {
+			  window.scrollTo(0, 0);
+			}
+
 	</script>
 </body>
 </html>
