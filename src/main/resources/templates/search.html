@@ -438,7 +438,10 @@
 		} // function getData end
 		
 		$(function(){ // document onload
-			
+			var header = $('header');
+			var headerH2 = document.createElement('h2');
+			headerH2.textContent = '방찾기';
+			header.append(headerH2);
 			// 오늘날짜부터 선택가능 / input hidden으로 나누어서 저장 / 세미콜론(;)넣지 않음 주의
 			$(".datepicker-here").datepicker({
 				language: 'en',
@@ -582,7 +585,9 @@
 					getData();
 				}
 			});
+			
 		}); // document onload end
+		
 		</script>
 		<script id="template" type="text/x-handlebars-template">
 			{{#each .}}
