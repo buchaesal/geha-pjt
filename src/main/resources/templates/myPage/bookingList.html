@@ -158,11 +158,11 @@ th {
 
 tr {
     border-bottom: 2px solid lightgray;
+}
 
 #bookingList {
 	text-decoration: underline;
 	font-size: 27px;
-
 }
 </style>
 </head>
@@ -277,21 +277,16 @@ tr {
 			<div class="box-footer clearfix" style="padding-left: 357px">
 				<ul class="pagination pagination-sm no-margin pull-center">
 
-					<li th:if="${pageMaker.prev} == true"><a
-						th:href="@{/myPage/bookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+					<li th:if="${pageMaker.prev} == true">
+						<a th:href="@{/myPage/bookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
 					</li>
 
-					<li
-						th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
-						th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-						<a
-						th:href="@{/myPage/bookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}"
-						th:text="${idx}"></a>
+					<li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}" th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+						<a th:href="@{/myPage/bookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
 					</li>
 
 					<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-						<a
-						th:href="@{/myPage/bookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+						<a th:href="@{/myPage/bookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
 					</li>
 
 				</ul>
