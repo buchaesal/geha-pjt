@@ -161,7 +161,7 @@ main p {  1.2em;
 }
 
 .menu ul ul > li a:hover {
-  background: white;
+  background: transparent;
   color: black;
   font-size: 14px;
 }
@@ -291,7 +291,7 @@ a.menu-link.active:after { content: "\2715"; }
 
 
 .menu.active,
-.menu > ul ul.active { max-height: 55em; }
+.menu > ul ul.active { max-height: 55em; position: absolute; height: 330px;}
 
 .menu ul { display: inline;  right: 55px;width: 120px; }
 
