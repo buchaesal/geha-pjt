@@ -86,6 +86,10 @@
 		padding-bottom: 0px;
 		margin-bottom: 10px;
 	}
+	.nav_wrapper {
+	min-height: 32%;
+}
+
 }
 
 #footer li {
@@ -232,7 +236,7 @@ body {
 </head>
 
 <body id="page-top">
- <div class="nav_wrapper" style="height: 100px;"> 
+ <div class="nav_wrapper" > 
   			    <div class="spinner-master">
 					    <input type="checkbox" id="spinner-form" />
 					    <label for="spinner-form" class="spinner-spin">
@@ -254,7 +258,7 @@ body {
 	     		<div class="btn-group" th:if="${session.name}">
 						<button type="button" class="btn btn-default dropdown-toggle"
 							data-toggle="dropdown" data-hover="dropdown">
-							<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: white"></span>
+							<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: rgba(255, 255, 255, .7);"></span>
 						</button>
 
 						<ul class="dropdown-menu" role="menu">
@@ -274,46 +278,6 @@ body {
 		
 
 </div>
-
-<!-- 	<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
-			Brand and toggle get grouped for better mobile display
-			<div class="navbar-header">
-				<h1>
-					<a class="navbar-brand page-scroll" href="/">#GEHA</a>
-				</h1>
-			</div>
-
-			Collect the nav links, forms, and other content for toggling
-			<div class="collapse navbar-collapse"zid="bs-example-n	avbar-collapse-1" th:object="${session.member}">
-				<ul class="nav navbar-nav navbar-right">
-					<li><a class="page-scroll" href="/search">방찾기</a></li>
-					<li><a class="page-scroll" href="/myPage/bookingList">예약내역</a></li>
-					<li><a class="page-scroll" href="/faq">FAQ</a></li>
-					<li th:unless="${session.name}"><a href="/member/login" class="page-scroll">로그인</a></li>
-
-					Single button
-					<div class="btn-group" th:if="${session.name}">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						</button>
-
-						<ul class="dropdown-menu" role="menu">
-							<li><span style="border: 1px;" th:text="${session.name}+'님'"></span></li>
-							<li class="divider"></li>
-							<li><a href="/myPage/bookingList" class="page-scroll">마이페이지</a></li>
-							<li th:if="${session.auth.equals('HOST')}"><a href="/hostPage/myGuestHouseList" class="page-scroll">호스트페이지</a></li>
-							<li th:if="${session.auth.equals('ADMIN')}"><a href="/adminPage/adminPage?auth=" class="page-scroll">관리자페이지</a></li>
-							<li><a href="/logout" onclick="">로그아웃</a></li>
-						</ul>
-					</div>
-				</ul>
-			</div>
-			/.navbar-collapse
-		</div>
-		/.container-fluid
-	</nav>
- -->
 	<section class="bg-primary" id="about">
 		<div class="container">
 			<div class="row">
@@ -421,7 +385,7 @@ body {
 					<div class="col-lg-6 col-sm-6 col-sm-6-region">
 						<a id="business" class="portfolio-box portfolio-box-region">
 							<img src="/img/home_img/홍대.jpg" class="img-region" alt="" width="210px" height="150px" />
-							<div class="portfolio-box-caption portfolio-box-caption-region">
+							<div class="portfolio-box-caption portfolio-box-caption-region" >
 								<div class="portfolio-box-caption-content">
 									<div class="project-category text-faded">Category</div>
 									<div class="project-name">홍대</div>

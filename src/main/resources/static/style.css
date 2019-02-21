@@ -9,7 +9,9 @@ nav { width: 100%; }
   top: 0;
   width: 100%;
   transition: top .5s ease-out;
-  background: transparent;
+  background: #2a416b;
+  height: 80px;
+  z-index: 3;
 }
 
 .scroll { top: -90px; }
@@ -200,6 +202,7 @@ main p {  1.2em;
   width: 30px;
   float: right;
   right: 20px;
+  top: 20px;
 }
 
 .spinner-master label {
