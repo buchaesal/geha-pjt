@@ -19,17 +19,6 @@ nav { width: 100%; }
   z-index: 9999;
 }
 
-.btn {
-
-  margin: 5px;
-  color: black;
-  text-decoration: none;
-  font-family: sans-serif;
-  transition: all 0.1s ease;
-}
-
-.btn:hover { transition: all 0.1s ease; }
-
 main {
   max-width: 800px;
   margin: 0 auto;
@@ -117,7 +106,7 @@ main p {  1.2em;
   position: relative;
   display: inline-block;
   float: right;
-
+    top: 10px;
 }
 
 .menu > li > ul.sub_menu {
@@ -191,19 +180,6 @@ main p {  1.2em;
 #hero img {
   width: 100%;
   height: auto;
-}
-
-footer {
-  width: 100%;
-  background: #0099cc;
-  padding: 10px;
-  color: #fff;
-  margin-top: 40px;
-}
-
-footer a {
-  color: #fff;
-  text-decoration: none;
 }
 
  @media all and (max-width: 768px) {
