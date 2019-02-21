@@ -23,8 +23,9 @@
 <!-- Theme CSS -->
 <link href="/css/creative.min.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
-<style>
+<link href="/css/swiper.min.css" rel="stylesheet" />
 
+<style>
 @font-face {
 	font-family: 'yg-jalnan';
 	src:
@@ -79,12 +80,24 @@
 }
 
 @media ( max-width :767px) {
+
 	#footer h5 {
 		padding-left: 0;
 		border-left: transparent;
 		padding-bottom: 0px;
 		margin-bottom: 10px;
 	}
+	.nav_wrapper {
+	min-height: 32%;
+}
+.menu ul li > a {
+    padding: 10px 0px 10px 0px;
+}
+.dropdown {
+
+}
+
+
 }
 
 #footer li {
@@ -152,9 +165,10 @@ padding: 15px 15px;
 right: 10px;
 left: auto;
 }
+
 .menu ul ul > li a {
     padding: 3px 20px;
-    height: auto;
+
     background: white;
     color: black;
 }
@@ -162,23 +176,78 @@ left: auto;
 
     background: white;
 }
+
+
 .spinner-master{
 height: 0;
 margin: 0;
 }
-.nav_wrapper{
-margin-top: 15px;
-}
+
 a.navbar-brand:hover{
 color: white;
 }
+
+/* swiper */
+
+h2.top10 {
+	text-align: center;
+	color: whitesmoke;
+}
+
+body {
+  background: #445867;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color:#000;
+  margin: 0;
+  padding: 0;
+}
+.swiper-container {
+  width: 100%;
+  height: 300px;
+  margin: 20px auto;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background-color: gray;
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  cursor: pointer;
+  background-size:cover;
+}
+
+.swiper-slide span {
+	background-color: rgba(0,0,0,0.7);
+	opacity: 1;
+	color: whitesmoke;
+}
+.swiper-slide span.rownum {
+	color: orangered;
+}
+.swiper-slide span.rating {
+	color: orange;
+}
+
 
 </style>
 
 </head>
 
 <body id="page-top">
- <div class="nav_wrapper"> 
+ <div class="nav_wrapper" > 
   			    <div class="spinner-master">
 					    <input type="checkbox" id="spinner-form" />
 					    <label for="spinner-form" class="spinner-spin">
@@ -187,10 +256,10 @@ color: white;
 					    <div class="spinner diagonal part-2"></div>
 					    </label>
 					  </div>
-  
+    			<a class="navbar-brand page-scroll" href="/" style="margin-top: 10px;" >#GEHA</a>
   <nav id="menu" class="menu">
   
-  			<a class="navbar-brand page-scroll" href="/" >#GEHA</a>
+
 	  		<ul class="dropdown">
 	   	 	 <li><a class="page-scroll" title="Link" href="/search">방찾기</a></li>
 	    	 <li><a class="page-scroll" title="Link" href="/myPage/bookingList">예약내역</a></li>
@@ -200,7 +269,7 @@ color: white;
 	     		<div class="btn-group" th:if="${session.name}">
 						<button type="button" class="btn btn-default dropdown-toggle"
 							data-toggle="dropdown" data-hover="dropdown">
-							<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: white"></span>
+							<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: rgba(255, 255, 255, .7);"></span>
 						</button>
 
 						<ul class="dropdown-menu" role="menu">
@@ -220,51 +289,6 @@ color: white;
 		
 
 </div>
-
-<!-- 	<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
-			Brand and toggle get grouped for better mobile display
-			<div class="navbar-header">
-				<h1>
-					<a class="navbar-brand page-scroll" href="/">#GEHA</a>
-				</h1>
-			</div>
-
-			Collect the nav links, forms, and other content for toggling
-			<div class="collapse navbar-collapse"zid="bs-example-n	avbar-collapse-1" th:object="${session.member}">
-				<ul class="nav navbar-nav navbar-right">
-					<li><a class="page-scroll" href="/search">방찾기</a></li>
-					<li><a class="page-scroll" href="/myPage/bookingList">예약내역</a>
-					</li>
-					<li><a class="page-scroll" href="/faq">FAQ</a></li>
-					<li th:unless="${session.name}"><a href="/member/login"
-						class="page-scroll">로그인</a></li>
-
-					Single button
-					<div class="btn-group" th:if="${session.name}">
-						<button type="button" class="btn btn-default dropdown-toggle"
-							data-toggle="dropdown" data-hover="dropdown">
-							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						</button>
-
-						<ul class="dropdown-menu" role="menu">
-							<li><span style="border: 1px;" th:text="${session.name}+'님'"></span></li>
-							<li class="divider"></li>
-							<li><a href="/myPage/bookingList" class="page-scroll">마이페이지</a></li>
-							<li th:if="${session.auth.equals('HOST')}"><a
-								href="/hostPage/myGuestHouseList" class="page-scroll">호스트페이지</a></li>
-							<li th:if="${session.auth.equals('ADMIN')}"><a
-								href="/adminPage/adminPage?auth=" class="page-scroll">관리자페이지</a></li>
-							<li><a href="/logout" onclick="">로그아웃</a></li>
-						</ul>
-					</div>
-				</ul>
-			</div>
-			/.navbar-collapse
-		</div>
-		/.container-fluid
-	</nav>
- -->
 	<section class="bg-primary" id="about">
 		<div class="container">
 			<div class="row">
@@ -273,8 +297,7 @@ color: white;
 		</div>
 	</section>
 
-	<div class="container"
-		style="background: lavender; width: 100%; padding-top: 48px; border-top: 100px solid #445867;;">
+	<div class="container" style="background: lavender; width: 100%; padding-top: 48px; border-top: 100px solid #445867;;">
 		<div class="row">
 			<div class="col-lg-12 text-center"></div>
 		</div>
@@ -284,9 +307,8 @@ color: white;
 			<div class="container-fluid" style="padding-left: 265px; margin: 30px 0 100px 0">
 				<div class="row no-gutter popup-gallery">
 					<div class="col-lg-6 col-sm-6">
-						<a id="trip" class="portfolio-box"> <img
-							src="https://image.flaticon.com/icons/svg/1042/1042339.svg"
-							class="img-responsive" width="150px" height="150px">
+						<a id="trip" class="portfolio-box">
+							<img src="https://image.flaticon.com/icons/svg/1042/1042339.svg" class="img-responsive" width="150px" height="150px">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
 									<div class="project-category text-faded">Category</div>
@@ -296,9 +318,9 @@ color: white;
 						</a>
 					</div>
 					<div class="col-lg-6 col-sm-6">
-						<a id="gourmet" class="portfolio-box"> <img
-							src="https://image.flaticon.com/icons/svg/608/608857.svg"
-							class="img-responsive" alt="" width="150px" height="150px">
+						<a id="gourmet" class="portfolio-box">
+							<img src="https://image.flaticon.com/icons/svg/608/608857.svg" class="img-responsive" alt="" width="150px"
+							 height="150px">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
 									<div class="project-category text-faded">Category</div>
@@ -309,9 +331,8 @@ color: white;
 					</div>
 
 					<div class="col-lg-6 col-sm-6">
-						<a id="shopping" class="portfolio-box"> <img
-							src="https://image.flaticon.com/icons/svg/1162/1162493.svg"
-							alt="" width="150px" height="150px">
+						<a id="shopping" class="portfolio-box">
+							<img src="https://image.flaticon.com/icons/svg/1162/1162493.svg" alt="" width="150px" height="150px">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
 									<div class="project-category text-faded">Category</div>
@@ -321,9 +342,9 @@ color: white;
 						</a>
 					</div>
 					<div class="col-lg-6 col-sm-6">
-						<a id="business" class="portfolio-box"> <img
-							src="https://image.flaticon.com/icons/svg/149/149018.svg"
-							class="img-responsive" alt="" width="150px" height="150px" />
+						<a id="business" class="portfolio-box">
+							<img src="https://image.flaticon.com/icons/svg/149/149018.svg" class="img-responsive" alt="" width="150px"
+							 height="150px" />
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
 									<div class="project-category text-faded">Category</div>
@@ -334,14 +355,12 @@ color: white;
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="container-fluid" style="padding-left: 200px;">
 				<div class="row no-gutter popup-gallery">
 					<div class="col-lg-6 col-sm-6 col-sm-6-region">
-						<a id="gourmet" class="portfolio-box portfolio-box-region"> 
-						<img
-							src="/img/home_img/강남.jpg"
-							class="img-region" alt="" width="210px" height="150px">
+						<a id="gourmet" class="portfolio-box portfolio-box-region">
+							<img src="/img/home_img/강남.jpg" class="img-region" alt="" width="210px" height="150px">
 							<div class="portfolio-box-caption portfolio-box-caption-region">
 								<div class="portfolio-box-caption-content">
 									<div class="project-category text-faded">Category</div>
@@ -350,12 +369,10 @@ color: white;
 							</div>
 						</a>
 					</div>
-					
+
 					<div class="col-lg-6 col-sm-6 col-sm-6-region">
-						<a id="gourmet" class="portfolio-box portfolio-box-region"> 
-						<img
-							src="/img/home_img/잠실.jpg"
-							class="img-region" alt="" width="210px" height="150px">
+						<a id="gourmet" class="portfolio-box portfolio-box-region">
+							<img src="/img/home_img/잠실.jpg" class="img-region" alt="" width="210px" height="150px">
 							<div class="portfolio-box-caption portfolio-box-caption-region">
 								<div class="portfolio-box-caption-content">
 									<div class="project-category text-faded">Category</div>
@@ -366,9 +383,8 @@ color: white;
 					</div>
 
 					<div class="col-lg-6 col-sm-6 col-sm-6-region">
-						<a id="shopping" class="portfolio-box portfolio-box-region"> <img
-							src="/img/home_img/종로.jpg"
-							alt="" width="210px" height="150px" class="img-region">
+						<a id="shopping" class="portfolio-box portfolio-box-region">
+							<img src="/img/home_img/종로.jpg" alt="" width="210px" height="150px" class="img-region">
 							<div class="portfolio-box-caption portfolio-box-caption-region">
 								<div class="portfolio-box-caption-content">
 									<div class="project-category text	-faded">Category</div>
@@ -378,10 +394,9 @@ color: white;
 						</a>
 					</div>
 					<div class="col-lg-6 col-sm-6 col-sm-6-region">
-						<a id="business" class="portfolio-box portfolio-box-region"> <img
-							src="/img/home_img/홍대.jpg"
-							class="img-region" alt="" width="210px" height="150px" />
-							<div class="portfolio-box-caption portfolio-box-caption-region">
+						<a id="business" class="portfolio-box portfolio-box-region">
+							<img src="/img/home_img/홍대.jpg" class="img-region" alt="" width="210px" height="150px" />
+							<div class="portfolio-box-caption portfolio-box-caption-region" >
 								<div class="portfolio-box-caption-content">
 									<div class="project-category text-faded">Category</div>
 									<div class="project-name">홍대</div>
@@ -391,24 +406,54 @@ color: white;
 					</div>
 				</div>
 			</div>
-			
-
 			<form action="search" method="post" id="categoryform">
-				<input type="hidden" th:name="${_csrf.parameterName}"
-					th:value="${_csrf.token}" /> <input type="hidden" id="hiddeninput"
-					name="" value="1" />
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+				<input type="hidden" id="hiddeninput" name="" value="1" />
 			</form>
 		</section>
-
 	</div>
 
+	<h2 class="top10">평점높은 게스트하우스 Top10</h2>
+	<!-- Swiper -->
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			<div th:each="listRating : ${listRating}" class="swiper-slide" th:style=|background-image:url(gehaImg/${listRating.guestHouseCode}/${listRating.savedName})|>
+				<span class="rownum" th:text=|${listRating.rownum}등|>등수</span>
+				<span>&nbsp;</span>
+				<span class="rating" th:text=|${listRating.avgRating}|>게하 평점</span>
+				<span>&nbsp;</span>
+				<span class="gehaname" th:text=|${listRating.guestHouseName}|>게하이름</span>
+			</div>
+		</div>
+		<!-- Add Pagination -->
+		<div class="swiper-pagination"></div>
+		<!-- Add Arrows -->
+		<div class="swiper-button-next"></div>
+		<div class="swiper-button-prev"></div>
+	</div>
 
-
-
+	<h2 class="top10">리뷰 개수 많은 게스트하우스 Top10</h2>
+	<!-- Swiper -->
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			<div th:each="listReview : ${listReview}" class="swiper-slide" th:style=|background-image:url(gehaImg/${listReview.guestHouseCode}/${listReview.savedName})|>
+				<span class="rownum" th:text=|${listReview.rownum}등|>등수</span>
+				<span>&nbsp;</span>
+				<span class="rating" th:text=|${listReview.reviewCnt}개|>게하 리뷰 개수</span>
+				<span>&nbsp;</span>
+				<span class="gehaname" th:text=|${listReview.guestHouseName}|>게하이름</span>
+			</div>
+		</div>
+		<!-- Add Pagination -->
+		<div class="swiper-pagination"></div>
+		<!-- Add Arrows -->
+		<div class="swiper-button-next"></div>
+		<div class="swiper-button-prev"></div>
+	</div>
+		
 	<!-- Footer -->
 	<footer id="footer">
-		<div class="container"
-			style="color: ghostwhite; font-weight: lighter;">
+		<div class="container" style="color: ghostwhite; font-weight: lighter;">
 			<h3 style="padding-left: 12px;">#GEHA</h3>
 			<div>
 				<div class="col-xs-12 col-sm-4 col-md-4">
@@ -416,101 +461,61 @@ color: white;
 						<li>대표자 : 자바조 사업자 등록번호 : 107 - 87 - 79911</li>
 						<li>서울특별시 강남구 신사동 566-23, JC빌딩 5층</li>
 						<li>대표번호 : 02-2018-3700</li>
-						<li>홍보/제휴 문의 : 02-2018-3716 <a href="javascript:void();"
-							target="_blank"><i class="fa fa-envelope"></i></a>
-						</li>
+						<li>홍보/제휴 문의 : 02-2018-3716 <a href="javascript:void();" target="_blank"><i class="fa fa-envelope"></i></a></li>
 						<li>© 2018-2019 · #GEHA(주), All Rights Reserved</li>
 					</ul>
 				</div>
-
 			</div>
 		</div>
 	</footer>
 	<!-- ./Footer -->
-	<!--Modal: confirmModal-->
-	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-sm modal-notify modal-danger"
-			role="document">
-			<!--Content-->
-			<div class="modal-content text-center">
-				<!--Header-->
-				<div class="modal-header d-flex justify-content-center">
-					<br /> <br />
-					<p id="modalName" class="heading"></p>
-				</div>
-
-				<!--Body-->
-				<div class="modal-body"></div>
-				<br />
-				<!--Footer-->
-				<div class="modal-footer flex-center">
-
-					<a href="#" id="realClose" class="btn btn-primary btn-lg"
-						onclick="wClose()">닫기</a>
-
-				</div>
-			</div>
-			<!--/.Content-->
-		</div>
-	</div>
-	<!--Modal: confirmModal-->
+	
 	<!-- jQuery -->
 	<script src="/vendor/jquery/jquery.min.js"></script>
 	<!-- Bootstrap Core JavaScript -->
 	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.js"></script>
 	<!-- Plugin JavaScript -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 	<script src="/vendor/scrollreveal/scrollreveal.min.js"></script>
 	<script src="/js/creative.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.js"></script>
-<script src="script.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.js"></script>
+	<script src="script.js"></script>
+	<script src="/js/swiper.min.js"></script>
 	<script th:inline="javascript">
 		// 시큐리티 + 에이젝스 에러 방지 설정
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
-		$(document).ajaxSend(function(e, xhr, options) {
+		$(document).ajaxSend(function (e, xhr, options) {
 			xhr.setRequestHeader(header, token);
 		});
 
 		var form = document.getElementById("categoryform");
 
-		$('a.portfolio-box').click(function() {
-
-			console.log(this.id);
-
+		$('a.portfolio-box').click(function () {
 			$('#hiddeninput').attr('name', this.id);
-
 			form.submit();
 		});
 
-		var approveOk = [[${approveOk}]];
-		$(function() {
-			if (approveOk !== null) {
-
-				$("#modalName").text(approveOk);
-				$("#confirmModal").modal({
-					backdrop : 'static',
-					keyboard : false
-				});
-
-			}
-
+		// swiper start
+		var appendNumber = 10;
+		var prependNumber = 1;
+		var swiper = new Swiper('.swiper-container', {
+			slidesPerView: 3,
+			loop: true,
+			centeredSlides: true,
+			spaceBetween: 30,
+			pagination: {
+				el: '.swiper-pagination',
+				clickable: true,
+			},
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
 		});
-
-		function wClose() {
-			opener.parent.location.reload();
-			window.close();
-
-		}
-		
-		
-		window.onbeforeunload = function () {
-			  window.scrollTo(0, 0);
-			}
-
+		// swiper end
 	</script>
 </body>
+
 </html>

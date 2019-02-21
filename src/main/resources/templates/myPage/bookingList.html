@@ -155,7 +155,6 @@ th {
 	vertical-align: middle;
 }
 
-
 tr {
     border-bottom: 2px solid lightgray;
 }
@@ -179,7 +178,7 @@ a.before#bookingList:before,a.after#bookingList:after {
 	<div layout:fragment="myPage_content">
 		<div th:if="${#lists.size(bookingList)==0}" style="padding-top: 33px;">
 			<p class="heading">예약내역이 없습니다.</p>
-			<a href="/search" class="btn btn-info waves-effect">숙소 둘러보기</a>
+			<a href="/search" class="btn btn-info waves-effect" >숙소 둘러보기</a>
 		</div>
 		<div th:if="${#lists.size(bookingList)>0}">
 			<table width="800px">
