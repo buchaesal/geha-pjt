@@ -59,20 +59,22 @@
                background-color: #fefefe;
                margin: 15% auto; /* 15% from the top a nd centered */
                padding: 20px;
-               border: 1px solid #888;
+               border: 3px solid #e8c44b;
                width: 30%; /* Could be more or less, depending on screen size */                          
            }
            
            .modal-content>p {
            		font-size: 20px;
-           		margin: 10px 0 20px 0;
+           		margin: 10px 0 30px 0;
            }
            
            .roomInfoDiv {
               display:  grid;
-              background-color: #deebff;
-              /* border: 1px solid gray; */
+              background-color: #d3e4dd8c;
               margin: 10px 0;
+              border: 7px solid #9ec7ae82;
+			  border-radius: 30px;
+			  padding: 15px;
            }
            
            tr.room_tr {
@@ -122,6 +124,10 @@
            		padding: 0 0;
            }
            
+           .room_tr>th>label {
+           		width: 130px;
+           }
+           
            .bankTags {
            		line-height: 40px;
            }
@@ -131,7 +137,7 @@
            		font-size: 16px;
            }
            
-           #roomInfoList {
+           #roomInfoList>#roomBtnDiv {
            		text-align: center;
            }
            
@@ -150,9 +156,9 @@
            		text-align: center;
            }
            
-           #cancelGuestHouseBtn {background-color: indianred;}
+           #cancelGuestHouseBtn {background-color: #cdae5cc2;}
            
-           #cancelGuestHouseBtn:hover {background-color: #d20000;}
+           #cancelGuestHouseBtn:hover {background-color: #cdae5c;}
            
            #regiesterGuestHouseBtn {background-color:darkseagreen;}
            
@@ -190,7 +196,22 @@
 			textarea:-ms-input-placeholder {  
 			color: #808080ad !important;  
 			}
-
+			
+			.btn-modal {
+				background-color: #e8c44b8c;
+				border-color: #e5be2342;
+				width: 100px;
+			}
+			
+			.btn-modal:hover {
+				background-color: #e8c44b;
+				border-color: #e8c44b;
+			}
+			
+			.btn-modal:active:hover {
+				background-color: #e1b930;
+				border-color: #e1b930;
+			}
       </style>
    		<script type="text/javascript" src="/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
    </head>
@@ -213,7 +234,7 @@
             	</tr>
                <tr>
                   <th><label class="hostPage_label">게스트하우스 이름<br>(상호명)</label></th>
-                  <td><input type="text" name="guestHouseName" class="form-control" size="25" style="font-size: 23px; height: 45px;" th:value="${#request.contextPath}"></td>
+                  <td><input type="text" name="guestHouseName" class="form-control" size="25" style="font-size: 23px; height: 45px;"></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">태그<br>(복수 선택 가능)</label></th>
@@ -251,8 +272,7 @@
                <tr>
                   <th><label class="hostPage_label">방 등록</label></th>
                   <td id="roomInfoList">
-                  	<input id="addRoomInfoBtn" class="btn btn-primary" type="button" value="방 등록하기">
-                     
+                  	<div id="roomBtnDiv"><input id="addRoomInfoBtn" class="btn btn-primary" type="button" value="방 등록하기"></div>
                   </td>
                </tr>
                <tr>
@@ -324,8 +344,9 @@
 			
 			<!-- Modal content -->
 			<div class="modal-content">
+				<i class="fa fa-exclamation-circle" style="font-size:48px;color:#de9221;"></i>
 				<p id="modalMessage"></p>
-				<button id="inputCheckModalClose" class="btn btn-default" >확인</button>
+				<button id="inputCheckModalClose" class="btn btn-default btn-modal">확인</button>
 			</div>
 		</div>
          
@@ -544,7 +565,7 @@
                //이미지 정보들을 초기화
                sel_files = [];
                var prtDiv = e.target.parentNode.nextElementSibling; // div imgs_wrap
-               var roomInfoTable = $(prtDiv).parent().find('table');
+               var roomInfoTable = $(prtDiv).parent().parent().parent().parent();
                
                $(prtDiv).empty();
                
@@ -614,9 +635,6 @@
 		 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 		 <!-- "검색" 단추를 누르면 팝업 레이어가 열리도록 설정한다 -->
 		 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
-		
-		<!-- input bootstrap -->
-		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
       </div>
    </body>
 </html>
