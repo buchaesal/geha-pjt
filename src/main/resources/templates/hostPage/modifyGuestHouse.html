@@ -5,20 +5,28 @@
 
    <head>
    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
       <title>게스트하우스 수정</title>
       <style>
-          .hostPage_label {
+         .hostPage_label {
             padding: 18px 15px;
             font-size: 17px;
+         }
+         
+         .hostPage_label>p {
+         	margin-top: 5px;
          }
          
          input, textarea {padding: 0 15px;}
          
          th, td {line-height: 20px;}
          
-         th {width: 200px;}
+         th {width: 250px; text-align: center;}
          
-         td {width: 500px; padding: 20px 0;}
+         td {
+         	width: 500px; 
+         	padding: 20px 30px;
+         }
          
          .imgs_wrap {
             width: 600px;
@@ -42,6 +50,7 @@
                overflow: auto; /* Enable scroll if needed */
                background-color: rgb(0,0,0); /* Fallback color */
                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+               text-align: center;
            }
        
            /* Modal Content/Box */
@@ -49,27 +58,40 @@
                background-color: #fefefe;
                margin: 15% auto; /* 15% from the top a nd centered */
                padding: 20px;
-               border: 1px solid #888;
-               width: 50%; /* Could be more or less, depending on screen size */                          
+               border: 3px solid #e8c44b;
+               width: 30%; /* Could be more or less, depending on screen size */                          
            }
-           /* The Close Button */
-           .close {
-               color: #aaa;
-               float: right;
-               font-size: 28px;
-               font-weight: bold;
+           
+           .modal-content>p {
+           		font-size: 20px;
+           		margin: 10px 0 30px 0;
            }
-           .close:hover,
-           .close:focus {
-               color: black;
-               text-decoration: none;
-               cursor: pointer;
-           }
+           
            .roomInfoDiv {
               display:  grid;
-              background-color: #deebff;
-              /* border: 1px solid gray; */
+              background-color: #d3e4dd8c;
               margin: 10px 0;
+              border: 7px solid #9ec7ae82;
+			  border-radius: 30px;
+			  padding: 15px;
+           }
+           
+           tr.room_tr {
+           		font-size: 14px;
+           }
+           
+           tr.room_tr>tr {
+           		padding-right: 10px; 
+           }
+           
+           tr.room_tr>th>label>p {
+           		font-size: 11px;
+           		margin-top: 3px;
+           }
+           
+           tr.room_tr>td {
+           		padding: 13px 30px;
+           		line-height: 27px;
            }
            
            input[type=file] {
@@ -86,6 +108,7 @@
            
            .checkboxLabel {
            		margin-right: 20px;
+           		margin-top: 7px;
            }
            
            .room_imgs_wrap {
@@ -99,11 +122,104 @@
            .room_tr {
            		padding: 0 0;
            }
+           
+           .room_tr>th>label {
+           		width: 130px;
+           }
+           
+           .bankTags {
+           		line-height: 40px;
+           }
+           
+           .guestHouseInfo>label {
+           		margin: 20px 0 13px 10px;
+           		font-size: 16px;
+           }
+           
+           #roomInfoList>#roomBtnDiv {
+           		text-align: center;
+           }
+           
+           .btn-primary {
+           		background-color: #2684d6;
+           		border-color: #1c72bd;
+           		width: 220px;
+           }
+           
+           .btn-primary:hover {
+           		background-color: #3071a9;
+           		border-color: #285e8e;
+           }
+           
+           .btn-submitLine {
+           		text-align: center;
+           }
+           
+           #cancelGuestHouseBtn {background-color: #cdae5cc2;}
+           
+           #cancelGuestHouseBtn:hover {background-color: #cdae5c;}
+           
+           #modifyGuestHouseBtn {background-color:darkseagreen;}
+           
+           #modifyGuestHouseBtn:hover {background-color: green;}
+           
+           #deleteGuestHouseBtn {background-color: indianred;}
+           
+           #deleteGuestHouseBtn:hover {background-color: #d20000;}
+           
+           .navbar-default {
+			    background-color: transparent;
+			    border-color: transparent;
+			}
+			
+			.navbar-default .navbar-nav>li>a {
+			    color: rgba(255, 255, 255, .7);
+			}
+			
+			.navbar-default .nav>li>a:hover {
+				color: #fff;
+			}
+			
+			input[type=checkbox] {
+				padding-left: 2px;
+			}
+			
+			textarea::-webkit-input-placeholder {
+			color: #808080ad !important;
+			}
+			 
+			textarea:-moz-placeholder { /* Firefox 18- */
+			color: #808080ad !important;  
+			}
+			 
+			textarea::-moz-placeholder {  /* Firefox 19+ */
+			color: #808080ad !important;  
+			}
+			 
+			textarea:-ms-input-placeholder {  
+			color: #808080ad !important;  
+			}
+			
+			.btn-modal {
+				background-color: #e8c44b8c;
+				border-color: #e5be2342;
+				width: 100px;
+			}
+			
+			.btn-modal:hover {
+				background-color: #e8c44b;
+				border-color: #e8c44b;
+			}
+			
+			.btn-modal:active:hover {
+				background-color: #e1b930;
+				border-color: #e1b930;
+			}
       </style>
    </head>
    <body>
       <div layout:fragment="hostPage_content">
-         <form id="modifyGuestHouseForm" th:action="@{modifyGuestHouseComplete}" method="POST" enctype="multipart/form-data">
+         <form id="modifyGuestHouseForm" class="form-inline" th:action="@{modifyGuestHouseComplete}" method="POST" enctype="multipart/form-data">
             <h2>내 게스트하우스 수정하기</h2>
             <input type="hidden" name="guestHouseCode" th:value="${guestHouseCode}">
             <table class="guestHouse_table">
@@ -112,7 +228,7 @@
            			<td>
            				<div>
 			               <input type="file" id="input_imgs" name="files" multiple>
-			               <input type="button" value="파일삭제" onclick="deleteImgs(this)">
+			               <input type="button" class="btn btn-default" value="파일삭제" onclick="deleteImgs(this)">
 			            </div>
 			            <div class="imgs_wrap" name="guestHouseImg">
 				           	<span class='thumbnailImgSpan' th:each="img, iterState : ${guestHouseImgs}">
@@ -124,7 +240,7 @@
            		</tr>
                <tr>
                   <th><label class="hostPage_label">게스트하우스 이름<br>(상호명)</label></th>
-                  <td><input type="text" name="guestHouseName" th:value="${guestHouseDto.guestHouseName}" size="25" style="font-size: 23px;"></td>
+                  <td><input type="text" name="guestHouseName" class="form-control" th:value="${guestHouseDto.guestHouseName}" size="25" style="font-size: 23px; height: 45px;"></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">태그<br>(복수 선택 가능)</label></th>
@@ -138,7 +254,10 @@
                <tr>
                   <th><label class="hostPage_label">설명</label></th>
                   <td>
-                  <textarea name="guestHouseInfo" rows="15" cols="63" maxlength="500" onload="load()"></textarea></td>
+                  <textarea name="guestHouseInfo" class="form-control col-sm-5" rows="15" cols="63" maxlength="500" onload="load()"  placeholder="예) 
+서울 모모게스트하우스를 찾아 주셔서 감사합니다.
+테헤란로 쇼핑과 관광의 중심지에 위치하여, 관광 및 비지니스로 방문하신 여러분들의 편안한 숙소가 되어 드립니다.
+지하철 2호선 역삼역, 9호선 언주역 인접, 또한 강남역과 가까운 서울 비지니스의 중심권에 위치합니다."></textarea></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">편의시설</label></th>
@@ -160,8 +279,7 @@
                <tr>
                   <th><label class="hostPage_label">방 등록</label></th>
                   <td id="roomInfoList">
-                     <label class="hostPage_label">방 등록하기</label>
-                     <input id="addRoomInfoBtn" type="button" value="추가">
+                     <div id="roomBtnDiv"><input id="addRoomInfoBtn" class="btn btn-primary" type="button" value="방 등록하기"></div>
                      
                      <div th:each="room, iterState : ${rooms}">
 	                     <div class="roomInfoDiv">
@@ -169,12 +287,12 @@
 				            
 				            <table th:name="${room.roomCode}">
 				            	<input type="hidden" name="roomIndex" th:value="${iterState.count}">
-				               <tr>
+				               <tr class="room_tr">
 				               		<th><label>방 사진 (최대 5장) <p>메인이미지를 선택해주세요.</p></label></th>
 				               		<td>
 				               			<div>
-							               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
-							               <input type="button" value="파일삭제" onclick="deleteImgs(this)">
+							               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple style="width: 65%;">
+							               <input type="button" class="btn btn-default" value="파일삭제" onclick="deleteImgs(this)">
 							            </div>
 							            <div class="imgs_wrap room_imgs_wrap" name="roomsImg">
 							            	<span th:each="img, iterState : ${room.roomImgs}">
@@ -186,15 +304,15 @@
 							            <input type="hidden" name="mainRoomImage" th:id="'mainRoomImage'+${room.roomCode}" th:value="-1">
 				               		</td>
 				               </tr>
-				               <tr>
+				               <tr class="room_tr">
 				                  <th>이름</th>
-				                  <td><input type="text" name="roomName" th:value="${room.roomName}"></td>
+				                  <td><input type="text" name="roomName" class="form-control" th:value="${room.roomName}"></td>
 				               </tr>
-				               <tr>
+				               <tr class="room_tr">
 				                  <th>가격</th>
-				                  <td><input type="text" class="inputNumber" name="charge" th:value="${#numbers.formatInteger(room.charge, 3, 'COMMA')}" onchange="numberFormat(this)"> 원</td>
+				                  <td><input type="text" class="inputNumber form-control" name="charge" th:value="${#numbers.formatInteger(room.charge, 3, 'COMMA')}" onchange="numberFormat(this)"> 원</td>
 				               </tr>
-				               <tr>
+				               <tr class="room_tr">
 				                  <th>전용</th>
 				                  <td>
 				                     <input type="hidden" th:id="'gender'+${room.roomCode}" name="gender" th:value="${room.gender}">
@@ -203,118 +321,146 @@
 				                     <label><input type="radio" th:name="'gender'+${room.roomCode}" value="M" th:checked="${room.gender}=='M'" onclick="choiceGender(this)">남성</label>
 				                  </td>
 				               </tr>
-				               <tr>
+				               <tr class="room_tr">
 				                  <th>수용인원 수</th>
-				                  <td><input type="text" class="inputNumber" name="capacity" th:value="${room.capacity}" size="5" onchange="numberFormat(this)">명</td>
+				                  <td><input type="text" class="inputNumber form-control" name="capacity" th:value="${room.capacity}" size="5" onchange="numberFormat(this)">명</td>
 				               </tr>
-				               <tr>
+				               <tr class="room_tr">
 				                  <th>객실 이용안내</th>
-				                  <td><textarea name="roomInfo" rows="5" cols="30">asdf</textarea></td>
+				                  <td><textarea name="roomInfo" class="form-control col-sm-5" rows="5" cols="30"  placeholder="예)
+-개인실
+-2인 기준 최대 2인
+-싱글침대 2개, 개인침구세트 제공 객실 내 욕실 구비 [인원추가 시 업체 사전 문의 필수]
+"></textarea></td>
 				               </tr>
 				            </table>
-				            <input type="button" class="removeRoomBtn" value="삭제" onclick="removeRoom(this)">
+				            <input type="button" class="removeRoomBtn btn btn-default" value="삭제" onclick="removeRoom(this)">
 				         </div>
 				      </div>
-                     
                   </td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">숙소 정보</label></th>
                   <td>
                      <label>숙소이용규칙</label><br>
-                     <textarea name="rules" rows="20" cols="63" maxlength="1000"></textarea><br><br>
+                     <textarea name="rules" class="form-control col-sm-5" rows="20" cols="63" maxlength="1000" placeholder="예)
+[숙소 이용 규칙]
+보안을 위하여 투숙객 본인외에 외부인 동반출입을 금지합니다
+게스트하우스 전구역은 금연입니다
+체크인이 오후 10시까지 안될 시 사전 연락주시길 바랍니다
+애완동물은 동반할 수 없습니다
+객실 내 식음을 금지합니다(주방에서 드실 수 있습니다)
+타인에게 피해나 불쾌감을 주는 행위(심한 음주 등) 또는 게스트하우스 이용규정을 지키지 않을 경우 강제 퇴실 조치합니다
+시설물을 파손하거나 침구류 훼손 및 오염(세탁불가능)시 전액 배상해야 합니다"></textarea><br><br>
                      <label>주차장 정보</label><br>
-                     <textarea name="parkingInfo" rows="10" cols="63" maxlength="100"></textarea>
+                     <textarea name="parkingInfo" class="form-control col-sm-5" rows="10" cols="63" maxlength="100" placeholder="예)
+건물 건너편 영등포 세무서 주차장
+(무료 / 24시간 개방)"></textarea>
                   </td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">주소</label></th>
-                  <td>
+                  <td style="line-height: 30px;">
                      <!-- 주소와 우편번호를 입력할 <input>들을 생성하고 적당한 name과 class를 부여한다 -->
-					<input type="button" id="postcodify_search_button" value="검색">
-					<input type="text" name="address" class="postcodify_address" th:value="${guestHouseDto.address}" size="42"/><br />
+					<input type="button" id="postcodify_search_button" class="btn btn-default" value="검색" style="margin: 0 15px 0 0; width: 80px;">
+					<input type="text" name="address" class="postcodify_address form-control" th:value="${guestHouseDto.address}" size="50"/><br />
                   </td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">오시는 길</label></th>
-                  <td><textarea name="directions" rows="10" cols="63" maxlength="100"></textarea></td>
+                  <td><textarea name="directions" class="form-control col-sm-5" rows="10" cols="63" maxlength="100" placeholder="예)
+[강남역에서 오시는 방법]
+강남역 10번 출구로 나와 신논현역 방향으로 직진
+올리브영과 지오다노 사이길로 좌회전
+100m 직진 후 GS25 편의점, 노랑통닭(같은 건물) 지나서 좌회전
+좌회전 하자마자 커피숍 가기전 (걸어서 5m) 왼편에 건물입구로 들어와 엘레베이터 타고 5층 508호"></textarea></td>
                </tr>
                <tr>
                   <th><label class="hostPage_label">정산계좌 입력</label></th>
                   <td>
-                     <label class="bank_label">거래은행</label>
-                     <select name="bankName">
-                        <option value="국민" th:selected="${guestHouseDto.bankName}=='국민'">국민</option>
-                        <option value="농협" th:selected="${guestHouseDto.bankName}=='농협'">농협</option>
-                        <option value="기업" th:selected="${guestHouseDto.bankName}=='기업'">기업</option>
-                        <option value="우리" th:selected="${guestHouseDto.bankName}=='우리'">우리</option>
-                        <option value="신한" th:selected="${guestHouseDto.bankName}=='신한'">신한</option>
-                     </select><br>
-                     
-                     <label class="bank_label">계좌번호</label>
-                     <input type="text" name="accountNumber" th:value="${guestHouseDto.accountNumber}">
+                  	<div class="bankTags">
+	                     <label class="bank_label">거래은행</label>
+	                     <select name="bankName" class="form-control">
+	                        <option value="국민" th:selected="${guestHouseDto.bankName}=='국민'">국민</option>
+	                        <option value="농협" th:selected="${guestHouseDto.bankName}=='농협'">농협</option>
+	                        <option value="기업" th:selected="${guestHouseDto.bankName}=='기업'">기업</option>
+	                        <option value="우리" th:selected="${guestHouseDto.bankName}=='우리'">우리</option>
+	                        <option value="신한" th:selected="${guestHouseDto.bankName}=='신한'">신한</option>
+	                     </select><br>
+	                 </div>
+                     <div class="bankTags">
+	                     <label class="bank_label">계좌번호</label>
+	                     <input type="text" name="accountNumber" class="form-control" th:value="${guestHouseDto.accountNumber}">
+                     </div>
                   </td>
                </tr>
             </table>
             <br><br>
-            <input type="button" value="취소" onclick="history.back()">
-            <a th:href="@{deleteGuestHouse(guestHouseCode=${guestHouseCode})}">삭제</a>
-            <input id="modifyGuestHouseBtn" type="button" value="수정하기">
+            <div class="btn-submitLine">
+	            <input type="button" id="cancelGuestHouseBtn" class="btn btn-default btn-lg" value="취소" onclick="history.back()">
+	            <a th:href="@{deleteGuestHouse(guestHouseCode=${guestHouseCode})}" id="deleteGuestHouseBtn" class="btn btn-default btn-lg">삭제</a>
+	            <input id="modifyGuestHouseBtn" type="button" class="btn btn-default btn-lg" value="수정하기">
+            </div>
          </form>
 
 		 <!-- inputCheck Modal -->
 		<div id="inputCheckModal" class="modal">
-		
+			
 			<!-- Modal content -->
 			<div class="modal-content">
+				<i class="fa fa-exclamation-circle" style="font-size:48px;color:#de9221;"></i>
 				<p id="modalMessage"></p>
-				<button id="inputCheckModalClose">확인</button>
+				<button id="inputCheckModalClose" class="btn btn-default btn-modal">확인</button>
 			</div>
 		</div>
 
-         <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
+        <div id="defaultRoomInfo" class="roomInfoDiv" style="display: none;">
             <table>
-            	<input type="hidden" name="roomIndex">
-            	<input type="hidden" name="roomCode" value="0">
-            	<tr>
-            		<th><label>방 사진 (최대 5장) <p>메인이미지를 선택해주세요.</p></label></th>
-            		<td>
-			            <div>
-			               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple>
-			               <input type="button" value="삭제" onclick="deleteImgs(this)">
+	         	<input type="hidden" name="roomIndex">
+	         	<input type="hidden" name="roomCode" value="0">
+	         	<tr class="room_tr">
+	         		<th><label>방 사진 (최대 5장) <p>메인이미지를  선택해주세요.</p></label></th>
+	         		<td>
+	         			<div>
+			               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple style="width: 65%;">
+			               <input type="button" class="btn btn-default" value="파일삭제" onclick="deleteImgs(this)">
 			            </div>
 			            <div class="imgs_wrap room_imgs_wrap" name="roomsImg"></div>
 			            <input type="hidden" name="room_imglength">
 			            <input type="hidden" name="mainRoomImage" value="0">
-            		</td>
-            	</tr>
-               <tr>
+	         		</td>
+	         	</tr>
+               <tr class="room_tr">
                   <th>이름</th>
-                  <td><input type="text" name="roomName"></td>
+                  <td><input type="text" name="roomName" class="form-control"></td>
                </tr>
-               <tr>
+               <tr class="room_tr">
                   <th>가격</th>
-                  <td><input type="text" class="inputNumber" name="charge" placeholder="0" onchange="numberFormat(this)"> 원</td>
+                  <td><input type="text" class="inputNumber form-control" name="charge" placeholder="0" onkeyup="numberFormat(this)"> 원</td>
                </tr>
-               <tr>
+               <tr class="room_tr">
                   <th>전용</th>
                   <td>
-                     <input type="hidden" name="gender">
+                     <input type="hidden" name="gender" value="N">
                      <label class="checkboxLabel"><input type="radio" value="N" checked="checked" onclick="choiceGender(this)">혼성</label>
                      <label class="checkboxLabel"><input type="radio" value="F" onclick="choiceGender(this)">여성</label>
                      <label class="checkboxLabel"><input type="radio" value="M" onclick="choiceGender(this)">남성</label>
                   </td>
                </tr>
-               <tr>
+               <tr class="room_tr">
                   <th>수용인원 수</th>
-                  <td><input type="text" class="inputNumber" name="capacity" onchange="numberFormat(this)" size="5"> 명</td>
+                  <td><input type="text" class="inputNumber form-control" name="capacity" onkeyup="numberFormat(this)" size="5"> 명</td>
                </tr>
-               <tr>
+               <tr class="room_tr">
                   <th>객실 이용안내</th>
-                  <td><textarea name="roomInfo" rows="5" cols="30"></textarea></td>
+                  <td><textarea name="roomInfo" class="form-control col-sm-5" rows="8" cols="37" placeholder="예)
+-개인실
+-2인 기준 최대 2인
+-싱글침대 2개, 개인침구세트 제공 객실 내 욕실 구비 [인원추가 시 업체 사전 문의 필수]
+"></textarea></td>
                </tr>
             </table>
-            <input type="button" class="removeRoomBtn" value="삭제" onclick="removeRoom(this)">
+            <input type="button" class="removeRoomBtn btn btn-default" value="삭제" onclick="removeRoom(this)">
          </div>
       </div>
       
@@ -342,7 +488,6 @@
                 cloneRoom.find('input[name=roomIndex]').val(roomIndex);
                 cloneRoom.find('input[type=radio]').attr('name', 'gender'+roomIndex);
                 cloneRoom.find('input[name=gender]').attr('id', 'gender'+roomIndex);
-                cloneRoom.find('input[name=gender]').val('N');
                 cloneRoom.appendTo(div);
                 roomIndex++;
             })
@@ -469,7 +614,7 @@
                //이미지 정보들을 초기화
                sel_files = [];
                var prtDiv = e.target.parentNode.nextElementSibling; // div imgs_wrap
-               var roomInfoTable = $(prtDiv).parent().find('table');
+               var roomInfoTable = $(prtDiv).parent().parent().parent().parent();
                
                $(prtDiv).empty();
                
@@ -542,11 +687,12 @@
             
          </script>
          
+         <!-- 주소 api 적용 -->
          <!-- Postcodify를 로딩한다 -->
 		 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
-		
 		 <!-- "검색" 단추를 누르면 팝업 레이어가 열리도록 설정한다 -->
 		 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
+		 
       </div>
    </body>
 </html>

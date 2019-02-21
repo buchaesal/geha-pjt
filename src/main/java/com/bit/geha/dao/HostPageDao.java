@@ -78,7 +78,7 @@ public interface HostPageDao {
 	//페이징
 	public int getGuestHouseListTotal(int memberCode);
 	
-	public int getGuestBookingListTotal(int hostCode);
+	public int getGuestBookingListTotal(AdminPageCriteria cri, int hostCode);
 	
 	public int getGuestReviewListTotal(int hostCode);
 }

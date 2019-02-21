@@ -52,16 +52,28 @@
 			}
 			
 			th {
-	text-align: center;
-}
-
-tr {
-	border-bottom: 2px solid lightgray;
-}
+				text-align: center;
+			}
+			
+			tr {
+				border-bottom: 2px solid lightgray;
+			}
 		</style>
 	</head>
 	<body>
 		<div layout:fragment="hostPage_content">
+		
+			<form id="searchForm" action="/hostPage/guestBookingList">
+				<select name="type">
+					<option value="" th:selected="${pageMaker.cri.type == null}">--</option>
+					<option value="guestHouseName" th:selected="${pageMaker.cri.type eq 'guestHouseName'}">게스트하우스 이름</option>
+					<option value="bookingStatus" th:selected="${pageMaker.cri.type eq 'bookingStatus'}">예약 상태</option>
+				</select>
+				<input type="text" name="keyword" th:value="${pageMaker.cri.keyword}">
+				<button type="button" class='btn-primary' onclick="search()">검색</button>
+			</form>
+		
+		
 			<table width="800px">
 				<tr height="80px" align="center" style="background: #f1f1fb;">
 	               <th>예약번호</th>
@@ -119,15 +131,15 @@ tr {
               <ul class="pagination pagination-sm no-margin pull-center">
               
               <li th:if="${pageMaker.prev} == true">
-              	<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+              	<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum},type=${pageMaker.cri.type},keyword=${pageMaker.cri.keyword})}">&laquo;</a>
               </li>
               
               <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-                <a th:href="@{/hostPage/guestBookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+                <a th:if="${idx}" th:href="@{/hostPage/guestBookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum},type=${pageMaker.cri.type},keyword=${pageMaker.cri.keyword})}" th:text="${idx}"></a>
               </li>
                 
               <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-              	<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+              	<a th:href="@{/hostPage/guestBookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum},type=${pageMaker.cri.type},keyword=${pageMaker.cri.keyword})}">&raquo;</a>
               </li>
               </ul>
             </div>
@@ -176,6 +188,23 @@ tr {
 							location.reload();
 						}
 					})
+				}
+				
+				function search(){
+					var searchForm = $("#searchForm");
+					if (!searchForm.find("option:selected")
+							.val()) {
+						alert("검색종류를 선택하세요");
+						return false;
+					}
+
+					else if (!searchForm.find(
+							"input[name='keyword']").val()) {
+						alert("키워드를 입력하세요");
+						return false;
+					} else{
+						 searchForm.submit();
+					}
 				}
 				
 			</script>

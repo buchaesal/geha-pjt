@@ -65,15 +65,14 @@ tr {
 	border-bottom: 2px solid lightgray;
 	}
 
-#myLike {
-	text-decoration: underline;
-	font-size: 27px;
 
-}
 </style>
 </head>
 <body>
 	<div layout:fragment="myPage_content">
+		<img src="https://image.flaticon.com/icons/svg/149/149657.svg"
+			width="20px" height="20px"
+			style="position: absolute; left: 17p; left: 39px; top: 394px;">
 		<div th:if="${#lists.size(likeList)==0}" style="padding-top: 33px">
 			<p class="heading">찜 한 숙소가 없습니다.</p>
 			<a href="/search" class="btn btn-info waves-effect">숙소 둘러보기</a>
@@ -82,7 +81,7 @@ tr {
 			align="right">
 
 			<table class="tableOne" width="800px">
-				<tr align="center" height="80px"
+				<tr align="center" height="50px"
 					style="border-bottom: 2.2px solid lightgray; background: #f1f1fb;">
 					<th>게스트하우스</th>
 					<th>가격</th>
