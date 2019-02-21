@@ -43,9 +43,9 @@
 	        .modal-content {
 	            background-color: #fefefe;
 	            margin: 15% auto; /* 15% from the top and centered */
-	            padding: 20px;
+	            padding: 30px;
 	            border: 1px solid #888;
-	            width: 50%; /* Could be more or less, depending on screen size */                          
+	            width: 35%; /* Could be more or less, depending on screen size */                          
 	        }
 	        /* The Close Button */
 	        .close {
@@ -76,7 +76,15 @@
 			
 			.checkValue_label {
 				display: none; 
-				color: red
+				color: red;
+			}
+			
+			li>span {
+				color: red;
+			}
+			
+			td {
+				font-size: 13px;
 			}
 		</style>
 	</head>
@@ -131,23 +139,27 @@
 							<!-- Modal content -->
 							<div class="modal-content">
 								<span id="useRulesModalClose" class="close">&times;</span>
-								<p>숙소이용규칙 및 취소/환불규정</p>
+								<p style="font-size: 18px;">숙소이용규칙 및 취소/환불규정</p>
 								<p>이용규칙</p>
 								<ul>
 									<li> 최대 인원 초과시 입실 불가합니다. </li>
 									<li> 정원 기준 요금 외 인원추가 여금은 현장결제입니다. </li>
-									<li> 규정3 </li>
-									<li> 규정4 </li>
-									<li> 규정5 </li>
+									<li> 제공 이미지는 배정된 객실과 다를 수 있습니다. </li>
+									<li> 제공 정보는 숙소의 사정에 따라 변경될 수 있습니다. </li>
+									<li> 미성년자는 보호자 동반 시 투숙이 가능합니다. </li>
+									<li> 반려동물은 숙소 규정에 따라 출입이 제한 되오니 숙소별 상세정보를 꼭 확인해 주세요 </li>
+									<li> 시즌 별 객실 가격 상이하오니 확인바랍니다. </li>
+									<li> 업체 현장에서 객실 컨디션 및 서비스로 인해 발생된 분쟁은 #GEHA에서 책임지지 않습니다. </li>
 								</ul>
 								<p>취소/환불규정</p>
 								<ul>
 									<li> 숙소 사정에 의해 취소 발생시 100% 환불이 가능합니다. </li>
 									<li> 예약 상품별 숙소 정보에 기재된 <span>취소, 환불규정을 반드시 환인 후 이용해주시기 바랍니다.</span> </li>
-									<li> 규정3 </li>
-									<li> 규정4 </li>
-									<li> 규정5 </li>
-									<li> 규정6 등등등</li>
+									<li> 예약 이후의 취소는  <span>취소/환불 규정에 의거</span>하여 적용됩니다.</li>
+									<li> 취소, 변경 불가 상품은 규정과 상관없이 <span>취소, 변경이 불가</span>합니다. </li>
+									<li> <span>당일 결제를 포함한 체크인 당일 취소는 취소, 변경이 불가</span>합니다. </li>
+									<li> 전월 휴대폰 결제 건은 단순 변심의 사유로 예약취소할 경우, 취소 규정외에 <span>환불 수수료 5%</span>가 발생합니다. </li>
+									<li> 단, 숙소의 객실 정보가 수시로 변경될 수 있으며 이로 인한 불익은 #GEHA에서 책임지지 않습니다. </li>
 								</ul>
 							</div>
 						</div>
@@ -161,24 +173,33 @@
 							<!-- Modal content -->
 							<div class="modal-content">
 								<span id="personalInfoCollectionModalClose" class="close">&times;</span>
-								<p>개인정보 수집 및 이용</p>
-								<p>이용규칙</p>
+								<p style="font-size: 18px;">개인정보 수집 및 이용</p>
 								<ul>
-									<li> 최대 인원 초과시 입실 불가합니다. </li>
-									<li> 정원 기준 요금 외 인원추가 여금은 현장결제입니다. </li>
-									<li> 규정3 </li>
-									<li> 규정4 </li>
-									<li> 규정5 </li>
+									<li> "#GEHA" 개인정보 수집 이용 목적 및 항목, 보유기간은 아래와 같습니다. </li>
+									<li> "회원"은 정보 수집/이용 약관에 동의하지 않을 수 있으며, 동의하지 않는 경우 예약 서비스 이용에 제한이 있을 수 있습니다. </li>
 								</ul>
-								<p>취소/환불규정</p>
-								<ul>
-									<li> 숙소 사정에 의해 취소 발생시 100% 환불이 가능합니다. </li>
-									<li> 예약 상품별 숙소 정보에 기재된 <span>취소, 환불규정을 반드시 환인 후 이용해주시기 바랍니다.</span> </li>
-									<li> 규정3 </li>
-									<li> 규정4 </li>
-									<li> 규정5 </li>
-									<li> 규정6 등등등</li>
-								</ul>
+								<table border="2">
+									<tr>
+										<th>수집/이용 목적</th>
+										<th>위탁 업무 내용</th>
+										<th>개인 정보의 보유 및 이용 기간</th>
+									</tr>
+									<tr>
+										<td>예약 서비스 이용</td>
+										<td>예약자명, 휴대폰 번호, 결제 정보</td>
+										<td>전자상거래 상 소비자 보호에 관한 법률에 따라 5년간 보관</td>
+									</tr>
+									<tr>
+										<td>결제 서비스 이용</td>
+										<td>- 신용카드 결제: 카드사명, 카드번호, 유효기간, 이메일등<br> - 휴대폰 결제: 휴대폰 번호, 통신사, 결제 승인번호 등</td>
+										<td>전자상거래 상 소비자 보호에 관한 법률에 따라 5년간 보관</td>
+									</tr>
+									<tr>
+										<td>서비스 이용 및 부정거래 기록 확인</td>
+										<td>서비스 이용 시간/이용 기록, 접속 로그, 이용 콘텐츠, 쿠키, 접속IP정보, 주소, 사용된 신용카드 정보, 기기 모델명, 브라우저 정보</td>
+										<td>통신비밀보호법에 따라 3개월간 보관</td>
+									</tr>
+								</table>
 							</div>
 						</div>
 						
@@ -191,24 +212,29 @@
 							<!-- Modal content -->
 							<div class="modal-content">
 								<span id="personalInfoProvisionModalClose" class="close">&times;</span>
-								<p>개인정보 제 3자 제공 동의</p>
-								<p>이용규칙</p>
+								<p style="font-size: 18px;">개인정보 제 3자 제공 동의</p>
 								<ul>
-									<li> 최대 인원 초과시 입실 불가합니다. </li>
-									<li> 정원 기준 요금 외 인원추가 여금은 현장결제입니다. </li>
-									<li> 규정3 </li>
-									<li> 규정4 </li>
-									<li> 규정5 </li>
+									<li> "#GEHA" 개인정보 수집 이용 목적 및 항목, 보유기간은 아래와 같습니다. </li>
+									<li> "회원"은 정보 수집/이용 약관에 동의하지 않을 수 있으며, 동의하지 않는 경우 예약 서비스 이용에 제한이 있을 수 있습니다. </li>
 								</ul>
-								<p>취소/환불규정</p>
-								<ul>
-									<li> 숙소 사정에 의해 취소 발생시 100% 환불이 가능합니다. </li>
-									<li> 예약 상품별 숙소 정보에 기재된 <span>취소, 환불규정을 반드시 환인 후 이용해주시기 바랍니다.</span> </li>
-									<li> 규정3 </li>
-									<li> 규정4 </li>
-									<li> 규정5 </li>
-									<li> 규정6 등등등</li>
-								</ul>
+								<table border="2">
+									<tr>
+										<th>제공받는 자</th>
+										<td>[[${appliedBookingInfo.guestHouseName}]]</td>
+									</tr>
+									<tr>
+										<th>제공 목적</th>
+										<td>숙박예약서비스 이용계약 이행(서비스 제공, 확인, 이용자 정보 확인)</td>
+									</tr>
+									<tr>
+										<th>제공하는 정보</th>
+										<td>예약한 숙박 서비스의 이용자 정보(예약자 이름, 휴대폰번호, 예약번호, 예약한 업체명, 예약한 객실명, 결제금액)</td>
+									</tr>
+									<tr>
+										<th>제공받는 자의 개인정보 보유 및 이용기간</th>
+										<td>예약서비스 제공 완료 후 6개월</td>
+									</tr>
+								</table>
 							</div>
 						</div>
 					</div>
@@ -489,7 +515,7 @@
 					            msg += '카드 승인번호 : ' + rsp.apply_num;
 					            msg += '예약자 이메일 : ' + rsp.buyer_email;
 					            msg += '예약자 번호 : ' + rsp.buyer_tel;
-					            alert(msg);
+					            //alert(msg);
 					            
 					            $("input[name='approvalNumber']").prop("value", rsp.apply_num);
 					            $("#bookingForm").submit();
