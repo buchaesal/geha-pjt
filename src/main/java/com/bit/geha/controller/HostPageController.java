@@ -59,8 +59,9 @@ public class HostPageController {
 		memberService.getSession(auth,session);
 		int memberCode=((Integer) session.getAttribute("memberCode")).intValue();
 		
-		List<Integer> isRejectList = hostPageDao.getIsRejectList(memberCode);
 		List<GuestHouseDto> guestHouseList = hostPageDao.getGuestHouseList(cri, memberCode);
+		
+		model.addAttribute("rejectedGuestHouseList", hostPageDao.getRejectedGuestHouseCodeList());
 		
 		// 페이징
 		PageMaker pageMaker = new PageMaker();
@@ -69,7 +70,6 @@ public class HostPageController {
 
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("guestHouseList", guestHouseList);
-		model.addAttribute("isRejectList", isRejectList);
 		model.addAttribute("tomorrow", memberService.getTomorrow());
 	}
 	
@@ -276,13 +276,16 @@ public class HostPageController {
 		
 		List<Integer> deleteRoomCodes = hostPageDao.getRoomCodes(guestHouseCode);
 		
+		int i=1;
+		System.out.println("deleteRoomCodes: " + deleteRoomCodes);
 		if(deleteRoomCodes.size()>0) {
+			System.out.println("deleteRoomIndex: " + i++);
+			hostPageDao.deleteRooms(deleteRoomCodes); //방 삭제
 			for(int roomCode : deleteRoomCodes) {
 				System.out.println("delete roomCode: " + roomCode);
 				hostPageDao.deleteImgs(guestHouseCode, roomCode); //db에서 파일내역 지우기
 				UploadFileUtils.deleteRoomImgFolder(guestHouseCode, roomCode); //경로에서 이미지 지우기
 			}
-			hostPageDao.deleteRooms(deleteRoomCodes); //방 삭제
 		}
 		
 		//편의시설 delete
@@ -302,12 +305,10 @@ public class HostPageController {
 		log.info("guestBookingList()");
 		cri.setPerPageNum(5);
 
-		System.out.println(cri.getType() + ", " + cri.getKeyword());
 		if(cri.getType()==null) {
 			cri.setType("");
 			cri.setKeyword("");
 		}
-		System.out.println(cri.getType() + ", " + cri.getKeyword());
 		
 		
 		//로그인계정 가져오기
