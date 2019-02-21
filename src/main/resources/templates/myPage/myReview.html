@@ -153,10 +153,7 @@ tr {
 	border-bottom: 2px solid lightgray;
 }
 
-#myReview {
-	text-decoration: underline;
-	font-size: 27px;
-}
+
 
 .replyTitle {
 	border-bottom: 1px solid darkgray;
@@ -172,16 +169,15 @@ tr {
 		var deleteInfo = [[${deleteInfo}]];
 		var modifyOk = [[${modifyOk}]];
 
+		$("#submitBtn").hide();
 		
 		if(deleteInfo!==null){
 			$("#msg").text(deleteInfo);
-			$("#submitBtn").hide();
 			$("#confirmModal").modal();
 		}
 		
 		if(modifyOk!==null){
 			$("#msg").text(modifyOk);
-			$("#submitBtn").hide();
 			$("#confirmModal").modal();
 		}
 
@@ -244,7 +240,7 @@ tr {
 		var reviewNo = event.srcElement.id;
 		$("#deleteInput").val(reviewNo);
 		$("#msg").text('이 후기를 삭제하시겠습니까?');
-		$("#modalBody").hide();
+		$("#submitBtn").show();
 		$("#confirmModal").modal();
 	}
 	
@@ -269,13 +265,16 @@ tr {
 </head>
 <body>
 	<div layout:fragment="myPage_content">
+		<img src="https://image.flaticon.com/icons/svg/149/149657.svg"
+			width="20px" height="20px"
+			style="position: absolute; left: 17p; left: 39px; top: 339px;">
 		<div th:if="${#lists.size(reviewList)==0}" style="padding-top: 33px">
 			<p style="font-size: 20px;">작성한 리뷰가 없습니다.</p>
 			<a href="/myPage/bookingList" class="btn btn-info waves-effect">리뷰쓰러가기</a>
 		</div>
 		<div th:if="${#lists.size(reviewList)>0}">
 			<table>
-				<tr height="80px"
+				<tr height="50px"
 					style="border-bottom: 2.2px solid lightgray; background: #f1f1fb;">
 					<th style="width: 187px;">게스트하우스</th>
 					<th>작성내용</th>
@@ -395,9 +394,9 @@ tr {
 
 					<!--Footer-->
 					<div class="modal-footer flex-center">
-						<a href="#" type="button" class="btn  btn-info waves-effect" onclick="modify()">수정</a>
-						<a type="button" class="btn  btn-info waves-effect"
-							data-dismiss="modal">취소</a>
+						<a href="#" type="button" class="btn  btn-info waves-effect"
+							onclick="modify()">수정</a> <a type="button"
+							class="btn  btn-info waves-effect" data-dismiss="modal">취소</a>
 					</div>
 				</div>
 				<!--/.Content-->
@@ -423,14 +422,14 @@ tr {
 							<input type="hidden" id="deleteInput" name="reviewNo">
 						</form>
 
-						<p id="modalBody" class="heading"></p>
 					</div>
 					<br />
 					<!--Footer-->
 					<div class="flex-center"
 						style="padding: 15px; text-align: center; padding-bottom: 29px;">
-						<a href="#" id="submitBtn" class="btn btn-primary btn-lg" onclick="frmSubmit()">확인</a>
-						<a href="#" class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
+						<a href="#" id="submitBtn" class="btn btn-primary btn-lg"
+							onclick="frmSubmit()">확인</a> <a href="#"
+							class="btn btn-primary btn-lg" data-dismiss="modal">닫기</a>
 					</div>
 				</div>
 				<!--/.Content-->
@@ -454,8 +453,7 @@ tr {
 							제목
 							<div
 								style="background: white; box-shadow: 2px 2px 2px; border-radius: 28px;">
-								<p id="titleByMe"
-									style="text-align: left; padding: 14px;"></p>
+								<p id="titleByMe" style="text-align: left; padding: 14px;"></p>
 							</div>
 							내용
 							<div
