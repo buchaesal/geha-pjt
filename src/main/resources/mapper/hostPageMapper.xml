@@ -3,12 +3,19 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bit.geha.dao.HostPageDao">
 
+	<select id="getRejectedGuestHouseCodeList" resultType="int">
+		SELECT guestHouseCode, count(*) as rejectCnt 
+		FROM reject_tb
+		GROUP BY guestHouseCode
+		HAVING rejectCnt>=5;
+	</select>
+
 	<insert id="addGuestHouse" useGeneratedKeys="true" keyProperty="guestHouseCode" parameterType="GuestHouseDto">
 		INSERT INTO guestHouse_tb (guestHouseName, guestHouseInfo, rules, parkingInfo, address, directions, registerDate
-			, memberCode, businessTrip, gourmet, trip, shopping, bankName, accountNumber)
+			, memberCode, businessTrip, gourmet, trip, shopping, bankName, accountNumber, status)
 		VALUES 
 		(#{guestHouseName}, #{guestHouseInfo}, #{rules}, #{parkingInfo}, #{address}, #{directions}, now()
-			, #{memberCode}, #{businessTrip}, #{gourmet}, #{trip}, #{shopping}, #{bankName}, #{accountNumber})
+			, #{memberCode}, #{businessTrip}, #{gourmet}, #{trip}, #{shopping}, #{bankName}, #{accountNumber}, '승인대기')
 	</insert>
 	
 	<insert id="addRooms" useGeneratedKeys="true" keyProperty="roomCode" parameterType="java.util.List">
@@ -38,9 +45,9 @@
 	<update id="modifyGuestHouse" parameterType="GuestHouseDto">
 		UPDATE guestHouse_tb
 		SET guestHouseName=#{guestHouseName}, guestHouseInfo=#{guestHouseInfo}, rules=#{rules}
-			, parkingInfo=#{parkingInfo}, address=#{address}, directions=#{directions}, businessTrip=#{businessTrip}
+			, parkingInfo=#{parkingInfo}, address=#{address}, directions=#{directions}, registerDate=now(), businessTrip=#{businessTrip}
 			, gourmet=#{gourmet}, trip=#{trip}, shopping=#{shopping}, bankName=#{bankName}
-			, accountNumber=#{accountNumber}
+			, accountNumber=#{accountNumber}, status='승인대기' 
 		WHERE guestHouseCode=#{guestHouseCode}
 	</update>
 	
@@ -56,9 +63,9 @@
 	
 	<delete id="deleteRooms" parameterType="java.util.List">
 		DELETE FROM room_tb 
-		WHERE roomCode=
-		<foreach collection="list" item="roomCode" separator=", ">
-			#{roomCode}
+		WHERE 
+		<foreach collection="list" index="index" item="roomCode" open="(" separator="or" close=")">
+			roomCode=${roomCode}
 		</foreach>
 	</delete>
 	

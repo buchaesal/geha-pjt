@@ -23,10 +23,9 @@ public interface HostPageDao {
 	@Select("SELECT * FROM guestHouse_tb WHERE memberCode=#{memberCode} ORDER BY registerDate desc, guestHouseCode desc LIMIT #{cri.pageStart}, #{cri.perPageNum}")
 	public List<GuestHouseDto> getGuestHouseList(@Param("cri")AdminPageCriteria cri, int memberCode);
 	
-	@Select("SELECT guestHouseCode FROM reject_tb WHERE memberCode=#{memberCode}")
-	public List<Integer> getIsRejectList(int memberCode);
+	public List<Integer> getRejectedGuestHouseCodeList();
 	
-	@Select("SELECT * FROM reject_tb WHERE guestHouseCode=#{guestHouseCode}")
+	@Select("SELECT * FROM reject_tb WHERE guestHouseCode=#{guestHouseCode} ORDER BY rejectDate desc")
 	public List<RejectDto> getRejectListByGuestHouseCode(int guestHouseCode);
 	
 	//게스트하우스 등록하기

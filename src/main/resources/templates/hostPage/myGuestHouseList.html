@@ -103,22 +103,21 @@ th {
 				height="80px">
 				<td th:text="${guestHouseDto.guestHouseCode}"></td>
 				<td th:text="${guestHouseDto.guestHouseName}"></td>
-				<td
-					th:text="${#dates.format(guestHouseDto.registerDate, 'yy.MM.dd')}"></td>
+				<td th:text="${#dates.format(guestHouseDto.registerDate, 'yy.MM.dd')}"></td>
 				<td>
 					<div th:if="${guestHouseDto.approvalDate}">
 						등록완료<br>
 						<a th:href="@{/room/roomInfo(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${tomorrow}, bookingNumber=1)}">보기</a>
 					</div>
 					<div th:unless="${guestHouseDto.approvalDate}">
-						<label th:if="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
+						<label th:if="${guestHouseDto.status}=='반려'">
 							반려
 							<i class="fa fa-file-text" style="font-size:18px" th:onclick="|javascript:getRejectList('${guestHouseDto.guestHouseCode}')|"></i>
 							<br> 
-							<a th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">수정/삭제</a>
+							<a th:unless="${#lists.contains(rejectedGuestHouseList, guestHouseDto.guestHouseCode)}" th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">수정/삭제</a>
 						</label> 
-						<label th:unless="${#lists.contains(isRejectList, guestHouseDto.guestHouseCode)}">
-							등록신청<br> 
+						<label th:if="${guestHouseDto.status}=='승인대기'">
+							승인대기<br> 
 							<a th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode})}">수정/삭제</a>
 						</label>
 					</div>
@@ -154,7 +153,10 @@ th {
 
 			<!-- Modal content -->
 			<div class="modal-content">
-				<p style="font-size: 20px;">- 반려 이력 -</p>
+				<p>
+					<div style="font-size: 20px; margin-bottom: 3px;">- 반려 이력 -</div>
+					<div style="font-size: 13px;">(5회 이상 반려 시 기존 작성 게시물에서 재신청을 하실 수 없습니다.)</div>
+				</p>
 				<table id="rejectModalTable"></table>
 				<button id="rejectListModalClose">확인</button>
 			</div>
