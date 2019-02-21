@@ -140,14 +140,18 @@ font-size: 18px;
  padding-left: 96px;
 }
 
-
+a.before#myInfo:before,a.after#myInfo:after {
+   content: "";
+  position:absolute;
+  bottom:-0.25em;
+  height:0.35rem;
+  width:100%;
+}
 </style>
 </head>
 <body>
 <div layout:fragment="myPage_content" class="container-login100">
-<img src="https://image.flaticon.com/icons/svg/149/149657.svg"
-			width="20px" height="20px"
-			style="position: absolute; left: 17p; left: 39px; top: 469px;">
+
 	<h3>내 정보 관리</h3>
 
 				<form action="/myPage/updateInfo" id="frm" width="200px">

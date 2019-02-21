@@ -65,14 +65,18 @@ tr {
 	border-bottom: 2px solid lightgray;
 	}
 
-
+a.before#myLike:before,a.after#myLike:after {
+   content: "";
+  position:absolute;
+  bottom:-0.25em;
+  height:0.35rem;
+  width:100%;
+}
 </style>
 </head>
 <body>
 	<div layout:fragment="myPage_content">
-		<img src="https://image.flaticon.com/icons/svg/149/149657.svg"
-			width="20px" height="20px"
-			style="position: absolute; left: 17p; left: 39px; top: 394px;">
+
 		<div th:if="${#lists.size(likeList)==0}" style="padding-top: 33px">
 			<p class="heading">찜 한 숙소가 없습니다.</p>
 			<a href="/search" class="btn btn-info waves-effect">숙소 둘러보기</a>
@@ -108,7 +112,7 @@ tr {
 						<td><a
 							target="_blank" th:href="@{'/room/roomInfo?guestHouseCode='+${likeDto.guestHouseCode}+
 				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
-				'&bookingEnd='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+'&bookingNumber=1'}">
+				'&bookingEnd='+${tomorrow}+'&bookingNumber=1'}">
 								<button type="button" class="btn-primary">예약하러가기</button></a></td>
 						<td><input type="checkbox" name="chk"
 							th:value="${likeDto.roomCode}"></td>
@@ -194,15 +198,6 @@ tr {
 						data-ride="carousel">
 						<!-- Wrapper for slides -->
 						<div class="carousel-inner" id="putImageArea"></div>
-
-						<!-- Controls -->
-						<!-- 	<a class="left carousel-control" href="#carousel-example-generic"
-							role="button" data-slide="prev"> <span
-							class="glyphicon glyphicon-chevron-left"></span>
-						</a> <a class="right carousel-control"
-							href="#carousel-example-generic" role="button" data-slide="next">
-							<span class="glyphicon glyphicon-chevron-right"></span>
-						</a> -->
 					</div>
 				</div>
 			</div>
@@ -242,9 +237,14 @@ tr {
 		});
 
 	function deleteLike(){
+		if($("input:checkbox[name=chk]:checked").length===0){
+			$("#modalName").text('삭제하고 싶은 항목을 선택해주세요.');
+			$("#confirmModal").modal();
+		}else{
 		$("#modalName").text('선택한 찜을 삭제하시겠습니까?');
 		$("#secret").show();
 		$("#confirmModal").modal();
+		}
 	}
 	
 	function frmSubmit(){
@@ -260,7 +260,6 @@ tr {
 	var guestHouseCode = event.srcElement.id;
 	var map2 = map[event.srcElement.id];
 	var result="";
-	/* console.log(map2[1].savedName); */
 
  $(map2).each(function(){
 	 result+="<div class='item active'><img src='/gehaImg/"+guestHouseCode+"/"+this.savedName+"'></div>";

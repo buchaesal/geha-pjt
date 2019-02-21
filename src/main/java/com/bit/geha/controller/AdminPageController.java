@@ -51,13 +51,17 @@ public class AdminPageController {
 		if (!auth.equals("all")) {
 			model.addAttribute("list", adminPageDao.getMemberList(cri, auth));
 			model.addAttribute("auth", auth);
+			
 			pageMaker.setTotalCount(adminPageDao.getTotal(cri, auth));
 		} else {
 			model.addAttribute("list", adminPageDao.getMemberList(cri, ""));
 			model.addAttribute("auth", "");
+			
 			pageMaker.setTotalCount(adminPageDao.getTotal(cri, ""));
 		}
-
+		
+		model.addAttribute("type",cri.getType());
+		model.addAttribute("keyword",cri.getKeyword());
 		model.addAttribute("pageMaker", pageMaker);
 
 	}
