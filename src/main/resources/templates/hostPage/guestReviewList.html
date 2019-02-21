@@ -57,7 +57,7 @@ tr {
               </li>
               
               <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-                <a th:href="@{/hostPage/guestReviewList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+                <a th:if="${idx}" th:href="@{/hostPage/guestReviewList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
               </li>
                 
               <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">

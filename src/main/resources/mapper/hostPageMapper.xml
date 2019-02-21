@@ -66,6 +66,16 @@
 	<select id="getGuestBookingList" parameterType="map" resultType="BookingDto">
 		SELECT b.*, v.guestHouseCode, v.guestHouseName, v.roomName FROM booking_tb b,  bkrmghmatching_view v 
 		WHERE b.bookingCode=v.bookingCode AND v.hostCode=#{hostCode} 
+		
+		<choose>
+			<when test="cri.type == 'guestHouseName'.toString()">
+				and v.guestHouseName like concat('%', #{cri.keyword}, '%')
+			</when>
+			<when test="cri.type == 'bookingStatus'.toString()">
+				and b.bookingStatus like concat('%', #{cri.keyword}, '%')
+			</when>
+		</choose>
+		
 		ORDER BY b.bookingCode desc
 		LIMIT #{cri.pageStart}, #{cri.perPageNum}
 	</select>
@@ -84,10 +94,18 @@
 	</select>
 	
 	<select id="getGuestBookingListTotal" resultType="int">
-		SELECT count(b.*) 
+		SELECT count(*) 
 		FROM booking_tb b,  bkrmghmatching_view v
 		WHERE b.bookingCode=v.bookingCode AND v.hostCode=#{hostCode} 
-		ORDER BY b.bookingCode desc
+		
+		<choose>
+			<when test="cri.type == 'guestHouseName'.toString()">
+				and v.guestHouseName like concat('%', #{cri.keyword}, '%')
+			</when>
+			<when test="cri.type == 'bookingStatus'.toString()">
+				and b.bookingStatus like concat('%', #{cri.keyword}, '%')
+			</when>
+		</choose>
 	</select>
 	
 	<select id="getGuestReviewListTotal" resultType="int">

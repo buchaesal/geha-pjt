@@ -301,6 +301,14 @@ public class HostPageController {
 	public void guestBookingList(HttpSession session, Authentication auth, Model model, @ModelAttribute("cri") AdminPageCriteria cri) {
 		log.info("guestBookingList()");
 		cri.setPerPageNum(5);
+
+		System.out.println(cri.getType() + ", " + cri.getKeyword());
+		if(cri.getType()==null) {
+			cri.setType("");
+			cri.setKeyword("");
+		}
+		System.out.println(cri.getType() + ", " + cri.getKeyword());
+		
 		
 		//로그인계정 가져오기
 		memberService.getSession(auth,session);
@@ -311,7 +319,7 @@ public class HostPageController {
 		// 페이징
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(hostPageDao.getGuestHouseListTotal(memberCode));
+		pageMaker.setTotalCount(hostPageDao.getGuestBookingListTotal(cri, memberCode));
 
 		model.addAttribute("pageMaker", pageMaker);
 	}
