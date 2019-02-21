@@ -35,10 +35,6 @@ p {
 	font-weight: bold;
 }
 
-#myGuestHouseList {
-	text-decoration: underline;
-	font-size: 27px;
-}
 
 tr {
 	border-bottom: 2px solid lightgray;
@@ -78,6 +74,14 @@ th {
 	background-color: #101086;
 	color: white;
 	border: 1px solid #101086;
+}
+
+a.before#myGuestHouseList:before,a.after#myGuestHouseList:after {
+   content: "";
+  position:absolute;
+  bottom:-0.25em;
+  height:0.35rem;
+  width:100%;
 }
 </style>
 </head>

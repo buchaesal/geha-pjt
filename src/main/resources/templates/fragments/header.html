@@ -2,48 +2,7 @@
 <meta charset="UTF-8">
 
 <header th:fragment="header" xmlns:th="http://www.thymeleaf.org">
-	<!-- Static navbar -->
-	<!-- <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
-			Brand and toggle get grouped for better mobile display
-			<div class="navbar-header">
 
-				<h1>
-					<a class="navbar-brand page-scroll" href="/">#GEHA</a>
-				</h1>
-			</div>
-
-			<div class="collapse navbar-collapse"
-				id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav navbar-right">
-					<li><a class="page-scroll" href="/search">방찾기</a></li>
-					<li><a class="page-scroll" href="/myPage/bookingList">예약내역</a>
-					</li>
-					<li><a class="page-scroll" href="/faq">FAQ</a></li>
-					<li th:unless="${session.name}"><a class="page-scroll"
-						href="/member/login"> 로그인</a></li>
-
-					Single button
-					<div class="btn-group" th:if="${session.name}">
-						<button type="button" class="btn btn-default dropdown-toggle"
-							data-toggle="dropdown" data-hover="dropdown">
-							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu">
-							<li><span style="border: 1px;" th:text="${session.name}+'님'"></span></li>
-							<li class="divider"></li>
-							<li><a class="page-scroll" href="/myPage/bookingList">마이페이지</a></li>
-							<li th:if="${session.auth.equals('HOST')}"><a href="/hostPage/myGuestHouseList">호스트페이지</a></li>
-							<li th:if="${session.auth.equals('ADMIN')}"><a href="/adminPage/adminPage?auth="
-								class="page-scroll">관리자페이지</a></li>
-							<li><a href="/logout">로그아웃</a></li>
-						</ul>
-					</div>
-				</ul>
-			</div>
-		</div>
-
-	</nav> -->
  <div class="nav_wrapper"> 
   			    <div class="spinner-master">
 					    <input type="checkbox" id="spinner-form" />
@@ -53,10 +12,10 @@
 					    <div class="spinner diagonal part-2"></div>
 					    </label>
 					  </div>
-  
+   <a class="navbar-brand page-scroll" href="/" style=" color: rgb(255,255,255,0.7); margin-top: 10px;" >#GEHA</a>
   <nav id="menu" class="menu">
   
-  			<a class="navbar-brand page-scroll" href="/" style=" color: rgb(255,255,255,0.7);" >#GEHA</a>
+
 	  		<ul class="dropdown">
 	   	 	 <li><a class="page-scroll" title="Link" href="/search">방찾기</a></li>
 	    	 <li><a class="page-scroll" title="Link" href="/myPage/bookingList">예약내역</a></li>
@@ -85,4 +44,6 @@
   </nav>
 		
 </div>
+
+
 </header>

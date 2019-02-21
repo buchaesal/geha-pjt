@@ -160,6 +160,14 @@ tr {
 	font-size: 21px;
 	padding-top: 10px;
 }
+
+a.before#myReview:before,a.after#myReview:after {
+   content: "";
+  position:absolute;
+  bottom:-0.25em;
+  height:0.35rem;
+  width:100%;
+}
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -265,9 +273,7 @@ tr {
 </head>
 <body>
 	<div layout:fragment="myPage_content">
-		<img src="https://image.flaticon.com/icons/svg/149/149657.svg"
-			width="20px" height="20px"
-			style="position: absolute; left: 17p; left: 39px; top: 339px;">
+		
 		<div th:if="${#lists.size(reviewList)==0}" style="padding-top: 33px">
 			<p style="font-size: 20px;">작성한 리뷰가 없습니다.</p>
 			<a href="/myPage/bookingList" class="btn btn-info waves-effect">리뷰쓰러가기</a>

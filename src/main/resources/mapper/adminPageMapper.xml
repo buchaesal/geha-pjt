@@ -75,7 +75,7 @@ limit #{cri.pageStart}, #{cri.perPageNum}]]>
 		g.*,m.memberName from guestHouse_tb g, member_tb m
 		where g.approvalDate
 		is null and g.memberCode = m.memberCode
-		order by g.guestHouseCode desc
+		order by g.registerDate desc
 		limit #{cri.pageStart}, #{cri.perPageNum}
 	</select>
 

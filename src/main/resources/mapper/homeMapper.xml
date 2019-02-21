@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.geha.dao.HomeDao">
+
+<select id="listGehaRating" resultType="SearchDto">
+select @RNUM := @RNUM + 1 as rownum, a.*
+from 
+(
+select gh.guestHouseCode, gh.guestHouseName, gh.address, gh.avgRating, fi.savedName, ghmin.minprice, rv.reviewCnt
+from guestHouse_tb gh
+	join file_tb fi
+	on fi.guestHouseCode = gh.guestHouseCode
+		and fi.roomCode = 0
+		and fi.isMainImage = 1
+	join
+		(
+		select gh.guestHouseCode, MIN(rm.charge) "minprice"
+		from guestHouse_tb gh
+			join room_tb rm
+			on rm.guestHouseCode = gh.guestHouseCode
+		group by gh.guestHouseCode
+		) ghmin
+	on ghmin.guestHouseCode = gh.guestHouseCode
+	join
+		(
+		select gh.guestHouseCode, count(rv.reviewNo) reviewCnt
+		from guestHouse_tb gh
+			join room_tb rm
+			on rm.guestHouseCode = gh.guestHouseCode
+			left join booking_tb bk
+			on bk.roomCode = rm.roomCode
+			left join review_tb rv
+			on rv.bookingCode = bk.bookingCode
+		group by gh.guestHouseCode
+		) rv
+	on rv.guestHouseCode = gh.guestHouseCode
+order by gh.avgRating desc, ghmin.minprice asc, gh.guestHouseCode asc
+limit 10
+) a,
+(select @RNUM := 0) R
+</select>
+
+<select id="listGehaReview" resultType="SearchDto">
+select @RNUM := @RNUM + 1 as rownum, a.*
+from 
+(
+select gh.guestHouseCode, gh.guestHouseName, gh.address, gh.avgRating, fi.savedName, ghmin.minprice, rv.reviewCnt
+from guestHouse_tb gh
+	join file_tb fi
+	on fi.guestHouseCode = gh.guestHouseCode
+		and fi.roomCode = 0
+		and fi.isMainImage = 1
+	join
+		(
+		select gh.guestHouseCode, MIN(rm.charge) "minprice"
+		from guestHouse_tb gh
+			join room_tb rm
+			on rm.guestHouseCode = gh.guestHouseCode
+		group by gh.guestHouseCode
+		) ghmin
+	on ghmin.guestHouseCode = gh.guestHouseCode
+	join
+		(
+		select gh.guestHouseCode, count(rv.reviewNo) reviewCnt
+		from guestHouse_tb gh
+			join room_tb rm
+			on rm.guestHouseCode = gh.guestHouseCode
+			left join booking_tb bk
+			on bk.roomCode = rm.roomCode
+			left join review_tb rv
+			on rv.bookingCode = bk.bookingCode
+		group by gh.guestHouseCode
+		) rv
+	on rv.guestHouseCode = gh.guestHouseCode
+order by rv.reviewCnt desc, gh.avgRating desc, gh.guestHouseCode asc
+limit 10
+) a,
+(select @RNUM := 0) R
+</select>
+
+</mapper>
