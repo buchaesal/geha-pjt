@@ -169,16 +169,15 @@ tr {
 		var deleteInfo = [[${deleteInfo}]];
 		var modifyOk = [[${modifyOk}]];
 
+		$("#submitBtn").hide();
 		
 		if(deleteInfo!==null){
 			$("#msg").text(deleteInfo);
-			$("#submitBtn").hide();
 			$("#confirmModal").modal();
 		}
 		
 		if(modifyOk!==null){
 			$("#msg").text(modifyOk);
-			$("#submitBtn").hide();
 			$("#confirmModal").modal();
 		}
 
@@ -241,7 +240,7 @@ tr {
 		var reviewNo = event.srcElement.id;
 		$("#deleteInput").val(reviewNo);
 		$("#msg").text('이 후기를 삭제하시겠습니까?');
-		$("#modalBody").hide();
+		$("#submitBtn").show();
 		$("#confirmModal").modal();
 	}
 	
@@ -423,7 +422,6 @@ tr {
 							<input type="hidden" id="deleteInput" name="reviewNo">
 						</form>
 
-						<p id="modalBody" class="heading"></p>
 					</div>
 					<br />
 					<!--Footer-->
