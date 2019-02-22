@@ -109,4 +109,6 @@ limit #{cri.pageStart}, #{cri.perPageNum}]]>
 		where g.approvalDate is
 		null and g.memberCode = m.memberCode;
 	</select>
+	
+	
 </mapper>
