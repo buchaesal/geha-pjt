@@ -261,15 +261,16 @@ body {
   
 
 	  		<ul class="dropdown">
-	   	 	 <li><a class="page-scroll" title="Link" href="/search">방찾기</a></li>
-	    	 <li><a class="page-scroll" title="Link" href="/myPage/bookingList">예약내역</a></li>
-	     	 <li><a class="page-scroll" title="Link" href="/faq">FAQ</a></li>
-			<li th:unless="${session.name}"><a href="/member/login" title="Link"	class="page-scroll">로그인</a></li>
+	   	 	 <li><a class="page-scroll" href="/search">방찾기</a></li>
+	    	 <li><a class="page-scroll" href="/myPage/bookingList">예약내역</a></li>
+	     	 <li><a class="page-scroll" href="/faq">FAQ</a></li>
+			<li th:unless="${session.name}"><a href="/member/login" class="page-scroll">로그인</a></li>
 	     	
 	     		<div class="btn-group" th:if="${session.name}">
 						<button type="button" class="btn btn-default dropdown-toggle"
 							data-toggle="dropdown" data-hover="dropdown">
-							<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: rgba(255, 255, 255, .7);"></span>
+							<img src="https://image.flaticon.com/icons/svg/1256/1256628.svg" width="40px" height="40px">
+							
 						</button>
 
 						<ul class="dropdown-menu" role="menu">

@@ -18,19 +18,17 @@ tr {
 	height: 60px;
 }
 
-
-
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover
 	{
 	background-color: #f0ebf1;
 }
 
-a.before#approvalHouse:before,a.after#approvalHouse:after {
-   content: "";
-  position:absolute;
-  bottom:-0.25em;
-  height:0.35rem;
-  width:100%;
+a.before#approvalHouse:before, a.after#approvalHouse:after {
+	content: "";
+	position: absolute;
+	bottom: -0.25em;
+	height: 0.35rem;
+	width: 100%;
 }
 </style>
 <script
@@ -100,7 +98,6 @@ a.before#approvalHouse:before,a.after#approvalHouse:after {
 
 	function showRejectModal() {
 		var guestHouseCode = event.srcElement.name;
-
 		$.ajax({
 			type : "POST",
 			url : "getRejectList.do",
@@ -153,9 +150,12 @@ a.before#approvalHouse:before,a.after#approvalHouse:after {
 					th:href="@{'/adminPage/waitApproval?guestHouseCode='+${list.guestHouseCode}+
 				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
 				'&bookingEnd='+${tomorrow}+'&bookingNumber=1'}"
-					target="_blank">보기</a></td>
-				<td th:if="${list.status.equals('반려')}"><a href="#"
-					onclick="showRejectModal()" th:name="${list.guestHouseCode}">[[${list.status}]]</a></td>
+					target="_blank">보기</a> <span style="color: tomato;"
+					th:text="${list.fifthReject}"></span></td>
+				<td th:if="${list.status.equals('반려')}">반려중<a
+					class="fa fa-file-text" href="#"
+					style="font-size: 18px; margin-left: 3px; color: chocolate;"
+					th:name="${list.guestHouseCode}" onclick="showRejectModal()"></a></td>
 				<td th:unless="${list.status.equals('반려')}">[[${list.status}]]</td>
 
 			</tr>
@@ -281,7 +281,7 @@ a.before#approvalHouse:before,a.after#approvalHouse:after {
 					<!--Body-->
 					<div class="modal-body">
 
-					
+
 						<table id="rejectList" width="360px">
 
 						</table>

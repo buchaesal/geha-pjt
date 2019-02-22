@@ -274,12 +274,13 @@ a.before#myReview:before,a.after#myReview:after {
 <body>
 	<div layout:fragment="myPage_content">
 		
-		<div th:if="${#lists.size(reviewList)==0}" style="padding-top: 33px">
+		<div th:if="${#lists.size(reviewList)==0}" style="padding-top: 33px" align="center">
 			<p style="font-size: 20px;">작성한 리뷰가 없습니다.</p>
+			<img src="https://image.flaticon.com/icons/svg/1159/1159118.svg" width="60px" height="60px">
 			<a href="/myPage/bookingList" class="btn btn-info waves-effect">리뷰쓰러가기</a>
 		</div>
 		<div th:if="${#lists.size(reviewList)>0}">
-			<table>
+			<table width="850px">
 				<tr height="50px"
 					style="border-bottom: 2.2px solid lightgray; background: #f1f1fb;">
 					<th style="width: 187px;">게스트하우스</th>

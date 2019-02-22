@@ -66,7 +66,7 @@ th {
 }
 
 .btn {
-	background-color: #101086;
+	background-color: #f3705b;
 	color: white;
 }
 
@@ -89,8 +89,9 @@ a.before#myGuestHouseList:before,a.after#myGuestHouseList:after {
 <body>
 
 	<div layout:fragment="hostPage_content">
-	<div th:if="${#lists.size(guestHouseList)==0}" style="padding-top: 33px;">
+	<div th:if="${#lists.size(guestHouseList)==0}" style="padding-top: 33px;" align="center">
 			<p class="heading">내 게스트하우스가 없습니다.</p>
+			<img src="https://image.flaticon.com/icons/svg/608/608671.svg" width="60px" height="60px">
 			<a href="registerGuestHouse"><button class="btn"
 				>새
 				게스트하우스 등록하기</button></a>
