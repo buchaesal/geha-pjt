@@ -22,7 +22,8 @@ public class UploadFileUtils {
 //	public static final String UPLOAD_PATH = "C:\\Users\\tmfrl\\git\\geha-pjt\\src\\main\\resources\\static\\gehaImg\\";
 	
 	public static String makeUploadRootPath() {
-		String uploadRootPath = null;
+		
+		/*String uploadRootPath = null;
 
 		final DefaultResourceLoader defaultResourceLoader = new DefaultResourceLoader();
 		
@@ -36,8 +37,21 @@ public class UploadFileUtils {
 		
 		System.out.println("uploadRootPath: " + uploadRootPath);
 		
-		return uploadRootPath;
+		return uploadRootPath;*/
+		
+		String resourceToString;
+		String OS = System.getProperty("os.name").toLowerCase();
+		if(OS.indexOf("nux") >= 0) {
+			resourceToString = "/";
+		} else {
+			resourceToString = System.getProperty("user.dir") + "/src/main/resources/static/gehaImg";
+		}
+		
+		
+		return resourceToString;
 	}
+	
+	
 	
 	
 	
