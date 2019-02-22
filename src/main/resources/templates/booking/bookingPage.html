@@ -4,25 +4,52 @@
       layout:decorator="fragments/main_layout">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<title>예약하기</title>
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<!-- iamport.payment.js -->
 		<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>	
 		<style>
+			header {
+				min-height: 12%;
+			}
+			
+			.navbar-brand {
+				font-size: 45px;
+			}
+		
+			#bookingForm {
+				font-size: 16px;
+				margin-top: 3%;
+			}
+		
 			.display_left {
-				width: 50%;
+				width: 60%;
+				height: 100%;
+				float: left;
+				padding-left: 10%;
+				font-size: 18px;
+			}
+			
+			.display_right {
+				width: 40%;
 				height: 100%;
 				float: left;
 			}
 			
-			.display_right {
-				width: 50%;
-				height: 100%;
-				float: right;
+			.display_right>input {
+				font-size: 16px;
 			}
 			
 			.input-box {
-				padding: 0 20px;
+				padding: 3px 20px;
+			}
+			
+			.guestHouseInfoBox {
+				width: 70%;
+				background-color: #d3d3d354;
+				padding : 2% 8% 8% 8%;
+				margin-top: 3%;
 			}
 			
 			/* The Modal (background) */
@@ -37,6 +64,7 @@
 	            overflow: auto; /* Enable scroll if needed */
 	            background-color: rgb(0,0,0); /* Fallback color */
 	            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	            vertical-align: middle;
 	        }
 	    
 	        /* Modal Content/Box */
@@ -45,12 +73,20 @@
 	            margin: 15% auto; /* 15% from the top and centered */
 	            padding: 30px;
 	            border: 1px solid #888;
-	            width: 35%; /* Could be more or less, depending on screen size */                          
+	            width: 35%; /* Could be more or less, depending on screen size */
+	            font-size: 15px;
+	            height: auto;
+	            max-height: 500px;
+	            overflow-y: scroll;
+	            position: fixed;
+	            top: -15%;
+	            left: 200px;
+	            right: 200px;
 	        }
 	        /* The Close Button */
 	        .close {
 	            color: #aaa;
-	            float: right;
+	            float: none;
 	            font-size: 28px;
 	            font-weight: bold;
 	        }
@@ -65,8 +101,8 @@
 				font-weight: bold;
 			}
 			
-			h4 {
-				margin: 20px 0;
+			h3 {
+				margin: 20px 0 25px 0;
 				font-weight: bold;
 			}
 			
@@ -74,52 +110,96 @@
 				display: block;
 			}
 			
+			.inputLine {
+				margin-top: 1%;
+				width: 60%;
+			}
+			
 			.checkValue_label {
 				display: none; 
-				color: red;
+				color: #e82e2e;
 			}
 			
 			li>span {
-				color: red;
+				color: #ff3939;
 			}
 			
 			td {
 				font-size: 13px;
 			}
+			
+			.checkValue_label {
+				margin-left: 10px;
+				font-size: 15px;
+			}
+			
+			hr {
+				max-width: 340px;
+				margin: 10px 0 30px 0;
+			}
+			
+			#paymentAmount {
+				color: #e82e2e;
+				font-size: 22px;
+			}
+			
+			#paymentBtn {
+				width: 92%; 
+				line-height: 200%;
+				background-color: #e23f3f;
+				color: white;
+				border: none;
+			}
+			
+			.btn-default {
+				color: #fff;
+				text-shadow: none;
+				background: #2a416b;
+				border: none;
+			}
+			
+			.agreementDiv {
+				text-align: center;
+				height: 30px;
+				margin-top: 30px;
+			
+			}
 		</style>
 	</head>
 	<body>
-		<div layout:fragment="content"   style="width: 100%; height: 100%;">
+		<div layout:fragment="content"   style="width: 100%; height: 120%;">
 			<form th:action="@{/booking/bookingComplete}" id="bookingForm" method="post">
 				<div class="display_left">
 					<div class="input-box">
-						<h4>예약자 정보</h4>
+						<h3>예약자 정보</h3>
 						<input type="hidden" name="memberCode" th:value="${appliedBookingInfo.memberCode}">
 						
-						<label class="inputLabel">예약자 이름<br>
-						<input class="inputLine" type="text" name="booker" onkeyup="name_checkValue_reg(this.value)"></label>
-						<label class="nullCheck_label checkValue_label">이름을 입력해주세요.</label>
-						<label id="name_regCheck_label" class="checkValue_label">형식에 맞게 이름을 작성해주세요</label>
-						<br>
-				
-						
-						<label class="inputLabel">예약자 이메일<br>
-						<input class="inputLine" type="text" name="bookerEmail" onkeyup="email_checkValue_reg(this.value)"></label>
-						<label class="nullCheck_label checkValue_label">이메일을 입력해주세요.</label>		
-						<label id="email_regCheck_label" class="checkValue_label">형식에 맞게 이메일을 작성해주세요</label>				
-						<br>
-						
-						<label class="inputLabel">예약자 연락처<br>
-						<input class="inputLine" type="text" name="bookerContact" onkeyup="contact_checkValue_reg(this.value)"></label>
-						<label class="nullCheck_label checkValue_label">연락처를 입력해주세요.</label>
-						<label id="contact_regCheck_label" class="checkValue_label">형식에 맞게 연락처를 작성해주세요</label>
+						<div style="margin-left: 7px;">
+							<label class="inputLabel">예약자 이름<br>
+							<input class="inputLine form-control" type="text" name="booker" onkeyup="name_checkValue_reg(this.value)"></label>
+							<label class="nullCheck_label checkValue_label">이름을 입력해주세요.</label>
+							<label id="name_regCheck_label" class="checkValue_label">형식에 맞게 이름을 작성해주세요.</label>
+							<br>
+					
+							
+							<label class="inputLabel">예약자 이메일<br>
+							<input class="inputLine form-control" type="text" name="bookerEmail" onkeyup="email_checkValue_reg(this.value)"></label>
+							<label class="nullCheck_label checkValue_label">이메일을 입력해주세요.</label>		
+							<label id="email_regCheck_label" class="checkValue_label">형식에 맞게 이메일을 작성해주세요.</label>				
+							<br>
+							
+							<label class="inputLabel">예약자 연락처<br>
+							<input class="inputLine form-control" type="text" name="bookerContact" onkeyup="contact_checkValue_reg(this.value)"></label>
+							<label class="nullCheck_label checkValue_label">연락처를 입력해주세요.</label>
+							<label id="contact_regCheck_label" class="checkValue_label">형식에 맞게 연락처를 작성해주세요.</label>
+						</div>
 						<br>
 					</div>
 					
 					<div class="input-box">
-						<h4>결제수단 선택</h4>
+						<h3>결제수단 선택</h3>
 						
-						<select name="paymentMethod">
+						<select name="paymentMethod" class="form-control" style="width: 32%;">
 							<option value="카드결제">카드결제(신용, 체크)</option>
 							<option value="휴대폰결제">휴대폰결제</option>
 						</select>
@@ -127,10 +207,10 @@
 					<br><br>
 					
 					<div class="input-box">
-						<label style="font-weight: bold" for="allCheck">전체 동의</label>
+						<label for="allCheck">전체 동의</label>
 						<input type="checkbox" id="allCheck"><br>
 						
-						<label for="useRules">숙소이용규칙 및 취소/환불규정 동의(필수)</label>
+						<label for="useRules" style="font-size: 17px">숙소이용규칙 및 취소/환불규정 동의(필수)</label>
 						<input type="checkbox" id="useRules"><br>
 						
 						<!-- useRules Modal -->
@@ -138,7 +218,6 @@
 						
 							<!-- Modal content -->
 							<div class="modal-content">
-								<span id="useRulesModalClose" class="close">&times;</span>
 								<p style="font-size: 18px;">숙소이용규칙 및 취소/환불규정</p>
 								<p>이용규칙</p>
 								<ul>
@@ -161,10 +240,11 @@
 									<li> 전월 휴대폰 결제 건은 단순 변심의 사유로 예약취소할 경우, 취소 규정외에 <span>환불 수수료 5%</span>가 발생합니다. </li>
 									<li> 단, 숙소의 객실 정보가 수시로 변경될 수 있으며 이로 인한 불익은 #GEHA에서 책임지지 않습니다. </li>
 								</ul>
+								<div class="agreementDiv"><span id="useRulesModalClose" class="close"><img src="/img/icons/agreement.png" style="width: 30px; height: 30px; margin-right: 7px;">동의합니다.</span></div>
 							</div>
 						</div>
 						
-						<label for="personalInfoCollection">개인정보 수집 및 이용 동의(필수)</label>
+						<label for="personalInfoCollection" style="font-size: 17px">개인정보 수집 및 이용 동의(필수)</label>
 						<input type="checkbox" id="personalInfoCollection"><br>
 						
 						<!-- personalInfoCollection Modal -->
@@ -172,7 +252,6 @@
 						
 							<!-- Modal content -->
 							<div class="modal-content">
-								<span id="personalInfoCollectionModalClose" class="close">&times;</span>
 								<p style="font-size: 18px;">개인정보 수집 및 이용</p>
 								<ul>
 									<li> "#GEHA" 개인정보 수집 이용 목적 및 항목, 보유기간은 아래와 같습니다. </li>
@@ -200,10 +279,15 @@
 										<td>통신비밀보호법에 따라 3개월간 보관</td>
 									</tr>
 								</table>
+								<div class="agreementDiv">
+									<span id="personalInfoCollectionModalClose" class="close">
+										<img src="/img/icons/agreement.png" style="width: 30px; height: 30px; margin-right: 7px;">동의합니다.
+									</span>
+								</div>
 							</div>
 						</div>
 						
-						<label for="personalInfoProvision">개인정보 제 3자 제공 동의(필수)</label>
+						<label for="personalInfoProvision" style="font-size: 17px">개인정보 제 3자 제공 동의(필수)</label>
 						<input type="checkbox" id="personalInfoProvision"><br>
 						
 						<!-- personalInfoProvision Modal -->
@@ -211,7 +295,6 @@
 						
 							<!-- Modal content -->
 							<div class="modal-content">
-								<span id="personalInfoProvisionModalClose" class="close">&times;</span>
 								<p style="font-size: 18px;">개인정보 제 3자 제공 동의</p>
 								<ul>
 									<li> "#GEHA" 개인정보 수집 이용 목적 및 항목, 보유기간은 아래와 같습니다. </li>
@@ -235,6 +318,11 @@
 										<td>예약서비스 제공 완료 후 6개월</td>
 									</tr>
 								</table>
+								<div class="agreementDiv">
+									<span id="personalInfoProvisionModalClose" class="close">
+										<img src="/img/icons/agreement.png" style="width: 30px; height: 30px; margin-right: 7px;">동의합니다.
+									</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -243,8 +331,8 @@
 				
 				<div class="display_right">			
 					
-					<div class="input-box">
-						<h4>숙소정보</h4>
+					<div class="input-box guestHouseInfoBox">
+						<h3>숙소정보</h3>
 						<input type="hidden" name="roomCode" th:value="${#numbers.formatInteger(appliedBookingInfo.roomDto.roomCode, 3, 'COMMA')}">
 						<input type="hidden" name="bookingNumber" th:value="${appliedBookingInfo.bookingNumber}">
 						
@@ -265,12 +353,20 @@
 						<label>[[${#dates.format(appliedBookingInfo.bookingEnd, 'yy.MM.dd E')}]]</label> 11: 00 <br><br>
 						<input type="hidden" name="bookingEnd" th:value="${#dates.format(appliedBookingInfo.bookingEnd, 'yyyy-MM-dd')}">
 						
-						<label>총 결제 금액(VAT포함)</label><br>
-						<label id="paymentAmount"></label>
-						<input type="hidden" name="paymentAmount">원<br><br>
+						<hr style="border:1px solid #87878742;"/>
+						
+						<div style="display:grid; font-size: 20px;">
+						 <label>총 결제 금액(VAT포함)</label>
+						 <label id="paymentAmount"></label>
+						 <input type="hidden" name="paymentAmount">
+						</div>
+						<ul style="padding: 18px 15px 0 15px; font-size: 15px;">
+							<li>결제 완료 후 <span>예약자 이름</span>으로 바로 <span>체크인</span> 하시면 됩니다.</li>
+						</ul>
+						<br><br>
 
 						<input type="hidden" name="approvalNumber" >
-						<input id="paymentBtn" type="button" value="결제하기">
+						<input id="paymentBtn" class="btn btn-lg" type="button" value="결제하기">
 					</div>
 				</div>
 				
@@ -341,7 +437,7 @@
 			    	$("#diffDay_p").text("기간 : " + diffDay + "박 " + (diffDay+1) + "일");
 			    	
 			    	
-			    	$("#paymentAmount").text(charge.toLocaleString());
+			    	$("#paymentAmount").text(charge.toLocaleString() + " 원");
 			    	$("input[name=paymentAmount]").val(charge);
 			    })
 			
