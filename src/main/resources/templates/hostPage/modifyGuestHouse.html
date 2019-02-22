@@ -431,7 +431,7 @@
 			            </div>
 			            <div class="imgs_wrap room_imgs_wrap" name="roomsImg"></div>
 			            <input type="hidden" name="room_imglength">
-			            <input type="hidden" name="mainRoomImage" value="0">
+			            <input type="hidden" name="mainRoomImage">
 	         		</td>
 	         	</tr>
                <tr class="room_tr">
@@ -651,7 +651,6 @@
                   
                   var reader = new FileReader();
                   reader.onload = function(e) {
-                     
                      if($(prtDiv).attr("name")=='roomsImg') { //방일 경우
                         var html = 
                            "<span class='thumbnailImgSpan'><input type='radio' name='mainRoomImage"+$(roomInfoTable).find("input[name='roomIndex']").val()+"' value='"+index
@@ -665,6 +664,7 @@
                      index++;
                      $(prtDiv).next('input[type=hidden]').val(index);
                   }
+                  $(prtDiv).next().next().val(0); //mainRoomImage 기본값 설정
                   reader.readAsDataURL(f);
                });
             }
