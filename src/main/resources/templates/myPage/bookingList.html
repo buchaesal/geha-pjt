@@ -171,6 +171,7 @@ a.before#bookingList:before,a.after#bookingList:after {
   width:100%;
 }
 
+
 </style>
 </head>
 <body>
@@ -203,7 +204,7 @@ a.before#bookingList:before,a.after#bookingList:after {
 						th:text="${#numbers.formatInteger(bookingDto.paymentAmount, 3, 'COMMA')}"></td>
 					<td>[[${bookingDto.bookingStatus}]] <br>
 						<div th:if="${bookingDto.bookingStatus}=='예약완료'">
-							<button class="cancelBtn btn-primary"
+							<button class="ph-button ph-btn-red"
 								th:onclick="|javascript:cancelBtnClick('${iterState.count}')|">취소요청</button>
 
 							<!-- cancelConfirm Modal -->
@@ -221,13 +222,13 @@ a.before#bookingList:before,a.after#bookingList:after {
 						</div>
 						<div th:if="${bookingDto.bookingStatus}=='숙박완료'">
 
-							<button class="btn-primary"
+							<button class="ph-button ph-btn-blue"
 								th:if="${#lists.contains(reviewList, bookingDto.bookingCode)}"
 								th:onclick="location.href='myReview'">작성한 후기 보러가기</button>
-							<button class="btn-primary"
+							<button class="ph-button ph-btn-green"
 								th:unless="${#lists.contains(reviewList, bookingDto.bookingCode)}"
 								name="writeReviewBtn">후기 작성하기</button>
-							<button class="btn-primary" th:if="${#lists.size(reviewList)<=0}"
+							<button class="ph-button ph-btn-green" th:if="${#lists.size(reviewList)<=0}"
 								name="writeReviewBtn">후기 작성하기</button>
 
 							<!-- writeReivew Modal -->
