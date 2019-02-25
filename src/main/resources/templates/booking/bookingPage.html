@@ -101,6 +101,30 @@
 				font-weight: bold;
 			}
 			
+			/* The Modal (background) */
+	         #agreementsConfirmModal {
+	               text-align: center;
+	         }
+	       
+           /* Modal ContentBox */
+           .agreementsConfirmModal-content {
+               padding: 20px;
+               border: 3px solid #e8c44b;
+               width: 30%; /* Could be more or less, depending on screen size */         
+               overflow: auto;                 
+           }
+           
+           .modal-content>p {
+           		font-size: 20px;
+           		margin: 10px 0 30px 0;
+           }
+           
+           .btn-modal {
+				background-color: #e8c44b8c;
+				border-color: #e5be2342;
+				width: 100px;
+			}
+			
 			h3 {
 				margin: 20px 0 25px 0;
 				font-weight: bold;
@@ -164,6 +188,19 @@
 				margin-top: 30px;
 			
 			}
+			
+			.bookingConfirmModal-content>p {
+				font-size: 17px;
+				margin-bottom: 15px;
+			}
+			
+			#bookingConfirmModalClose {
+				background-color: darkgray;
+			}
+			
+			#bookingConfirmModalClose:hover {
+				background-color: darkgray;
+			}
 		</style>
 	</head>
 	<body>
@@ -211,7 +248,7 @@
 						<input type="checkbox" id="allCheck"><br>
 						
 						<label for="useRules" style="font-size: 17px">숙소이용규칙 및 취소/환불규정 동의(필수)</label>
-						<input type="checkbox" id="useRules"><br>
+						<input type="checkbox" id="useRules" class="agreements"><br>
 						
 						<!-- useRules Modal -->
 						<div id="useRulesModal" class="modal">
@@ -245,7 +282,7 @@
 						</div>
 						
 						<label for="personalInfoCollection" style="font-size: 17px">개인정보 수집 및 이용 동의(필수)</label>
-						<input type="checkbox" id="personalInfoCollection"><br>
+						<input type="checkbox" id="personalInfoCollection" class="agreements"><br>
 						
 						<!-- personalInfoCollection Modal -->
 						<div id="personalInfoCollectionModal" class="modal">
@@ -288,7 +325,7 @@
 						</div>
 						
 						<label for="personalInfoProvision" style="font-size: 17px">개인정보 제 3자 제공 동의(필수)</label>
-						<input type="checkbox" id="personalInfoProvision"><br>
+						<input type="checkbox" id="personalInfoProvision" class="agreements"><br>
 						
 						<!-- personalInfoProvision Modal -->
 						<div id="personalInfoProvisionModal" class="modal">
@@ -375,9 +412,9 @@
 				<div id="bookingConfirmModal" class="modal">
 				
 					<!-- Modal content -->
-					<div class="modal-content">
-						<span id="bookingConfirmModalClose" class="close">&times;</span>
-						<p>예약 확인</p>
+					<div class="modal-content bookingConfirmModal-content">
+						<p style="font-size: 20px;">예약 확인</p>
+						<hr style="margin-bottom: 15px; max-width: 500px;"/>
 						<p>게스트하우스 이름 : [[${appliedBookingInfo.guestHouseName}]]</p>
 						<p>예약하실 방 이름 : [[${appliedBookingInfo.roomDto.roomName}]]</p>
 						<p id="diffDay_p"></p>
@@ -390,7 +427,10 @@
 							<li> 숙소의사정으로 예약 불가능할 경우 결제된 금액은 자동 취소됩니다. </li>
 							<li> 취소 및 환불은 해당 숙소의 규정에 따라 다릅니다. </li>
 						</ul>
-						<input type="button" id="callPaymentApi" value="결제하기">
+						<div style="text-align: center; margin: 30px;">
+							<input type="button" id="bookingConfirmModalClose" class="btn btn-default btn-lg" value="취소" onclick="$('#bookingConfirmModal').css('display', 'none')">
+							<input type="button" id="callPaymentApi" class="btn btn-default btn-lg" value="결제하기">
+						</div>
 					</div>
 				</div>
 			</form>
@@ -398,13 +438,15 @@
 			
 			<!-- agreements confirm Modal -->
 			<div id="agreementsConfirmModal" class="modal">
-			
+				
 				<!-- Modal content -->
-				<div class="modal-content">
-					<p>필수 동의사항을 체크해주세요.</p>
-					<button onclick="$('#agreementsConfirmModal').css('display', 'none')">확인</button>
+				<div class="modal-content agreementsConfirmModal-content">
+					<i class="fa fa-exclamation-circle" style="font-size:48px;color:#de9221;"></i>
+					<p id="modalMessage">필수 동의사항을 체크해주세요.</p>
+					<button id="inputCheckModalClose" class="btn btn-default btn-modal" onclick="$('#agreementsConfirmModal').css('display', 'none')">확인</button>
 				</div>
 			</div>
+				
 		</div>
 		
 			
@@ -499,10 +541,10 @@
  			    	}
  			    	
  			    	
- 			    	for(var i=0; i<$('input[type=checkbox]').length; i++) {
- 			    		var checkbox = $('input[type=checkbox]')[i];
+ 			    	for(var i=0; i<$('.agreements').length; i++) {
+ 			    		var checkbox = $('.agreements')[i];
  			    		
- 			    		if(checkbox.id!='allCheck' && !($(checkbox).is(':checked'))){
+ 			    		if(!($(checkbox).is(':checked'))){
  			    			$('#agreementsConfirmModal').css('display', 'block');
  			    			return true;
  			    		}

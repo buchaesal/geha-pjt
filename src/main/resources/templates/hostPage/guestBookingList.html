@@ -62,18 +62,23 @@ a.before#guestBookingList:before, a.after#guestBookingList:after {
 	height: 0.35rem;
 	width: 100%;
 }
+
+#searchForm {
+	text-align: center;
+	margin-bottom: 25px;
+}
 </style>
 </head>
 <body>
 	<div layout:fragment="hostPage_content">
-		<div th:if="${#lists.size(guestBookingList)==0}"
+		<div th:if="${#lists.size(guestBookingList)==0 and pageMaker.cri.type==null}"
 			style="padding-top: 33px;" align="center">
 			<p class="heading">회원예약내역이 없습니다.</p>
 			<img src="https://image.flaticon.com/icons/svg/1071/1071285.svg" width="60px" height="60px">
 		</div>
-		<div th:if="${#lists.size(guestBookingList)>0}">
+		<div th:if="${#lists.size(guestBookingList)>0 or pageMaker.cri.type!=null}">
 			<form id="searchForm" action="/hostPage/guestBookingList">
-				<select name="type">
+				<select name="type" style="height: 27px;">
 					<option value="" th:selected="${pageMaker.cri.type == null}">--</option>
 					<option value="guestHouseName"
 						th:selected="${pageMaker.cri.type eq 'guestHouseName'}">게스트하우스
@@ -81,8 +86,8 @@ a.before#guestBookingList:before, a.after#guestBookingList:after {
 					<option value="bookingStatus"
 						th:selected="${pageMaker.cri.type eq 'bookingStatus'}">예약
 						상태</option>
-				</select> <input type="text" name="keyword"
-					th:value="${pageMaker.cri.keyword}">
+				</select> 
+				<input type="text" name="keyword" th:value="${pageMaker.cri.keyword}" size="30">
 				<button type="button" class='btn-primary' onclick="search()">검색</button>
 			</form>
 
@@ -144,6 +149,9 @@ a.before#guestBookingList:before, a.after#guestBookingList:after {
 							</div>
 						</div>
 					</td>
+				</tr>
+				<tr th:if="${#lists.size(guestBookingList)==0}" height="80px" align="center">
+					<td colspan="5" style="font-size: 15px;">검색하신 예약내역이 없습니다.</td>
 				</tr>
 			</table>
 
