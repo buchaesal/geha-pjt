@@ -536,11 +536,7 @@
 			var trip = [[${sc.trip}]];
 			var shopping = [[${sc.shopping}]];
 			var business = [[${sc.business}]];
-			
-			/*var gourmet = [[${sc.gourmet}]];
-			var trip = [[${sc.trip}]];
-			var shopping = [[${sc.shopping}]];
-			var business = [[${sc.business}]];*/
+			var keyword = [[${sc.keyword}]];
 			
 			if(gourmet === 1) {
 				$('#gourmet').attr('checked', true);
@@ -553,6 +549,9 @@
 			}
 			if(business === 1) {
 				$('#business').attr('checked', true);
+			}
+			if(keyword.length > 0){
+				$('#keywordsearch').val(keyword);
 			}
 						
 		 
