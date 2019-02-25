@@ -52,17 +52,17 @@ public class AdminPageController {
 		if (!auth.equals("all")) {
 			model.addAttribute("list", adminPageDao.getMemberList(cri, auth));
 			model.addAttribute("auth", auth);
-			
+
 			pageMaker.setTotalCount(adminPageDao.getTotal(cri, auth));
 		} else {
 			model.addAttribute("list", adminPageDao.getMemberList(cri, ""));
 			model.addAttribute("auth", "");
-			
+
 			pageMaker.setTotalCount(adminPageDao.getTotal(cri, ""));
 		}
-		
-		model.addAttribute("type",cri.getType());
-		model.addAttribute("keyword",cri.getKeyword());
+
+		model.addAttribute("type", cri.getType());
+		model.addAttribute("keyword", cri.getKeyword());
 		model.addAttribute("pageMaker", pageMaker);
 
 	}
@@ -84,31 +84,33 @@ public class AdminPageController {
 	}
 
 	@RequestMapping("/approvalHouse")
-	public void approvalHouse(Model model, @ModelAttribute("cri") AdminPageCriteria cri) {
+	public void approvalHouse(Model model, @ModelAttribute("cri") AdminPageCriteria cri, HttpSession session,
+			Authentication auth) {
+		memberService.getSession(auth, session);
 		cri.setPerPageNum(5);
 
 		// 페이징
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(adminPageDao.getApprovalTotal());
-		
+
 		List<GuestHouseDto> gList = adminPageDao.getApprovalHouseList(cri);
-		
+
 		for (GuestHouseDto list : gList) {
 
-			if(adminPageDao.getRejectListByGuestHouseCode(list.getGuestHouseCode()).size()>=5) {
+			if (adminPageDao.getRejectListByGuestHouseCode(list.getGuestHouseCode()).size() >= 5) {
 				list.setFifthReject("반려초과");
 			}
 
 		}
-		
+
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("list", gList);
-		model.addAttribute("tomorrow",memberService.getTomorrow());
-		
+		model.addAttribute("tomorrow", memberService.getTomorrow());
+
 	}
-	
-	//회원정보 보기
+
+	// 회원정보 보기
 	@RequestMapping("getMemberInfo.do")
 	@ResponseBody
 	public List<MemberDto> getMemberInfo(@RequestBody int memberCode) {
@@ -124,11 +126,11 @@ public class AdminPageController {
 		List<RoomDto> rooms = roomDao.roomInfo(bookingStart, bookingEnd, bookingNumber, guestHouseCode);
 		List<FacilityDto> facility = roomDao.facilityInfo(guestHouseCode);
 		List<FileDto> gehaImg = roomDao.gehaImg(guestHouseCode);
-		
+
 		GuestHouseDto guestHouseDto = roomDao.gehaInfo(guestHouseCode);
 		model.addAttribute("gehaImg", gehaImg);
 		model.addAttribute("guestHouseCode", guestHouseCode);
-		model.addAttribute("bookingNumber",bookingNumber);
+		model.addAttribute("bookingNumber", bookingNumber);
 		model.addAttribute("memberCode", guestHouseDto.getMemberCode());
 		model.addAttribute("geha", guestHouseDto);
 		model.addAttribute("room", rooms);
@@ -149,7 +151,7 @@ public class AdminPageController {
 
 		adminPageDao.rejectNewGuestHouse(rejectDto.getGuestHouseCode());
 		adminPageDao.insertReject(rejectDto);
-		
+
 		redirectAttributes.addFlashAttribute("approveOk", "반려가 처리되었습니다.");
 		return "redirect:/";
 	}
