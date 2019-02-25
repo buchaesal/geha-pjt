@@ -40,7 +40,7 @@
 
 						<div class="form-group">
 							<label for="keywordsearch">키워드 검색</label>
-							<small>(지역 or 이름)</small>
+							<small>(지역 or 숙소명)</small>
 							<input type="text" id="keywordsearch" name="keyword" class="form-control" placeholder="ex) 강남 or 월드하우스" />
 						</div>
 
@@ -536,11 +536,7 @@
 			var trip = [[${sc.trip}]];
 			var shopping = [[${sc.shopping}]];
 			var business = [[${sc.business}]];
-			
-			/*var gourmet = [[${sc.gourmet}]];
-			var trip = [[${sc.trip}]];
-			var shopping = [[${sc.shopping}]];
-			var business = [[${sc.business}]];*/
+			var keyword = [[${sc.keyword}]];
 			
 			if(gourmet === 1) {
 				$('#gourmet').attr('checked', true);
@@ -553,6 +549,9 @@
 			}
 			if(business === 1) {
 				$('#business').attr('checked', true);
+			}
+			if(keyword !== null && keyword.length > 0){
+				$('#keywordsearch').val(keyword);
 			}
 						
 		 
