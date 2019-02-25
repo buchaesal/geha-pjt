@@ -107,7 +107,8 @@ public class AdminPageController {
 		model.addAttribute("tomorrow",memberService.getTomorrow());
 		
 	}
-
+	
+	//회원정보 보기
 	@RequestMapping("getMemberInfo.do")
 	@ResponseBody
 	public List<MemberDto> getMemberInfo(@RequestBody int memberCode) {

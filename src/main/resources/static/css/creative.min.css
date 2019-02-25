@@ -57,7 +57,7 @@ p {
 }
 
 .bg-primary {
-	background-image: url(https://images.pexels.com/photos/386025/pexels-photo-386025.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+	/* background-image: url(https://images.pexels.com/photos/1282315/pexels-photo-1282315.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940); */
     width: 100%;
     height: 85%;
     background-size: cover;
@@ -352,8 +352,6 @@ header .header-content .header-content-inner p {
 	.btn-default:focus, .btn-default:hover, .open>.dropdown-toggle.btn-default
 	{
 	color: #222;
-	background-color: #f2f2f2;
-	border-color: #ededed
 }
 
 .btn-default.disabled, .btn-default.disabled.active, .btn-default.disabled.focus,
