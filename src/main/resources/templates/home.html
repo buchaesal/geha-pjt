@@ -441,10 +441,11 @@ body {
 	<!-- Swiper -->
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
-			<div th:each="listRating : ${listRating}" class="swiper-slide" th:style=|background-image:url(gehaImg/${listRating.guestHouseCode}/${listRating.savedName})|>
+			<div id="swiper1" th:each="listRating : ${listRating}" class="swiper-slide" th:style=|background-image:url(gehaImg/${listRating.guestHouseCode}/${listRating.savedName})|>
 			 <span class="rownum" th:text=|${listRating.rownum}등|>등수</span> <span>&nbsp;</span>
 				<span class="rating" th:text=|${listRating.avgRating}|>게하 평점</span>
 				<span>&nbsp;</span> <span class="gehaname" th:text=|${listRating.guestHouseName}|>게하이름</span>
+				<span id="ghcode" th:text=|${listRating.guestHouseCode}| style="display:none">게하코드</span>
 			</div>
 		</div>
 		<!-- Add Pagination -->
@@ -461,10 +462,11 @@ body {
 	<!-- Swiper -->
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
-			<div th:each="listReview : ${listReview}" class="swiper-slide" th:style=|background-image:url(gehaImg/${listReview.guestHouseCode}/${listReview.savedName})|>
+			<div id="swiper2" th:each="listReview : ${listReview}" class="swiper-slide" th:style=|background-image:url(gehaImg/${listReview.guestHouseCode}/${listReview.savedName})|>
 			 <span class="rownum" th:text=|${listReview.rownum}등|>등수</span> <span>&nbsp;</span>
 				<span class="rating" th:text=|${listReview.reviewCnt}개|>게하 리뷰
 					개수</span> <span>&nbsp;</span> <span class="gehaname" th:text=|${listReview.guestHouseName}|>게하이름</span>
+					<span id="ghcode" th:text=|${listReview.guestHouseCode}| style="display:none">게하코드</span>
 			</div>
 		</div>
 		<!-- Add Pagination -->
@@ -596,6 +598,31 @@ body {
 			opener.parent.location.reload();
 			window.close();
 		}
+		
+		$(function(){
+			
+			var getToday = new Date();
+			var getTomorrow = new Date();
+			getTomorrow.setDate(getTomorrow.getDate() + 1);
+		
+			var strToday = getToday.getFullYear() + '-' + lessThanTen(getToday.getMonth() + 1) + '-' + lessThanTen(getToday.getDate());
+			var strTomorrow = getTomorrow.getFullYear() + '-' + lessThanTen(getTomorrow.getMonth() + 1) + '-' + lessThanTen(
+				getTomorrow.getDate());
+		
+			function lessThanTen(d) {
+				if (d < 10) {
+					return '0' + d;
+				} else {
+					return d;
+				}
+			}
+			
+			$('.swiper-wrapper').delegate('div', 'click', function(){
+				console.dir(this.lastElementChild.textContent);
+				window.location.href = '/room/roomInfo?guestHouseCode='+this.lastElementChild.textContent+'&bookingStart='+strToday+'&bookingEnd='+strTomorrow+'&bookingNumber=1';
+			});
+
+		});
 	</script>
 </body>
 
