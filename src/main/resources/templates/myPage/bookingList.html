@@ -6,27 +6,9 @@
 <title>bookingList</title>
 <meta http-equiv="Content-Type" content="charset=UTF-8" />
 <style type="text/css">
-/* The Modal (background) */
-.modal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
-	left: 0;
-	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0, 0, 0); /* Fallback color */
-	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-	background-color: #fefefe;
-	margin: 15% auto; /* 15% from the top and centered */
-	padding: 20px;
-	border: 1px solid #888;
-	width: 50%; /* Could be more or less, depending on screen size */
+.modal-header {
+	background: #33425d;
+	color: white;
 }
 
 p {
@@ -171,6 +153,10 @@ a.before#bookingList:before,a.after#bookingList:after {
   width:100%;
 }
 
+.btn-sm {
+	padding: 10px 15px;
+}
+
 </style>
 </head>
 <body>
@@ -203,19 +189,16 @@ a.before#bookingList:before,a.after#bookingList:after {
 						th:text="${#numbers.formatInteger(bookingDto.paymentAmount, 3, 'COMMA')}"></td>
 					<td>[[${bookingDto.bookingStatus}]] <br>
 						<div th:if="${bookingDto.bookingStatus}=='예약완료'">
-							<button class="cancelBtn btn-primary"
-								th:onclick="|javascript:cancelBtnClick('${iterState.count}')|">취소요청</button>
+							<button class="cancelBtn btn-primary" data-toggle="modal" th:attr="data-target='#cancelConfirmModal'+${iterState.index}">취소요청</button>
 
 							<!-- cancelConfirm Modal -->
-							<div th:id="cancelConfirmModal+${iterState.count}"
-								class="modal cancelConfirmModal">
+							<div th:id="cancelConfirmModal+${iterState.index}" class="modal fade cancelConfirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
 								<!-- Modal content -->
-								<div class="modal-content">
-									<p>예약을 취소하시겠습니까?</p>
-									<button
-										th:onclick="|javascript:onClick('${bookingDto.bookingCode}')|">YES</button>
-									<button class="cancelConfirmModalClose">NO</button>
+								<div class="modal-content" style="width: 30%; height: 16%; top: 35%;">
+									<p style="margin-top: 15px;">예약을 취소하시겠습니까?</p>
+									<button class="btn btn-primary btn-sm" th:onclick="|javascript:onClick('${bookingDto.bookingCode}')|">YES</button>
+									<button class="btn btn-primary btn-sm" data-dismiss="modal">NO</button>
 								</div>
 							</div>
 						</div>
@@ -226,53 +209,60 @@ a.before#bookingList:before,a.after#bookingList:after {
 								th:onclick="location.href='myReview'">작성한 후기 보러가기</button>
 							<button class="btn-primary"
 								th:unless="${#lists.contains(reviewList, bookingDto.bookingCode)}"
-								name="writeReviewBtn">후기 작성하기</button>
-							<button class="btn-primary" th:if="${#lists.size(reviewList)<=0}"
-								name="writeReviewBtn">후기 작성하기</button>
+								name="writeReviewBtn" data-toggle="modal" data-target="#writeReviewModal">후기 작성하기</button>
+							<button class="btn-primary" th:if="${#lists.size(reviewList)<=0}" name="writeReviewBtn">후기 작성하기</button>
 
 							<!-- writeReivew Modal -->
-							<div id="writeReviewModal" class="modal">
-
+							<div id="writeReviewModal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 9999;">
+								<div class="modal-dialog modal-sm modal-notify modal-danger" role="document" style="width: 507px;">
 								<!-- Modal content -->
-								<div class="modal-content">
-									<p>후기 작성하기</p>
-									<form th:action="@{/myPage/writeReview}" id="reviewForm"
-										method="post">
-										<input type="hidden" name="bookingCode"
-											th:value="${bookingDto.bookingCode}"> <label>작성자</label>
-										<input type="hidden" name="memberCode"
-											th:value="${bookingDto.memberCode}"> <label>[[${session.name}]]</label><br>
-
-										<label>평점</label> <span class="star-input"> <span
-											class="input"> <input type="radio" name="rating"
-												value="1" id="p1"> <label for="p1">1</label> <input
-												type="radio" name="rating" value="2" id="p2"> <label
-												for="p2">2</label> <input type="radio" name="rating"
-												value="3" id="p3"> <label for="p3">3</label> <input
-												type="radio" name="rating" value="4" id="p4"> <label
-												for="p4">4</label> <input type="radio" name="rating"
-												value="5" id="p5"> <label for="p5">5</label> <input
-												type="radio" name="rating" value="6" id="p6"> <label
-												for="p6">6</label> <input type="radio" name="rating"
-												value="7" id="p7"> <label for="p7">7</label> <input
-												type="radio" name="rating" value="8" id="p8"> <label
-												for="p8">8</label> <input type="radio" name="rating"
-												value="9" id="p9"> <label for="p9">9</label> <input
-												type="radio" name="rating" value="10" id="p10"> <label
-												for="p10">10</label>
-										</span> <output for="star-input">
-												<b>0</b>점
-											</output>
-										</span> <br> <br> <label>제목</label><br> <input
-											name="title" type="text" size="50" maxlength="30" required><br>
-										<label>내용</label><br>
-										<textarea id="content" name="content" rows="8" cols="50"
-											maxlength="500" required></textarea>
-										<br> <input type="button" id="writeReviewModalClose"
-											value="취소"> <input type="button" id="completedReview"
-											value="작성완료">
-									</form>
+								<div class="modal-content text-center">
+									
+									<!--Header-->
+									<div class="modal-header d-flex justify-content-center">
+										<p style="font-size: 31px; margin: 0px;">후기 작성하기</p>
+									</div>
+									
+									<!--Body-->
+									<div class="modal-body">
+										<form th:action="@{/myPage/writeReview}" id="reviewForm" method="post">
+											<input type="hidden" name="bookingCode" th:value="${bookingDto.bookingCode}"> 
+											<label>작성자</label>
+											<input type="hidden" name="memberCode"
+												th:value="${bookingDto.memberCode}"> <label>[[${session.name}]]</label><br>
+	
+											<label>평점</label> <span class="star-input"> <span
+												class="input"> <input type="radio" name="rating"
+													value="1" id="p1"> <label for="p1">1</label> <input
+													type="radio" name="rating" value="2" id="p2"> <label
+													for="p2">2</label> <input type="radio" name="rating"
+													value="3" id="p3"> <label for="p3">3</label> <input
+													type="radio" name="rating" value="4" id="p4"> <label
+													for="p4">4</label> <input type="radio" name="rating"
+													value="5" id="p5"> <label for="p5">5</label> <input
+													type="radio" name="rating" value="6" id="p6"> <label
+													for="p6">6</label> <input type="radio" name="rating"
+													value="7" id="p7"> <label for="p7">7</label> <input
+													type="radio" name="rating" value="8" id="p8"> <label
+													for="p8">8</label> <input type="radio" name="rating"
+													value="9" id="p9"> <label for="p9">9</label> <input
+													type="radio" name="rating" value="10" id="p10"> <label
+													for="p10">10</label>
+											</span> <output for="star-input">
+													<b>0</b>점
+												</output>
+											</span> <br> <br> <label>제목</label><br> <input
+												name="title" type="text" size="50" maxlength="30" required><br>
+											<label>내용</label><br>
+											<textarea id="content" name="content" rows="8" cols="50"
+												maxlength="500" required></textarea>
+											<br> <input type="button" id="writeReviewModalClose" class="btn  btn-info waves-effect"
+												value="취소" data-dismiss="modal"> <input type="button" id="completedReview"
+												class="btn btn-info waves-effect" value="작성완료">
+										</form>
+									</div>
 								</div>
+							</div>
 							</div>
 							<!-- writeReivew Modal -->
 
@@ -310,24 +300,23 @@ a.before#bookingList:before,a.after#bookingList:after {
 			//취소요청 확인창 모달
 			var cancelConfirmModal = document
 					.getElementById('cancelConfirmModal');
-			//후기 작성 모달
-			var writeReviewModal = document.getElementById('writeReviewModal');
 
-			function cancelBtnClick(cancelCount) {
+		/* 	function cancelBtnClick(cancelCount) {
 				$("#cancelConfirmModal" + cancelCount).css("display", "block");
-			}
+			} */
 
-			$(function() {
+			/* $(function() {
 				$(".cancelConfirmModalClose").click(function() {
 					$(".cancelConfirmModal").css("display", "none");
 				})
-			})
+			}) */
 
-			$(function() {
+			/* $(function() {
 				$("button[name=writeReviewBtn]").click(function() {
-					writeReviewModal.style.display = "block";
+					$('#writeReviewModal').modal();
+					//writeReviewModal.style.display = "block";
 				})
-			})
+			}) */
 
 			$('.starRev span').click(function() {
 				$(this).parent().children('span').removeClass('on');
@@ -335,11 +324,11 @@ a.before#bookingList:before,a.after#bookingList:after {
 				return false;
 			});
 
-			$(function() {
+			/* $(function() {
 				$("#writeReviewModalClose").click(function() {
 					writeReviewModal.style.display = "none";
 				})
-			})
+			}) */
 
 			function onClick(bookingCode) {
 				$.ajax({
@@ -356,13 +345,14 @@ a.before#bookingList:before,a.after#bookingList:after {
 
 			$(function() {
 				$("#completedReview").click(function() {
+					$('#writeReviewModal').modal('hide'); //모달 창 닫음
+					
 					//리뷰 내용
 					var str = document.getElementById("content").value;
-					str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+					str = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 					document.getElementById("content").value = str;
 
 					$("#reviewForm").submit();
-
 				})
 			})
 		</script>
