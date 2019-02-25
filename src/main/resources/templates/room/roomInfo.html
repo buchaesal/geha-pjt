@@ -96,6 +96,13 @@
 		margin-left: 78px;
 
 	}
+	textarea {
+    overflow: auto;
+	width: 100%;
+	resize: none;
+	height: 130px;
+	
+	}
 	
 	.roomInfo {
 		display:block;
@@ -410,6 +417,10 @@
 	    color: black;
 	    background-size: 18px auto;
 	}
+	.nav_wrapper {
+background-color: #2a416b;
+}
+	
 	
 	@media(max-width:900px){
 
@@ -543,6 +554,8 @@
 									<a th:href=|#login_form${RoomDto.roomCode}| class="infobtn" id="login_pop"style="margin: 0; background-color: white; color: black; " >객실 이용 안내</a>								
 								
 								</div>
+								
+								
 								<a href="#x" class="overlay" th:id=|login_form${RoomDto.roomCode}|></a>
 								<div class="popup">
 									<h2>객실 이용 안내</h2>
@@ -663,6 +676,9 @@
 			xhr.setRequestHeader(header, token);
 		});
 	});
+
+
+	
 	function check() {
 		if([[${session.memberCode}]] == null){
 			swal({
@@ -697,21 +713,21 @@
 		                a += '<p>'+jQuery.timeago(new Date(value.writingDate))+'</p>';
 		                a += '</div>'
 		              	if(value.replyContent == null && [[${session.auth}]] == 'HOST' && [[${session.memberCode}]] == [[${geha.memberCode}]]){
-		              		a += '<form id="commentForm">'
-		              		a += '<input type="text" id="replyContent"  name="content_'+value.reviewNo+'" required >'
+		              		a += '<form id="commentForm" onsubmit="return false;">'
+		              		a += '<textarea id="replyContent" name="content_'+value.reviewNo+'" maxlength="300" required style="width: 150%;" ></textarea>'
 				            a += '<input id="reviewno"  name="reviewno_'+ value.reviewNo +'" type="hidden" value="' + value.reviewNo + '">' 
-			                a += '<button class="btn btn-primary" id="commentBtn" type="button" onclick="commentCheck('+value.reviewNo+')" style="margin: 10px"> 답변하기 </button>'
+			                a += '<button class="btn btn-primary" id="commentBtn" type="button" onclick="commentCheck('+value.reviewNo+')" style="margin: 10px; "> 답변하기 </button>'
 		              		a += '</form>'
 		              	};
 		              	if (value.replyContent != null){
 		              		a += '<div class="host" id="comment2" style=" margin-left:10%" >'
 			              	a+= '<img src="/img/icons/man.png" style="width: 60px; border-radius: 100%">'
 		              		a += '<span style="font-size:30px; vertical-align:middle;">&nbsp;제휴점 답변</span><br><br>'
-		              		a += '<p class="replyContent'+value.reviewNo+'">' + value.replyContent + '</p>'
+		              		a += '<p class="replyContent'+value.reviewNo+'" style="word-break: break-all;">' + value.replyContent + '</p>'
 		              		a += '<p class="replyDate">' + jQuery.timeago(new Date(value.replyDate)) + '</p>'
 								if (value.replyContent != null && [[${session.memberCode}]] == [[${geha.memberCode}]] ) {
-			              			a += '<button class="btn btn-primary" type="button" id="up" style="margin: 0px 5px 10px 5px;" onclick="commentUpdateProc('+value.reviewNo+',\''+value.replyContent+'\')">수정하기</button>'
-			              			a += '<button class="btn btn-primary" type="button" id="del"style="margin: 0px 5px 10px 5px;" onclick="commentDelete('+value.reviewNo+')">삭제하기</button>'
+			              			a += '<button class="btn btn-primary up" type="button" id="up" style="margin: 0px 5px 10px 5px;" onclick="commentUpdateProc('+value.reviewNo+',\''+value.replyContent+'\')"> 수정하기 </button>'
+			              			a += '<button class="btn btn-primary del" type="button" id="del"style="margin: 0px 5px 10px 5px;" onclick="commentDelete('+value.reviewNo+')">삭제하기</button>'
 			              		}	
 		              		a += '</div>'
 		              	}
@@ -801,6 +817,12 @@
 		//호스트답글 유효성
 		function commentCheck(reviewNo) {
 			
+			         //textArea br태그 넣기
+	        	var textareaTags =  $("#replyContent");
+	       		var str = textareaTags.val();
+	       		 str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+	    		 textareaTags=str;
+
 			  if($.trim($('[name=content_'+reviewNo+']').val()) == ''){
 					swal({
 						  title: "내용을 입력하세요!",
@@ -810,20 +832,30 @@
 				   $('[name=content_'+reviewNo+']').focus();
 				   return false;
 			}else {
-				commentUpdate(reviewNo);
+				commentUpdate(reviewNo,textareaTags);
 			};
 		}
 		//댓글수정폼
 		function commentUpdateProc(reviewNo, replyContent){
+ 			
+
+        	
+			//br태그-> enter 로 치환 
+       		var str =replyContent;
+       		 str = str.replace(/<br>/gi , "\r\n");
+       		replyContent=str; 
 			
 		    var a ='';
 		    $('.replyDate').hide();
-		    $('#up').hide();
-		    $('#del').hide();
-		  	a += '<input type="text" class="replyContentUpdate" name="contentUp_'+reviewNo+'" value="'+replyContent+'"/>';
-		    a += '<button class="btn btn-primary" type="button" onclick="commentUpCheck('+reviewNo+');">수정</button>';
+		    $('.up').hide();
+		    $('.del').hide();
+		  	a += '<textarea id="replyContentUpdate" class="replyContentUpdate" name="contentUp_'+reviewNo+'" maxlength="300">'+replyContent+'</textarea>';
+		    a += '<button class="btn btn-primary" type="button" onclick="commentUpCheck('+reviewNo+');">수정하기</button>';
 		    $('.replyContent'+reviewNo).html(a);
 		}
+		
+
+        
 		//댓글수정시 유효성
 		function commentUpCheck(reviewNo) {
 			  if($.trim($('[name=contentUp_'+reviewNo+']').val()) == ''){
@@ -835,12 +867,19 @@
 				   $('.replyContentUpdate').focus();
 				   return false;
 			}else {
-				commentUpdate1(reviewNo);
+		         //textArea br태그 넣기
+	        	var textareaTags =  $("#replyContentUpdate");
+	       		var str = textareaTags.val();
+	       		 str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+	    		 textareaTags=str;
+	    		 
+				commentUpdate1(reviewNo,textareaTags);
+
 			};
 		}
 		//답글 수정
-		function commentUpdate1(reviewNo){
-  			var replyContent = $('[name=contentUp_'+reviewNo+']').val();
+		function commentUpdate1(reviewNo,textareaTags){
+  			var replyContent = textareaTags;
   			var reno = $('[name=reviewno_'+reviewNo+']').val();
   			reno = reviewNo;
 	 	    $.ajax({
@@ -854,8 +893,8 @@
 		}; 
 		
 		//호스트답글 
-		function commentUpdate(reviewNo){
-  			var replyContent = $('[name=content_'+reviewNo+']').val();
+		function commentUpdate(reviewNo,textareaTags){
+  			var replyContent = textareaTags
   			var reno = $('[name=reviewno_'+reviewNo+']').val();
   			reno = reviewNo;
 	 	    $.ajax({
@@ -864,9 +903,11 @@
 		        data : {'replyContent' : replyContent, 'reviewNo' : reno}, 
 		        success : function(){
 		        	commentList(1);
+		        	
 		        }
 		    }) 
-		}; 
+		};
+		
 		//댓글 삭제 
 		function commentDelete(reviewNo){
 		    $.ajax({
@@ -989,8 +1030,8 @@
 		 			.css('background-size','150px')
 		 			.css('background-position','0 bottom')
 		 		}
-	 		  
-	 		
+
+
 	 	});
 		
  		/* when a user clicks, toggle the 'is-animating' class */
@@ -1002,7 +1043,7 @@
   		$(".favme").on('animationend', function(){
   		$(this).toggleClass('is_animating');
   		});
-
+		
 	 	
 	 	
  	$(function() {
@@ -1110,12 +1151,8 @@
 				return d;
 			}
 		}
-		
-		
-		
-		
-	})
-	
+	}); 
+
 	</script>
 	
 	

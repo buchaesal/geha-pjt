@@ -65,6 +65,7 @@ public class MyPageController {
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("bookingList", myPageDao.getBookingListByMemberCode(cri, memberCode));
 		model.addAttribute("reviewList", myPageDao.getReviewListByMemberCode(memberCode));
+		
 	}
 
 	// 취소요청
@@ -96,7 +97,16 @@ public class MyPageController {
 	public void myReview(Model model, HttpSession session, @ModelAttribute("cri") AdminPageCriteria cri) {
 		int memberCode = ((Integer) session.getAttribute("memberCode")).intValue();
 		cri.setPerPageNum(5);
-		model.addAttribute("reviewList", myPageDao.getReviewList(cri, memberCode));
+		List<ReviewDto> reviewDto = myPageDao.getReviewList(cri, memberCode);
+		for(ReviewDto list:reviewDto) {
+			
+			String deleteBr = list.getContent().replace("<br/>", "\r\n");
+			list.setContent(deleteBr);
+			
+		}
+		
+		
+		model.addAttribute("reviewList", reviewDto);
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
@@ -153,7 +163,9 @@ public class MyPageController {
 
 	// 찜한숙소
 	@GetMapping("/myLike")
-	public void myLike(Model model, HttpSession session, @ModelAttribute("cri") AdminPageCriteria cri) {
+	public void myLike(Model model, HttpSession session, Authentication auth,@ModelAttribute("cri") AdminPageCriteria cri) {
+		memberService.getSession(auth, session);
+		
 		int memberCode = ((Integer) session.getAttribute("memberCode")).intValue();
 		cri.setPerPageNum(5);
 

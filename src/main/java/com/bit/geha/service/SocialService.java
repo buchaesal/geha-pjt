@@ -21,18 +21,21 @@ public class SocialService {
 	MemberDao memberDao;
 	
 	public UsernamePasswordAuthenticationToken doAuthentication(MemberDto memberDto) {
-		if (memberDao.findById(memberDto.getId())!=null) {
+		MemberDto member = memberDao.findById(memberDto.getId());
+		if (member!=null) {
 	        // 기존 회원일 경우에는 데이터베이스에서 조회해서 인증 처리
-	        final User user = new SecurityMember(memberDto);
-	        
+	        final SecurityMember user = new SecurityMember(member);
 	        return setAuthenticationToken(user);
 	    } else {
 	        // 새 회원일 경우 회원가입 이후 인증 처리
+	    	memberDto.setAuthority("USER");
+	        memberDto.setAuthStatus("OK");
+	        memberDto.setPassword("socialMember");
+	        memberDto.setGender("M");
 	    	memberDao.insertUser(memberDto);
 	    	memberDao.userAuth(memberDto.getId());
-	    	MemberDto member = memberDao.findById(memberDto.getId());
 	    	
-	        final SecurityMember user = new SecurityMember(member);
+	        final SecurityMember user = new SecurityMember(memberDto);
 	        
 	        
 	      
@@ -40,9 +43,9 @@ public class SocialService {
 	    }
 	}
 	
-	 private UsernamePasswordAuthenticationToken setAuthenticationToken(Object user) {
+	 private UsernamePasswordAuthenticationToken setAuthenticationToken(SecurityMember user) {
 	        return new UsernamePasswordAuthenticationToken(user,
-	        		null, getAuthorities("ROLE_USER"));
+	        		null, getAuthorities("ROLE_"+user.getAuthority()));
 	    }
 	 
 	 private Collection<? extends GrantedAuthority> getAuthorities(String role) {

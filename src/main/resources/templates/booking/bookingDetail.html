@@ -6,8 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>상세페이지</title>
 <style>
-header {
-	min-height: 10%;
+header{
+    background-color: #ff5442;
+    min-height: 13%;
 }
 
 .display_left {
@@ -119,12 +120,6 @@ th {
 					<td>[[${#numbers.formatInteger(bookingDto.paymentAmount, 3, 'COMMA')}]] 원</td>
 				</tr>
 			</table>
-
-			<!-- <div class="out">
-				<a class="bookingDetail_a"
-					th:href="@{/myPage/bookingList(memberCode=${bookingDto.memberCode})}">예약내역
-					확인하러 가기</a>
-			</div> -->
 		</div>
 	</div>
 	
