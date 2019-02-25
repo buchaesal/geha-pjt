@@ -203,7 +203,6 @@ body {
 }
 
 .swiper-slide {
-	text-align: center;
 	font-size: 18px;
 	background-color: gray;
 	/* Center slide text vertically */
@@ -223,18 +222,30 @@ body {
 	background-size: cover;
 }
 
+.swiper-slide div.rowgh{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 7rem;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
 .swiper-slide span {
-	background-color: rgba(0, 0, 0, 0.7);
-	opacity: 1;
 	color: whitesmoke;
 }
 
 .swiper-slide span.rownum {
-	color: orangered;
+	background-color: rgba(255, 84, 66, 0.7);
+	color: whitesmoke;
+	position: absolute;
+	top: 0;
+	right: 0;
 }
 
 .swiper-slide span.rating {
-	color: orange;
+	color: #f6931f;
 }
 
 .nav_wrapper {
@@ -267,7 +278,6 @@ body {
 			width="30px" height="30px" style="display: unset; margin-left: 7px;"> -->
 		</a>
 		<nav id="menu" class="menu">
-
 
 			<ul class="dropdown">
 				<li><a class="page-scroll" href="/search">방찾기</a></li>
@@ -442,10 +452,13 @@ body {
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
 			<div id="swiper1" th:each="listRating : ${listRating}" class="swiper-slide" th:style=|background-image:url(gehaImg/${listRating.guestHouseCode}/${listRating.savedName})|>
-			 <span class="rownum" th:text=|${listRating.rownum}등|>등수</span> <span>&nbsp;</span>
-				<span class="rating" th:text=|${listRating.avgRating}|>게하 평점</span>
-				<span>&nbsp;</span> <span class="gehaname" th:text=|${listRating.guestHouseName}|>게하이름</span>
+			 	<span class="rownum" th:text=|${listRating.rownum}등|>등수</span>
+				<div class="rowgh">
+					<span class="rating" th:text=|${listRating.avgRating}|>게하 평점</span>
+					<span>&nbsp;</span> <span class="gehaname" th:text=|${listRating.guestHouseName}|>게하이름</span>
+				</div>
 				<span id="ghcode" th:text=|${listRating.guestHouseCode}| style="display:none">게하코드</span>
+				
 			</div>
 		</div>
 		<!-- Add Pagination -->
@@ -463,10 +476,12 @@ body {
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
 			<div id="swiper2" th:each="listReview : ${listReview}" class="swiper-slide" th:style=|background-image:url(gehaImg/${listReview.guestHouseCode}/${listReview.savedName})|>
-			 <span class="rownum" th:text=|${listReview.rownum}등|>등수</span> <span>&nbsp;</span>
-				<span class="rating" th:text=|${listReview.reviewCnt}개|>게하 리뷰
-					개수</span> <span>&nbsp;</span> <span class="gehaname" th:text=|${listReview.guestHouseName}|>게하이름</span>
-					<span id="ghcode" th:text=|${listReview.guestHouseCode}| style="display:none">게하코드</span>
+			 <span class="rownum" th:text=|${listReview.rownum}등|>등수</span>
+			 <div class="rowgh">
+				<span class="rating" th:text=|${listReview.reviewCnt}개|>게하 리뷰개수</span> <span>&nbsp;</span>
+				<span class="gehaname" th:text=|${listReview.guestHouseName}|>게하이름</span>
+			 </div>
+				<span id="ghcode" th:text=|${listReview.guestHouseCode}| style="display:none">게하코드</span>
 			</div>
 		</div>
 		<!-- Add Pagination -->
