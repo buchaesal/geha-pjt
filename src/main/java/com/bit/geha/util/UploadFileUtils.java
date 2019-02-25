@@ -22,7 +22,9 @@ public class UploadFileUtils {
 //	public static final String UPLOAD_PATH = "C:\\Users\\tmfrl\\git\\geha-pjt\\src\\main\\resources\\static\\gehaImg\\";
 	
 	public static String makeUploadRootPath() {
-		String uploadRootPath = null;
+		System.out.println("makeUploadRootPath()");
+		
+		/*String uploadRootPath = null;
 
 		final DefaultResourceLoader defaultResourceLoader = new DefaultResourceLoader();
 		
@@ -36,23 +38,42 @@ public class UploadFileUtils {
 		
 		System.out.println("uploadRootPath: " + uploadRootPath);
 		
-		return uploadRootPath;
+		return uploadRootPath;*/
+		
+		String resourceToString;
+		String OS = System.getProperty("os.name").toLowerCase();
+		if(OS.indexOf("nux") >= 0) {
+			System.out.println("linux");
+			resourceToString = "/project/geha/geha-pjt/src/main/resources/static/gehaImg";
+		} else {
+			System.out.println("windows");
+			resourceToString = System.getProperty("user.dir") + "/src/main/resources/static/gehaImg";
+		}
+		
+		System.out.println("resourceToString: " + resourceToString);
+		return resourceToString;
 	}
 	
 	
 	
+	
+	
 	private static void makeDir(String uploadPath, String ...paths) {
+		System.out.println("makeDir");
 		
 		if(new File(uploadPath + paths[paths.length-1]).exists())
 			return;
 		
 		for(String path:paths) { 
+			System.out.println("upload+path: " + uploadPath+path);
+
 			File dirPath = new File(uploadPath + path);
 			
 			if(! dirPath.exists()) {
 				dirPath.mkdirs();
 			}
 		}
+		
 	}
 	
 
@@ -60,6 +81,7 @@ public class UploadFileUtils {
 	public static List<FileDto> uploadFiles(Object dto) throws Exception {
 		List<FileDto> resultList = new ArrayList<FileDto>();
 		String uploadPath = makeUploadRootPath() ;
+		System.out.println("after makeUploadRootPath");
 		
 		if(dto instanceof GuestHouseDto) {
 			GuestHouseDto guestHouseDto = (GuestHouseDto) dto;
@@ -68,6 +90,7 @@ public class UploadFileUtils {
 			String guestHousePath = File.separator + guestHouseDto.getGuestHouseCode() + File.separator;
 			System.out.println();
 			makeDir(uploadPath , guestHousePath);
+			System.out.println("after makeDir");
 			
 			for(int i=0; i<uploadFiles.size(); i++) {
 				MultipartFile file = uploadFiles.get(i);
@@ -76,6 +99,7 @@ public class UploadFileUtils {
 				String savedName = uid.toString() + "_" + file.getOriginalFilename();
 				
 				File target = new File(uploadPath+guestHousePath, savedName);
+				System.out.println("uploadPath + guestHousePath + savedName: " + uploadPath + guestHousePath + savedName);
 				file.transferTo(target);
 				
 				resultList.add(new FileDto(savedName, file.getOriginalFilename(), guestHouseDto.getGuestHouseCode(), ((i==guestHouseDto.getMainImage())?true:false)));

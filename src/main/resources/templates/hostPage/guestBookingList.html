@@ -66,103 +66,109 @@ a.before#guestBookingList:before, a.after#guestBookingList:after {
 </head>
 <body>
 	<div layout:fragment="hostPage_content">
+		<div th:if="${#lists.size(guestBookingList)==0}"
+			style="padding-top: 33px;" align="center">
+			<p class="heading">회원예약내역이 없습니다.</p>
+			<img src="https://image.flaticon.com/icons/svg/1071/1071285.svg" width="60px" height="60px">
+		</div>
+		<div th:if="${#lists.size(guestBookingList)>0}">
+			<form id="searchForm" action="/hostPage/guestBookingList">
+				<select name="type">
+					<option value="" th:selected="${pageMaker.cri.type == null}">--</option>
+					<option value="guestHouseName"
+						th:selected="${pageMaker.cri.type eq 'guestHouseName'}">게스트하우스
+						이름</option>
+					<option value="bookingStatus"
+						th:selected="${pageMaker.cri.type eq 'bookingStatus'}">예약
+						상태</option>
+				</select> <input type="text" name="keyword"
+					th:value="${pageMaker.cri.keyword}">
+				<button type="button" class='btn-primary' onclick="search()">검색</button>
+			</form>
 
-		<form id="searchForm" action="/hostPage/guestBookingList">
-			<select name="type">
-				<option value="" th:selected="${pageMaker.cri.type == null}">--</option>
-				<option value="guestHouseName"
-					th:selected="${pageMaker.cri.type eq 'guestHouseName'}">게스트하우스
-					이름</option>
-				<option value="bookingStatus"
-					th:selected="${pageMaker.cri.type eq 'bookingStatus'}">예약
-					상태</option>
-			</select> <input type="text" name="keyword"
-				th:value="${pageMaker.cri.keyword}">
-			<button type="button" class='btn-primary' onclick="search()">검색</button>
-		</form>
 
+			<table width="800px">
+				<tr height="80px" align="center" style="background: #f1f1fb;">
+					<th>예약번호</th>
+					<th>예약 정보</th>
+					<th>결제금액</th>
+					<th>상태</th>
+					<th></th>
+				</tr>
+				<tr th:each="bookingDto, iterState : ${guestBookingList}"
+					align="center" height="80px">
+					<td th:text="${bookingDto.bookingCode}"></td>
+					<td>
+						[[${bookingDto.guestHouseName}]]([[${bookingDto.roomName}]]) <br>
+						[[${#dates.format(bookingDto.bookingStart, 'yy.MM.dd')}]] ~
+						[[${#dates.format(bookingDto.bookingEnd, 'yy.MM.dd')}]] <a
+						th:href="@{/booking/bookingDetail(bookingCode=${bookingDto.bookingCode})}">상세내역</a>
+					</td>
+					<td
+						th:text="${#numbers.formatInteger(bookingDto.paymentAmount, 3, 'COMMA')}"></td>
+					<td th:text="${bookingDto.bookingStatus}"></td>
+					<td>
+						<div th:if="${bookingDto.bookingStatus}=='취소요청'">
+							<button class="cancelApprovalBtn btn-primary"
+								th:onclick="|javascript:cancelApprovalBtnClick('${iterState.count}')|">승인하기</button>
 
-		<table width="800px">
-			<tr height="80px" align="center" style="background: #f1f1fb;">
-				<th>예약번호</th>
-				<th>예약 정보</th>
-				<th>결제금액</th>
-				<th>상태</th>
-				<th></th>
-			</tr>
-			<tr th:each="bookingDto, iterState : ${guestBookingList}"
-				align="center" height="80px">
-				<td th:text="${bookingDto.bookingCode}"></td>
-				<td>
-					[[${bookingDto.guestHouseName}]]([[${bookingDto.roomName}]]) <br>
-					[[${#dates.format(bookingDto.bookingStart, 'yy.MM.dd')}]] ~
-					[[${#dates.format(bookingDto.bookingEnd, 'yy.MM.dd')}]] <a
-					th:href="@{/booking/bookingDetail(bookingCode=${bookingDto.bookingCode})}">상세내역</a>
-				</td>
-				<td
-					th:text="${#numbers.formatInteger(bookingDto.paymentAmount, 3, 'COMMA')}"></td>
-				<td th:text="${bookingDto.bookingStatus}"></td>
-				<td>
-					<div th:if="${bookingDto.bookingStatus}=='취소요청'">
-						<button class="cancelApprovalBtn btn-primary"
-							th:onclick="|javascript:cancelApprovalBtnClick('${iterState.count}')|">승인하기</button>
+							<!-- cancelApproval Modal -->
+							<div th:id="cancelApprovalModal+${iterState.count}"
+								class="modal cancelApprovalModal">
 
-						<!-- cancelApproval Modal -->
-						<div th:id="cancelApprovalModal+${iterState.count}"
-							class="modal cancelApprovalModal">
-
-							<!-- Modal content -->
-							<div class="modal-content">
-								<p>해당 예약내역의 취소 및 환불처리하시겠습니까?</p>
-								<button class="btn-primary"
-									th:onclick="|javascript:doBookingCancel('${bookingDto.bookingCode}')|">YES</button>
-								<button class="cancelApprovalModalClose btn-primary">NO</button>
+								<!-- Modal content -->
+								<div class="modal-content">
+									<p>해당 예약내역의 취소 및 환불처리하시겠습니까?</p>
+									<button class="btn-primary"
+										th:onclick="|javascript:doBookingCancel('${bookingDto.bookingCode}')|">YES</button>
+									<button class="cancelApprovalModalClose btn-primary">NO</button>
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<div th:if="${bookingDto.bookingStatus}=='숙박 중'">
-						<button class="earlyCheckoutBtn"
-							th:onclick="|javascript:earlyCheckoutBtnClick('${iterState.count}')|">퇴실처리</button>
+						<div th:if="${bookingDto.bookingStatus}=='숙박 중'">
+							<button class="earlyCheckoutBtn"
+								th:onclick="|javascript:earlyCheckoutBtnClick('${iterState.count}')|">퇴실처리</button>
 
-						<!-- earlyCheckout Modal -->
-						<div th:id="earlyCheckoutModal+${iterState.count}"
-							class="modal earlyCheckoutModal">
+							<!-- earlyCheckout Modal -->
+							<div th:id="earlyCheckoutModal+${iterState.count}"
+								class="modal earlyCheckoutModal">
 
-							<!-- Modal content -->
-							<div class="modal-content">
-								<p>퇴실처리하시겠습니까?</p>
-								<button
-									th:onclick="|javascript:doEarlyCheckout('${bookingDto.bookingCode}')|">YES</button>
-								<button class="earlyCheckoutModalClose">NO</button>
+								<!-- Modal content -->
+								<div class="modal-content">
+									<p>퇴실처리하시겠습니까?</p>
+									<button
+										th:onclick="|javascript:doEarlyCheckout('${bookingDto.bookingCode}')|">YES</button>
+									<button class="earlyCheckoutModalClose">NO</button>
+								</div>
 							</div>
 						</div>
-					</div>
-				</td>
-			</tr>
-		</table>
+					</td>
+				</tr>
+			</table>
 
-		<!-- 게시판 하단의 페이징 버튼 -->
-		<div class="box-footer clearfix" style="padding-left: 357px">
-			<ul class="pagination pagination-sm no-margin pull-center">
+			<!-- 게시판 하단의 페이징 버튼 -->
+			<div class="box-footer clearfix" style="padding-left: 357px">
+				<ul class="pagination pagination-sm no-margin pull-center">
 
-				<li th:if="${pageMaker.prev} == true"><a
-					th:href="@{/hostPage/guestBookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum},type=${pageMaker.cri.type},keyword=${pageMaker.cri.keyword})}">&laquo;</a>
-				</li>
+					<li th:if="${pageMaker.prev} == true"><a
+						th:href="@{/hostPage/guestBookingList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum},type=${pageMaker.cri.type},keyword=${pageMaker.cri.keyword})}">&laquo;</a>
+					</li>
 
-				<li
-					th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
-					th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-					<a th:if="${idx}"
-					th:href="@{/hostPage/guestBookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum},type=${pageMaker.cri.type},keyword=${pageMaker.cri.keyword})}"
-					th:text="${idx}"></a>
-				</li>
+					<li
+						th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
+						th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+						<a th:if="${idx}"
+						th:href="@{/hostPage/guestBookingList(page=${idx},perPageNum=${pageMaker.cri.perPageNum},type=${pageMaker.cri.type},keyword=${pageMaker.cri.keyword})}"
+						th:text="${idx}"></a>
+					</li>
 
-				<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-					<a
-					th:href="@{/hostPage/guestBookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum},type=${pageMaker.cri.type},keyword=${pageMaker.cri.keyword})}">&raquo;</a>
-				</li>
-			</ul>
+					<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+						<a
+						th:href="@{/hostPage/guestBookingList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum},type=${pageMaker.cri.type},keyword=${pageMaker.cri.keyword})}">&raquo;</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 	<div layout:fragment="hostPage_script">

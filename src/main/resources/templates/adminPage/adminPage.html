@@ -152,13 +152,15 @@ function search(){
 				var searchForm = $("#searchForm");
 				if (!searchForm.find("option:selected")
 						.val()) {
-					alert("검색종류를 선택하세요");
+					$("#modalName").text('검색종류를 선택하세요.');
+					$("#confirmModal").modal();
 					return false;
 				}
 
 				else if (!searchForm.find(
 						"input[name='keyword']").val()) {
-					alert("키워드를 입력하세요");
+					$("#modalName").text('검색어를 입력하세요.');
+					$("#confirmModal").modal();
 					return false;
 				} else{
 					 searchForm.submit();
@@ -220,6 +222,14 @@ a.before#adminPage:before,a.after#adminPage:after {
   bottom:-0.25em;
   height:0.35rem;
   width:100%;
+}
+
+.modal-sm {
+    width: 444px;
+}
+
+.modal-footer{
+padding-bottom:0;
 }
 </style>
 </head>

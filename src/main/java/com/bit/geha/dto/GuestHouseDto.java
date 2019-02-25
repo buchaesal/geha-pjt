@@ -31,4 +31,5 @@ public class GuestHouseDto {
 	private int mainImage;
 	private List<MultipartFile> files;
 	private String memberName;
+	private String fifthReject;
 }

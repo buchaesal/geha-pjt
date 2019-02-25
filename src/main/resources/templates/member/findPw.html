@@ -17,142 +17,131 @@
 
 
 <style>
-.error2{
-color: tomato;
-
-}
-.error{
-color:tomato;
+.error2 {
+	color: tomato;
 }
 
-.loading{
-    position: absolute;
-    bottom: 119px;
-    right: 304px;
+.error {
+	color: tomato;
 }
 </style>
 </head>
 <body>
-<div layout:fragment="member_content">
-<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100 p-t-90 p-b-30">
-			<span class="login100-form-title p-b-40">
-						:: 비밀번호 찾기 ::
-					</span>
-			<div class="text-center p-t-55 p-b-30">
-						<span class="txt1">
-							등록한 이메일을 입력해주세요.
-						</span>
+	<div layout:fragment="member_content">
+		<div class="limiter">
+			<div class="container-login100">
+				<div class="wrap-login100 p-t-90 p-b-30">
+					<span class="login100-form-title p-b-40"> :: 비밀번호 찾기 :: </span>
+					<div class="text-center p-t-55 p-b-30">
+						<span class="txt1"> 등록한 이메일을 입력해주세요. </span>
 					</div>
-	<div class="wrap-input100 validate-input m-b-16">
+					<div class="wrap-input100 validate-input m-b-16">
 						<input class="input100" type="email" id="id" placeholder="Email">
 						<span class="focus-input100"></span>
 					</div>
 					<div class="container-login100-form-btn">
-						<button type="button" class="login100-form-btn" onclick="showFrm()">
-							입력
-						</button>
+						<button type="button" class="login100-form-btn"
+							onclick="showFrm()">입력</button>
 					</div>
 					<span class="error2 txt1" id="error2"></span>
-					<span class="txt1 loading" id="loading"></span>
+					<p class="txt1" id="loading"
+						style="padding-top: 32px; text-align: center;"></p>
 
 
 
-	<div class="text-center p-t-55 p-b-30" id="pwEmail" style="display: none;">
-		<span class="txt1">이메일에 인증코드가 전송되었어요. 입력해주세요.</span>
-		<div> &nbsp;&nbsp;&nbsp;</div>
-		
-		
-		<form class="login100-form validate-form" action="/member/changePw" id="checkMail">
-			<input type="hidden" id="text" th:value="${text}" name="text">
-			<input type="hidden" id="hiddenId" name="hiddenId">
-			<div class="wrap-input100 validate-input m-b-16">
-						<input class="input100" type="text" id="input" name="input" placeholder="인증코드">
-						<span class="focus-input100"></span>
+					<div class="text-center p-t-55 p-b-30" id="pwEmail"
+						style="display: none;">
+						<span class="txt1">이메일에 인증코드가 전송되었어요. 입력해주세요.</span>
+						<div>&nbsp;&nbsp;&nbsp;</div>
+
+
+						<form class="login100-form validate-form"
+							action="/member/changePw" id="checkMail">
+							<input type="hidden" id="text" th:value="${text}" name="text">
+							<input type="hidden" id="hiddenId" name="hiddenId">
+							<div class="wrap-input100 validate-input m-b-16">
+								<input class="input100" type="text" id="input" name="input"
+									placeholder="인증코드"> <span class="focus-input100"></span>
+							</div>
+							<span class="txt1 error" id="error"></span>
+							<div class="container-login100-form-btn">
+								<button type="button" class="login100-form-btn"
+									onclick="checkMail()">확인</button>
+							</div>
+						</form>
 					</div>
-					<span class="txt1 error" id="error"></span>
-						<div class="container-login100-form-btn">
-						<button type="button" class="login100-form-btn" onclick="checkMail()">
-							확인
-						</button>
-					</div>
-		</form>
-	</div>
-	
-	
-	</div>
-	</div>
-	</div>
-	<div layout:fragment="member_script">
-	<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
 
-<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
 
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	$(function() {
-		$(document).ajaxSend(function(e, xhr, options) {
-			xhr.setRequestHeader(header, token);
-		});
-	});
-	
-	/* 값 넘기고 인증코드 입력하는 창 띄우는 메소드 */
-	
-	function showFrm() {
+				</div>
+			</div>
+		</div>
+		<div layout:fragment="member_script">
+			<script
+				src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+			<script>
+			<!-- 시큐리티 + 에이젝스 에러 방지 설정222 -->
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+				$(function() {
+					$(document).ajaxSend(function(e, xhr, options) {
+						xhr.setRequestHeader(header, token);
+					});
+				});
 
-		var pwEmail = document.getElementById('pwEmail'); /* 인증코드 입력란(hidden) */
-		var id = document.getElementById('id').value; 	  /* 입력한 아이디(email) */
-		$("#loading").text('메일을 보내는 중입니다...'); 
+				/* 값 넘기고 인증코드 입력하는 창 띄우는 메소드 */
 
-		$.ajax({
-			type : "POST",
-			url : "findPw.do",
-			data : {
-				"id" : id
-			},
-			contentType : "application/json; charset=utf-8",
-			dataType : "text",
-			error : function(error) {
-				alert('메일을 전송할 수 없습니다. 관리자에게 문의해주세요.');
-			},
-			success : function(text) {
-				
-				$("#loading").hide();
-				if(text===""){ /* 회원이 존재하지 않는경우 */
-				$("#error2").text('입력하신 이메일의 회원이 존재하지 않습니다.')
-				}else{ /* 존재하는 경우 */
-				pwEmail.style.display = 'block';
-				/* controller에서 넘겨받은 인증코드를 hidden value에 넣어둔다. */
-				document.getElementById('text').value = text; 
-				document.getElementById('hiddenId').value = id;
+				function showFrm() {
+
+					var pwEmail = document.getElementById('pwEmail'); /* 인증코드 입력란(hidden) */
+					var id = document.getElementById('id').value; /* 입력한 아이디(email) */
+					$("#loading").text('메일을 보내는 중입니다...');
+
+					$.ajax({
+						type : "POST",
+						url : "findPw.do",
+						data : {
+							"id" : id
+						},
+						contentType : "application/json; charset=utf-8",
+						dataType : "text",
+						error : function(error) {
+							alert('메일을 전송할 수 없습니다. 관리자에게 문의해주세요.');
+						},
+						success : function(text) {
+
+							$("#loading").hide();
+							if (text === "") { /* 회원이 존재하지 않는경우 */
+								$("#error2").text('입력하신 이메일의 회원이 존재하지 않습니다.')
+							} else { /* 존재하는 경우 */
+								pwEmail.style.display = 'block';
+								/* controller에서 넘겨받은 인증코드를 hidden value에 넣어둔다. */
+								document.getElementById('text').value = text;
+								document.getElementById('hiddenId').value = id;
+							}
+						}
+					});
 				}
-			}
-		});
-	}
 
-	/* 인증코드 확인 메서드 */
-	function checkMail() {
+				/* 인증코드 확인 메서드 */
+				function checkMail() {
 
-		var text = document.getElementById('text').value; 	/* 인증코드 */
-		var input = document.getElementById('input').value; /* 사용자가 입력한 코드 */
-		
-		if (text === input) { 								/* 만약 일치한다면 */
-			document.getElementById('checkMail').submit();	/* 폼을 제출함 */
-		} else {
-			document.getElementById('error').innerHTML = '인증번호가 일치하지 않습니다.'
-			return false; 							/* 그렇지 않다면 폼을 제출하지 않고 알림을 띄움 */
-		}
-	}
-</script>
-	
-	
+					var text = document.getElementById('text').value; /* 인증코드 */
+					var input = document.getElementById('input').value; /* 사용자가 입력한 코드 */
+
+					if (text === input) { /* 만약 일치한다면 */
+						document.getElementById('checkMail').submit(); /* 폼을 제출함 */
+					} else {
+						document.getElementById('error').innerHTML = '인증번호가 일치하지 않습니다.'
+						return false; /* 그렇지 않다면 폼을 제출하지 않고 알림을 띄움 */
+					}
+				}
+			</script>
+
+
+		</div>
+
+
+
 	</div>
-	
-	
-	
-</div>
 </body>
 </html>

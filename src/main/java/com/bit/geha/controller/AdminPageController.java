@@ -22,6 +22,7 @@ import com.bit.geha.dao.RoomDao;
 import com.bit.geha.dto.FacilityDto;
 import com.bit.geha.dto.FileDto;
 import com.bit.geha.dto.GuestHouseDto;
+import com.bit.geha.dto.LikeDto;
 import com.bit.geha.dto.MemberDto;
 import com.bit.geha.dto.RejectDto;
 import com.bit.geha.dto.RoomDto;
@@ -91,9 +92,20 @@ public class AdminPageController {
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(adminPageDao.getApprovalTotal());
 		
+		List<GuestHouseDto> gList = adminPageDao.getApprovalHouseList(cri);
+		
+		for (GuestHouseDto list : gList) {
+
+			if(adminPageDao.getRejectListByGuestHouseCode(list.getGuestHouseCode()).size()>=5) {
+				list.setFifthReject("반려초과");
+			}
+
+		}
+		
 		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("list", adminPageDao.getApprovalHouseList(cri));
+		model.addAttribute("list", gList);
 		model.addAttribute("tomorrow",memberService.getTomorrow());
+		
 	}
 
 	@RequestMapping("getMemberInfo.do")
@@ -136,6 +148,7 @@ public class AdminPageController {
 
 		adminPageDao.rejectNewGuestHouse(rejectDto.getGuestHouseCode());
 		adminPageDao.insertReject(rejectDto);
+		
 		redirectAttributes.addFlashAttribute("approveOk", "반려가 처리되었습니다.");
 		return "redirect:/";
 	}
