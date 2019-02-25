@@ -352,8 +352,6 @@ header .header-content .header-content-inner p {
 	.btn-default:focus, .btn-default:hover, .open>.dropdown-toggle.btn-default
 	{
 	color: #222;
-	background-color: #f2f2f2;
-	border-color: #ededed
 }
 
 .btn-default.disabled, .btn-default.disabled.active, .btn-default.disabled.focus,
