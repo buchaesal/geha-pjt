@@ -10,9 +10,6 @@
 body .container * {
 	font-family: 'S-CoreDream-3Light';
 }
-.nav_wrapper {
-background-color: #2a416b;
-}
 
 /* a tag reset */
 a:link, a:visited, a:active, a:hover {
@@ -254,3 +251,4 @@ button:disabled{
 #footer .fa {
 	font-family: FontAwesome;
 }
+

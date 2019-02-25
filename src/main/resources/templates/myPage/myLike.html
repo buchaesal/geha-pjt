@@ -123,7 +123,7 @@ a.before#myLike:before,a.after#myLike:after {
 							target="_blank" th:href="@{'/room/roomInfo?guestHouseCode='+${likeDto.guestHouseCode}+
 				'&bookingStart='+${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}+
 				'&bookingEnd='+${tomorrow}+'&bookingNumber=1'}">
-								<button type="button" class="btn-primary">예약하러가기</button></a></td>
+								<button type="button" class="ph-button ph-btn-blue">예약하러가기</button></a></td>
 						<td><input type="checkbox" name="chk"
 							th:value="${likeDto.roomCode}"></td>
 
@@ -134,7 +134,7 @@ a.before#myLike:before,a.after#myLike:after {
 
 			</table>
 			<div class="buttonBox">
-				<button type="button" class="btn-primary" onClick="deleteLike()">삭제</button>
+				<button type="button" class="ph-button ph-btn-red" onClick="deleteLike()">삭제</button>
 			</div>
 
 			<!-- 게시판 하단의 페이징 버튼 -->

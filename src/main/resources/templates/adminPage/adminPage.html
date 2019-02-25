@@ -216,20 +216,24 @@ tr {
 	border-bottom: 2px solid lightgray;
 }
 
-a.before#adminPage:before,a.after#adminPage:after {
-   content: "";
-  position:absolute;
-  bottom:-0.25em;
-  height:0.35rem;
-  width:100%;
+a.before#adminPage:before, a.after#adminPage:after {
+	content: "";
+	position: absolute;
+	bottom: -0.25em;
+	height: 0.35rem;
+	width: 100%;
 }
 
 .modal-sm {
-    width: 444px;
+	width: 444px;
 }
 
-.modal-footer{
-padding-bottom:0;
+.modal-footer {
+	padding-bottom: 0;
+}
+
+.pagination {
+	display: block;
 }
 </style>
 </head>
@@ -280,19 +284,20 @@ padding-bottom:0;
 							th:selected="${pageMaker.cri.type eq 'email'}">이메일</option>
 					</select> <input type="hidden" name="auth" th:value="${auth}"> <input
 						type='text' name='keyword' th:value="${pageMaker.cri.keyword}">
-					<button type="button" class='btn-primary' onclick="search()">Search</button>
+					<button type="button" class='ph-button ph-btn-blue'
+						onclick="search()">Search</button>
 				</form>
 
 
-				<button class="btn btn-info waves-effect" onclick="changeAdmin()">관리자
+				<button class="ph-button ph-btn-green" onclick="changeAdmin()">관리자
 					임명</button>
-				<button class="btn btn-info waves-effect" onclick="changeUser()">강등</button>
-				<button class="btn btn-info waves-effect"
+				<button class="ph-button ph-btn-red" onclick="changeUser()">강등</button>
+				<button class="ph-button ph-btn-blue"
 					onclick="location.href='/adminPage/adminPage?auth='">전체목록</button>
 			</div>
 
 			<!-- 게시판 하단의 페이징 버튼 -->
-			<div class="box-footer clearfix">
+			<div class="box-footer clearfix" style="margin-top: 19px;">
 
 
 				<ul class="pagination pagination-sm no-margin pull-center">
@@ -336,8 +341,7 @@ padding-bottom:0;
 					<div class="modal-content text-center">
 						<!--Header-->
 						<div class="modal-header d-flex justify-content-center">
-							<br />
-							<br />
+							<br /> <br />
 							<p id="modalName" class="heading"></p>
 						</div>
 
