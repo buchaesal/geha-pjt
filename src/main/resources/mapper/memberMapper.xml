@@ -51,5 +51,9 @@
 		and m.memberCode = #{memberCode}
 		order by g.approvalDate desc
 	</select>
+	
+	<select id="findMemberByMemberCode" resultType="MemberDto">
+	select * from member_tb where memberCode = #{memberCode};
+	</select>
 
 </mapper>
