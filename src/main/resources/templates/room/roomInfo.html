@@ -674,6 +674,7 @@
 		$(document).ajaxSend(function(e, xhr, options) {
 			xhr.setRequestHeader(header, token);
 		});
+	
 	});
 
 
@@ -905,7 +906,9 @@
 		        type : 'post',
 		        data : {'replyContent' : replyContent, 'reviewNo' : reno}, 
 		        success : function(){
-		        	commentList(1);
+		        	var pa = $('.page-item.active').find('a').html()
+		        	        	console.log(pa)
+		        	commentList(pa);
 		        }
 		    }) 
 		}; 
@@ -920,8 +923,9 @@
 		        type : 'post',
 		        data : {'replyContent' : replyContent, 'reviewNo' : reno}, 
 		        success : function(){
-		        	commentList(1);
-		        	
+		        	var pa = $('.page-item.active').find('a').html()
+		        	console.log(pa)
+		        	commentList(pa);
 		        }
 		    }) 
 		};
@@ -932,7 +936,8 @@
 		        url : '/comment/delete/'+reviewNo,
 		        type : 'post',
 		        success : function(data){
-		            if(data == 1) commentList(1); //댓글 삭제후 목록 출력 
+		        	var pa = $('.page-item.active').find('a').html()
+		            if(data == 1) commentList(pa); //댓글 삭제후 목록 출력 
 		        }
 		    });
 		}
@@ -1004,6 +1009,7 @@
 	 	$(document).ready(function(){
 	 		commentList(1);
 	 		paging(10);
+	 		
 	 		
 	 		if([[${session.memberCode}]] != 'null'){
 	 			likeList();
@@ -1169,6 +1175,7 @@
 				return d;
 			}
 		}
+ 		
 	}); 
 
 	</script>
