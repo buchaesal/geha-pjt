@@ -18,7 +18,7 @@
 <link href="/css/readmore.css" rel="stylesheet">
 <link href="//s.w.org/wp-includes/css/dashicons.css?20150710" rel="stylesheet" type="text/css">
 <link href="/css/like.css" rel="stylesheet">
-<style>
+<style >
 
 	
 	
@@ -448,6 +448,8 @@
 
 <body>
 <div class="jcontent" layout:fragment="content"  style="font-family: 'yg-jalnan';">
+<p style="position: absolute; top: 131px; font-size: 49px; left: 58px; color: white;cursor: default;">방상세보기
+</p>
 
 	<div class="top-container">
 		<div class="left">
@@ -672,6 +674,7 @@
 		$(document).ajaxSend(function(e, xhr, options) {
 			xhr.setRequestHeader(header, token);
 		});
+	
 	});
 
 
@@ -903,7 +906,8 @@
 		        type : 'post',
 		        data : {'replyContent' : replyContent, 'reviewNo' : reno}, 
 		        success : function(){
-		        	commentList(1);
+		        	var pa = $('.page-item.active').find('a').html()
+		        	commentList(pa);
 		        }
 		    }) 
 		}; 
@@ -918,8 +922,8 @@
 		        type : 'post',
 		        data : {'replyContent' : replyContent, 'reviewNo' : reno}, 
 		        success : function(){
-		        	commentList(1);
-		        	
+		        	var pa = $('.page-item.active').find('a').html()
+		        	commentList(pa);
 		        }
 		    }) 
 		};
@@ -930,7 +934,8 @@
 		        url : '/comment/delete/'+reviewNo,
 		        type : 'post',
 		        success : function(data){
-		            if(data == 1) commentList(1); //댓글 삭제후 목록 출력 
+		        	var pa = $('.page-item.active').find('a').html()
+		            if(data == 1) commentList(pa); //댓글 삭제후 목록 출력 
 		        }
 		    });
 		}
@@ -1002,6 +1007,7 @@
 	 	$(document).ready(function(){
 	 		commentList(1);
 	 		paging(10);
+	 		
 	 		
 	 		if([[${session.memberCode}]] != 'null'){
 	 			likeList();
@@ -1167,6 +1173,7 @@
 				return d;
 			}
 		}
+ 		
 	}); 
 
 	</script>
