@@ -4,7 +4,6 @@
       layout:decorator="fragments/main_layout">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<title>예약하기</title>
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<!-- iamport.payment.js -->
@@ -178,7 +177,7 @@
 			.btn-default {
 				color: #fff;
 				text-shadow: none;
-				background: #2a416b;
+				background: #2a416b00;
 				border: none;
 			}
 			
@@ -195,11 +194,21 @@
 			}
 			
 			#bookingConfirmModalClose {
-				background-color: darkgray;
+				background-color: #a9a9a9b8;
 			}
 			
 			#bookingConfirmModalClose:hover {
 				background-color: darkgray;
+				color: white;
+			}
+			
+			#callPaymentApi {
+				background-color: #e53e23cf;
+			}
+			
+			#callPaymentApi:hover {
+				background-color: #e53e23;
+				color: white;
 			}
 		</style>
 	</head>
