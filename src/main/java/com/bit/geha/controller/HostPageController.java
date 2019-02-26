@@ -138,21 +138,6 @@ public class HostPageController {
 	@RequestMapping("modifyGuestHouseComplete")
 	public String modifyGuestHouseComplete(GuestHouseDto guestHouseDto, RoomDtos roomDtos, @RequestParam List<Integer> facilityCode) throws Exception {
 		log.info("modifyGuestHouseComplete()");
-
-		System.out.println("GuestHouseCode: " + guestHouseDto.getGuestHouseCode());
-		
-		/*
-		 * 게스트하우스 무조건 update
-		 * File savedName이 하나라도 있으면 안바뀜 (mainImage도 변경 여부) / 없으면 바뀜 기존-delete 수정-insert
-		 * facility 무조건 update
-		 * room 하나하나 비교
-		 * 수정(roomCode != 0) - File : savedName이 하나라도 있으면 안바뀜 / 없으면 바뀜 기존-delete 수정-insert mainImage도 변경
-		 * 					 - RoomDto : 무조건 update
-		 * 삭제(!roomCode.exists())  - File : 무조건 delete
-		 * 							- RoomDto : 무조건  delete
-		 * 추가(roomCode == 0) - File : 무조건 insert
-		 * 					  - RoomDto : 무조건 insert 
-		*/
 		
 		//게스트하우스 update
 		hostPageDao.modifyGuestHouse(guestHouseDto);
@@ -160,11 +145,8 @@ public class HostPageController {
 		List<FileDto> existingGuestHouseImgs = hostPageDao.getImgs(guestHouseDto.getGuestHouseCode(), 0);
 		
 		if(guestHouseDto.getFiles().get(0).getSize() == 0) { //기존이미지였을 경우
-			System.out.println("게스트하우스 기존이미지");
-			
 			if(!(existingGuestHouseImgs.get(guestHouseDto.getMainImage()).isMainImage())) { //기존 메인인덱스랑 다를 경우
 				for(int i=0; i<existingGuestHouseImgs.size(); i++) {
-					System.out.println("메인인덱스랑 다름");
 					if(i==guestHouseDto.getMainImage()) {
 						existingGuestHouseImgs.get(i).setMainImage(true);
 						hostPageDao.modifyMainImage(existingGuestHouseImgs.get(i));
@@ -175,8 +157,6 @@ public class HostPageController {
 				}
 			}
 		} else { //새로운 이미지일 경우
-			System.out.println("게스트하우스 새로운이미지");
-			
 			//파일 delete
 			UploadFileUtils.deleteFiles(existingGuestHouseImgs);
 			hostPageDao.deleteImgs(guestHouseDto.getGuestHouseCode(), 0);
@@ -203,18 +183,13 @@ public class HostPageController {
 		
 		for(RoomDto room : rooms) {
 			if(existingRoomCodes.contains(room.getRoomCode())) { //수정되었을 경우
-				System.out.println("기존 룸 : " + room.getRoomCode());
-				
 				existingRoomCodes.remove((Integer)room.getRoomCode()); //존재하는 것들은 지움
 				
 				List<FileDto> existingRoomImgs = hostPageDao.getImgs(room.getGuestHouseCode(), room.getRoomCode());
 
 				if(room.getRoomFiles()==null || room.getRoomFiles().get(0).getSize() == 0) { //기존이미지였을 경우
-					System.out.println("방 기존이미지");
-					
 					if(room.getMainImage()!=-1) { //기존 메인인덱스랑 다를 경우
 						for(int i=0; i<existingRoomImgs.size(); i++) {
-							System.out.println("메인인덱스랑 다름");
 							if(i==room.getMainImage()) {
 								existingRoomImgs.get(i).setMainImage(true);
 								hostPageDao.modifyMainImage(existingRoomImgs.get(i));
@@ -225,8 +200,6 @@ public class HostPageController {
 						}
 					}
 				} else { //새로운 이미지일 경우
-					System.out.println("방 새로운이미지");
-					
 					//파일 delete
 					UploadFileUtils.deleteFiles(existingRoomImgs);
 					hostPageDao.deleteImgs(room.getGuestHouseCode(), room.getRoomCode());
@@ -255,11 +228,9 @@ public class HostPageController {
 		}
 		
 		//삭제되었을 경우 - File, Room delete
-		System.out.println("delete roomCode: " + existingRoomCodes);
 		if(existingRoomCodes.size()>0) {
 			hostPageDao.deleteRooms(existingRoomCodes);
 			for (int i = 0; i < existingRoomCodes.size(); i++) {
-				System.out.println("delete Img");
 				hostPageDao.deleteImgs(guestHouseDto.getGuestHouseCode(), existingRoomCodes.get(i));
 				UploadFileUtils.deleteRoomImgFolder(guestHouseDto.getGuestHouseCode(), existingRoomCodes.get(i));
 			}
@@ -270,19 +241,12 @@ public class HostPageController {
 	
 	@RequestMapping("deleteGuestHouse")
 	public String deleteGuestHouse(int guestHouseCode) {
-		System.out.println("deleteGuestHouse code: " + guestHouseCode);
-		
-		//삭제 순서 룸파일-룸-편의시설-게스트하우스파일-게스트하우스
 		
 		List<Integer> deleteRoomCodes = hostPageDao.getRoomCodes(guestHouseCode);
 		
-		int i=1;
-		System.out.println("deleteRoomCodes: " + deleteRoomCodes);
 		if(deleteRoomCodes.size()>0) {
-			System.out.println("deleteRoomIndex: " + i++);
 			hostPageDao.deleteRooms(deleteRoomCodes); //방 삭제
 			for(int roomCode : deleteRoomCodes) {
-				System.out.println("delete roomCode: " + roomCode);
 				hostPageDao.deleteImgs(guestHouseCode, roomCode); //db에서 파일내역 지우기
 				UploadFileUtils.deleteRoomImgFolder(guestHouseCode, roomCode); //경로에서 이미지 지우기
 			}
