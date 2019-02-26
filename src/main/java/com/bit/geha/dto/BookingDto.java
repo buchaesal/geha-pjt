@@ -15,7 +15,6 @@ public class BookingDto {
 	private int roomCode; //방 코드
 	private Date bookingStart; //입실예정일
 	private Date bookingEnd; //퇴실예정일
-	private String paymentMethod; //결제수단
 	private String approvalNumber; //승인번호
 	private Date paymentDate; //결제일자
 	private int paymentAmount; //결제금액

@@ -5,10 +5,10 @@
 
 	<insert id="addBooking" useGeneratedKeys="true" keyProperty="bookingCode" parameterType="BookingDto">
 		INSERT INTO booking_tb(memberCode, booker, bookerEmail, bookerContact, bookingNumber, roomCode, bookingStart
-		, bookingEnd, paymentMethod, approvalNumber,paymentDate, paymentAmount, bookingStatus)
+		, bookingEnd, approvalNumber,paymentDate, paymentAmount, bookingStatus)
 		 VALUES 
 		 (#{memberCode}, #{booker}, #{bookerEmail}, #{bookerContact}, #{bookingNumber}, #{roomCode}, #{bookingStart}
-		 , #{bookingEnd}, #{paymentMethod}, #{approvalNumber}, #{paymentDate}, #{paymentAmount}, '예약완료')
+		 , #{bookingEnd}, #{approvalNumber}, #{paymentDate}, #{paymentAmount}, '예약완료')
 	</insert>
 
 </mapper>
