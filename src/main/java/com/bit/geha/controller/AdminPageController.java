@@ -22,7 +22,6 @@ import com.bit.geha.dao.RoomDao;
 import com.bit.geha.dto.FacilityDto;
 import com.bit.geha.dto.FileDto;
 import com.bit.geha.dto.GuestHouseDto;
-import com.bit.geha.dto.LikeDto;
 import com.bit.geha.dto.MemberDto;
 import com.bit.geha.dto.RejectDto;
 import com.bit.geha.dto.RoomDto;
@@ -45,21 +44,15 @@ public class AdminPageController {
 	@GetMapping("/adminPage")
 	public void adminPage(@ModelAttribute("cri") AdminPageCriteria cri, String auth, HttpSession session,
 			Authentication authority, Model model) {
+
 		memberService.getSession(authority, session);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 
-		if (!auth.equals("all")) {
-			model.addAttribute("list", adminPageDao.getMemberList(cri, auth));
-			model.addAttribute("auth", auth);
+		model.addAttribute("list", adminPageDao.getMemberList(cri, auth.equals("") ? "" : auth));
+		model.addAttribute("auth", auth);
 
-			pageMaker.setTotalCount(adminPageDao.getTotal(cri, auth));
-		} else {
-			model.addAttribute("list", adminPageDao.getMemberList(cri, ""));
-			model.addAttribute("auth", "");
-
-			pageMaker.setTotalCount(adminPageDao.getTotal(cri, ""));
-		}
+		pageMaker.setTotalCount(adminPageDao.getTotal(cri, auth));
 
 		model.addAttribute("type", cri.getType());
 		model.addAttribute("keyword", cri.getKeyword());
@@ -96,6 +89,7 @@ public class AdminPageController {
 
 		List<GuestHouseDto> gList = adminPageDao.getApprovalHouseList(cri);
 
+		//반려가 5회를 넘으면 반려초과 상태를 띄움.
 		for (GuestHouseDto list : gList) {
 
 			if (adminPageDao.getRejectListByGuestHouseCode(list.getGuestHouseCode()).size() >= 5) {
@@ -123,6 +117,7 @@ public class AdminPageController {
 	public void waitApproval(@RequestParam("bookingStart") String bookingStart,
 			@RequestParam("bookingEnd") String bookingEnd, @RequestParam("bookingNumber") int bookingNumber,
 			@RequestParam("guestHouseCode") int guestHouseCode, Model model) throws Exception {
+		
 		List<RoomDto> rooms = roomDao.roomInfo(bookingStart, bookingEnd, bookingNumber, guestHouseCode);
 		List<FacilityDto> facility = roomDao.facilityInfo(guestHouseCode);
 		List<FileDto> gehaImg = roomDao.gehaImg(guestHouseCode);
@@ -137,7 +132,8 @@ public class AdminPageController {
 		model.addAttribute("facility", facility);
 
 	}
-
+	
+	//승인 처리
 	@RequestMapping("/approveGuestHouse")
 	public String approveGuestHouse(@RequestParam("guestHouseCode") int guestHouseCode,
 			RedirectAttributes redirectAttributes) {
@@ -146,6 +142,7 @@ public class AdminPageController {
 		return "redirect:/";
 	}
 
+	//반려 처리
 	@RequestMapping("/rejectGuestHouse")
 	public String rejectGuestHouse(RejectDto rejectDto, RedirectAttributes redirectAttributes) {
 
@@ -156,6 +153,7 @@ public class AdminPageController {
 		return "redirect:/";
 	}
 
+	//반려 사유 목록
 	@RequestMapping("getRejectList.do")
 	@ResponseBody
 	public List<RejectDto> getRejectList(@RequestBody int guestHouseCode) {
