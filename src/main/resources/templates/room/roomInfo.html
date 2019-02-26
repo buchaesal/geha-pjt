@@ -513,6 +513,7 @@
  						<label>예약 인원수 : </label><span id="person"></span>
 					</div>
 					<br><br>
+					<p th:if="${room.size()} == 0" style="font-size: 20px; color: red">예약할 수 있는 방이 없습니다.</p>
 					<article class="roomInfo" th:each="RoomDto,stat:${room}" >
 						<div class="room" style="border: 1px solid rgb(0,0,0,0.08); margin-top: 20px; padding:10px;">
 							  <div class="swiper-container" style="display: inline-block; height: 265px;">
