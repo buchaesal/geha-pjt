@@ -36,6 +36,7 @@ from guestHouse_tb gh
 		group by gh.guestHouseCode
 		) rv
 	on rv.guestHouseCode = gh.guestHouseCode
+where gh.approvalDate is not null
 order by gh.avgRating desc, ghmin.minprice asc, gh.guestHouseCode asc
 limit 10
 ) a,
@@ -74,6 +75,7 @@ from guestHouse_tb gh
 		group by gh.guestHouseCode
 		) rv
 	on rv.guestHouseCode = gh.guestHouseCode
+where gh.approvalDate is not null
 order by rv.reviewCnt desc, gh.avgRating desc, gh.guestHouseCode asc
 limit 10
 ) a,
