@@ -37,8 +37,8 @@ public class CommonController {
 		memberService.getSession(auth, session);
 	}
 	
-	@RequestMapping("/kakaoTest")
-	public void kakaoTest() {
+	@RequestMapping("/accessDeniedPage")
+	public void accessDeniedPage() {
 		
 	}
 	

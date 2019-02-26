@@ -45,12 +45,17 @@ a.before#approvalHouse:before, a.after#approvalHouse:after {
 
 	});
 
+	var result = "";
+	var hiddenResult = "";
+
 	function showHostInfo() {
 
 		var memberCode = event.srcElement.name;
 		var today = new Date().toISOString().split("T")[0];
 		var tomorrow = new Date((new Date()).valueOf() + 1000 * 3600 * 24)
 				.toISOString().split("T")[0];
+		$("#menu1").html("");
+		hiddenResult = "";
 
 		$
 				.ajax({
@@ -63,13 +68,37 @@ a.before#approvalHouse:before, a.after#approvalHouse:after {
 						console.log(error);
 					},
 					success : function(data) {
-						var result = "";
+						result = '<table id="guestHouseList" width="260px" style="margin-bottom: 14px;">';
+						var cnt = 0;
 						$(data)
 								.each(
-										function() {
-											if (this.status == '승인완료') {
-												$("#noNow").hide();
-												result += '<tr><td><a target="_blank" href="/room/roomInfo?guestHouseCode='
+										function(index) {
+											if (cnt < 5) {
+												if (this.status == '승인완료') {
+													$("#noNow").hide();
+													result += '<tr><td><a target="_blank" href="/room/roomInfo?guestHouseCode='
+															+ this.guestHouseCode
+															+ '&bookingStart='
+															+ today
+															+ '&bookingEnd='
+															+ tomorrow
+															+ '&bookingNumber=1">'
+															+ this.guestHouseName
+															+ "</a></td><td>"
+															+ new Date(
+																	this.approvalDate)
+																	.toISOString()
+																	.split("T")[0]
+															+ "</td></tr>";
+
+													cnt++;
+												}
+											} else {
+												if (cnt === 5) {
+													result += '</table><button type="button" id="moreList" class="btn-primary" onclick="moreList()">전체목록보기</button>';
+												}
+
+												hiddenResult += '<tr><td><a target="_blank" href="/room/roomInfo?guestHouseCode='
 														+ this.guestHouseCode
 														+ '&bookingStart='
 														+ today
@@ -83,9 +112,13 @@ a.before#approvalHouse:before, a.after#approvalHouse:after {
 																.toISOString()
 																.split("T")[0]
 														+ "</td></tr>";
+												cnt++;
+
 											}
+
 										});
-						$("#guestHouseList").html(result);
+
+						$("#menu1").html(result);
 						$("#hostName").text(data[0].memberName);
 						$("#hostId").text(data[0].id);
 						$("#businessLicense").text(data[0].businessLicense);
@@ -96,6 +129,12 @@ a.before#approvalHouse:before, a.after#approvalHouse:after {
 
 	}
 
+	function moreList() {
+		console.log(hiddenResult);
+		$("#moreList").remove();
+		$("#menu1").append(hiddenResult + '</table>');
+
+	}
 	function showRejectModal() {
 		var guestHouseCode = event.srcElement.name;
 		$.ajax({
@@ -236,9 +275,8 @@ a.before#approvalHouse:before, a.after#approvalHouse:after {
 								</table>
 							</div>
 							<div id="menu1" class="tab-pane ">
-								<table id="guestHouseList" width="260px">
 
-								</table>
+
 								<p id="noNow">현재 운영중인 게스트하우스가 없습니다.</p>
 
 

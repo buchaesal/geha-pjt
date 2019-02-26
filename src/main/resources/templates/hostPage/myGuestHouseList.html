@@ -23,18 +23,19 @@
 
 /* Modal Content/Box */
 .modal-content {
+	position: fixed;
 	background-color: #fefefe;
 	margin: 15% auto; /* 15% from the top and centered */
 	padding: 25px;
 	border: 1px solid #888;
 	width: 35%; /* Could be more or less, depending on screen size */
 	text-align: center;
+	left: 35%;
 }
 
 p {
 	font-weight: bold;
 }
-
 
 tr {
 	border-bottom: 2px solid lightgray;
@@ -54,6 +55,7 @@ th {
 .fa-file-text:before {
 	margin-left: 3px;
 	color: chocolate;
+	cursor: pointer;
 }
 
 #rejectModalTable {
@@ -71,105 +73,116 @@ th {
 }
 
 .btn:hover {
-	background-color: #101086;
+	background-color: #395d5d;
 	color: white;
-	border: 1px solid #101086;
 }
 
-a.before#myGuestHouseList:before,a.after#myGuestHouseList:after {
-   content: "";
-  position:absolute;
-  bottom:-0.25em;
-  height:0.35rem;
-  width:100%;
+a.before#myGuestHouseList:before, a.after#myGuestHouseList:after {
+	content: "";
+	position: absolute;
+	bottom: -0.25em;
+	height: 0.35rem;
+	width: 100%;
 }
+
 </style>
 </head>
 
 <body>
 
 	<div layout:fragment="hostPage_content">
-	<div th:if="${#lists.size(guestHouseList)==0}" style="padding-top: 33px;" align="center">
+		<div th:if="${#lists.size(guestHouseList)==0}"
+			style="padding-top: 33px;" align="center">
 			<p class="heading">내 게스트하우스가 없습니다.</p>
-			<img src="https://image.flaticon.com/icons/svg/608/608671.svg" width="60px" height="60px">
-			<a href="registerGuestHouse"><button class="btn"
-				>새
-				게스트하우스 등록하기</button></a>
+			<img src="https://image.flaticon.com/icons/svg/608/608671.svg"
+				width="60px" height="60px"> <a href="registerGuestHouse"><button
+					class="btn">새 게스트하우스 등록하기</button></a>
 		</div>
 		<div th:if="${#lists.size(guestHouseList)>0}">
-		<table width="800px">
-			<tr height="80px" align="center" style="background: #f1f1fb;">
-				<th>등록번호</th>
-				<th>이름</th>
-				<th>신청일</th>
-				<th>상태</th>
-			</tr>
-			<tr th:each="guestHouseDto : ${guestHouseList}" align="center"
-				height="80px">
-				<td th:text="${guestHouseDto.guestHouseCode}"></td>
-				<td th:text="${guestHouseDto.guestHouseName}"></td>
-				<td th:text="${#dates.format(guestHouseDto.registerDate, 'yy.MM.dd')}"></td>
-				<td>
-					<div th:if="${guestHouseDto.approvalDate}">
-						등록완료<br>
-						<a th:href="@{/room/roomInfo(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${tomorrow}, bookingNumber=1)}">보기</a>
-					</div>
-					<div th:unless="${guestHouseDto.approvalDate}">
-						<label th:if="${guestHouseDto.status}=='반려'">
-							반려
-							<i class="fa fa-file-text" style="font-size:18px" th:onclick="|javascript:getRejectList('${guestHouseDto.guestHouseCode}')|"></i>
-							<br> 
-							<a th:unless="${#lists.contains(rejectedGuestHouseList, guestHouseDto.guestHouseCode)}" th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">수정/삭제</a>
-						</label> 
-						<label th:if="${guestHouseDto.status}=='승인대기'">
-							승인대기<br> 
-							<a th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode})}">수정/삭제</a>
-						</label>
-					</div>
-				</td>
-			</tr>
-		</table>
+			<div>
+				<table width="800px">
+					<tr height="80px" align="center" style="background: #f1f1fb;">
+						<th>등록번호</th>
+						<th>이름</th>
+						<th>신청일</th>
+						<th>상태</th>
+					</tr>
+					<tr th:each="guestHouseDto : ${guestHouseList}" align="center"
+						height="80px">
+						<td th:text="${guestHouseDto.guestHouseCode}"></td>
+						<td th:text="${guestHouseDto.guestHouseName}"></td>
+						<td
+							th:text="${#dates.format(guestHouseDto.registerDate, 'yy.MM.dd')}"></td>
+						<td>
+							<div th:if="${guestHouseDto.approvalDate}">
+								등록완료<br> <a
+									th:href="@{/room/roomInfo(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, bookingEnd=${tomorrow}, bookingNumber=1)}">보기</a>
+							</div>
+							<div th:unless="${guestHouseDto.approvalDate}">
+								<label th:if="${guestHouseDto.status}=='반려'"> 반려 <i
+									class="fa fa-file-text" style="font-size: 18px"
+									th:onclick="|javascript:getRejectList('${guestHouseDto.guestHouseCode}')|"></i>
+									<br> <a
+									th:unless="${#lists.contains(rejectedGuestHouseList, guestHouseDto.guestHouseCode)}"
+									th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode}, bookingStart=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">수정/삭제</a>
+								</label> <label th:if="${guestHouseDto.status}=='승인대기'"> 승인대기<br>
+									<a
+									th:href="@{/hostPage/modifyGuestHouse(guestHouseCode=${guestHouseDto.guestHouseCode})}">수정/삭제</a>
+								</label>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div style="width: 800px; text-align: right; margin-top: 11px;">
+					<a href="registerGuestHouse"><button
+							class="ph-button ph-btn-green">새 게스트하우스 등록하기</button></a>
+				</div>
+				<!-- 게시판 하단의 페이징 버튼 -->
+				<div class="box-footer clearfix" style="padding-left: 357px">
 
-		<!-- 게시판 하단의 페이징 버튼 -->
-		<div class="box-footer clearfix" style="padding-left: 357px">
-			<ul class="pagination pagination-sm no-margin pull-center">
+					<ul class="pagination pagination-sm no-margin pull-center">
 
-				<li th:if="${pageMaker.prev} == true"><a
-					th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
-				</li>
+						<li th:if="${pageMaker.prev} == true"><a
+							th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.startPage}-1,perPageNum=${pageMaker.cri.perPageNum})}">&laquo;</a>
+						</li>
 
-				<li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}" th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
-					<a th:if="${idx}" th:href="@{/hostPage/myGuestHouseList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
-				</li>
+						<li
+							th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
+							th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+							<a th:if="${idx}"
+							th:href="@{/hostPage/myGuestHouseList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}"
+							th:text="${idx}"></a>
+						</li>
 
-				<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
-					<a
-					th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
-				</li>
-			</ul>
-		</div>
+						<li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+							<a
+							th:href="@{/hostPage/myGuestHouseList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+						</li>
+					</ul>
 
-		<a href="registerGuestHouse"><button class="btn-primary"
-				style="position: absolute; bottom: -133px; top: 1; right: 230px;">새
-				게스트하우스 등록하기</button></a>
+				</div>
 
-		<!-- rejectList Modal -->
-		<div id="rejectListModal" class="modal" style="font-size: 16px;">
 
-			<!-- Modal content -->
-			<div class="modal-content">
-				<p>
-					<div style="font-size: 20px; margin-bottom: 3px;">- 반려 이력 -</div>
-					<div style="font-size: 13px;">(5회 이상 반려 시 기존 작성 게시물에서 재신청을 하실 수 없습니다.)</div>
-				</p>
-				<table id="rejectModalTable"></table>
-				<button id="rejectListModalClose">확인</button>
 			</div>
-			<!-- Modal content -->
+
+			<!-- rejectList Modal -->
+			<div id="rejectListModal" class="modal" style="font-size: 16px;">
+
+				<!-- Modal content -->
+				<div class="modal-content">
+					<p>
+					<div style="font-size: 20px; margin-bottom: 3px;">- 반려 이력 -</div>
+					<div style="font-size: 13px;">(5회 이상 반려 시 기존 작성 게시물에서 재신청을 하실
+						수 없습니다.)</div>
+					</p>
+					<table id="rejectModalTable"></table>
+					<button id="rejectListModalClose">확인</button>
+				</div>
+				<!-- Modal content -->
+			</div>
+			<!-- rejectList Modal -->
 		</div>
-		<!-- rejectList Modal -->
 	</div>
-</div>
 	<div layout:fragment="hostPage_script">
 		<script type="text/javascript">
 			function getRejectList(guestHouseCode) {
@@ -187,8 +200,8 @@ a.before#myGuestHouseList:before,a.after#myGuestHouseList:after {
 						var content = "<tr><th>반려 사유</th><th>반려일</th></tr>";
 						for (var i = 0; i < data.length; i++) {
 							content += "<tr>" + "<td>" + data[i].rejectMsg
-									+ "</td>" + "<td style='width: 35%'>" + data[i].rejectDate
-									+ "</td>" + "</tr>";
+									+ "</td>" + "<td style='width: 35%'>"
+									+ data[i].rejectDate + "</td>" + "</tr>";
 						}
 
 						$("#rejectModalTable").append(content);

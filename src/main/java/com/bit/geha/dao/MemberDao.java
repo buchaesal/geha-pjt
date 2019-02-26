@@ -25,4 +25,6 @@ public interface MemberDao {
 	public void changePw(String id,String password);
 	
 	public List<MemberDto> findByMemberCode(int memberCode);
+	
+	public MemberDto findMemberByMemberCode(int memberCode);
 }

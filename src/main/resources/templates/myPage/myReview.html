@@ -303,14 +303,14 @@ a.before#myReview:before,a.after#myReview:after {
 						style="font-size: 0.8em;">[[${reviewDto.content}]]</span></td>
 					<td>[[${#dates.format(reviewDto.writingDate, 'yy.MM.dd')}]]</td>
 					<td>[[${reviewDto.rating}]]</td>
-					<td><a href="#" th:name="${iter.index}"
-						th:if="${reviewDto.replyContent}" class="glyphicon glyphicon-bell"
-						style="text-decoration: none" onclick="showReply()"></a></td>
+					<td><a href="#"><img th:name="${iter.index}"
+						th:if="${reviewDto.replyContent}"
+						style="text-decoration: none" onclick="showReply()" src="https://image.flaticon.com/icons/svg/1182/1182718.svg" width="30px"></a></td>
 
 					<td style="padding: 35px">
-						<button type="button" class="btn-primary" th:value="${iter.index}"
+						<button type="button" class="ph-button ph-btn-green" th:value="${iter.index}"
 							onclick="modifyFrm()">수정</button>
-						<button type="button" class="btn-primary"
+						<button type="button" class="ph-button ph-btn-red"
 							th:id="${reviewDto.reviewNo}" onClick="showDeleteModal()">삭제</button>
 
 					</td>
@@ -476,8 +476,7 @@ a.before#myReview:before,a.after#myReview:after {
 								<img src="https://image.flaticon.com/icons/svg/145/145859.svg"
 									width="70px" height="70px" align="left" style="margin: 13px;">
 								<p id="replyByHost"
-									style="height: 101px; padding: 7px; text-align: left;"></p>
-								<p id="replyDate"></p>
+									style="min-height:110px; padding: 7px; text-align: left;"></p>
 
 							</div>
 						</div>

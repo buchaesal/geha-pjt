@@ -96,6 +96,13 @@
 		margin-left: 78px;
 
 	}
+	textarea {
+    overflow: auto;
+	width: 100%;
+	resize: none;
+	height: 130px;
+	
+	}
 	
 	.roomInfo {
 		display:block;
@@ -411,6 +418,7 @@
 	    background-size: 18px auto;
 	}
 	
+	
 	@media(max-width:900px){
 
 	.jcontent{
@@ -487,7 +495,7 @@
 		</div>
 	</div>
 </div> 
-
+<p w></p>
 
 
 	<div class="container">
@@ -505,6 +513,7 @@
  						<label>예약 인원수 : </label><span id="person"></span>
 					</div>
 					<br><br>
+					<p th:if="${room.size()} == 0" style="font-size: 20px; color: red">예약할 수 있는 방이 없습니다.</p>
 					<article class="roomInfo" th:each="RoomDto,stat:${room}" >
 						<div class="room" style="border: 1px solid rgb(0,0,0,0.08); margin-top: 20px; padding:10px;">
 							  <div class="swiper-container" style="display: inline-block; height: 265px;">
@@ -543,6 +552,8 @@
 									<a th:href=|#login_form${RoomDto.roomCode}| class="infobtn" id="login_pop"style="margin: 0; background-color: white; color: black; " >객실 이용 안내</a>								
 								
 								</div>
+								
+								
 								<a href="#x" class="overlay" th:id=|login_form${RoomDto.roomCode}|></a>
 								<div class="popup">
 									<h2>객실 이용 안내</h2>
@@ -571,16 +582,16 @@
 			    <!--  숙소정보 탭  -->
 			   		<div id="menu1" class="tab-pane ">
    	 					<h3>오시는길</h3>
-						<p th:text="${geha.directions}"></p>
+						<p th:utext="${geha.directions}"></p>
 						<br>
 						<h3>이용규칙</h3>
-						<p th:text="${geha.rules}"></p>
+						<p th:utext="${geha.rules}"></p>
 						<br>
 						<h3>주차장 정보</h3>
-						<p th:text="${geha.parkingInfo}"></p>
+						<p th:utext="${geha.parkingInfo}"></p>
 						<br>
 						<h3>취소 및 환불 규정</h3>
-						<ul >
+						<ul style="display: inline-grid;">
 							<li>체크인일 기준 7일 전 : 100% 환불</li>
 							<li>체크인일 기준 6 ~ 4일 전 : 50% 환불</li>
 							<li>체크인일 기준 3일 전 ~ 당일 및 No-Show : 환불불가</li>
@@ -588,7 +599,7 @@
 						</ul>
 						<br>
 						<h3>확인 사항 및 기타</h3>
-						<ul>
+						<ul style="display: inline-grid;" >
 							<li>위의 정보는 준 게스트하우스 사정에 따라 변경될 수 있습니다.</li>
 							<li>해당 이미지는 실제와 상이 할 수 있습니다.</li>
 							<li>예약 확정 이후의 취소는 취소 및 환불 규정에 의거하여 적용됩니다. 예약 시, 취소 및 환불 규정을 반드시 확인하시기 바랍니다.</li>
@@ -629,7 +640,9 @@
 							</span>
 						</p>
 						<p th:text=|전체리뷰:${rating.reviewCnt}| ></p>
-   						<div class="guest" style="border-top: 1px solid #B9B7B7;" ></div> 
+   						<div class="guest" style="border-top: 1px solid #B9B7B7;" >
+   						
+   						</div> 
 
    						<!-- 게시판 하단의 페이징 버튼 -->
 	           			 <div class="box-footer clearfix">
@@ -662,7 +675,11 @@
 		$(document).ajaxSend(function(e, xhr, options) {
 			xhr.setRequestHeader(header, token);
 		});
+	
 	});
+
+
+	
 	function check() {
 		if([[${session.memberCode}]] == null){
 			swal({
@@ -687,8 +704,8 @@
 		       		var a ='';
 		             $.each(data, function(key, value){ 
 		            	a += '<div class ="com" style=" border-bottom: 1px solid #B9B7B7;">'
-		           		a+= '<div id="comment'+guestHouseCode+'" style=" margin : 30px 0px;">'
-		           		a+= '<img alt="" src="/img/icons/boy.png" style="width: 60px; border-radius: 100%">'
+		           		a += '<div id="comment'+guestHouseCode+'" style=" margin : 30px 0px;">'
+		           		a += '<img alt="" src="/img/icons/boy.png" style="width: 60px; border-radius: 100%">'
 		              	a += '<span style="font-size:35px; vertical-align:middle;">&nbsp;'+ value.title +'</span><br><br>';
 		            	a += '<p class="star-input"><span class="input" id="rt_'+key+'"><input type="hidden" name="rating" value="11" id="p11"> <label id="rt'+key+'"for="p11">11</label><input type="hidden" name="rating" value="22" id="p22"> <label id="rt'+key+'" for="p22">22</label><input type="hidden" name="rating" value="33" id="p33"> <label id="rt'+key+'" for="p33">33</label>	<input type="hidden" name="rating" value="44" id="p44"> <label id="rt'+key+'" for="p44">44</label><input type="hidden" name="rating" value="55" id="p55"> <label id="rt'+key+'" for="p55">55</label></span>&nbsp;&nbsp;<labal id="'+key+'">'+value.rating+'</labal></p>';
 		                a += '<span>'+value.roomName+'</span>&bull;';
@@ -697,21 +714,22 @@
 		                a += '<p>'+jQuery.timeago(new Date(value.writingDate))+'</p>';
 		                a += '</div>'
 		              	if(value.replyContent == null && [[${session.auth}]] == 'HOST' && [[${session.memberCode}]] == [[${geha.memberCode}]]){
-		              		a += '<form id="commentForm">'
-		              		a += '<input type="text" id="replyContent"  name="content_'+value.reviewNo+'" required >'
+		              		a += '<form id="commentForm" onsubmit="return false;">'
+		              		a += '<textarea id="replyContent" name="content_'+value.reviewNo+'" maxlength="300" required style="width: 150%;" ></textarea>'
 				            a += '<input id="reviewno"  name="reviewno_'+ value.reviewNo +'" type="hidden" value="' + value.reviewNo + '">' 
-			                a += '<button class="btn btn-primary" id="commentBtn" type="button" onclick="commentCheck('+value.reviewNo+')" style="margin: 10px"> 답변하기 </button>'
+			                a += '<button class="btn btn-primary" id="commentBtn" type="button" onclick="commentCheck('+value.reviewNo+')" style="margin: 10px; "> 답변하기 </button>'
 		              		a += '</form>'
 		              	};
+		              	
 		              	if (value.replyContent != null){
 		              		a += '<div class="host" id="comment2" style=" margin-left:10%" >'
 			              	a+= '<img src="/img/icons/man.png" style="width: 60px; border-radius: 100%">'
 		              		a += '<span style="font-size:30px; vertical-align:middle;">&nbsp;제휴점 답변</span><br><br>'
-		              		a += '<p class="replyContent'+value.reviewNo+'">' + value.replyContent + '</p>'
+		              		a += '<p class="replyContent'+value.reviewNo+'" style="word-break: break-all;" value="">' + value.replyContent + '</p>'
 		              		a += '<p class="replyDate">' + jQuery.timeago(new Date(value.replyDate)) + '</p>'
 								if (value.replyContent != null && [[${session.memberCode}]] == [[${geha.memberCode}]] ) {
-			              			a += '<button class="btn btn-primary" type="button" id="up" style="margin: 0px 5px 10px 5px;" onclick="commentUpdateProc('+value.reviewNo+',\''+value.replyContent+'\')">수정하기</button>'
-			              			a += '<button class="btn btn-primary" type="button" id="del"style="margin: 0px 5px 10px 5px;" onclick="commentDelete('+value.reviewNo+')">삭제하기</button>'
+			              			a += '<button class="btn btn-primary up" type="button" id="up" style="margin: 0px 5px 10px 5px;" onclick="commentUpdateProc('+value.reviewNo+',\''+value.replyContent+'\')"> 수정하기 </button>'
+			              			a += '<button class="btn btn-primary del" type="button" id="del"style="margin: 0px 5px 10px 5px;" onclick="commentDelete('+value.reviewNo+')">삭제하기</button>'
 			              		}	
 		              		a += '</div>'
 		              	}
@@ -801,32 +819,58 @@
 		//호스트답글 유효성
 		function commentCheck(reviewNo) {
 			
-			  if($.trim($('[name=content_'+reviewNo+']').val()) == ''){
+			         //textArea br태그 넣기
+	        	var textareaTags =  $('[name=content_'+reviewNo+']').val();
+	       		var str = textareaTags;
+	       		 str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+	    		 textareaTags=str;
+	 			var regex = /^([a-zA-Zㄱ-힣0-9 !.,~@#$%^&*\n|s]|<br\s*[\/]?>)*$/gi;
+	 			
+			  if($.trim(textareaTags) == ''){
 					swal({
 						  title: "내용을 입력하세요!",
 						  text: "You clicked the button!",
 						  icon: "error",
 						});
-				   $('[name=content_'+reviewNo+']').focus();
+				   $(textareaTags).focus();
 				   return false;
+			}else if (regex.test(textareaTags) == false ) {
+				swal({
+					  title: "특수문자!",
+					  text: "You clicked the button!",
+					  icon: "error",
+					});
+				 return false;
 			}else {
-				commentUpdate(reviewNo);
+				commentUpdate(reviewNo,textareaTags);
 			};
 		}
 		//댓글수정폼
 		function commentUpdateProc(reviewNo, replyContent){
-			
+
+			//br태그-> enter 로 치환 
+
+       		var str =replyContent;
+       		 str = str.replace(/<br>/gi , "\r\n");
+       		replyContent=str; 
 		    var a ='';
 		    $('.replyDate').hide();
-		    $('#up').hide();
-		    $('#del').hide();
-		  	a += '<input type="text" class="replyContentUpdate" name="contentUp_'+reviewNo+'" value="'+replyContent+'"/>';
-		    a += '<button class="btn btn-primary" type="button" onclick="commentUpCheck('+reviewNo+');">수정</button>';
+		    $('.up').hide();
+		    $('.del').hide();
+		  	a += '<textarea id="replyContentUpdate" class="replyContentUpdate" name="contentUp_'+reviewNo+'" maxlength="300">'+replyContent+'</textarea>';
+		    a += '<button class="btn btn-primary" type="button" onclick="commentUpCheck('+reviewNo+');">수정하기</button>';
 		    $('.replyContent'+reviewNo).html(a);
 		}
+		
+
+        
 		//댓글수정시 유효성
 		function commentUpCheck(reviewNo) {
-			  if($.trim($('[name=contentUp_'+reviewNo+']').val()) == ''){
+			var regex = /^([a-zA-Zㄱ-힣0-9 !.,~@#$%^&*\n|s]|<br\s*[\/]?>)*$/gi;
+        	var textareaTags =  $('[name=contentUp_'+reviewNo+']').val();
+       		var str = textareaTags;
+       		
+			  if($.trim(textareaTags) == ''){
 					swal({
 						  title: "내용을 입력하세요!",
 						  text: "You clicked the button!",
@@ -834,13 +878,28 @@
 						});
 				   $('.replyContentUpdate').focus();
 				   return false;
-			}else {
-				commentUpdate1(reviewNo);
+			  }else if (regex.test(textareaTags) == false ) {
+					swal({
+						  title: "특수문자!",
+						  text: "You clicked the button!",
+						  icon: "error",
+						});
+					 return false;
+			  
+			  }else {
+		         //textArea br태그 넣기
+
+
+	       		 str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+	    		 textareaTags=str;
+	    		 
+				commentUpdate1(reviewNo,textareaTags);
+
 			};
 		}
 		//답글 수정
-		function commentUpdate1(reviewNo){
-  			var replyContent = $('[name=contentUp_'+reviewNo+']').val();
+		function commentUpdate1(reviewNo,textareaTags){
+  			var replyContent = textareaTags;
   			var reno = $('[name=reviewno_'+reviewNo+']').val();
   			reno = reviewNo;
 	 	    $.ajax({
@@ -848,14 +907,15 @@
 		        type : 'post',
 		        data : {'replyContent' : replyContent, 'reviewNo' : reno}, 
 		        success : function(){
-		        	commentList(1);
+		        	var pa = $('.page-item.active').find('a').html()
+		        	commentList(pa);
 		        }
 		    }) 
 		}; 
 		
 		//호스트답글 
-		function commentUpdate(reviewNo){
-  			var replyContent = $('[name=content_'+reviewNo+']').val();
+		function commentUpdate(reviewNo,textareaTags){
+  			var replyContent = textareaTags
   			var reno = $('[name=reviewno_'+reviewNo+']').val();
   			reno = reviewNo;
 	 	    $.ajax({
@@ -863,17 +923,20 @@
 		        type : 'post',
 		        data : {'replyContent' : replyContent, 'reviewNo' : reno}, 
 		        success : function(){
-		        	commentList(1);
+		        	var pa = $('.page-item.active').find('a').html()
+		        	commentList(pa);
 		        }
 		    }) 
-		}; 
+		};
+		
 		//댓글 삭제 
 		function commentDelete(reviewNo){
 		    $.ajax({
 		        url : '/comment/delete/'+reviewNo,
 		        type : 'post',
 		        success : function(data){
-		            if(data == 1) commentList(1); //댓글 삭제후 목록 출력 
+		        	var pa = $('.page-item.active').find('a').html()
+		            if(data == 1) commentList(pa); //댓글 삭제후 목록 출력 
 		        }
 		    });
 		}
@@ -946,6 +1009,7 @@
 	 		commentList(1);
 	 		paging(10);
 	 		
+	 		
 	 		if([[${session.memberCode}]] != 'null'){
 	 			likeList();
 	 		};
@@ -989,8 +1053,8 @@
 		 			.css('background-size','150px')
 		 			.css('background-position','0 bottom')
 		 		}
-	 		  
-	 		
+
+
 	 	});
 		
  		/* when a user clicks, toggle the 'is-animating' class */
@@ -1002,7 +1066,7 @@
   		$(".favme").on('animationend', function(){
   		$(this).toggleClass('is_animating');
   		});
-
+		
 	 	
 	 	
  	$(function() {
@@ -1110,12 +1174,9 @@
 				return d;
 			}
 		}
-		
-		
-		
-		
-	})
-	
+ 		
+	}); 
+
 	</script>
 	
 	

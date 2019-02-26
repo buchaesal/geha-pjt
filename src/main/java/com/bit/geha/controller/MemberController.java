@@ -37,45 +37,34 @@ public class MemberController {
 		String referrer = request.getHeader("Referer");
 		request.getSession().setAttribute("prevPage", referrer);
 	}
-	
-	@RequestMapping("/goLogin")
-	public String goLogin() {
-		return "/member/login";
-		
-	}
-	
-	@PostMapping(value="/loginCk")
+
+	@PostMapping(value = "/loginCk")
 	@ResponseBody
-	public String loginCk(@RequestParam("id") String id,
-			@RequestParam("password") String password) { //로그인 유효성검사
-		
+	public String loginCk(@RequestParam("id") String id, @RequestParam("password") String password) { // 로그인 유효성검사
+
 		MemberDto member = memberDao.findById(id);
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		
-		
-		if(member!=null) { //아이디가 존재한다면
-			if(passwordEncoder.matches(password, member.getPassword())){ //비밀번호도 일치한다면
-				
-				if(member.getAuthStatus()!=null) { //가입 할 때 메일인증도 받은 사람이라면!!!!
+
+		if (member != null) { // 아이디가 존재한다면
+			if (passwordEncoder.matches(password, member.getPassword())) { // 비밀번호도 일치한다면
+
+				if (member.getAuthStatus() != null) { // 가입 할 때 메일인증도 받은 사람이라면!!!!
 					return "";
-				}else { //메일인증은 안받았다면
-				return "노인증";
+				} else { // 메일인증은 안받았다면
+					return "노인증";
 				}
-			}else {//일치하지 않는다면
+			} else {// 일치하지 않는다면
 				return "비밀번호가 일치하지 않습니다.";
 			}
-		}else {//아이디가 존재하지 않는다면
+		} else {// 아이디가 존재하지 않는다면
 			return "아이디가 존재하지 않습니다.";
 		}
-		
-		
+
 	}
 
 	@RequestMapping("/findPw")
 	public void findPw() {
 	}
-
-	
 
 	@RequestMapping("/signUp")
 	public void signUp() {
@@ -88,23 +77,22 @@ public class MemberController {
 	}
 
 	@RequestMapping("/changePw")
-	public void changePw(Model model,@RequestParam("hiddenId")String id) {
-		model.addAttribute("id",id);
+	public void changePw(Model model, @RequestParam("hiddenId") String id) {
+		model.addAttribute("id", id);
 	}
 
 	@RequestMapping("/sendEmailComplete")
 	public void sendEmailComplete() {
 	}
 
-
 	@PostMapping(value = "findPw.do")
 	@ResponseBody
 	public String findPw(@RequestBody String id) throws Exception {
 		id = id.replace("%40", "@").substring(3);
-		if(memberDao.findById(id)==null) { //그 이메일을 가진 회원이 존재하지 않는다면
+		if (memberDao.findById(id) == null) { // 그 이메일을 가진 회원이 존재하지 않는다면
 			return "";
-		}else { //존재한다면 인증코드 메일을 보낸다
-		return memberService.findPw(id);
+		} else { // 존재한다면 인증코드 메일을 보낸다
+			return memberService.findPw(id);
 		}
 	}
 
@@ -149,19 +137,18 @@ public class MemberController {
 	public void emailConfirm() {
 
 	}
-	
+
 	@RequestMapping("sendMail.do")
 	@ResponseBody
-	public void sendMail(@RequestParam(value="id") String id) throws Exception {
+	public void sendMail(@RequestParam(value = "id") String id) throws Exception {
 		memberService.sendMail(id);
 	}
-	
+
 	@RequestMapping("updatePw.do")
 	@ResponseBody
-	public void updatePw(@RequestParam(value="password") String password,
-			@RequestParam(value="id")String id) {
+	public void updatePw(@RequestParam(value = "password") String password, @RequestParam(value = "id") String id) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberDao.changePw(id, passwordEncoder.encode(password));
-		
+
 	}
 }

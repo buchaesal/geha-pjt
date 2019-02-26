@@ -49,6 +49,11 @@
 		g.approvalDate
 		from member_tb m, guestHouse_tb g where m.memberCode = g.memberCode 
 		and m.memberCode = #{memberCode}
+		order by g.approvalDate desc
+	</select>
+	
+	<select id="findMemberByMemberCode" resultType="MemberDto">
+	select * from member_tb where memberCode = #{memberCode};
 	</select>
 
 </mapper>

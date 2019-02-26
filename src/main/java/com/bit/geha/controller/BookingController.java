@@ -40,11 +40,7 @@ public class BookingController {
 			, int bookingNumber, HttpSession session, Authentication auth) {
 		log.info("loadBookingPage()");
 		RoomDto roomDto = bookingDao.getRoom(roomCode);
-		log.info("roomDto: " + roomDto);
 		String guestHouseName = bookingDao.getGuestHouseNameByGuestHouseCode(roomDto.getGuestHouseCode());
-		log.info("guestHouseName: " + guestHouseName);
-		log.info("bookingNumber: " + bookingNumber);
-		
 
 		//로그인 계정 가져오기
 		memberService.getSession(auth,session);
@@ -60,24 +56,15 @@ public class BookingController {
 		map.put("memberCode", memberCode);
 		
 		model.addAttribute("appliedBookingInfo", map);
-		
-		/*model.addAttribute("checkin", bookingStart);
-		model.addAttribute("checkout", bookingEnd);
-		model.addAttribute("roomDto", roomDto);
-		model.addAttribute("guestHouseName", guestHouseName);*/
-		
-		
 	}
 	
 	@RequestMapping(value="/bookingComplete", method=RequestMethod.POST)
 	public String bookingComplete(BookingDto bookingDto) {
 		log.info("bookingComplete()");
-		System.out.println(bookingDto);
 		
 		bookingDao.addBooking(bookingDto);
 		int bookingCode = bookingDto.getBookingCode();
 		
-		System.out.println("bookingCode: " + bookingCode);
 		return "redirect:/booking/bookingDetail?bookingCode="+bookingCode;
 	}
 	
@@ -89,6 +76,7 @@ public class BookingController {
 		bookingDto.setGuestHouseName(bookingDao.getGuestHouseNameByBookingCode(bookingCode));
 		bookingDto.setRoomName(bookingDao.getRoomNameByBookingCode(bookingCode));
 		
+		model.addAttribute("roomDto", bookingDao.getRoom(bookingDto.getRoomCode()));
 		model.addAttribute("bookingDto", bookingDto);
 	}
 }
