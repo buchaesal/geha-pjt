@@ -5,7 +5,6 @@
 
    <head>
    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
       <title>게스트하우스 수정</title>
       <style>
          .hostPage_label {
@@ -219,6 +218,23 @@
 			.guestHouse_table {
 				width: 900px;
 			}
+			
+			.rgs_btn-default {
+				color: #333;
+				background-color : #fff;
+				border : 1px solid #ccc;
+			}
+			
+			.rgs_btn-default:hover {
+				color : #333;
+				background-color : #e6e6e6;
+				border : 1px solid #adadad;
+			}
+			
+			.btn {
+				border-radius : 4px;
+				padding: 6px 12px;
+			}
       </style>
    </head>
    <body>
@@ -232,7 +248,7 @@
            			<td>
            				<div>
 			               <input type="file" id="input_imgs" name="files" multiple>
-			               <input type="button" class="btn btn-default" value="파일삭제" onclick="deleteImgs(this)">
+			               <input type="button" class="btn rgs_btn-default" value="파일삭제" onclick="deleteImgs(this)">
 			            </div>
 			            <div class="imgs_wrap" name="guestHouseImg">
 				           	<span class='thumbnailImgSpan' th:each="img, iterState : ${guestHouseImgs}">
@@ -296,7 +312,7 @@
 				               		<td>
 				               			<div>
 							               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple style="width: 65%;">
-							               <input type="button" class="btn btn-default" value="파일삭제" onclick="deleteImgs(this)">
+							               <input type="button" class="btn rgs_btn-default" value="파일삭제" onclick="deleteImgs(this)">
 							            </div>
 							            <div class="imgs_wrap room_imgs_wrap" name="roomsImg">
 							            	<span th:each="img, iterState : ${room.roomImgs}">
@@ -338,7 +354,7 @@
 "></textarea></td>
 				               </tr>
 				            </table>
-				            <input type="button" class="removeRoomBtn btn btn-default" value="삭제" onclick="removeRoom(this)">
+				            <input type="button" class="removeRoomBtn btn rgs_btn-default" value="삭제" onclick="removeRoom(this)">
 				         </div>
 				      </div>
                   </td>
@@ -366,7 +382,7 @@
                   <th><label class="hostPage_label">주소</label></th>
                   <td style="line-height: 30px;">
                      <!-- 주소와 우편번호를 입력할 <input>들을 생성하고 적당한 name과 class를 부여한다 -->
-					<input type="button" id="postcodify_search_button" class="btn btn-default" value="검색" style="margin: 0 15px 0 0; width: 80px;">
+					<input type="button" id="postcodify_search_button" class="btn rgs_btn-default" value="검색" style="margin: 0 15px 0 0; width: 80px;">
 					<input type="text" name="address" class="postcodify_address form-control" th:value="${guestHouseDto.address}" size="50"/><br />
                   </td>
                </tr>
@@ -401,9 +417,9 @@
             </table>
             <br><br>
             <div class="btn-submitLine">
-	            <input type="button" id="cancelGuestHouseBtn" class="btn btn-default btn-lg" value="취소" onclick="history.back()">
-	            <a th:href="@{deleteGuestHouse(guestHouseCode=${guestHouseCode})}" id="deleteGuestHouseBtn" class="btn btn-default btn-lg">삭제</a>
-	            <input id="modifyGuestHouseBtn" type="button" class="btn btn-default btn-lg" value="수정하기">
+	            <input type="button" id="cancelGuestHouseBtn" class="btn rgs_btn-default btn-lg" value="취소" onclick="history.back()">
+	            <a th:href="@{deleteGuestHouse(guestHouseCode=${guestHouseCode})}" id="deleteGuestHouseBtn" class="btn rgs_btn-default btn-lg">삭제</a>
+	            <input id="modifyGuestHouseBtn" type="button" class="btn rgs_btn-default btn-lg" value="수정하기">
             </div>
          </form>
 
@@ -414,7 +430,7 @@
 			<div class="modal-content">
 				<i class="fa fa-exclamation-circle" style="font-size:48px;color:#de9221;"></i>
 				<p id="modalMessage"></p>
-				<button id="inputCheckModalClose" class="btn btn-default btn-modal">확인</button>
+				<button id="inputCheckModalClose" class="btn rgs_btn-default btn-modal">확인</button>
 			</div>
 		</div>
 
@@ -427,7 +443,7 @@
 	         		<td>
 	         			<div>
 			               <input type="file" name="roomAttach" onchange="handleImgsFilesSelect(event)" multiple style="width: 65%;">
-			               <input type="button" class="btn btn-default" value="파일삭제" onclick="deleteImgs(this)">
+			               <input type="button" class="btn rgs_btn-default" value="파일삭제" onclick="deleteImgs(this)">
 			            </div>
 			            <div class="imgs_wrap room_imgs_wrap" name="roomsImg"></div>
 			            <input type="hidden" name="room_imglength">
@@ -464,7 +480,7 @@
 "></textarea></td>
                </tr>
             </table>
-            <input type="button" class="removeRoomBtn btn btn-default" value="삭제" onclick="removeRoom(this)">
+            <input type="button" class="removeRoomBtn btn rgs_btn-default" value="삭제" onclick="removeRoom(this)">
          </div>
       </div>
       
