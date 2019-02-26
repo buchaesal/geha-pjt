@@ -15,17 +15,21 @@ header{
 	width: 50%;
 	height: 80%;
 	float: left;
+	padding-left: 10%;
 }
 
 .display_right {
 	width: 50%;
 	height: 80%;
 	float: right;
+	padding-right: 10%;
 }
 
 table {
 	margin: 50px;
 	margin-top: 30px;
+	margin-left: 100px;
+	font-size: 16px;
 }
 
 
@@ -55,7 +59,7 @@ th {
 
 		<div class="display_left">
 			<h3>예약자 정보</h3>
-			<table id="bookerInfo">
+			<table id="bookerInfo" style="margin-bottom: 21%;">
 				<tr>
 					<th>예약자명</th>
 					<td>[[${bookingDto.booker}]]</td>
@@ -77,16 +81,34 @@ th {
 					<td>[[${bookingDto.guestHouseName}]]</td>
 				</tr>
 				<tr>
-					<th>방 타입 / 기간</th>
+					<th>방 타입</th>
 					<td>
-						<label>[[${bookingDto.roomName}]] / </label>
-						<label id="diffDay"></label>
+						<label>[[${bookingDto.roomName}]]</label>
 					</td>
 				</tr>
 				<tr>
+					<th>수용인원 수</th>
+					<td>[[${roomDto.capacity}]] 인실</td>
+				</tr>
+				<tr>
+					<th>성별 전용 방</th>
+					<td th:if="${roomDto.gender=='N'}">남녀공용</td>
+					<td th:if="${roomDto.gender=='F'}">여성전용</td>
+					<td th:if="${roomDto.gender=='M'}">남성전용</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="display_right">
+			<h3>예약 정보</h3>
+			<table id="bookingInfo">
+				<tr>
+					<th>예약 번호</th>
+					<td>[[${bookingDto.bookingCode}]]</td>
+				</tr>
+				<tr>
 					<th>입실 예정일</th>
-					<td>[[${#dates.format(bookingDto.bookingStart, 'yy.MM.dd
-						E')}]] 14:00</td>
+					<td>[[${#dates.format(bookingDto.bookingStart, 'yy.MM.dd E')}]] 14:00</td>
 				</tr>
 				<tr>
 					<th>퇴실 예정일</th>
@@ -94,19 +116,17 @@ th {
 						11:00</td>
 				</tr>
 				<tr>
-					<th>예약 번호</th>
-					<td>[[${bookingDto.bookingCode}]]</td>
+					<th>예약인원 수</th>
+					<td><label>[[${bookingDto.bookingNumber}]]명</label></td>
+				</tr>
+				<tr>
+					<th>기간</th>
+					<td><label id="diffDay"></label></td>
 				</tr>
 			</table>
-		</div>
-
-		<div class="display_right">
+			
 			<h3>결제 정보</h3>
 			<table id="paymentInfo">
-				<tr>
-					<th>결제 수단</th>
-					<td>[[${bookingDto.paymentMethod}]]</td>
-				</tr>
 				<tr>
 					<th>승인 번호</th>
 					<td>[[${bookingDto.approvalNumber}]]</td>
