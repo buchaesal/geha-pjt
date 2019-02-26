@@ -19,38 +19,15 @@ import lombok.extern.java.Log;
 
 @Log
 public class UploadFileUtils {
-//	public static final String UPLOAD_PATH = "C:\\Users\\tmfrl\\git\\geha-pjt\\src\\main\\resources\\static\\gehaImg\\";
-	
 	public static String makeUploadRootPath() {
-		System.out.println("makeUploadRootPath()");
-		
-		/*String uploadRootPath = null;
-
-		final DefaultResourceLoader defaultResourceLoader = new DefaultResourceLoader();
-		
-		Resource resource = (Resource) defaultResourceLoader.getResource("file:src\\main\\resources\\static\\gehaImg\\");
-		try {
-			uploadRootPath = resource.getFile().getAbsolutePath();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println("uploadRootPath: " + uploadRootPath);
-		
-		return uploadRootPath;*/
-		
 		String resourceToString;
 		String OS = System.getProperty("os.name").toLowerCase();
-		if(OS.indexOf("nux") >= 0) {
-			System.out.println("linux");
+		if(OS.indexOf("nux") >= 0) { //리눅스일경우
 			resourceToString = "/project/geha/geha-pjt/src/main/resources/static/gehaImg";
-		} else {
-			System.out.println("windows");
+		} else { //윈도우일경우
 			resourceToString = System.getProperty("user.dir") + "/src/main/resources/static/gehaImg";
 		}
 		
-		System.out.println("resourceToString: " + resourceToString);
 		return resourceToString;
 	}
 	
@@ -59,14 +36,10 @@ public class UploadFileUtils {
 	
 	
 	private static void makeDir(String uploadPath, String ...paths) {
-		System.out.println("makeDir");
-		
 		if(new File(uploadPath + paths[paths.length-1]).exists())
 			return;
 		
 		for(String path:paths) { 
-			System.out.println("upload+path: " + uploadPath+path);
-
 			File dirPath = new File(uploadPath + path);
 			
 			if(! dirPath.exists()) {
@@ -81,16 +54,13 @@ public class UploadFileUtils {
 	public static List<FileDto> uploadFiles(Object dto) throws Exception {
 		List<FileDto> resultList = new ArrayList<FileDto>();
 		String uploadPath = makeUploadRootPath() ;
-		System.out.println("after makeUploadRootPath");
 		
 		if(dto instanceof GuestHouseDto) {
 			GuestHouseDto guestHouseDto = (GuestHouseDto) dto;
 			List<MultipartFile> uploadFiles = guestHouseDto.getFiles();
 			
 			String guestHousePath = File.separator + guestHouseDto.getGuestHouseCode() + File.separator;
-			System.out.println();
 			makeDir(uploadPath , guestHousePath);
-			System.out.println("after makeDir");
 			
 			for(int i=0; i<uploadFiles.size(); i++) {
 				MultipartFile file = uploadFiles.get(i);
@@ -99,7 +69,6 @@ public class UploadFileUtils {
 				String savedName = uid.toString() + "_" + file.getOriginalFilename();
 				
 				File target = new File(uploadPath+guestHousePath, savedName);
-				System.out.println("uploadPath + guestHousePath + savedName: " + uploadPath + guestHousePath + savedName);
 				file.transferTo(target);
 				
 				resultList.add(new FileDto(savedName, file.getOriginalFilename(), guestHouseDto.getGuestHouseCode(), ((i==guestHouseDto.getMainImage())?true:false)));
@@ -107,16 +76,11 @@ public class UploadFileUtils {
 			
 		} else if(dto instanceof RoomDto) {
 			RoomDto roomDto = (RoomDto) dto;
-			System.out.println("File Upload RoomDto: " + roomDto.getRoomName());
 			List<MultipartFile> uploadFiles = roomDto.getRoomFiles();
 			
 			String guestHousePath = File.separator + roomDto.getGuestHouseCode() + File.separator;
 			String roomPath = guestHousePath + roomDto.getRoomCode() + File.separator;
 			makeDir(uploadPath, guestHousePath, roomPath);
-			
-			for(MultipartFile file : uploadFiles) {
-				System.out.println("--uploadFile: " + file.getOriginalFilename());
-			}
 			
 			for(int i=0; i<uploadFiles.size(); i++) {
 				MultipartFile file = uploadFiles.get(i);
@@ -124,14 +88,10 @@ public class UploadFileUtils {
 				String savedName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 				
 				file.transferTo(new File(uploadPath+roomPath, savedName));
-				
 				resultList.add(new FileDto(savedName, file.getOriginalFilename(), roomDto.getGuestHouseCode(), roomDto.getRoomCode(), ((i==roomDto.getMainImage())?true:false)));
 			}
 		} else return null;
 		
-		for(int i=0; i<resultList.size(); i++) {
-			System.out.println("upload File : " + resultList.get(i).getOriginalName());
-		}
 		return resultList;
 	}
 	
@@ -141,21 +101,16 @@ public class UploadFileUtils {
 		String uploadPath = makeUploadRootPath() ;
 		
 		if(files.get(0).getRoomCode() == 0) { //게스트하우스 이미지
-			System.out.println("게하 이미지");
 			for(FileDto file : files) {
 				String path = uploadPath + File.separator + file.getGuestHouseCode() + File.separator + file.getSavedName();
-				System.out.println("deletePath: " + path);
-				
 				File deleteFile = new File(path);
 				if(deleteFile.exists()) {
 					deleteFile.delete();
 				}
 			}
 		} else { //방 이미지
-			System.out.println("방 이미지");
 			for(FileDto file : files) {
 				String path = uploadPath + File.separator + file.getGuestHouseCode() + File.separator + file.getRoomCode() + File.separator + file.getSavedName();
-				System.out.println("deletePath: " + path);
 				
 				File deleteFile = new File(path);
 				if(deleteFile.exists()) {
@@ -169,33 +124,16 @@ public class UploadFileUtils {
 		String uploadPath = makeUploadRootPath() ;
 		
 		String path = uploadPath + File.separator + guestHouseCode + File.separator + roomCode; //폴더 삭제
-		System.out.println("deletePath: " + path);
 		
 		deleteFolder(path);
 	}
 	
 	public static void deleteGuestHouseImgFolder(int guestHouseCode) {
 		String uploadPath = makeUploadRootPath() ;
-		
 		String path = uploadPath + File.separator + guestHouseCode; //폴더 삭제
-		System.out.println("deletePath: " + path);
 		
 		deleteFolder(path);
 	}
-	
-/*	public static void deleteFolder(int guestHouseCode, int roomCode) {
-		String path = uploadPath + guestHouseCode + File.separator + roomCode; //폴더 삭제
-		System.out.println("deletePath: " + path);
-		
-		File deleteFile = new File(path);
-		if(deleteFile.exists()) {
-			try {
-				FileUtils.forceDelete(deleteFile);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}*/
 	
 	private static void deleteFolder(String path) {
 		File deleteFile = new File(path);
