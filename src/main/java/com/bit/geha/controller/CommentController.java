@@ -97,7 +97,6 @@ public class CommentController {
 	        ReplyReviewDto comment = new ReplyReviewDto();
 	        comment.setReviewNo(reviewNo);
 	        comment.setReplyContent(replyContent);
-	        System.out.println("2");
 	        return mCommentService.commentUpdateService(comment);
 	    }
 
