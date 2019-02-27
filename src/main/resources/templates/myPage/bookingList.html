@@ -207,9 +207,8 @@ a.before#bookingList:before,a.after#bookingList:after {
 							<button class="ph-button ph-btn-blue"
 								th:if="${#lists.contains(reviewList, bookingDto.bookingCode)}"
 								th:onclick="location.href='myReview'">작성한 후기 보러가기</button>
-							<button class="ph-button ph-btn-green" th:unless="${#lists.contains(reviewList, bookingDto.bookingCode)}"
+							<button class="ph-button ph-btn-green" th:if="${#lists.contains(reviewList, bookingDto.bookingCode)==false or #lists.size(reviewList)<=0}"
 								name="writeReviewBtn" data-toggle="modal" data-target="#writeReviewModal">후기 작성하기</button>
-							<button class="ph-button ph-btn-green" th:if="${#lists.size(reviewList)<=0}" name="writeReviewBtn">후기 작성하기</button>
 
 							<!-- writeReivew Modal -->
 							<div id="writeReviewModal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 9999;">
