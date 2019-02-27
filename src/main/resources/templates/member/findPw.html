@@ -105,7 +105,8 @@
 						contentType : "application/json; charset=utf-8",
 						dataType : "text",
 						error : function(error) {
-							alert('메일을 전송할 수 없습니다. 관리자에게 문의해주세요.');
+							$("#loading").hide();
+							console.log(error);
 						},
 						success : function(text) {
 
