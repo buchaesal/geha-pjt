@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
 			messageHelper.setTo(memberDto.getId()); // 받는사람 이메일
 			messageHelper.setSubject("[#GEHA 회원가입 이메일 인증]"); // 메일제목은 생략이 가능하다
 			messageHelper.setText(new StringBuffer().append("<h1>회원가입 인증 메일입니다.</h1><h3>아래의 버튼을 눌러 회원가입을 완료해주세요.</h3>")
-					.append("<a href='http://localhost/member/emailConfirming?id=").append(memberDto.getId())
+					.append("<a href='http://geha.tk/member/emailConfirming?id=").append(memberDto.getId())
 					.append("&key=").append(key).append("' target='_blank'>회원가입 인증 확인</a>").toString(), true); // 메일 내용
 
 			mailSender.send(message);
@@ -67,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
 			messageHelper.setTo(id); // 받는사람 이메일
 			messageHelper.setSubject("[#GEHA 회원가입 이메일 인증]"); // 메일제목은 생략이 가능하다
 			messageHelper.setText(new StringBuffer().append("<h1>회원가입 인증 메일입니다.</h1><h3>아래의 버튼을 눌러 회원가입을 완료해주세요.</h3>")
-					.append("<a href='http://localhost/member/emailConfirming?id=").append(id).append("&key=")
+					.append("<a href='http://geha.tk/member/emailConfirming?id=").append(id).append("&key=")
 					.append(member.getAuthCode()).append("' target='_blank'>회원가입 인증 확인</a>").toString(), true); // 메일 내용
 
 			mailSender.send(message);
