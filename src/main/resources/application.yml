@@ -13,10 +13,8 @@ facebook:
 ---         
 google :
   client :
-    #clientId : 408874424218-d4h1f258d421g2hibkmp488i91t3h6i8.apps.googleusercontent.com
-    #clientSecret: 0tZ9Tc41cgxbCDkKJgWaKiLr
-    clientId : 408874424218-ca166oqafg9jsjfejkrddu3a4at7kv9p.apps.googleusercontent.com
-    clientSecret: NOQHrcmj9HfLaN_8motWU0R_
+    clientId : 408874424218-d4h1f258d421g2hibkmp488i91t3h6i8.apps.googleusercontent.com
+    clientSecret: 0tZ9Tc41cgxbCDkKJgWaKiLr
     accessTokenUri: https://www.googleapis.com/oauth2/v4/token
     userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
     clientAuthenticationScheme: form
