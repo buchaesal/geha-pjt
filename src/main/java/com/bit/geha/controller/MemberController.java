@@ -141,6 +141,7 @@ public class MemberController {
 	@RequestMapping("sendMail.do")
 	@ResponseBody
 	public void sendMail(@RequestParam(value = "id") String id) throws Exception {
+		System.out.println(id);
 		memberService.sendMail(id);
 	}
 

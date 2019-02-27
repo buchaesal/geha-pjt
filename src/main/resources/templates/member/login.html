@@ -11,12 +11,6 @@
 .error{
 color:tomato;
 padding-bottom:20px;
-padding-left: 51px;
-}
-.mailAuth{
-    position: absolute;
-    left: 300px;
-    bottom: 79px;
 }
 
 .glyphicon-envelope{
@@ -25,6 +19,10 @@ padding-left: 51px;
 
 .navbar-brand{
 font-size: 45px;
+}
+
+.modal{
+z-index:9999;
 }
 </style>
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
@@ -78,11 +76,11 @@ font-size: 45px;
 						<span class="focus-input100"></span>
 					</div>
 					<!-- <div class="flex-col-c" th:if="${param.error}">-->
-				
+				<div>
 						<span class="txt2 p-b-10 error" id="error"></span>
-				<button type="button" class="btn btn-info btn-sm mailAuth" 
+				<button type="button" style="margin-left: 124px; margin-top:20px;" class="btn btn-info btn-sm mailAuth" 
 				id="mailAuth" data-toggle="modal" data-target="#idAuth">메일인증</button>
-
+</div>
 					<div class="container-login100-form-btn">
 						<button type="button" class="login100-form-btn" onclick="loginCk()">
 							로그인
@@ -213,6 +211,7 @@ $(function() {
 	$("#mailAuth").click(function() {
 		var frm = $("#frm").serialize();
 		
+		console.log(frm);
 		$.ajax({
 			type : "POST",
 			url : "sendMail.do",
@@ -221,7 +220,9 @@ $(function() {
 			success : function(data){
 				$("#idAuth").modal();
 			},
-			error : onError
+			error : function(error){
+				console.log(error);
+			}
 		});
 	});
 	
