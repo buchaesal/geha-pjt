@@ -44,11 +44,14 @@
 	
 	<update id="modifyGuestHouse" parameterType="GuestHouseDto">
 		UPDATE guestHouse_tb
-		SET guestHouseName=#{guestHouseName}, guestHouseInfo=#{guestHouseInfo}, rules=#{rules}
-			, parkingInfo=#{parkingInfo}, address=#{address}, directions=#{directions}, registerDate=now(), businessTrip=#{businessTrip}
-			, gourmet=#{gourmet}, trip=#{trip}, shopping=#{shopping}, bankName=#{bankName}
-			, accountNumber=#{accountNumber}, status='승인대기' 
-		WHERE guestHouseCode=#{guestHouseCode}
+		SET guestHouseName=#{dto.guestHouseName}, guestHouseInfo=#{dto.guestHouseInfo}, rules=#{dto.rules}
+			, parkingInfo=#{dto.parkingInfo}, address=#{dto.address}, directions=#{dto.directions}, registerDate=now()
+			, businessTrip=#{dto.businessTrip} , gourmet=#{dto.gourmet}, trip=#{dto.trip}, shopping=#{dto.shopping}
+			, bankName=#{dto.bankName}, accountNumber=#{dto.accountNumber} 
+			<if test="isReapply">
+				, status='승인대기' 
+			</if>
+		WHERE guestHouseCode=#{dto.guestHouseCode}
 	</update>
 	
 	<update id="modifyMainImage" parameterType="FileDto">
@@ -60,6 +63,14 @@
 		SET roomName=#{roomName}, capacity=#{capacity}, charge=#{charge}, gender=#{gender}, roomInfo=#{roomInfo}
 		WHERE roomCode=#{roomCode}
 	</update>
+	
+	<delete id="deleteLike" parameterType="java.util.List">
+		DELETE FROM like_tb
+		WHERE
+		<foreach collection="list" index="index" item="roomCode" open="(" separator="or" close=")">
+			roomCode=${roomCode}
+		</foreach>
+	</delete>
 	
 	<delete id="deleteRooms" parameterType="java.util.List">
 		DELETE FROM room_tb 

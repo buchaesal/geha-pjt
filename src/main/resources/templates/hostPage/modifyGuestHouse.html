@@ -157,15 +157,6 @@
            #cancelGuestHouseBtn {background-color: #cdae5cc2;}
            
            #cancelGuestHouseBtn:hover {background-color: #cdae5c;}
-           
-           #modifyGuestHouseBtn {background-color:darkseagreen;}
-           
-           #modifyGuestHouseBtn:hover {background-color: green;}
-           
-           #deleteGuestHouseBtn {background-color: indianred;}
-           
-           #deleteGuestHouseBtn:hover {background-color: #d20000;}
-           
            .navbar-default {
 			    background-color: transparent;
 			    border-color: transparent;
@@ -199,22 +190,6 @@
 			color: #808080ad !important;  
 			}
 			
-			.btn-modal {
-				background-color: #e8c44b8c;
-				border-color: #e5be2342;
-				width: 100px;
-			}
-			
-			.btn-modal:hover {
-				background-color: #e8c44b;
-				border-color: #e8c44b;
-			}
-			
-			.btn-modal:active:hover {
-				background-color: #e1b930;
-				border-color: #e1b930;
-			}
-			
 			.guestHouse_table {
 				width: 900px;
 			}
@@ -234,6 +209,53 @@
 			.btn {
 				border-radius : 4px;
 				padding: 6px 12px;
+			}
+           
+           .btn-modify {background-color:darkseagreen;}
+           
+           .btn-modify:hover {background-color: green;}
+			
+			.btn-modal {
+				width: 100px;
+			}
+			
+			.btn-modal-check {
+				background-color: #e8c44b8c;
+				border-color: #e5be2342;
+			}
+			
+			.btn-modal-check:hover {
+				background-color: #e8c44b;
+				border-color: #e8c44b;
+			}
+			
+			.btn-modal-check:active:hover {
+				background-color: #e1b930;
+				border-color: #e1b930;
+			}
+			           
+           .btn-delete {
+           		background-color: #cd5c5cd9;
+           		color: black;
+           	}
+                      
+           .btn-delete:hover {background-color: #c53939ed;}
+           
+           .btn-delete-cancel {
+           		background-color: #bebebe8c;
+           		border-color: #5f5f5f42;
+           }
+           
+           .btn-delete-cancel:hover {
+				background-color: #5f5f5f8c;
+				border-color: #5f5f5feb;
+			}
+			
+			.btn-modal-modify {
+				width: 170px;
+				height: 47px;
+				font-size: 17px;
+				margin: 0 7px;
 			}
       </style>
    </head>
@@ -418,8 +440,9 @@
             <br><br>
             <div class="btn-submitLine">
 	            <input type="button" id="cancelGuestHouseBtn" class="btn rgs_btn-default btn-lg" value="취소" onclick="history.back()">
-	            <a th:href="@{deleteGuestHouse(guestHouseCode=${guestHouseCode})}" id="deleteGuestHouseBtn" class="btn rgs_btn-default btn-lg">삭제</a>
-	            <input id="modifyGuestHouseBtn" type="button" class="btn rgs_btn-default btn-lg" value="수정하기">
+	            <a class="btn rgs_btn-default btn-lg btn-delete" data-toggle="modal" data-target='#confirmDeleteModal'>삭제</a>
+	            <input type="button" id="modifyGuestHouseBtn" class="btn rgs_btn-default btn-lg btn-modify" value="수정하기">
+	            <input type="hidden" name="isReapply">
             </div>
          </form>
 
@@ -430,7 +453,28 @@
 			<div class="modal-content">
 				<i class="fa fa-exclamation-circle" style="font-size:48px;color:#de9221;"></i>
 				<p id="modalMessage"></p>
-				<button id="inputCheckModalClose" class="btn rgs_btn-default btn-modal">확인</button>
+				<button id="inputCheckModalClose" class="btn rgs_btn-default btn-modal btn-modal-check">확인</button>
+			</div>
+		</div>
+		
+		<!-- confirm modify Modal -->
+		<div id="confirmDeleteModal" class="modal" style="z-index: 9999;">
+			
+			<!-- Modal content -->
+			<div class="modal-content" style="border-color: #f851497a;">
+				<p>정말로 삭제하시겠습니까?</p>
+				<a th:href="@{deleteGuestHouse(guestHouseCode=${guestHouseCode})}" id="deleteGuestHouseBtn" class="btn btn-modal btn-delete">YES</a>
+				<button class="btn btn-modal btn-delete-cancel" data-dismiss="modal" aria-label="Close">NO</button>
+			</div>
+		</div>
+		
+		<!-- confirm modify Modal -->
+		<div id="confirmModifyModal" class="modal" style="z-index: 9999;">
+			
+			<!-- Modal content -->
+			<div class="modal-content" style="border-color: darkseagreen; width: 40%; height: 13%; vertical-align: middle;">
+				<button class="btn btn-modal btn-modal-modify" onclick="modifyGuestHouse(0)">수정만 하기</button>
+				<button class="btn btn-modal btn-modal-modify" onclick="modifyGuestHouse(1)">수정 후 재신청하기</button>
 			</div>
 		</div>
 
@@ -521,17 +565,21 @@
                $('#'+genderName).val(obj.value);
             }
             
-            //게스트하우스 수정하기
-            $("#modifyGuestHouseBtn").click(function() {
-           		if(checkValue()) {
-           			console.log("true");
-           			inputTextArea();
-	               $("#modifyGuestHouseForm").submit();
+            $("#modifyGuestHouseBtn").click(function () {
+            	if(checkValue()) {
+	            	$("#confirmModifyModal").modal();
 	           	} else {
-	           		console.log("false");
+	           		console.log("checkValue false");
 	           	}
+            	
             })
             
+            function modifyGuestHouse(isReapply) {
+            	$("input[name=isReapply]").val(isReapply);
+            	
+           			inputTextArea();
+	               $("#modifyGuestHouseForm").submit();
+            }
             
              
            	function checkValue() {
@@ -546,7 +594,6 @@
             		$("#inputCheckModal").css("display", "block");
             		return false;
             	}
-            	console.log("1");
             	//파일 업로드 여부
             	var imgDivTags = $(".guestHouse_table").find(".imgs_wrap");
             	for(var i=0; i<imgDivTags.length; i++) { 
@@ -556,7 +603,6 @@
                 		return false;
             		}
             	}
-            	console.log("2");
             	//textarea 태그 개수
             	var textareaTags =  $(".guestHouse_table").find("textarea");
             	for(var i=0; i<textareaTags.length; i++) {
@@ -566,7 +612,6 @@
                 		return false;
             		}
             	}
-            	console.log("3");
             	var inputTextTag = $(".guestHouse_table").find("input[type=text]");
             	for(var i=0; i<inputTextTag.length; i++) {
             		if(!inputTextTag[i].value) {
@@ -576,14 +621,12 @@
             		}
             	}
             	
-            	console.log("4");
             	//숫자 받는 입력란 콤마 제거
             	var inputNumberTag = $(".guestHouse_table").find(".inputNumber");
             	for(var i=0; i<inputNumberTag.length; i++) {
             		var x = inputNumberTag[i].value;
             		inputNumberTag[i].value = removeCommas(x);
             	}
-            	console.log("5");
             	return true;
             }
             

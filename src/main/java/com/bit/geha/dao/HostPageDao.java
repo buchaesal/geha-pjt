@@ -50,12 +50,13 @@ public interface HostPageDao {
 	@Select("SELECT * FROM file_tb WHERE guestHouseCode=#{guestHouseCode} AND roomCode=#{roomCode}")
 	public List<FileDto> getImgs(int guestHouseCode, int roomCode);
 	
-	public void modifyGuestHouse(GuestHouseDto guestHouseDto);
+	public void modifyGuestHouse(@Param("dto")GuestHouseDto guestHouseDto, boolean isReapply);
 	public void modifyMainImage(FileDto img);
 	public void modifyRoom(RoomDto roomDto);
 	
 	
 	//게스트하우스 삭제하기
+	public void deleteLike(List<Integer> roomCodeList);
 	@Delete("DELETE FROM file_tb WHERE guestHouseCode=#{guestHouseCode} AND roomCode=#{roomCode}")
 	public void deleteImgs(int guestHouseCode, int roomCode);
 	@Delete("DELETE FROM guestHouse_has_facility_tb WHERE guestHouseCode=#{guestHouseCode}")
