@@ -136,11 +136,11 @@ public class HostPageController {
 	}
 	
 	@RequestMapping("modifyGuestHouseComplete")
-	public String modifyGuestHouseComplete(GuestHouseDto guestHouseDto, RoomDtos roomDtos, @RequestParam List<Integer> facilityCode) throws Exception {
+	public String modifyGuestHouseComplete(GuestHouseDto guestHouseDto, RoomDtos roomDtos, @RequestParam List<Integer> facilityCode, boolean isReapply) throws Exception {
 		log.info("modifyGuestHouseComplete()");
 		
 		//게스트하우스 update
-		hostPageDao.modifyGuestHouse(guestHouseDto);
+		hostPageDao.modifyGuestHouse(guestHouseDto, isReapply);
 		
 		List<FileDto> existingGuestHouseImgs = hostPageDao.getImgs(guestHouseDto.getGuestHouseCode(), 0);
 		
@@ -241,10 +241,13 @@ public class HostPageController {
 	
 	@RequestMapping("deleteGuestHouse")
 	public String deleteGuestHouse(int guestHouseCode) {
+		log.info("deleteGuestHouse()");
+		log.info("guestHouseCode: " + guestHouseCode);
 		
 		List<Integer> deleteRoomCodes = hostPageDao.getRoomCodes(guestHouseCode);
 		
 		if(deleteRoomCodes.size()>0) {
+			hostPageDao.deleteLike(deleteRoomCodes); //좋아요 삭제
 			hostPageDao.deleteRooms(deleteRoomCodes); //방 삭제
 			for(int roomCode : deleteRoomCodes) {
 				hostPageDao.deleteImgs(guestHouseCode, roomCode); //db에서 파일내역 지우기

@@ -159,10 +159,6 @@
            
            #cancelGuestHouseBtn:hover {background-color: #cdae5c;}
            
-           #regiesterGuestHouseBtn {background-color:darkseagreen;}
-           
-           #regiesterGuestHouseBtn:hover {background-color: green;}
-           
            .navbar-default {
 			    background-color: transparent;
 			    border-color: transparent;
@@ -196,22 +192,6 @@
 			color: #808080ad !important;  
 			}
 			
-			.btn-modal {
-				background-color: #e8c44b8c;
-				border-color: #e5be2342;
-				width: 100px;
-			}
-			
-			.btn-modal:hover {
-				background-color: #e8c44b;
-				border-color: #e8c44b;
-			}
-			
-			.btn-modal:active:hover {
-				background-color: #e1b930;
-				border-color: #e1b930;
-			}
-			
 			.guestHouse_table {
 				width: 900px;
 			}
@@ -236,6 +216,30 @@
 			.btn {
 				border-radius : 4px;
 				padding: 6px 12px;
+			}
+           
+           .btn-register {background-color:darkseagreen;}
+           
+           .btn-register:hover {background-color: green;}
+           
+           .btn-register-cancel {background: #80808075;}
+           
+           .btn-register-cancel:hover {background-color: #808080ba;}
+			
+			.btn-modal {
+				background-color: #e8c44b8c;
+				border-color: #e5be2342;
+				width: 100px;
+			}
+			
+			.btn-modal:hover {
+				background-color: #e8c44b;
+				border-color: #e8c44b;
+			}
+			
+			.btn-modal:active:hover {
+				background-color: #e1b930;
+				border-color: #e1b930;
 			}
       </style>
    </head>
@@ -358,7 +362,7 @@
             <br><br>
             <div class="btn-submitLine">
 	            <input type="button" id="cancelGuestHouseBtn" class="btn rgs_btn-default btn-lg" value="취소" onclick="history.back()">
-    	        <input type="button" id="regiesterGuestHouseBtn" class="btn rgs_btn-default btn-lg" value="등록신청">
+    	        <input type="button" id="regiesterGuestHouseBtn" class="btn rgs_btn-default btn-lg btn-register" value="등록신청">
             </div>
             
          </form>
@@ -371,6 +375,17 @@
 				<i class="fa fa-exclamation-circle" style="font-size:48px;color:#de9221;"></i>
 				<p id="modalMessage"></p>
 				<button id="inputCheckModalClose" class="btn rgs_btn-default btn-modal">확인</button>
+			</div>
+		</div>
+		
+		<!-- confirm modify Modal -->
+		<div id="confirmRegisterModal" class="modal" style="z-index: 9999; top: -80px;">
+			
+			<!-- Modal content -->
+			<div class="modal-content" style="border-color: darkseagreen; height: 22%;">
+				<p>정말로 등록하시겠습니까?</p>
+				<button id="submitBtn" class="btn btn-register" style="width: 100px;">YES</button>
+				<button class="btn btn-register-cancel" data-dismiss="modal" aria-label="Close" style="width: 100px;">NO</button>
 			</div>
 		</div>
          
@@ -455,8 +470,12 @@
             $("#regiesterGuestHouseBtn").click(function() {
             	if(checkValue()) {
             		console.log("true");
-            		$("#registerGuestHouseForm").submit();
+            		$("#confirmRegisterModal").modal();
             	}
+            })
+            
+            $("#submitBtn").click(function() {
+           		$("#registerGuestHouseForm").submit();
             })
             
             
