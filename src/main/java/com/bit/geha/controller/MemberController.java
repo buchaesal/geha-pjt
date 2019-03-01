@@ -31,7 +31,7 @@ public class MemberController {
 	@Autowired
 	MemberService memberService;
 
-	@GetMapping("/login")
+	@RequestMapping("/login")
 	public void login(HttpServletRequest request) {
 
 		String referrer = request.getHeader("Referer");
@@ -151,5 +151,11 @@ public class MemberController {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberDao.changePw(id, passwordEncoder.encode(password));
 
+	}
+	
+	@RequestMapping("/goLogin")
+	public String goLogin() {
+		
+		return "/member/login";
 	}
 }
