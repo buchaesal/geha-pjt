@@ -41,7 +41,7 @@ public class MemberServiceImpl implements MemberService {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8"); // 두번째 인자 true여야 파일첨부 가능.
 
-			messageHelper.setFrom("eksqlrhdwb@naver.com", "#GEHA운영자"); // 보내는사람 생략하거나 하면 정상작동을 안함
+			messageHelper.setFrom("sharpgeha@naver.com", "#GEHA운영자"); // 보내는사람 생략하거나 하면 정상작동을 안함
 			messageHelper.setTo(memberDto.getId()); // 받는사람 이메일
 			messageHelper.setSubject("[#GEHA 회원가입 이메일 인증]"); // 메일제목은 생략이 가능하다
 			messageHelper.setText(new StringBuffer().append("<h1>회원가입 인증 메일입니다.</h1><h3>아래의 버튼을 눌러 회원가입을 완료해주세요.</h3>")
@@ -63,7 +63,7 @@ public class MemberServiceImpl implements MemberService {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8"); // 두번째 인자 true여야 파일첨부 가능.
 
-			messageHelper.setFrom("eksqlrhdwb@naver.com", "#GEHA운영자"); // 보내는사람 생략하거나 하면 정상작동을 안함
+			messageHelper.setFrom("sharpgeha@naver.com", "#GEHA운영자"); // 보내는사람 생략하거나 하면 정상작동을 안함
 			messageHelper.setTo(id); // 받는사람 이메일
 			messageHelper.setSubject("[#GEHA 회원가입 이메일 인증]"); // 메일제목은 생략이 가능하다
 			messageHelper.setText(new StringBuffer().append("<h1>회원가입 인증 메일입니다.</h1><h3>아래의 버튼을 눌러 회원가입을 완료해주세요.</h3>")
@@ -97,7 +97,7 @@ public class MemberServiceImpl implements MemberService {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8"); // 두번째 인자 true여야 파일첨부 가능.
 
-			messageHelper.setFrom("eksqlrhdwb@naver.com", "#GEHA운영자"); // 보내는사람 생략하거나 하면 정상작동을 안함
+			messageHelper.setFrom("sharpgeha@naver.com", "#GEHA운영자"); // 보내는사람 생략하거나 하면 정상작동을 안함
 			messageHelper.setTo(id); // 받는사람 이메일
 			messageHelper.setSubject("[#GEHA] 비밀번호 찾기 인증코드 발신 메일입니다."); // 메일제목은 생략이 가능하다
 			messageHelper.setText(
