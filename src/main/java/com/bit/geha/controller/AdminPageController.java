@@ -62,18 +62,20 @@ public class AdminPageController {
 
 	@RequestMapping("/changeAdmin")
 	public String changeAdmin(@RequestParam("id") List<String> id, RedirectAttributes redirectAttributes,
-			@RequestParam("auth") String auth) {
+			@RequestParam("auth") String auth,AdminPageCriteria cri) {
 		adminPageDao.changeAdmin(id);
 		redirectAttributes.addFlashAttribute("changeAdmin", "선택한 회원을 관리자로 임명하였습니다");
-		return "redirect:/adminPage/adminPage?auth=" + auth;
+		return "redirect:/adminPage/adminPage?page="+cri.getPage()+"&perPageNum="+cri.getPerPageNum()
+		+"&auth=" + auth+"&type="+cri.getType()+"&keyword="+cri.getKeyword()+"#";
 	}
 
 	@RequestMapping("/changeUser")
 	public String changeUser(@RequestParam("id") List<String> id, RedirectAttributes redirectAttributes,
-			@RequestParam("auth") String auth) {
+			@RequestParam("auth") String auth,AdminPageCriteria cri) {
 		adminPageDao.changeUser(id);
 		redirectAttributes.addFlashAttribute("changeUser", "선택한 관리자를 일반회원으로 강등하였습니다.");
-		return "redirect:/adminPage/adminPage?auth=" + auth;
+		return "redirect:/adminPage/adminPage?page="+cri.getPage()+"&perPageNum="+cri.getPerPageNum()
+		+"&auth=" + auth+"&type="+cri.getType()+"&keyword="+cri.getKeyword()+"#";
 	}
 
 	@RequestMapping("/approvalHouse")

@@ -57,8 +57,7 @@ a.before#approvalHouse:before, a.after#approvalHouse:after {
 		$("#menu1").html("");
 		hiddenResult = "";
 
-		$
-				.ajax({
+		$.ajax({
 					type : "POST",
 					url : "getMemberInfo.do",
 					data : memberCode,
@@ -119,6 +118,7 @@ a.before#approvalHouse:before, a.after#approvalHouse:after {
 										});
 
 						$("#menu1").html(result);
+						
 						$("#hostName").text(data[0].memberName);
 						$("#hostId").text(data[0].id);
 						$("#businessLicense").text(data[0].businessLicense);

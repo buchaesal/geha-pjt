@@ -264,7 +264,7 @@ a.before#myReview:before,a.after#myReview:after {
 		$("#titleByMe").text(reviewDto.title);
 		$("#contentByMe").text(reviewDto.content);
 		
-		$("#replyByHost").text(reviewDto.replyContent);
+		$("#replyByHost").html(reviewDto.replyContent);
 		$("#replyModal").modal(); 
 	}
 	

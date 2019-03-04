@@ -326,8 +326,12 @@ a.before#adminPage:before, a.after#adminPage:after {
 
 			<!-- 몰래 값전송하는 폼 -->
 			<form id="frm">
-				<input type="hidden" id="id" name="id"> <input type="hidden"
-					id="auth" name="auth">
+				<input type="hidden" id="id" name="id"> 
+				<input type="hidden" id="auth" name="auth">
+				<input type="hidden" name="page" th:value="${pageMaker.cri.page}">
+				<input type="hidden" name="perPageNum" th:value="${pageMaker.cri.perPageNum}">
+				<input type="hidden" name="type" th:value="${pageMaker.cri.type}">
+				<input type="hidden" name="keyword" th:value="${pageMaker.cri.keyword}">
 			</form>
 
 
