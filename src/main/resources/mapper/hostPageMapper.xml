@@ -45,10 +45,11 @@
 	<update id="modifyGuestHouse" parameterType="GuestHouseDto">
 		UPDATE guestHouse_tb
 		SET guestHouseName=#{dto.guestHouseName}, guestHouseInfo=#{dto.guestHouseInfo}, rules=#{dto.rules}
-			, parkingInfo=#{dto.parkingInfo}, address=#{dto.address}, directions=#{dto.directions}, registerDate=now()
+			, parkingInfo=#{dto.parkingInfo}, address=#{dto.address}, directions=#{dto.directions}
 			, businessTrip=#{dto.businessTrip} , gourmet=#{dto.gourmet}, trip=#{dto.trip}, shopping=#{dto.shopping}
 			, bankName=#{dto.bankName}, accountNumber=#{dto.accountNumber} 
 			<if test="isReapply">
+				, registerDate=now()
 				, status='승인대기' 
 			</if>
 		WHERE guestHouseCode=#{dto.guestHouseCode}

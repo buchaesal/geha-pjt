@@ -626,27 +626,9 @@
 			        }
 			    }
 			    
-			   
-			    $(function() { 
-			    	$("#callPaymentApi").click(function(e) {
-			    		//현재 날짜구하기 (예약상품코드 값)
-					    var date = new Date();
-						var year = date.getFullYear().toString().substr(2,2);
-						var month = date.getMonth()+1;
-						var day = date.getDate();
-						var hours = date.getHours();
-						var minutes = date.getMinutes();
-						var seconds = date.getSeconds();
-						var today = year + month + day + hours + minutes + seconds;
-						
-						$("input[name='approvalNumber']").prop("value", [[${appliedBookingInfo.roomDto.roomCode}]]+today);
-						$("#bookingForm").submit();
-			    	})
-			    })
-			    
 			</script>
 			
-			<!-- <script th:inline="javascript" type="text/javascript">
+			<script th:inline="javascript" type="text/javascript">
 				IMP.init("imp33676520");	//가맹점 식별코드
 			
 			    //현재 날짜구하기 (예약상품코드 값)
@@ -686,7 +668,7 @@
 						});
 			    	})
 			    })
-			</script> -->
+			</script>
 		</div>
 	</body>	
 </html>
