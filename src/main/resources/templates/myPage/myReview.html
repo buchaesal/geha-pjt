@@ -365,6 +365,8 @@ a.before#myReview:before,a.after#myReview:after {
 						<form th:action="@{/myPage/modifyReview}" id="reviewForm"
 							method="post">
 							<input type="hidden" id="guestHouseCode" name="guestHouseCode">
+							<input type="hidden" name="page" th:value="${pageMaker.cri.page}">
+							<input type="hidden" name="perPageNum" th:value="${pageMaker.cri.perPageNum}">
 							<input type="hidden" id="reviewNo" name="reviewNo"> <label>작성자</label>
 							<label>[[${session.name}]]</label><br> <label>평점</label> <span
 								class="star-input"> <span class="input"> <input
