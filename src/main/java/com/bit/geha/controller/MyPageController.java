@@ -146,11 +146,11 @@ public class MyPageController {
 
 	// 리뷰 수정
 	@RequestMapping("/modifyReview")
-	public String modifyReview(ReviewDto reviewDto, RedirectAttributes redirectAttributes) {
+	public String modifyReview(ReviewDto reviewDto, RedirectAttributes redirectAttributes,AdminPageCriteria cri) {
 		myPageDao.modifyReview(reviewDto);
 		myPageDao.calculateAvgRating(reviewDto.getGuestHouseCode());
 		redirectAttributes.addFlashAttribute("modifyOk", "리뷰가 수정되었습니다!");
-		return "redirect:/myPage/myReview";
+		return "redirect:/myPage/myReview?page="+cri.getPage()+"&perPageNum="+cri.getPerPageNum();
 	}
 
 	// 리뷰 삭제
