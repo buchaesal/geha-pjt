@@ -132,7 +132,7 @@ a.before#guestBookingList:before, a.after#guestBookingList:after {
 						</div>
 
 						<div th:if="${bookingDto.bookingStatus}=='숙박 중'">
-							<button class="earlyCheckoutBtn"
+							<button class="earlyCheckoutBtn btn-primary"
 								th:onclick="|javascript:earlyCheckoutBtnClick('${iterState.count}')|">퇴실처리</button>
 
 							<!-- earlyCheckout Modal -->
@@ -142,9 +142,9 @@ a.before#guestBookingList:before, a.after#guestBookingList:after {
 								<!-- Modal content -->
 								<div class="modal-content">
 									<p>퇴실처리하시겠습니까?</p>
-									<button
+									<button class="btn-primary"
 										th:onclick="|javascript:doEarlyCheckout('${bookingDto.bookingCode}')|">YES</button>
-									<button class="earlyCheckoutModalClose">NO</button>
+									<button class="earlyCheckoutModalClose btn-primary">NO</button>
 								</div>
 							</div>
 						</div>
